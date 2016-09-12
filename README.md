@@ -19,7 +19,7 @@ Insert description of our project here (vision statement?)
 //************************************************************
 ```
 
-##Below is an example where each **<>** has been replaced appropriately
+####Below is an example where each **<>** has been replaced appropriately
 
 ```
 //************************************************************
@@ -36,7 +36,7 @@ Insert description of our project here (vision statement?)
 //************************************************************
 ```
 
-##Proper Coding Style and class/function Documentation:
+####Proper Coding Style and class/function Documentation:
     1. No exclamation marks in comments.
     2. (4) Spaces for 'indent' style (NO TABS)
     3. Opening and closing brackets on the same line
