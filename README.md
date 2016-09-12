@@ -1,6 +1,8 @@
 # Active Learning for 2110
 Insert description of our project here (vision statement?)
 
+___
+
 ###Documentation and General Coding Guidlines
 
 ####All files shall be proceeded with the following header:
