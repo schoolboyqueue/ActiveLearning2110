@@ -39,18 +39,15 @@ ___
 ```
 
 ####Proper Coding Style and class/function Documentation:
-    1. No exclamation marks in comments.
-    2. (4) Spaces for 'indent' style (NO TABS)
-    3. Opening and closing brackets on the same line
-    4. Functions: applications, returns and parameters shall be properly documented. These descriptors
-       shall contain their type.
-    5. Classes: application should be explained briefly and concisely.
-    6. Switch statements shall have opening and closing brackets for each case
-    7. Ternary if/else statements are allowable iff it doesn't impede readability. Verbosity is preferred
-       over simplicity.
-    8. Any line of code that would be considered 'obfuscated' needs to have a preceeding comment explaining
-       what said line of code does.
-    9. Large lists of variables (enums specifically) should be sorted alphabetically.
+1. **No exclamation marks in comments.**
+2. **(4)** Spaces for 'indent' style (NO TABS)
+3. Opening and closing brackets on the same line
+4. Functions: applications, returns and parameters shall be properly documented. These descriptors shall contain their type.
+5. Classes: application should be explained briefly and concisely.
+6. Switch statements shall have opening and closing brackets for each case
+7. Ternary if/else statements are allowable **iff** it doesn't impede readability. Verbosity is preferred over simplicity.
+8. Any line of code that would be considered 'obfuscated' needs to have a preceeding comment explaining what said line of code does.
+9. Large lists of variables (enums specifically) should be sorted **alphabetically.**
 
 ___
 ####Example(1-4):
