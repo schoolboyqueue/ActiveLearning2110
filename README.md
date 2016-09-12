@@ -51,10 +51,8 @@ Insert description of our project here (vision statement?)
     9. Large lists of variables (enums specifically) should be sorted alphabetically.
 
 ___
+####Example(1-4):
 ```swift
-
-    Example(1-4):
-
     /**
      Create a new event listener, not expecting information from the trigger
 
@@ -68,8 +66,8 @@ ___
     }
 ```
 ___
-```
-    Example(5-6):
+####Example(5-6):
+```swift
 
     switch(var)
     {
@@ -88,8 +86,8 @@ ___
     }
 ```
 ___
-```
-    Example(7):
+####Example(7):
+```swift
 
     // Pack 4 bytes into an 32 int by shifting by multiples of 8
     // 1 << 3 = 8
