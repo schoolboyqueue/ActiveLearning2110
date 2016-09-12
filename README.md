@@ -1,10 +1,11 @@
 # Active Learning for 2110
 
 
-##Documentation and General Coding Guidlines
+###Documentation and General Coding Guidlines
 
-All files shall be proceeded with the following header:
-'''//************************************************************
+####All files shall be proceeded with the following header:
+```
+//************************************************************
 //  **name.extension**                                      //
 //  **PROJECT NAME**                                        //
 //                                                          //
@@ -15,7 +16,8 @@ All files shall be proceeded with the following header:
 //  -------     ---------   --------------                  //
 //  **DATE**    **NAME**    **DESCRIPTION**                 //
 //                                                          //
-//************************************************************'''
+//************************************************************
+```
 
 ##Below is an example where each **<>** has been replaced appropriately
 
