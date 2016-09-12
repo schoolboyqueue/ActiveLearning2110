@@ -50,8 +50,8 @@ Insert description of our project here (vision statement?)
        what said line of code does.
     9. Large lists of variables (enums specifically) should be sorted alphabetically.
 
-```
-    ************************************************************
+___
+```swift
 
     Example(1-4):
 
@@ -66,9 +66,9 @@ Insert description of our project here (vision statement?)
         let newListener = EventListenerAction(callback: action)
         addListener(eventName, newEventListener: newListener)
     }
-
-    ************************************************************
-
+```
+___
+```
     Example(5-6):
 
     switch(var)
@@ -86,9 +86,9 @@ Insert description of our project here (vision statement?)
             // Default stuffs
         }
     }
-
-    ************************************************************
-
+```
+___
+```
     Example(7):
 
     // Pack 4 bytes into an 32 int by shifting by multiples of 8
