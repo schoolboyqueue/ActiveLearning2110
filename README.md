@@ -1,5 +1,5 @@
 # Active Learning for 2110
-
+Insert description of our project here (vision statement?)
 
 ###Documentation and General Coding Guidlines
 
@@ -21,6 +21,7 @@
 
 ##Below is an example where each **<>** has been replaced appropriately
 
+```
 //************************************************************
 //  EventManager.swift                                      //
 //  Messaging                                               //
@@ -33,6 +34,7 @@
 //  16Jun16     J. Carter   Initial Design                  //
 //                                                          //
 //************************************************************
+```
 
 ##Proper Coding Style and class/function Documentation:
     1. No exclamation marks in comments.
@@ -48,6 +50,7 @@
        what said line of code does.
     9. Large lists of variables (enums specifically) should be sorted alphabetically.
 
+```
     ************************************************************
 
     Example(1-4):
@@ -93,6 +96,6 @@
     // 2 << 3 = 16
     // 3 << 3 = 24
     return (b3 << (3 << 3)) | (b2 << (2 << 3)) | (b1 << (1 << 3)) | (b0);
-
+```
 
 
