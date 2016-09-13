@@ -1,4 +1,3 @@
-/*
 //************************************************************
 //  server.js                                               //
 //  Active Learning 2110                                    //
@@ -11,7 +10,6 @@
 //  13Sep16     O. Mizrahi  Initial Design                  //
 //                                                          //
 //************************************************************
-*/
 
 var express = require('express');
 var app = express();
