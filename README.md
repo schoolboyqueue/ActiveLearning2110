@@ -41,7 +41,7 @@ ___
 ####Proper Coding Style and class/function Documentation:
 1. **No exclamation marks in comments.**
 2. **(4)** Spaces for 'indent' style (NO TABS)
-3. Opening and closing brackets on the same line
+3. Opening and closing brackets on the same line with the exception of JS redirects/callbacks
 4. Functions: applications, returns and parameters shall be properly documented. These descriptors shall contain their type.
 5. Classes: application should be explained briefly and concisely.
 6. Switch statements shall have opening and closing brackets for each case
