@@ -10,19 +10,20 @@
 //  13Sep16     O. Mizrahi  Initial Design                  //
 //                                                          //
 //************************************************************
+"use strict"
 
 var express = require('express');
+var bodyparser = require('body-parser');
+
+
+var app_api = require('./app_api');
+var app_client = require('./app_client');
+
 var app = express();
 
-/**
-Respond to GET request
+app_api(app);
+app_client(app);
 
-- parameter PATH:  root route
-- parameter HANDLER:    callback
-*/
-app.get('/', function(req, res) {
-    res.send('hello team 2B||!2B');
-});
 
 /**
 Binds and listens for connections on the specified host and port
