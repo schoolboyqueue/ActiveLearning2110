@@ -14,12 +14,19 @@
 
 var express = require('express');
 var bodyparser = require('body-parser');
-
-
+var mongoose = require('mongoose');
 var app_api = require('./app_api');
 var app_client = require('./app_client');
 
 var app = express();
+
+/**
+Must have MongoDB installed and run mongod
+*/
+mongoose.Promise = global.Promise;
+mongoose.connect('mongodb://localhost/ActiveLearning2110');
+
+app.use(bodyparser.json());
 
 app_api(app);
 app_client(app);

@@ -3,9 +3,18 @@
 var express = require('express');
 var userController = require('./../controllers/userController')
 
-var useRouter = express.Router();
+var userRouter = express.Router();
 
-useRouter.route('')
-    .get(userController);
 
-module.exports = useRouter;
+//userRouter.get('/', userController.get);
+
+userRouter.route('/')
+    .post(userController.putUser);
+
+userRouter.route('/all_users')
+    .get(userController.getAll);
+
+userRouter.route('/:user_id')
+    .get(userController.getByID);
+
+module.exports = userRouter;
