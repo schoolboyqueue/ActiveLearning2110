@@ -1,3 +1,5 @@
+/* jshint node: true */
+
 //************************************************************
 //  server.js                                               //
 //  Active Learning 2110                                    //
@@ -10,13 +12,13 @@
 //  13Sep16     O. Mizrahi  Initial Design                  //
 //                                                          //
 //************************************************************
-"use strict"
+"use strict";
 
-var express = require('express');
-var bodyparser = require('body-parser');
-var mongoose = require('mongoose');
-var app_api = require('./app_api');
+var app_api    = require('./app_api');
 var app_client = require('./app_client');
+var bodyparser = require('body-parser');
+var express    = require('express');
+var mongoose   = require('mongoose');
 
 var app = express();
 
@@ -38,6 +40,6 @@ Binds and listens for connections on the specified host and port
 - parameter PORT:  8081
 - parameter HANDLER:    callback
 */
-app.listen(8081, function(){
+app.listen(8081, function() {
     console.log('listening on port 8081');
 });

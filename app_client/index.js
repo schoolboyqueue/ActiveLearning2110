@@ -1,4 +1,6 @@
-"use strict"
+/* jshint node: true */
+
+"use strict";
 
 module.exports = function(app) {
     /**
@@ -10,4 +12,4 @@ module.exports = function(app) {
     app.get('*', function(req, res){
         res.send('hello team 2B||!2B from app_client');
     });
-}
+};

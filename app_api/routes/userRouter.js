@@ -1,3 +1,5 @@
+/* jshint node: true */
+
 //************************************************************
 //  userRouter.js                                           //
 //  Active Learning 2110                                    //
@@ -10,10 +12,10 @@
 //  18Sep16     O. Mizrahi  Initial Design                  //
 //                                                          //
 //************************************************************
-"use strict"
+"use strict";
 
-var express = require('express');
-var userController = require('./../controllers/userController')
+var express        = require('express');
+var userController = require('./../controllers/userController');
 
 var userRouter = express.Router();
 

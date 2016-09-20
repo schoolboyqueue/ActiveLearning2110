@@ -1,3 +1,5 @@
+/* jshint node: true */
+
 //************************************************************
 //  userController.js                                       //
 //  Active Learning 2110                                    //
@@ -10,7 +12,7 @@
 //  18Sep16     O. Mizrahi  Initial Design                  //
 //                                                          //
 //************************************************************
-"use strict"
+"use strict";
 var User = require('./../models/userModel');
 
 var getAll = function (req, res)
@@ -67,7 +69,7 @@ var getByID = function (req, res)
 
 module.exports =
 {
-    getAll: getAll,
-    putUser: putUser,
-    getByID: getByID
-}
+    getAll:     getAll,
+    putUser:    putUser,
+    getByID:    getByID
+};

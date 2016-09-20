@@ -1,3 +1,5 @@
+/* jshint node: true */
+
 //************************************************************
 //  index.js                                                //
 //  Active Learning 2110                                    //
@@ -10,10 +12,10 @@
 //  18Sep16     O. Mizrahi  Initial Design                  //
 //                                                          //
 //************************************************************
-"use strict"
+"use strict";
 
 var userRouter = require('./routes/userRouter');
 
 module.exports = function(app) {
     app.use('/user', userRouter);
-}
+};
