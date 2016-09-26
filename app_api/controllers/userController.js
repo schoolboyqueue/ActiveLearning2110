@@ -13,9 +13,10 @@
 //                                                          //
 //************************************************************
 "use strict";
-var User = require('./../models/userModel');
+var User    = require('./../models/userModel');
+var bcrypt  = require('bcryptjs');
 
-var getAll = function (req, res)
+var list    = function (req, res)
 {
     User.find(function(err, users)
     {
@@ -32,27 +33,76 @@ var getAll = function (req, res)
     });
 };
 
-var putUser = function (req, res)
+var login = function (req, res)
 {
-    var addUser = new User(req.body);
-    addUser.save(function(err, savedUser)
+    if (!req.body.email || !req.body.password)
     {
-        if (err)
+        res.status(404);
+        res.send('Login Failed:  Data Missing');
+    }
+    else
+    {
+        User.findOne({email: req.body.email}, function(err, user)
         {
-            res.status(500);
-            res.send('failed to save user');
-        }
-        else
-        {
-            res.status(201);
-            res.send(savedUser);
-        }
-    });
+            if (err)
+            {
+                console.log(err);
+                res.status(500);
+                res.send('Internal Error');
+            }
+            else if (!user)
+            {
+                res.status(404);
+                res.send('Login Failed:  User not found');
+            }
+            else if (!bcrypt.compareSync(req.body.password, user.password))
+            {
+                res.status(401);
+                res.json("Login Failed: Wrong Password");
+            }
+            else
+            {
+                res.status(200);
+                res.json("login success");
+            }
+        });
+    }
 };
 
-var getByID = function (req, res)
+var register = function (req, res)
 {
-    User.findById(req.params.user_id, function(err, user)
+    if (!req.body.email || !req.body.username || !req.body.password)
+    {
+        res.status(404);
+        res.send('Registration Failed:  Data Missing');
+    }
+    else
+    {
+        var addUser = new User(
+        {
+            email        :    req.body.email,
+            username     :    req.body.username,
+            password     :    bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10))
+        });
+        addUser.save(function(err, savedUser)
+        {
+            if (err)
+            {
+                res.status(500);
+                res.send('Internal Error');
+            }
+            else
+            {
+                res.status(201);
+                res.json("Registration success");
+            }
+        });
+    }
+};
+
+var getUser = function (req, res)
+{
+    User.findById(req.params.USERID, function(err, user)
     {
         if (err)
         {
@@ -67,9 +117,26 @@ var getByID = function (req, res)
     });
 };
 
+var delete_user = function (req, res)
+{
+    User.findById(req.params.USERID, function(err, user)
+    {
+        user.remove(function(err)
+        {
+            if (!err)
+            {
+                res.status(200);
+                res.json('User Deleted');
+            }
+        });
+    });
+};
+
 module.exports =
 {
-    getAll:     getAll,
-    putUser:    putUser,
-    getByID:    getByID
+    list          :    list,
+    register      :    register,
+    login         :    login,
+    getUser       :    getUser,
+    delete_user   :    delete_user
 };

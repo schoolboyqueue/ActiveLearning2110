@@ -19,16 +19,23 @@ var userController = require('./../controllers/userController');
 
 var userRouter = express.Router();
 
+userRouter.route('/login')
+    .post(userController.login);
 
-//userRouter.get('/', userController.get);
+userRouter.route('/register')
+    .post(userController.register);
 
-userRouter.route('/')
-    .post(userController.putUser);
+userRouter.route('/list')
+    .get(userController.list);
 
-userRouter.route('/all_users')
-    .get(userController.getAll);
+userRouter.route('/profile/:USERID')
+    .get(userController.getUser);
 
-userRouter.route('/:user_id')
-    .get(userController.getByID);
+userRouter.route('/delete/:USERID')
+    .delete(userController.delete_user);
+/*
+userRouter.route('/profile/:USERID')
+    .post(userController.updateUser);
+*/
 
 module.exports = userRouter;

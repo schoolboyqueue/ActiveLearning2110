@@ -40,6 +40,6 @@ Binds and listens for connections on the specified host and port
 - parameter PORT:  8081
 - parameter HANDLER:    callback
 */
-app.listen(8081, function() {
+app.listen(process.env.PORT || 8081, function() {
     console.log('listening on port 8081');
 });
