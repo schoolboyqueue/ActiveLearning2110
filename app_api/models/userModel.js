@@ -14,13 +14,18 @@
 //************************************************************
 "use strict";
 
-var mongoose = require('mongoose'), Schema = mongoose.Schema;
+var bcrypt  = require('bcryptjs');
+var mongoose    = require('mongoose'), Schema = mongoose.Schema;
 
-var UserSchema = new Schema(
-    {
-        email:      { type: String, required: true, unique: true },
-        username:   { type: String, required: true },
-        password:   { type: String, required: true }
-    });
+var UserSchema  = new Schema(
+{
+    email        :       { type: String, required: true, unique: true },
+    username     :       { type: String, required: true },
+    password     :       { type: String, required: true }
+});
+
+UserSchema.methods.encryptPassword = function(password){
+  this.password = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
+};
 
 module.exports = mongoose.model('User', UserSchema);
