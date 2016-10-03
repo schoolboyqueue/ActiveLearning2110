@@ -19,6 +19,7 @@ var app_client = require('./app_client');
 var bodyparser = require('body-parser');
 var express    = require('express');
 var mongoose   = require('mongoose');
+var path       = require('path');
 var sessions   = require('client-sessions');
 var config     = require('./config');
 
@@ -31,7 +32,11 @@ mongoose.Promise = global.Promise;
 //mongoose.connect('mongodb://localhost/ActiveLearning2110');
 mongoose.connect(config.database);
 
+app.set('views', path.join(__dirname, './app_client/views'));
+app.set('view engine', 'pug');
+
 app.use(bodyparser.json());
+app.use(express.static(__dirname + '/app_client'));
 
 app.use(sessions({
   cookieName: 'session',
