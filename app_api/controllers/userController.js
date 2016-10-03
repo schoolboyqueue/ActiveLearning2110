@@ -16,7 +16,7 @@
 var User    = require('./../models/userModel');
 var bcrypt  = require('bcryptjs');
 
-var list    = function (req, res)
+var getAll  = function (req, res)
 {
     User.find(function(err, users)
     {
@@ -37,106 +37,141 @@ var login = function (req, res)
 {
     if (!req.body.email || !req.body.password)
     {
-        res.status(404);
-        res.send('Login Failed:  Data Missing');
+        return res.status(400).json({success: false, message: 'You failed to enter email and/or password'});
     }
-    else
+
+    User.findOne({email: req.body.email}, function(err, user)
     {
-        User.findOne({email: req.body.email}, function(err, user)
+        if (err)
         {
-            if (err)
-            {
-                console.log(err);
-                res.status(500);
-                res.send('Internal Error');
-            }
-            else if (!user)
-            {
-                res.status(404);
-                res.send('Login Failed:  User not found');
-            }
-            else if (!bcrypt.compareSync(req.body.password, user.password))
-            {
-                res.status(401);
-                res.json("Login Failed: Wrong Password");
-            }
-            else
-            {
-                res.status(200);
-                res.json("login success");
-            }
-        });
-    }
+            return res.status(500).json({success: false, message: 'Internal Error'});
+        }
+
+        if (!user)
+        {
+            return res.status(404).json({success: false, message: 'User Not Found'});
+        }
+
+        if (!bcrypt.compareSync(req.body.password, user.password))
+        {
+            return res.status(401).json({success: false, message: 'Incorrect Password'});
+        }
+
+        req.session.user = user;
+        req.session.user.password = undefined;
+        res.status(200).json({success: true, message: 'Login Successful', user_id: user._id});
+    });
 };
+
+var logout = function(req, res)
+{
+    req.session.reset();
+    res.status(200).json({success: true, message: 'Logout Successful'});
+}
 
 var register = function (req, res)
 {
     if (!req.body.email || !req.body.username || !req.body.password)
     {
-        res.status(404);
-        res.send('Registration Failed:  Data Missing');
+        return res.status(400).json({success: false, message: 'You failed to enter email, username and password'});
     }
-    else
+
+    var addUser = new User(
     {
-        var addUser = new User(
+        email        :    req.body.email,
+        username     :    req.body.username,
+        password     :    bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10))
+    });
+
+    addUser.save(function(err, savedUser)
+    {
+        if (err)
         {
-            email        :    req.body.email,
-            username     :    req.body.username,
-            password     :    bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10))
-        });
-        addUser.save(function(err, savedUser)
-        {
-            if (err)
-            {
-                res.status(500);
-                res.send('Internal Error');
-            }
-            else
-            {
-                res.status(201);
-                res.json("Registration success");
-            }
-        });
-    }
+            return res.status(500).json({success: false, message: err});
+        }
+        res.status(201).json({success: true, message: 'Registration Successsful'});
+    });
 };
 
 var getUser = function (req, res)
 {
     User.findById(req.params.USERID, function(err, user)
     {
-        if (err)
+        if (err || !user)
         {
-            res.status(404);
-            res.send('Not Found');
+            return res.status(404).json({success: false, message: 'User Not Found'});
         }
-        else
+        if (user._id.toString() != req.user._id.toString())
         {
-            res.status(200);
-            res.send(user);
+            return res.status(401).json({success: false, message: 'Not Authorized'});
         }
+        res.status(200).json({success: true, user: user});
     });
 };
 
-var delete_user = function (req, res)
+var deleteUser = function (req, res)
 {
+    if (req.params.USERID != req.session.user._id)
+    {
+        return res.status(401).json({success: false, message: 'Not Authorized'});
+    }
     User.findById(req.params.USERID, function(err, user)
     {
+        if (err || !user)
+        {
+            return res.status(404).json({success: false, message: 'User Not Found'});
+        }
+        if (user._id.toString() != req.user._id.toString())
+        {
+            return res.status(401).json({success: false, message: 'Not Authorized'});
+        }
         user.remove(function(err)
         {
             if (!err)
             {
-                res.status(200);
-                res.json('User Deleted');
+                res.status(200).json({success: true, message: 'User Deleted'});
             }
         });
     });
 };
 
+var updateUser = function (req, res)
+{
+    res.status(501).json({success: false, message: 'Update User not yet implemented'});
+};
+
+var requireSession = function (req, res, next)
+{
+    if (!req.user)
+    {
+        return res.status(401).json({success: false, message: 'No Session Active'});
+    }
+    else
+    {
+        next();
+    }
+}
+
+var requireNoSession = function(req, res, next)
+{
+  if (req.user) {
+    return res.status(401).json({success: false, message: 'Session Already Active. Please End Session'});
+  }
+  else
+  {
+      next();
+  }
+}
+
 module.exports =
 {
-    list          :    list,
-    register      :    register,
-    login         :    login,
-    getUser       :    getUser,
-    delete_user   :    delete_user
+    getAll            :    getAll,
+    register          :    register,
+    login             :    login,
+    logout            :    logout,
+    getUser           :    getUser,
+    deleteUser        :    deleteUser,
+    updateUser        :    updateUser,
+    requireSession    :    requireSession,
+    requireNoSession  :    requireNoSession
 };
