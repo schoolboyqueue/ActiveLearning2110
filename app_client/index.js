@@ -9,7 +9,9 @@ module.exports = function(app) {
     - parameter PATH:       SPA route
     - parameter HANDLER:    callback
     */
-    app.get('*', function(req, res){
-        res.send('hello team 2B||!2B from app_client');
+    app.get('/', function(req, res){
+        res.render('index', {
+            title: 'Active Learning 2110'
+        })
     });
 };

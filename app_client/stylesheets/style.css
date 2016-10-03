@@ -1,0 +1,64 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,300,100,700,500);
+
+.voffset
+{
+    margin-top: 2px;
+}
+.voffset1
+{
+    margin-top: 5px;
+}
+.voffset2
+{
+    margin-top: 10px;
+}
+.voffset3
+{
+    margin-top: 15px;
+}
+.voffset4
+{
+    margin-top: 30px;
+}
+.voffset5
+{
+    margin-top: 40px;
+}
+.voffset6
+{
+    margin-top: 60px;
+}
+.voffset7
+{
+    margin-top: 80px;
+}
+.voffset8
+{
+    margin-top: 100px;
+}
+.voffset9
+{
+    margin-top: 150px;
+}
+.im-centered
+{
+    margin: auto; max-width: 300px;
+}
+
+html, body
+{
+    font-family: 'Roboto', sans-serif;
+    font-weight:300;
+}
+
+.login
+{
+    padding: 40px 40px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    -moz-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+
+}
