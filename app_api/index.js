@@ -14,8 +14,33 @@
 //************************************************************
 "use strict";
 
+var User       = require('./models/userModel');
 var userRouter = require('./routes/userRouter');
 
 module.exports = function(app) {
-    app.use('/user', userRouter);
+
+    app.use(function(req, res, next)
+    {
+        if (req.session && req.session.user)
+        {
+            console.log("SESSION FOUND");
+            User.findOne({email: req.session.user.email}, function(err, user)
+            {
+                if (user)
+                {
+                    req.user = user;
+                    req.user.password = undefined;
+                    req.session.user = req.user;
+                }
+                next();
+            });
+        }
+        else
+        {
+            console.log("SESSION NOT FOUND");
+            next();
+        }
+    });
+
+    app.use('/users', userRouter);
 };

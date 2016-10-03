@@ -14,7 +14,7 @@
 //************************************************************
 "use strict";
 
-var bcrypt  = require('bcryptjs');
+var bcrypt      = require('bcryptjs');
 var mongoose    = require('mongoose'), Schema = mongoose.Schema;
 
 var UserSchema  = new Schema(
