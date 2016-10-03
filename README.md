@@ -1,4 +1,33 @@
-# Active Learning for 2110
-Insert description of our project here (vision statement?)
+# ActiveLearning 2110
 
-___
+A Junior Design Project at Gatech
+
+
+## Requirements
+
+- [Node and npm](http://nodejs.org)
+- [MongoDB](https://mongodb.com)
+- [*](*)
+- [*](*)
+
+## Installation
+
+Clone the repository:
+```bash
+git clone https://github.com/omizrahi3/ActiveLearning2110.git
+```
+Install the application:
+```bash
+npm install
+```
+Start the server:
+```bash
+node server.js
+```
+View in browser at
+```bash
+http://localhost:8081
+```
+
+
+Happy ActiveLearning!
