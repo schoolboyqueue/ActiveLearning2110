@@ -1,4 +1,4 @@
-###Documentation and General Coding Guidlines
+###Documentation and General Coding Guidelines
 
 ####All files shall be proceeded with the following header:
 ```
@@ -42,7 +42,7 @@
 6. Classes: application should be explained briefly and concisely.
 7. Switch statements shall have opening and closing brackets for each case
 8. Ternary if/else statements are allowable **iff** it doesn't impede readability. Verbosity is preferred over simplicity.
-9. Any line of code that would be considered 'obfuscated' needs to have a preceeding comment explaining what said line of code does.
+9. Any line of code that would be considered 'obfuscated' needs to have a preceding comment explaining what said line of code does.
 10. Large lists of variables (enums specifically) should be sorted **alphabetically.**
 
 ___

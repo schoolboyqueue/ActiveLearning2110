@@ -67,7 +67,7 @@ var logout = function(req, res)
 {
     req.session.reset();
     res.status(200).json({success: true, message: 'Logout Successful'});
-}
+};
 
 var register = function (req, res)
 {
@@ -150,28 +150,29 @@ var requireSession = function (req, res, next)
     {
         next();
     }
-}
+};
 
 var requireNoSession = function(req, res, next)
 {
-  if (req.user) {
-    return res.status(401).json({success: false, message: 'Session Already Active. Please End Session'});
-  }
-  else
-  {
-      next();
-  }
-}
+    if (req.user)
+    {
+        return res.status(401).json({success: false, message: 'Session Already Active. Please End Session'});
+    }
+    else
+    {
+        next();
+    }
+};
 
 module.exports =
 {
+    deleteUser        :    deleteUser,
     getAll            :    getAll,
-    register          :    register,
+    getUser           :    getUser,
     login             :    login,
     logout            :    logout,
-    getUser           :    getUser,
-    deleteUser        :    deleteUser,
-    updateUser        :    updateUser,
+    register          :    register,
+    requireNoSession  :    requireNoSession,
     requireSession    :    requireSession,
-    requireNoSession  :    requireNoSession
+    updateUser        :    updateUser
 };

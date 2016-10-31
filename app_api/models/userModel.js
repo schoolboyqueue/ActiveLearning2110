@@ -19,9 +19,9 @@ var mongoose    = require('mongoose'), Schema = mongoose.Schema;
 
 var UserSchema  = new Schema(
 {
-    email        :       { type: String, required: true, unique: true },
-    username     :       { type: String, required: true },
-    password     :       { type: String, required: true }
+    email       :{ type: String, required: true, unique: true },
+    username    :{ type: String, required: true },
+    password    :{ type: String, required: true }
 });
 
 UserSchema.methods.encryptPassword = function(password){

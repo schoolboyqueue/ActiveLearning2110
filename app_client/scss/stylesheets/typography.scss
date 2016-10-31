@@ -1,0 +1,67 @@
+//****************************************************************
+//  app_client/scss/stylesheets/typography.scss                 //
+//  Active Learning 2110                                        //
+//                                                              //
+//  Created by Jeremy Carter on 10/08/16.                       //
+//  Copyright © 2016 Jeremy Carter. All rights reserved.        //
+//                                                              //
+//  Date        Name        Description                         //
+//  -------     ---------   --------------                      //
+//  08Oct16     J.Carter    Initial Design                      //
+//                                                              //
+//****************************************************************
+
+@font-face
+{
+    font-family: 'Fira Mono';
+    src: url('https://fonts.googleapis.com/css?family=Fira+Mono');
+}
+
+@font-face
+{
+  font-family: 'Roboto Condensed';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Roboto Condensed Light'), local('RobotoCondensed-Light'), url(https://fonts.gstatic.com/s/robotocondensed/v13/b9QBgL0iMZfDSpmcXcE8nMrfajfqx5pse9BUPMmpr-I.woff) format('woff');
+}
+
+@font-face
+{
+  font-family: 'Roboto Condensed';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Roboto Condensed'), local('RobotoCondensed-Regular'), url(https://fonts.gstatic.com/s/robotocondensed/v13/Zd2E9abXLFGSr9G3YK2MsNxB8OB85xaNTJvVSB9YUjQ.woff) format('woff');
+}
+
+@font-face
+{
+  font-family: 'Roboto Condensed';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Roboto Condensed Bold'), local('RobotoCondensed-Bold'), url(https://fonts.gstatic.com/s/robotocondensed/v13/b9QBgL0iMZfDSpmcXcE8nPZRQUbYfRc-1FWT9T9EE8M.woff) format('woff');
+}
+
+@font-face
+{
+  font-family: 'Roboto Condensed';
+  font-style: italic;
+  font-weight: 300;
+  src: local('Roboto Condensed Light Italic'), local('RobotoCondensed-LightItalic'), url(https://fonts.gstatic.com/s/robotocondensed/v13/mg0cGfGRUERshzBlvqxeAHmtOlNhzYuCHuWdbmWr-YuglnMp3_3A8V8Ai8YosRtX.woff) format('woff');
+}
+
+@font-face
+{
+  font-family: 'Roboto Condensed';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Roboto Condensed Italic'), local('RobotoCondensed-Italic'), url(https://fonts.gstatic.com/s/robotocondensed/v13/BP5K8ZAJv9qEbmuFp8RpJUyuTvcJPSUMXo8_04ke-FA.woff) format('woff');
+}
+
+@font-face
+{
+  font-family: 'Roboto Condensed';
+  font-style: italic;
+  font-weight: 700;
+  src: local('Roboto Condensed Bold Italic'), local('RobotoCondensed-BoldItalic'), url(https://fonts.gstatic.com/s/robotocondensed/v13/mg0cGfGRUERshzBlvqxeAM20tA0y-0vu5AcKm4ZPGa6glnMp3_3A8V8Ai8YosRtX.woff) format('woff');
+}
+

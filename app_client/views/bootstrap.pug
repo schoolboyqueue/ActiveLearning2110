@@ -49,17 +49,12 @@ html(lang="en")
         meta(name='author',content="")
         title= title
         block styles
-            link(rel='stylesheet',href='./stylesheets/bootstrap-combobox.css')
-            link(rel='stylesheet',href='./stylesheets/style.css')
-            link(rel='stylesheet',href='./stylesheets/bootstrap-table.min.css')
-            link(rel='stylesheet',href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/css/bootstrapvalidator.min.css")
-            +bootswatch('paper')
+            +bootswatch('flatly')
+            link(rel='stylesheet', href='./stylesheets/style.css')
     body(data-spy='scroll', data-target='.scrollspy')
         block body
         block scripts
-            script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js')
-            script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js")
-            script(src='https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js')
-            script(src='./scripts/bootstrap-combobox.js')
-            script(src="./scripts/bootstrap-table.min.js")
-            script(src="./scripts/scripts.js")
+            script(src='https://code.jquery.com/jquery-1.12.4.min.js')
+            script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
+            script(src='./scripts/dominar.js')
+            script(src='./scripts/scripts.js')

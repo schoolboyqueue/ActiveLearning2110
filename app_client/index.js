@@ -1,5 +1,18 @@
 /* jshint node: true */
 
+//****************************************************************
+//  app_client/index.js                                         //
+//  Active Learning 2110                                        //
+//                                                              //
+//  Created by Jeremy Carter on 10/08/16.                       //
+//  Copyright © 2016 Jeremy Carter. All rights reserved.        //
+//                                                              //
+//  Date        Name        Description                         //
+//  -------     ---------   --------------                      //
+//  08Oct16     J.Carter    Initial Design                      //
+//                                                              //
+//****************************************************************
+
 "use strict";
 
 module.exports = function(app) {
@@ -9,9 +22,9 @@ module.exports = function(app) {
     - parameter PATH:       SPA route
     - parameter HANDLER:    callback
     */
-    app.get('/', function(req, res){
+    app.get('/', function(req, res) {
         res.render('index', {
             title: 'Active Learning 2110'
-        })
+        });
     });
 };
