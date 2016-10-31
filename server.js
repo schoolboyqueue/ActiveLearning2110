@@ -10,20 +10,20 @@
 //  Date        Name        Description                     //
 //  -------     ---------   --------------                  //
 //  13Sep16     O. Mizrahi  Initial Design                  //
-//                                                          //
+//  08Oct16     J. Carter   Added Sass Support              //
 //************************************************************
 "use strict";
 
-var app_api    = require('./app_api');
-var app_client = require('./app_client');
-var bodyparser = require('body-parser');
-var express    = require('express');
-var mongoose   = require('mongoose');
-var path       = require('path');
-var sessions   = require('client-sessions');
-var config     = require('./config');
-
-var app        = express();
+var app_api    = require('./app_api'),
+    app_client = require('./app_client'),
+    bodyparser = require('body-parser'),
+    express    = require('express'),
+    mongoose   = require('mongoose'),
+    path       = require('path'),
+    sass       = require('node-sass-middleware'),
+    sessions   = require('client-sessions'),
+    config     = require('./config'),
+    app        = express();
 
 /**
 Must have MongoDB installed and run mongod
@@ -32,17 +32,25 @@ mongoose.Promise = global.Promise;
 //mongoose.connect('mongodb://localhost/ActiveLearning2110');
 mongoose.connect(config.database);
 
-app.set('views', path.join(__dirname, './app_client/views'));
+app.use(sass({
+        src: path.join(__dirname, '/app_client/scss'),
+        dest: path.join(__dirname, '/app_client'),
+        debug: false,
+        outputStyle: 'compressed'
+    }),
+    express.static(path.join(__dirname, '/app_client'))
+);
+
+app.set('views', path.join(__dirname, '/app_client/views'));
 app.set('view engine', 'pug');
 
 app.use(bodyparser.json());
-app.use(express.static(__dirname + '/app_client'));
 
 app.use(sessions({
-  cookieName: 'session',
-  secret: config.secret,
-  duration: 30 * 60 * 1000,
-  activeDuration: 5 * 60 * 1000,
+    cookieName: 'session',
+    secret: config.secret,
+    duration: 30 * 60 * 1000,
+    activeDuration: 5 * 60 * 1000,
 }));
 
 app_api(app);
@@ -52,7 +60,7 @@ app_client(app);
 /**
 Binds and listens for connections on the specified host and port
 
-- parameter PORT:  8081
+- parameter PORT:       8081
 - parameter HANDLER:    callback
 **/
 app.listen(process.env.PORT || 8081, function() {

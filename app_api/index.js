@@ -17,8 +17,8 @@
 var User       = require('./models/userModel');
 var userRouter = require('./routes/userRouter');
 
-module.exports = function(app) {
-
+module.exports = function(app)
+{
     app.use(function(req, res, next)
     {
         if (req.session && req.session.user)
@@ -41,6 +41,5 @@ module.exports = function(app) {
             next();
         }
     });
-
     app.use('/users', userRouter);
 };

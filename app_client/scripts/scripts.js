@@ -1,38 +1,58 @@
-$(document).ready(function() {
-    $('#new_item').bootstrapValidator({
-        feedbackIcons: {
-            valid: 'glyphicon glyphicon-ok',
-            invalid: 'glyphicon glyphicon-remove',
-            validating: 'glyphicon glyphicon-refresh'
-        },
-        fields: {
-            item_level: {
-                validators: {
-                    notEmpty: {
-                        message: 'The item level is required and cannot be empty'
-                    }
-                }
-            },
-            armor_value: {
-                validators: {
-                    notEmpty: {
-                        message: 'The armor value is required and cannot be empty'
-                    }
-                }
-            },
-            mainStat_Value: {
-                validators: {
-                    notEmpty: {
-                        message: 'The main stat value is required and cannot be empty'
-                    }
-                }
-            } /* <-- removed comma */
-        } /* added closing brace */
+$(document).ready(function () {
+    $('#lpassword').tooltip({
+        trigger:'manual',
+        title: 'Password between 5 and 20 characters',
+        placement: 'right'
     });
 });
-$('.clear-database').on('click', function(e) {
-    e.preventDefault();
 
-    var id = $(this).data('id');
-    $('#database-clear').data('id', id).modal('show');
+$('#lpassword').click(function() {
+    $('#lpassword').tooltip('hide');
+});
+
+document.getElementById('login-form').addEventListener('dominarSubmitFailed', function(event) {
+    $(this).find('#lpassword').tooltip('show');
+});
+
+var logval = new Dominar(document.getElementById('login-form'),
+{
+    lemail:
+    {
+        rules: 'required|min:12',
+        triggers: ['keyup', 'change'],
+        feedback: false,
+        message: false
+    },
+    lpassword:
+    {
+        rules: 'required|min:5|max:20',
+        triggers: ['keyup', 'change'],
+        feedback: false,
+        message: false
+    }
+});
+
+var regval = new Dominar(document.getElementById('register-form'),
+{
+    remail:
+    {
+        rules: 'required|min:12',
+        triggers: ['keyup', 'change'],
+        feedback: false,
+        message: false
+    },
+    rpassword:
+    {
+        rules: 'required|min:5|max:20',
+        triggers: ['keyup', 'change'],
+        feedback: false,
+        message: false
+    },
+    rconfirmPassword:
+    {
+        rules: 'required|min:5|max:20',
+        triggers: ['keyup', 'change'],
+        feedback: false,
+        message: false
+    }
 });
