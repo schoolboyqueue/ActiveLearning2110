@@ -1,0 +1,41 @@
+//****************************************************************
+//  app_client/scss/stylesheets/mixins.scss                     //
+//  Active Learning 2110                                        //
+//                                                              //
+//  Created by Jeremy Carter on 10/08/16.                       //
+//  Copyright © 2016 Jeremy Carter. All rights reserved.        //
+//                                                              //
+//  Date        Name        Description                         //
+//  -------     ---------   --------------                      //
+//  08Oct16     J.Carter    Initial Design                      //
+//                                                              //
+//****************************************************************
+
+/**
+Changes the border radius of the current div. IE: higher $radius
+means more rounded corners
+
+- parameter $radius:    the size of the radius
+**/
+@mixin border-radius($radius)
+{
+    -webkit-border-radius: $radius;
+    -moz-border-radius: $radius;
+    -ms-border-radius: $radius;
+    border-radius: $radius;
+}
+
+/**
+Changes the placeholder styling for input classes based on the content
+declared within the scope declared after place
+
+- parameter @content:   the content block used to define the style
+                        of placeholder text.
+**/
+@mixin placeholder
+{
+    &::-webkit-input-placeholder {@content}
+    &:-moz-placeholder           {@content}
+    &::-moz-placeholder          {@content}
+    &:-ms-input-placeholder      {@content}
+}

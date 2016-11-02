@@ -1,24 +1,37 @@
+//****************************************************************
+//  app_client/components/progress-bars.pug                     //
+//  Active Learning 2110                                        //
+//                                                              //
+//  Created by Jeremy Carter on 10/08/16.                       //
+//  Copyright © 2016 Jeremy Carter. All rights reserved.        //
+//                                                              //
+//  Date        Name        Description                         //
+//  -------     ---------   --------------                      //
+//  08Oct16     J.Carter    Initial Design                      //
+//                                                              //
+//****************************************************************
+
 //- progress-bar mixins
-mixin progress-bar(value,type)
-	-var type = type || ""
-	.progress
-		.progress-bar(class="progress-bar-" + type,role='progressbar', aria-valuenow=value, aria-valuemin='0', aria-valuemax='100', style='width: ' + value + '%')
-			span.sr-only #{value}% Complete
+mixin progress-bar(value, type)
+    -var type = type || ""
+    .progress
+        .progress-bar(class="progress-bar-" + type, role='progressbar', aria-valuenow=value, aria-valuemin='0',  aria-valuemax='100', style='width: ' + value + '%')
+            span.sr-only #{value}% Complete
 
 mixin progress-bar-success(value)
-	+progress-bar(value,"success")
-	
+    +progress-bar(value, "success")
+
 mixin progress-bar-info(value)
-	+progress-bar(value,"info")
-	
+    +progress-bar(value, "info")
+
 mixin progress-bar-warning(value)
-	+progress-bar(value,"warning")
-	
+    +progress-bar(value, "warning")
+
 mixin progress-bar-danger(value)
-	+progress-bar(value,"danger")
-	
+    +progress-bar(value, "danger")
+
 mixin progress-bar-primary(value)
-	+progress-bar(value,"primary")
-	
+    +progress-bar(value, "primary")
+
 mixin progress-bar-striped(value)
-	+progress-bar(value,"striped")
+    +progress-bar(value, "striped")

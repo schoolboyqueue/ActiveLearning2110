@@ -1,43 +1,56 @@
+//****************************************************************
+//  app_client/components/carousel.pug                          //
+//  Active Learning 2110                                        //
+//                                                              //
+//  Created by Jeremy Carter on 10/08/16.                       //
+//  Copyright © 2016 Jeremy Carter. All rights reserved.        //
+//                                                              //
+//  Date        Name        Description                         //
+//  -------     ---------   --------------                      //
+//  08Oct16     J.Carter    Initial Design                      //
+//                                                              //
+//****************************************************************
+
 //- carousel caption
 mixin carousel-caption(item)
-	.carousel-caption
-		unless !item.h1
-			h1 #{item.h1}
-		unless !item.p
-			p #{item.p}
-		unless !item.button
-			p
-				a.btn.btn-lg.btn-primary(href="#{item.button.url}" role="button") #{item.button.caption}
+    .carousel-caption
+        unless !item.h1
+            h1 #{item.h1}
+        unless !item.p
+            p #{item.p}
+        unless !item.button
+            p
+                a.btn.btn-lg.btn-primary(href="#{item.button.url}" role="button") #{item.button.caption}
 
 //- carousel
-mixin carousel(id,items)
-	.carousel.slide(id="carousel-#{id}",data-ride="carousel")
-		//- Indicators
-		ol.carousel-indicators
-			each item,index in items
-				if(index === 0)
-					li.active(data-target="#carousel-#{id}", data-slide-to="#{index}")
-				else
-					li(data-target="#carousel-#{id}", data-slide-to="#{index}")
+mixin carousel(id, items)
+    .carousel.slide(id="carousel-#{id}", data-ride="carousel")
+        //- Indicators
+        ol.carousel-indicators
+            each item, index in items
+                if(index === 0)
+                    li.active(data-target="#carousel-#{id}", data-slide-to="#{index}")
+                else
+                    li(data-target="#carousel-#{id}", data-slide-to="#{index}")
 
 
-		//- Wrapper for slides
-		.carousel-inner(role="listbox")
-			each item,index in items
-				if(index === 0)
-					.item.active
-						img(src="#{item.image}")
-						+carousel-caption(item)
-							
-				else
-					.item
-						img(src="#{item.image}")
-						+carousel-caption(item)
+        //- Wrapper for slides
+        .carousel-inner(role="listbox")
+            each item, index in items
+                if(index === 0)
+                    .item.active
+                        img(src="#{item.image}")
+                        +carousel-caption(item)
 
-		//-  Controls
-		a.left.carousel-control(href="#carousel-#{id}", role="button", data-slide="prev")
-			+icon("chevron-left")
-			span.sr-only Previous
-		a.right.carousel-control(href="#carousel-#{id}", role="button", data-slide="next")
-			+icon("chevron-right")
-			span.sr-only Next
+                else
+                    .item
+                        img(src="#{item.image}")
+                        +carousel-caption(item)
+
+        //-  Controls
+        a.left.carousel-control(href="#carousel-#{id}", role="button", data-slide="prev")
+            +icon("chevron-left")
+            span.sr-only Previous
+        a.right.carousel-control(href="#carousel-#{id}", role="button", data-slide="next")
+            +icon("chevron-right")
+            span.sr-only Next

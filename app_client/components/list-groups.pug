@@ -1,25 +1,38 @@
+//****************************************************************
+//  app_client/components/list-groups.pug                       //
+//  Active Learning 2110                                        //
+//                                                              //
+//  Created by Jeremy Carter on 10/08/16.                       //
+//  Copyright © 2016 Jeremy Carter. All rights reserved.        //
+//                                                              //
+//  Date        Name        Description                         //
+//  -------     ---------   --------------                      //
+//  08Oct16     J.Carter    Initial Design                      //
+//                                                              //
+//****************************************************************
+
 //- list-group mixins
 mixin list-group(items)
-	ul.list-group
-	each item, index in items
-		li.list-group-item #{item}
+    ul.list-group
+    each item, index in items
+        li.list-group-item #{item}
 
-mixin list-group-links(items,active)
-	.list-group
-	each item, index in items
-		if(index === active)
-			a.list-group-item.active(href="#{item.url}") #{item.text}
-		else
-			a.list-group-item(href="#{item.url}") #{item.text}
+mixin list-group-links(items, active)
+    .list-group
+    each item, index in items
+        if(index === active)
+            a.list-group-item.active(href="#{item.url}") #{item.text}
+        else
+            a.list-group-item(href="#{item.url}") #{item.text}
 
-mixin list-group-item(url,active)
-	if(active === "true")
-		a.list-group-item.active(href="#{url}")
-			block
-	else
-		a.list-group-item(href="#{url}")
-			block
+mixin list-group-item(url, active)
+    if(active === "true")
+        a.list-group-item.active(href="#{url}")
+            block
+    else
+        a.list-group-item(href="#{url}")
+            block
 
 mixin list-group-custom()
-	.list-group
-		block
+    .list-group
+        block

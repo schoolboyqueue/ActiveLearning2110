@@ -1,14 +1,27 @@
+//****************************************************************
+//  app_client/components/modal.pug                             //
+//  Active Learning 2110                                        //
+//                                                              //
+//  Created by Jeremy Carter on 10/08/16.                       //
+//  Copyright © 2016 Jeremy Carter. All rights reserved.        //
+//                                                              //
+//  Date        Name        Description                         //
+//  -------     ---------   --------------                      //
+//  08Oct16     J.Carter    Initial Design                      //
+//                                                              //
+//****************************************************************
+
 //- modal
 mixin modal(title,id)
-	.modal.fade(id=id,tabindex="-1",role="dialog",aria-labelledby=id+"Label" aria-hidden="true")
-		.modal-dialog
-			.modal-content
-				.modal-header
-					button.close(type="button",data-dismiss="modal")
-						span(aria-hidden="true") &times;
-						span.sr-only Close
-					h4.modal-title(id=id+"Label")= title
-				.modal-body
-					block
-				.modal-footer
-					button.btn.btn-default(type="button",data-dismiss="modal") Close
+    .modal.fade(id=id,tabindex="-1",role="dialog",aria-labelledby=id+"Label" aria-hidden="true")
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    button.close(type="button",data-dismiss="modal")
+                        span(aria-hidden="true") &times;
+                        span.sr-only Close
+                    h4.modal-title(id=id+"Label")= title
+                .modal-body
+                    block
+                .modal-footer
+                    button.btn.btn-default(type="button",data-dismiss="modal") Close
