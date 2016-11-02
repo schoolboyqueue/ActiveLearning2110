@@ -31,15 +31,30 @@ userRouter.route('/')
     .post(userController.register);
 
 //get all users
-//TODO need to eventually limit this endpoint to admin
 userRouter.route('/')
-    .get(userController.getAll);
+    .get(userController.requireAdmin, userController.getAll);
 
 //get user info, should be limited to user and admin
 userRouter.route('/:USERID')
     .get(userController.requireSession, userController.getUser);
 
-//delete user, need to limit to user and admin
+
+/**
+Delete the user account.
+
+Authentication
+- admin session, user session
+
+Path Parameters
+- user_id String
+
+Responses
+
+- 200
+- 401
+- 404
+
+**/
 userRouter.route('/:USERID')
     .delete(userController.requireSession, userController.deleteUser);
 

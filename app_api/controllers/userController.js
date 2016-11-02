@@ -111,7 +111,7 @@ var getUser = function (req, res)
 
 var deleteUser = function (req, res)
 {
-    if (req.params.USERID != req.session.user._id)
+    if (req.params.USERID != req.session.user._id && req.user.email != "admin@admin.com")
     {
         return res.status(401).json({success: false, message: 'Not Authorized'});
     }
@@ -163,6 +163,22 @@ var requireNoSession = function(req, res, next)
   }
 }
 
+var requireAdmin = function (req, res, next)
+{
+    if (!req.user)
+    {
+        return res.status(401).json({success: false, message: 'No Session Active'});
+    }
+    if (req.user.email != "admin@admin.com")
+    {
+        return res.status(401).json({success: false, message: 'Admin Authorization Required'});
+    }
+    else
+    {
+        next();
+    }
+}
+
 module.exports =
 {
     getAll            :    getAll,
@@ -173,5 +189,6 @@ module.exports =
     deleteUser        :    deleteUser,
     updateUser        :    updateUser,
     requireSession    :    requireSession,
-    requireNoSession  :    requireNoSession
+    requireNoSession  :    requireNoSession,
+    requireAdmin      :    requireAdmin
 };
