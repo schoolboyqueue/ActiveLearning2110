@@ -63,4 +63,26 @@ userRouter.route('/:USERID')
     .post(userController.requireSession, userController.updateUser);
 
 
+/**
+Delete the user account.
+
+Authentication
+- admin session, user session
+
+Path Parameters
+- user_id String
+
+Query String
+- new_role String   REQUIRED
+
+example
+- users/{user_id}/role?new_role=<<role>>
+
+    **/
+//update users role, Admin restricted
+//users/{user_id}/role?new_role=<<role>>
+userRouter.route('/:USERID/role')
+    .post(userController.requireAdmin, userController.updateRole);
+
+
 module.exports = userRouter;

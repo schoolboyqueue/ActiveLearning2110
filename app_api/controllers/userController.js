@@ -35,12 +35,12 @@ var getAll  = function (req, res)
 
 var login = function (req, res)
 {
-    if (!req.body.email || !req.body.password)
+    if (!req.body.username || !req.body.password)
     {
         return res.status(400).json({success: false, message: 'You failed to enter email and/or password'});
     }
 
-    User.findOne({email: req.body.email}, function(err, user)
+    User.findOne({username: req.body.username}, function(err, user)
     {
         if (err)
         {
@@ -71,17 +71,36 @@ var logout = function(req, res)
 
 var register = function (req, res)
 {
-    if (!req.body.email || !req.body.username || !req.body.password)
+    if (!req.body.username || !req.body.password)
     {
-        return res.status(400).json({success: false, message: 'You failed to enter email, username and password'});
+        return res.status(400).json({success: false, message: 'You failed to enter username and password'});
     }
 
-    var addUser = new User(
+    if (req.body.role == "admin")
     {
-        email        :    req.body.email,
-        username     :    req.body.username,
-        password     :    bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10))
-    });
+        if (req.body.username == "admin@activelearning.com")
+        {
+            var addUser = new User(
+            {
+                username     :    req.body.username,
+                password     :    bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)),
+                role         :    req.body.role
+            });
+        }
+        else
+        {
+            return res.status(401).json({success: false, message: 'Not Authorized'});
+        }
+    }
+    else
+    {
+        var addUser = new User(
+        {
+            username     :    req.body.username,
+            password     :    bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)),
+            role         :    req.body.role
+        });
+    }
 
     addUser.save(function(err, savedUser)
     {
@@ -111,7 +130,7 @@ var getUser = function (req, res)
 
 var deleteUser = function (req, res)
 {
-    if (req.params.USERID != req.session.user._id && req.user.email != "admin@admin.com")
+    if (req.params.USERID != req.session.user._id && req.user.role != "admin")
     {
         return res.status(401).json({success: false, message: 'Not Authorized'});
     }
@@ -130,6 +149,25 @@ var deleteUser = function (req, res)
             if (!err)
             {
                 res.status(200).json({success: true, message: 'User Deleted'});
+            }
+        });
+    });
+};
+
+var updateRole = function (req, res)
+{
+    User.findById(req.params.USERID, function(err, user)
+    {
+        if (err || !user)
+        {
+            return res.status(404).json({success: false, message: 'User Not Found'});
+        }
+        user.role = req.query.new_role;
+        user.save(function(err, updated_user)
+        {
+            if (!err)
+            {
+                res.status(200).json({success: true, message: 'Role Updated', user: updated_user});
             }
         });
     });
@@ -156,7 +194,7 @@ var requireNoSession = function(req, res, next)
 {
     if (req.user)
     {
-        return res.status(401).json({success: false, message: 'Session Already Active. Please End Session'});
+        return res.status(411).json({success: false, message: 'Session Already Active. Please End Session'});
     }
     else
     {
@@ -170,7 +208,7 @@ var requireAdmin = function (req, res, next)
     {
         return res.status(401).json({success: false, message: 'No Session Active'});
     }
-    if (req.user.email != "admin@admin.com")
+    if (req.user.username != "admin@admin.com")
     {
         return res.status(401).json({success: false, message: 'Admin Authorization Required'});
     }
@@ -191,5 +229,6 @@ module.exports =
     requireNoSession  :    requireNoSession,
     requireSession    :    requireSession,
     requireAdmin      :    requireAdmin,
+    updateRole        :    updateRole,
     updateUser        :    updateUser
 };
