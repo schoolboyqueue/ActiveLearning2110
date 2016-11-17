@@ -37,14 +37,24 @@ var login = function (req, res)
 {
     if (!req.body.username || !req.body.password)
     {
-        return res.status(400).json({success: false, message: 'You failed to enter email and/or password'});
+        return res.status(400).json(
+            {
+                success: false,
+                message: 'You failed to enter email and/or password'
+            }
+        );
     }
 
     User.findOne({username: req.body.username}, function(err, user)
     {
         if (err)
         {
-            return res.status(500).json({success: false, message: 'Internal Error'});
+            return res.status(500).json(
+                {
+                    success: false,
+                    message: 'Internal Error'
+                }
+            );
         }
 
         if (!user)
@@ -54,51 +64,78 @@ var login = function (req, res)
 
         if (!bcrypt.compareSync(req.body.password, user.password))
         {
-            return res.status(401).json({success: false, message: 'Incorrect Password'});
+            return res.status(401).json(
+                {
+                    success: false,
+                    message: 'Incorrect Password'
+                }
+            );
         }
 
         req.session.user = user;
         req.session.user.password = undefined;
-        res.status(200).json({success: true, message: 'Login Successful', user_id: user._id});
+        res.status(200).json(
+            {
+                success: true,
+                message: 'Login Successful',
+                user_id: user._id
+            }
+        );
     });
 };
 
 var logout = function(req, res)
 {
     req.session.reset();
-    res.status(200).json({success: true, message: 'Logout Successful'});
+    res.status(200).json(
+        {
+            success: true,
+            message: 'Logout Successful'
+        }
+    );
 };
 
 var register = function (req, res)
 {
+    var addUser = null;
+
     if (!req.body.username || !req.body.password)
     {
-        return res.status(400).json({success: false, message: 'You failed to enter username and password'});
+        return res.status(400).json(
+            {
+                success: false,
+                message: 'You failed to enter username and password'
+            }
+        );
     }
-
     if (req.body.role == "admin")
     {
         if (req.body.username == "admin@activelearning.com")
         {
-            var addUser = new User(
+            addUser = new User(
             {
-                username     :    req.body.username,
-                password     :    bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)),
-                role         :    req.body.role
+                username: req.body.username,
+                password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)),
+                role    : req.body.role
             });
         }
         else
         {
-            return res.status(401).json({success: false, message: 'Not Authorized'});
+            return res.status(401).json(
+                {
+                    success: false,
+                    message: 'Not Authorized'
+                }
+            );
         }
     }
     else
     {
-        var addUser = new User(
+        addUser = new User(
         {
-            username     :    req.body.username,
-            password     :    bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)),
-            role         :    req.body.role
+            username: req.body.username,
+            password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)),
+            role    : req.body.role
         });
     }
 
@@ -106,9 +143,19 @@ var register = function (req, res)
     {
         if (err)
         {
-            return res.status(500).json({success: false, message: err});
+            return res.status(500).json(
+                {
+                    success: false,
+                    message: err
+                }
+            );
         }
-        res.status(201).json({success: true, message: 'Registration Successsful'});
+        res.status(201).json(
+            {
+                success: true,
+                message: 'Registration Successsful'
+            }
+        );
     });
 };
 
@@ -118,11 +165,21 @@ var getUser = function (req, res)
     {
         if (err || !user)
         {
-            return res.status(404).json({success: false, message: 'User Not Found'});
+            return res.status(404).json(
+                {
+                    success: false,
+                    message: 'User Not Found'
+                }
+            );
         }
         if (user._id.toString() != req.user._id.toString())
         {
-            return res.status(401).json({success: false, message: 'Not Authorized'});
+            return res.status(401).json(
+                {
+                    success: false,
+                    message: 'Not Authorized'
+                }
+            );
         }
         res.status(200).json({success: true, user: user});
     });
@@ -132,23 +189,43 @@ var deleteUser = function (req, res)
 {
     if (req.params.USERID != req.session.user._id && req.user.role != "admin")
     {
-        return res.status(401).json({success: false, message: 'Not Authorized'});
+        return res.status(401).json(
+            {
+                success: false,
+                message: 'Not Authorized'
+            }
+        );
     }
     User.findById(req.params.USERID, function(err, user)
     {
         if (err || !user)
         {
-            return res.status(404).json({success: false, message: 'User Not Found'});
+            return res.status(404).json(
+                {
+                    success: false,
+                    message: 'User Not Found'
+                }
+            );
         }
         if (user._id.toString() != req.user._id.toString())
         {
-            return res.status(401).json({success: false, message: 'Not Authorized'});
+            return res.status(401).json(
+                {
+                    success: false,
+                    message: 'Not Authorized'
+                }
+            );
         }
         user.remove(function(err)
         {
             if (!err)
             {
-                res.status(200).json({success: true, message: 'User Deleted'});
+                res.status(200).json(
+                    {
+                        success: true,
+                        message: 'User Deleted'
+                    }
+                );
             }
         });
     });
@@ -160,14 +237,25 @@ var updateRole = function (req, res)
     {
         if (err || !user)
         {
-            return res.status(404).json({success: false, message: 'User Not Found'});
+            return res.status(404).json(
+                {
+                    success: false,
+                    message: 'User Not Found'
+                }
+            );
         }
         user.role = req.query.new_role;
         user.save(function(err, updated_user)
         {
             if (!err)
             {
-                res.status(200).json({success: true, message: 'Role Updated', user: updated_user});
+                res.status(200).json(
+                    {
+                        success: true,
+                        message: 'Role Updated',
+                        user: updated_user
+                    }
+                );
             }
         });
     });
@@ -175,14 +263,24 @@ var updateRole = function (req, res)
 
 var updateUser = function (req, res)
 {
-    res.status(501).json({success: false, message: 'Update User not yet implemented'});
+    res.status(501).json(
+        {
+            success: false,
+            message: 'Update User not yet implemented'
+        }
+    );
 };
 
 var requireSession = function (req, res, next)
 {
     if (!req.user)
     {
-        return res.status(401).json({success: false, message: 'No Session Active'});
+        return res.status(401).json(
+            {
+                success: false,
+                message: 'No Session Active'
+            }
+        );
     }
     else
     {
@@ -194,7 +292,12 @@ var requireNoSession = function(req, res, next)
 {
     if (req.user)
     {
-        return res.status(411).json({success: false, message: 'Session Already Active. Please End Session'});
+        return res.status(411).json(
+            {
+                success: false,
+                message: 'Session Already Active. Please End Session'
+            }
+        );
     }
     else
     {
@@ -206,17 +309,27 @@ var requireAdmin = function (req, res, next)
 {
     if (!req.user)
     {
-        return res.status(401).json({success: false, message: 'No Session Active'});
+        return res.status(401).json(
+            {
+                success: false,
+                message: 'No Session Active'
+            }
+        );
     }
     if (req.user.username != "admin@admin.com")
     {
-        return res.status(401).json({success: false, message: 'Admin Authorization Required'});
+        return res.status(401).json(
+            {
+                success: false,
+                message: 'Admin Authorization Required'
+            }
+        );
     }
     else
     {
         next();
     }
-}
+};
 
 module.exports =
 {
@@ -226,9 +339,9 @@ module.exports =
     login             :    login,
     logout            :    logout,
     register          :    register,
+    requireAdmin      :    requireAdmin,
     requireNoSession  :    requireNoSession,
     requireSession    :    requireSession,
-    requireAdmin      :    requireAdmin,
     updateRole        :    updateRole,
     updateUser        :    updateUser
 };
