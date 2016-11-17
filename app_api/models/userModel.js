@@ -19,13 +19,29 @@ var mongoose    = require('mongoose'), Schema = mongoose.Schema;
 
 var UserSchema  = new Schema(
 {
-    username    :{ type: String, required: true, unique: true, lowercase: true },
-    password    :{ type: String, required: true },
-    role        :{ type: String, enum: ['student', 'instructor', 'admin'], default: 'student' }
+    username:
+    {
+        type: String,
+        required: true,
+        unique: true,
+        lowercase: true
+    },
+    password:
+    {
+        type: String,
+        required: true
+    },
+    role:
+    {
+        type: String,
+        enum: ['student', 'instructor', 'admin'],
+        default: 'student'
+    }
 });
 
-UserSchema.methods.encryptPassword = function(password){
-  this.password = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
+UserSchema.methods.encryptPassword = function(password)
+{
+    this.password = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 };
 
 module.exports = mongoose.model('User', UserSchema);

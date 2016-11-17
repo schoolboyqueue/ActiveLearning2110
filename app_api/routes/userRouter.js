@@ -48,12 +48,6 @@ Authentication
 Path Parameters
 - user_id String
 
-Responses
-
-- 200
-- 401
-- 404
-
 **/
 userRouter.route('/:USERID')
     .delete(userController.requireSession, userController.deleteUser);
@@ -64,10 +58,10 @@ userRouter.route('/:USERID')
 
 
 /**
-Delete the user account.
+Change user role.
 
 Authentication
-- admin session, user session
+- admin session
 
 Path Parameters
 - user_id String
