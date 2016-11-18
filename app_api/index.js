@@ -16,6 +16,7 @@
 
 var User       = require('./models/userModel');
 var userRouter = require('./routes/userRouter');
+var courseRouter = require('./routes/courseRouter');
 
 module.exports = function(app)
 {
@@ -24,7 +25,7 @@ module.exports = function(app)
         if (req.session && req.session.user)
         {
             console.log("SESSION FOUND");
-            User.findOne({email: req.session.user.email}, function(err, user)
+            User.findOne({email: req.session.user.username}, function(err, user)
             {
                 if (user)
                 {
@@ -42,4 +43,5 @@ module.exports = function(app)
         }
     });
     app.use('/users', userRouter);
+    app.use('/courses', courseRouter);
 };
