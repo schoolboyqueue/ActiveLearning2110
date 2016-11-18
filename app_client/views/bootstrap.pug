@@ -1,3 +1,16 @@
+//****************************************************************
+//  app_client/components/alerts.pug                            //
+//  Active Learning 2110                                        //
+//                                                              //
+//  Created by Jeremy Carter on 10/08/16.                       //
+//  Copyright © 2016 Jeremy Carter. All rights reserved.        //
+//                                                              //
+//  Date        Name        Description                         //
+//  -------     ---------   --------------                      //
+//  08Oct16     J.Carter    Initial Design                      //
+//                                                              //
+//****************************************************************
+
 //- Including Icon mixins
 include ../components/icons
 //- Including Alert mixins
@@ -12,6 +25,8 @@ include ../components/carousel
 include ../components/tables
 //- Including Navbar mixins
 include ../components/navbar
+//- Including Navmenu mixins
+include ../components/navmenu
 //- Including Toggle Button mixins
 include ../components/toggle
 //- Including Nav mixins
@@ -45,16 +60,19 @@ html(lang="en")
         meta(charset='UTF-8')
         meta(http-equiv='X-UA-Compatible', content='IE=edge')
         meta(name='viewport',content='width=device-width, initial-scale=1')
-        meta(name='description',content="")
-        meta(name='author',content="")
+        meta(name='description',content="Active Learning 2110")
+        meta(name='author',content="Team 2B||!2B")
         title= title
         block styles
             +bootswatch('flatly')
             link(rel='stylesheet', href='./stylesheets/style.css')
+            lint(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
+            link(rel='stylesheet', href='./stylesheets/jasny-bootstrap.min.css')
     body(data-spy='scroll', data-target='.scrollspy')
         block body
         block scripts
             script(src='https://code.jquery.com/jquery-1.12.4.min.js')
             script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
             script(src='./scripts/dominar.js')
-            script(src='./scripts/scripts.js')
+            script(src='./scripts/jasny-bootstrap.min.js')
+            block extraScripts

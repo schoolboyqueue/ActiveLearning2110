@@ -11,6 +11,7 @@
 //  -------     ---------   --------------                  //
 //  13Sep16     O. Mizrahi  Initial Design                  //
 //  08Oct16     J. Carter   Added Sass Support              //
+//  16Nov16     J. Carter   Added urlencoded to bodyparser  //
 //************************************************************
 "use strict";
 
@@ -44,6 +45,9 @@ app.use(sass({
 app.set('views', path.join(__dirname, '/app_client/views'));
 app.set('view engine', 'pug');
 
+app.use(bodyparser.urlencoded({
+    extended: true
+}));
 app.use(bodyparser.json());
 
 app.use(sessions({
