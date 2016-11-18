@@ -25,7 +25,7 @@ module.exports = function(app)
         if (req.session && req.session.user)
         {
             console.log("SESSION FOUND");
-            User.findOne({email: req.session.user.username}, function(err, user)
+            User.findOne({username: req.session.user.username}, function(err, user)
             {
                 if (user)
                 {
