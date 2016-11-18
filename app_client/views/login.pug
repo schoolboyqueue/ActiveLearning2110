@@ -1,0 +1,45 @@
+extends default
+
+block content
+    h1.text-center #{title}
+    .row.voffset5
+        .col-sm-6.col-sm-offset-3.login-box
+            +tab-list-justified(['Login', 'Register'], 0)
+                +tab('Login', 'active')
+                    form(id='login-form')
+                        div.input-group.voffset3
+                            span.input-group-addon
+                                +icon('envelope')
+                            +input-simple('email', 'username', 'name@gatech.edu')
+                        div.input-group.voffset3
+                            span.input-group-addon
+                                +icon('lock')
+                            +input-simple('password', 'password', 'password')
+                        div.text-center.voffset5
+                            +submit('Login')
+                +tab('Register')
+                    form(id='register-form')
+                        div.input-group.voffset3
+                            span.input-group-addon
+                                +icon('envelope')
+                            +input-simple('email', 'username', 'name@gatech.edu')
+                        div.input-group.voffset3
+                            span.input-group-addon
+                                +icon('lock')
+                            +input-simple('password', 'password', 'password')
+                        div.input-group.voffset3
+                            span.input-group-addon
+                                +icon('check')
+                            +input-simple('password', 'confirmPassword', 'confirm password')
+                        div.input-group.voffset4.container-fluid
+                            row.toggle-group
+                                .center-items
+                                    .col-xs-6.vcenter
+                                        p.paddingt1 Instructor
+                                    .col-xs-6.vcenter
+                                        input#instructor.tgl.tgl-ios(type="checkbox")
+                                        label.tgl-btn(for="instructor")
+                        div.text-center.voffset5
+                            +submit('Register')
+block extraScripts
+    script(src='./scripts/login.js')
