@@ -29,9 +29,9 @@ module.exports = function(app)
             {
                 if (user)
                 {
-                    req.session.user  = req.user;
-                    req.user          = user;
+                    req.user = user;
                     req.user.password = undefined;
+                    req.session.user = req.user;
                 }
                 next();
             });

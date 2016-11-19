@@ -74,9 +74,9 @@
     max-width: 300px;
 }
 
-body
+p.uppercase
 {
-    padding: 50px 0 0 0;
+    text-transform: uppercase;
 }
 
 html, body
@@ -344,6 +344,8 @@ footer
     margin: 0 auto;
     text-align: center;
     padding: 50px 0 0 0;
+    color: white;
+    border-color: $dark-blue-text;
 }
 
 .navbar
@@ -351,21 +353,23 @@ footer
     display: block;
     text-align: center;
 }
+
 .navbar-brand
 {
-    display: inline-block;
-    float: none;
-}
-.navbar-toggle
-{
     position: absolute;
-    float: left;
-    margin-left: 15px;
+    left: 50%;
+    margin-left: -100px !important;  /* 50% of your logo width */
+    display: block;
 }
 
 .container
 {
     max-width: 100%;
+}
+
+.container.dash
+{
+    padding: 50px 0 0 0;
 }
 
 @media (min-width: 1px)
@@ -378,17 +382,9 @@ footer
 
 @media (min-width: 992px)
 {
-    body
-    {
-        padding: 0 0 0 300px;
-    }
     .navmenu
     {
-        padding-top: 0;
-    }
-    .navbar
-    {
-        display: none !important; /* IE8 fix */
+        padding-top: 50px 0 0 0;
     }
 }
 
@@ -396,7 +392,56 @@ img.img-circle
 {
     width: 120px;
     height: 120px;
-    border: 2px solid #51D2B7;
+    border: 3px solid #51D2B7;
+}
+
+.navbar-toggle
+{
+    float: left;
+    margin-left: 15px;
+    border: none;
+    background: transparent !important;
+
+    &:hover
+    {
+        background: transparent !important;
+    }
+
+    .icon-bar
+    {
+        width: 22px;
+        transition: all 0.2s;
+    }
+    .top-bar
+    {
+        transform: rotate(45deg);
+        transform-origin: 10% 10%;
+    }
+    .middle-bar
+    {
+        opacity: 0;
+    }
+    .bottom-bar
+    {
+        transform: rotate(-45deg);
+        transform-origin: 10% 90%;
+    }
+
+    &.collapsed
+    {
+        .top-bar
+        {
+            transform: rotate(0);
+        }
+        .middle-bar
+        {
+            opacity: 1;
+        }
+        .bottom-bar
+        {
+            transform: rotate(0);
+        }
+    }
 }
 
 /**

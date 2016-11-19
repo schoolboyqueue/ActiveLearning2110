@@ -24,11 +24,11 @@ $.fn.serializeObject = function()
             {
                 o[this.name] = [o[this.name]];
             }
-            o[this.name].push(this.value || '');
+            o[this.name].push(this.value.toLowerCase() || '');
         }
         else
         {
-            o[this.name] = this.value || '';
+            o[this.name] = this.value.toLowerCase() || '';
         }
     });
     return o;
@@ -36,6 +36,10 @@ $.fn.serializeObject = function()
 
 Dominar.Validator.register('passConfirmation', function(confirmPassword) {
     return document.getElementById('register-form').password.value === confirmPassword;
+});
+
+Dominar.Validator.register('emailConfirmation', function(username) {
+    return username.toLowerCase().indexOf('gatech.edu') !== -1;
 });
 
 document.getElementById('login-form').addEventListener('dominarSubmitPassed', function(event)
@@ -53,9 +57,9 @@ document.getElementById('login-form').addEventListener('dominarSubmitPassed', fu
         {
             window.location.href = '/dashboard';
         },
-        error: function (e)
+        error: function (error)
         {
-            handleError(e.status);
+            handleError(error.status);
         }
     });
 });
@@ -76,12 +80,26 @@ document.getElementById('register-form').addEventListener('dominarSubmitPassed',
        dataType: 'json',
        success: function (data)
        {
-           alert(JSON.stringify(data));
+           swal(
+               {
+                   title: "Register Success",
+                   type: "success",
+                   showCancelButton: false,
+                   confirmButtonText: "Awesome!",
+                   closeOnConfirm: true
+               },
+               function()
+               {
+                   $('#register-form input[id=username]').val('');
+                   $('#register-form input[id=password]').val('');
+                   $('#register-form input[id=confirmPassword]').val('');
+                   activeTab('tabLogin');
+               }
+           );
        },
-       error: function (e)
+       error: function (error)
        {
-           alert(JSON.stringify(e));
-           alert(JSON.stringify(e.responseJSON));
+           handleError(error.status);
        }
     });
 });
@@ -92,28 +110,43 @@ function handleError(error)
     {
         case 404:
         {
-            alert('Username not found.');
-            $('#login-form input[id=username]').focus();
-            $('#login-form input[id=username]').val('');
-            $('#login-form input[id=username]').blur();
+            sweetAlert('Username not found.', "", "error");
+            invalidateInput('login-form', 'username');
             break;
         }
         case 401:
         {
-            alert('Password incorrect.');
-            $('#login-form input[id=password]').focus();
-            $('#login-form input[id=password]').val('');
-            $('#login-form input[id=password]').blur();
+            sweetAlert('Password incorrect.', "", "error");
+            invalidateInput('login-form', 'password');
+            break;
+        }
+        case 500:
+        {
+            sweetAlert('Username taken.', "", "error");
+            invalidateInput('register-form', 'username');
             break;
         }
     }
+}
+
+function invalidateInput(form, input)
+{
+    var field = $('#' + form + ' input[id=' + input + ']');
+    field.val('');
+    field.focus();
+    field.blur();
+}
+
+function activeTab(tab)
+{
+    $('.nav-tabs a[href="#' + tab + '"]').tab('show');
 }
 
 var logval = new Dominar(document.getElementById('login-form'),
 {
     username:
     {
-        rules: 'required|min:12',
+        rules: 'required|email|emailConfirmation',
         triggers: ['keyup', 'change', 'focusout'],
         feedback: false,
         message: false
@@ -131,7 +164,7 @@ var regval = new Dominar(document.getElementById('register-form'),
 {
     username:
     {
-        rules: 'required|min:12',
+        rules: 'required|email|emailConfirmation',
         triggers: ['keyup', 'change', 'focusout'],
         feedback: false,
         message: false

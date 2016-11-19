@@ -16,7 +16,7 @@
 var User    = require('./../models/userModel');
 var bcrypt  = require('bcryptjs');
 
-var getAll = function (req, res)
+var getAll  = function (req, res)
 {
     User.find(function(err, users)
     {
@@ -59,12 +59,7 @@ var login = function (req, res)
 
         if (!user)
         {
-            return res.status(404).json(
-                {
-                    success: false,
-                    message: 'User Not Found'
-                }
-            );
+            return res.status(404).json({success: false, message: 'User Not Found'});
         }
 
         if (!bcrypt.compareSync(req.body.password, user.password))

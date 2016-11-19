@@ -21,21 +21,21 @@ var UserSchema  = new Schema(
 {
     username:
     {
-        lowercase   : true,
-        required    : true,
-        type        : String,
-        unique      : true
+        type: String,
+        required: true,
+        unique: true,
+        lowercase: true
     },
     password:
     {
-        required: true,
-        type    : String
+        type: String,
+        required: true
     },
     role:
     {
-        default : 'student',
-        enum    : ['student', 'instructor', 'admin'],
-        type    : String
+        type: String,
+        enum: ['student', 'instructor', 'admin'],
+        default: 'student'
     }
 });
 
