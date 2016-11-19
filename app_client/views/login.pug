@@ -1,4 +1,4 @@
-extends login-layout
+extends default
 
 block content
     h1.text-center #{title}
@@ -6,31 +6,31 @@ block content
         .col-sm-6.col-sm-offset-3.login-box
             +tab-list-justified(['Login', 'Register'], 0)
                 +tab('Login', 'active')
-                    form(method='POST' action='/login' id='login-form')
+                    form(id='login-form')
                         div.input-group.voffset3
                             span.input-group-addon
                                 +icon('envelope')
-                            +input-simple('email', 'lemail', 'name@gatech.edu')
+                            +input-simple('email', 'username', 'name@gatech.edu')
                         div.input-group.voffset3
                             span.input-group-addon
                                 +icon('lock')
-                            +input-simple('password', 'lpassword', 'password')
+                            +input-simple('password', 'password', 'password')
                         div.text-center.voffset5
                             +submit('Login')
                 +tab('Register')
-                    form(method='POST' action='/register' id='register-form')
+                    form(id='register-form')
                         div.input-group.voffset3
                             span.input-group-addon
                                 +icon('envelope')
-                            +input-simple('email', 'remail', 'name@gatech.edu')
+                            +input-simple('email', 'username', 'name@gatech.edu')
                         div.input-group.voffset3
                             span.input-group-addon
                                 +icon('lock')
-                            +input-simple('password', 'rpassword', 'password')
+                            +input-simple('password', 'password', 'password')
                         div.input-group.voffset3
                             span.input-group-addon
                                 +icon('check')
-                            +input-simple('password', 'rconfirmPassword', 'confirm password')
+                            +input-simple('password', 'confirmPassword', 'confirm password')
                         div.input-group.voffset4.container-fluid
                             row.toggle-group
                                 .center-items
@@ -41,3 +41,5 @@ block content
                                         label.tgl-btn(for="instructor")
                         div.text-center.voffset5
                             +submit('Register')
+block extraScripts
+    script(src='./scripts/login.js')

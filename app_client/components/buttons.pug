@@ -39,12 +39,12 @@ mixin a-btn-success(url)
         block
 
 //- buttons
-mixin btn(caption, style, size)
+mixin btn(caption, style)
     - var type = (typeof style === 'undefined') ? "default" : style
     unless size
-        button.btn(class="btn-" + type, type="button")= caption
+        button.btn(class="btn-" + type + " " + caption, type="button")= caption
     else
-        button.btn(class="btn-" + type + " btn-" + size, type="button")= caption
+        button.btn(class="btn-" + type + " btn-" + size + " " + caption, type="button")= caption
 
 
 mixin btn-primary(caption)
@@ -161,4 +161,3 @@ mixin submit-danger(caption)
 
 mixin submit-success(caption)
     +submit(caption, "success")
-

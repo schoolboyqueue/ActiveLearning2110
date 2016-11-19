@@ -74,6 +74,11 @@
     max-width: 300px;
 }
 
+p.uppercase
+{
+    text-transform: uppercase;
+}
+
 html, body
 {
     height: 100%;
@@ -240,7 +245,8 @@ footer
         border-radius: 2em;
         padding: 2px;
         transition: all .4s ease;
-        &:after {
+        &:after
+        {
             border-radius: 50%;
             background: #fff;
             transition: all .2s ease;
@@ -331,4 +337,127 @@ footer
             background: #7FC6A6;
         }
     }
+}
+
+.navmenu-custom
+{
+    background: $dark-blue-text;
+    margin: 0 auto;
+    text-align: center;
+    padding: 50px 0 0 0;
+    color: white;
+    border-color: $dark-blue-text;
+}
+
+.navbar
+{
+    display: block;
+    text-align: center;
+}
+
+.navbar-brand
+{
+    position: absolute;
+    left: 50%;
+    margin-left: -100px !important;
+    display: block;
+}
+
+.container
+{
+    max-width: 100%;
+}
+
+.container.dash
+{
+    padding: 50px 0 0 0;
+}
+
+@media (min-width: 1px)
+{
+    .navbar-toggle
+    {
+        display: block !important;
+    }
+}
+
+@media (min-width: 992px)
+{
+    .navmenu
+    {
+        padding-top: 50px 0 0 0;
+    }
+}
+
+img.img-circle
+{
+    width: 120px;
+    height: 120px;
+    border: 3px solid #51D2B7;
+}
+
+.navbar-toggle
+{
+    float: left;
+    margin-left: 15px;
+    border: none;
+    background: transparent !important;
+
+    &:hover
+    {
+        background: transparent !important;
+    }
+
+    .icon-bar
+    {
+        width: 22px;
+        transition: all 0.5s;
+    }
+    .top-bar
+    {
+        transform: rotate(45deg);
+        transform-origin: 10% 10%;
+    }
+    .middle-bar
+    {
+        opacity: 0;
+    }
+    .bottom-bar
+    {
+        transform: rotate(-45deg);
+        transform-origin: 10% 90%;
+    }
+
+    &.collapsed
+    {
+        .top-bar
+        {
+            transform: rotate(0);
+        }
+        .middle-bar
+        {
+            opacity: 1;
+        }
+        .bottom-bar
+        {
+            transform: rotate(0);
+        }
+    }
+}
+
+/**
+ * Ranking component
+ */
+.rank-label-container
+{
+    margin-top: -19px;
+    /* z-index: 1000; */
+    text-align: center;
+}
+
+.label.label-default.rank-label
+{
+    background-color: rgb(81, 210, 183);
+    padding: 5px 10px 5px 10px;
+    border-radius: 27px;
 }
