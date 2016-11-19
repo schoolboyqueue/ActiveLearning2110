@@ -245,7 +245,8 @@ footer
         border-radius: 2em;
         padding: 2px;
         transition: all .4s ease;
-        &:after {
+        &:after
+        {
             border-radius: 50%;
             background: #fff;
             transition: all .2s ease;
@@ -358,7 +359,7 @@ footer
 {
     position: absolute;
     left: 50%;
-    margin-left: -100px !important;  /* 50% of your logo width */
+    margin-left: -100px !important;
     display: block;
 }
 
@@ -410,7 +411,7 @@ img.img-circle
     .icon-bar
     {
         width: 22px;
-        transition: all 0.2s;
+        transition: all 0.5s;
     }
     .top-bar
     {
