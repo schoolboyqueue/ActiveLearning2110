@@ -36,6 +36,12 @@ var UserSchema  = new Schema(
         type: String,
         enum: ['student', 'instructor', 'admin'],
         default: 'student'
+    },
+    photo:
+    {
+        type: String,
+        lowercase: true,
+        default: 'http://toogoodbuilt.com/wp-content/uploads/2015/02/user-placeholder.jpg'
     }
 });
 
