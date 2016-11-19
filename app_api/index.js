@@ -24,7 +24,7 @@ module.exports = function(app)
     {
         if (req.session && req.session.user)
         {
-            console.log("SESSION FOUND");
+            //console.log("SESSION FOUND");
             User.findOne({username: req.session.user.username}, function(err, user)
             {
                 if (user)
@@ -38,7 +38,7 @@ module.exports = function(app)
         }
         else
         {
-            console.log("SESSION NOT FOUND");
+            //console.log("SESSION NOT FOUND");
             next();
         }
     });

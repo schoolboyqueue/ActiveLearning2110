@@ -18,65 +18,89 @@ var express        = require('express');
 var userController = require('./../controllers/userController');
 var userRouter     = express.Router();
 
-//start user session
+/**
+START USER SESSION
+
+Authentication: no user session
+
+Example: users/login
+**/
 userRouter.route('/login')
     .post(userController.requireNoSession, userController.login);
 
-//end user session
+/**
+END USER SESSION
+
+Authentication: user session
+
+Example: users/logout
+**/
 userRouter.route('/logout')
     .post(userController.requireSession, userController.logout);
 
-//create new user
+/**
+CREATE USER
+
+Example: users/
+**/
 userRouter.route('/')
     .post(userController.register);
 
-//get all users
-userRouter.route('/')
-    .get(userController.requireAdmin, userController.getAll);
+/**
+GET ALL USERS
 
-//get user info, should be limited to user and admin
+Authentication: admin session
+
+Example: users/
+**/
+userRouter.route('/')
+    .get(userController.requireSession, userController.requireAdmin, userController.getAll);
+
+/**
+GET USER INFO
+
+Authentication: admin session or user session
+
+Path Parameters: user_id String
+
+Example: users/{user_id}/
+**/
 userRouter.route('/:USERID')
     .get(userController.requireSession, userController.getUser);
 
-
 /**
-Delete the user account.
+DELETE USER ACCOUNT.
 
-Authentication
-- admin session, user session
+Authentication: admin session or user session
 
-Path Parameters
-- user_id String
+Path Parameters: user_id String
 
+Example: users/{user_id}/
 **/
 userRouter.route('/:USERID')
     .delete(userController.requireSession, userController.deleteUser);
 
-//update user, need to limit to user and admin
+
+/**
+UPDATE USER - TODO
+**/
 userRouter.route('/:USERID')
     .post(userController.requireSession, userController.updateUser);
 
 
 /**
-Change user role.
+CHANGE USER ROLE
 
-Authentication
-- admin session
+Authentication: admin session
 
-Path Parameters
-- user_id String
+Path Parameters: user_id String
 
-Query String
-- new_role String   REQUIRED
+Query String: new_role String
 
-example
-- users/{user_id}/role?new_role=<<role>>
-
-    **/
-//update users role, Admin restricted
-//users/{user_id}/role?new_role=<<role>>
+Example: users/{user_id}/role?new_role=<<role>>
+**/
 userRouter.route('/:USERID/role')
-    .post(userController.requireAdmin, userController.updateRole);
+    .post(userController.requireSession, userController.requireAdmin, userController.updateRole);
 
 
 module.exports = userRouter;

@@ -16,6 +16,54 @@
 var User    = require('./../models/userModel');
 var bcrypt  = require('bcryptjs');
 
+var roles =
+{
+    ADMIN: 'admin',
+    INSTRUCTOR: 'instructor',
+    STUDENT: 'student',
+};
+
+var deleteUser = function (req, res)
+{
+    if (req.params.USERID !== req.user._id.toString() && req.user.role !== roles.ADMIN)
+    {
+        return res.status(401).json(
+            {
+                success: false,
+                message: 'Not Authorized'
+            }
+        );
+    }
+    User.findById(req.params.USERID, function(err, user)
+    {
+        if (err || !user)
+        {
+            return res.status(404).json(
+                {
+                    success: false,
+                    message: 'User Not Found'
+                }
+            );
+        }
+        user.remove(function(err)
+        {
+            if (!err)
+            {
+                if (req.user.role !== roles.ADMIN)
+                {
+                    req.session.reset();
+                }
+                res.status(200).json(
+                    {
+                        success: true,
+                        message: 'User Deleted'
+                    }
+                );
+            }
+        });
+    });
+};
+
 var getAll  = function (req, res)
 {
     User.find(function(err, users)
@@ -30,6 +78,37 @@ var getAll  = function (req, res)
             res.status(200);
             res.send(users);
         }
+    });
+};
+
+var getUser = function (req, res)
+{
+    if (req.params.USERID !== req.user._id.toString() && req.user.role !== roles.ADMIN)
+    {
+        return res.status(401).json(
+            {
+                success: false,
+                message: 'Not Authorized'
+            }
+        );
+    }
+    User.findById(req.params.USERID, function(err, user)
+    {
+        if (err || !user)
+        {
+            return res.status(404).json(
+                {
+                    success: false,
+                    message: 'User Not Found'
+                }
+            );
+        }
+        res.status(200).json(
+            {
+                success: true,
+                user: user
+            }
+        );
     });
 };
 
@@ -56,12 +135,15 @@ var login = function (req, res)
                 }
             );
         }
-
         if (!user)
         {
-            return res.status(404).json({success: false, message: 'User Not Found'});
+            return res.status(404).json(
+                {
+                    success: false,
+                    message: 'User Not Found'
+                }
+            );
         }
-
         if (!bcrypt.compareSync(req.body.password, user.password))
         {
             return res.status(401).json(
@@ -71,7 +153,6 @@ var login = function (req, res)
                 }
             );
         }
-
         req.session.user = user;
         req.session.user.password = undefined;
         res.status(200).json(
@@ -108,7 +189,7 @@ var register = function (req, res)
             }
         );
     }
-    if (req.body.role == "admin")
+    if (req.body.role === roles.ADMIN)
     {
         if (req.body.username == "admin@activelearning.com")
         {
@@ -146,7 +227,7 @@ var register = function (req, res)
             return res.status(500).json(
                 {
                     success: false,
-                    message: err
+                    message: "Internal Error"
                 }
             );
         }
@@ -159,76 +240,61 @@ var register = function (req, res)
     });
 };
 
-var getUser = function (req, res)
+var requireAdmin = function (req, res, next)
 {
-    User.findById(req.params.USERID, function(err, user)
+    if (req.user.role !== roles.ADMIN)
     {
-        if (err || !user)
-        {
-            return res.status(404).json(
-                {
-                    success: false,
-                    message: 'User Not Found'
-                }
-            );
-        }
-        if (user._id.toString() != req.user._id.toString())
-        {
-            return res.status(401).json(
-                {
-                    success: false,
-                    message: 'Not Authorized'
-                }
-            );
-        }
-        res.status(200).json({success: true, user: user});
-    });
-};
-
-var deleteUser = function (req, res)
-{
-    if (req.params.USERID != req.session.user._id && req.user.role != "admin")
-    {
+        console.log('admin: false');
         return res.status(401).json(
             {
                 success: false,
-                message: 'Not Authorized'
+                message: 'Admin Authorization Required'
             }
         );
     }
-    User.findById(req.params.USERID, function(err, user)
+    else
     {
-        if (err || !user)
-        {
-            return res.status(404).json(
-                {
-                    success: false,
-                    message: 'User Not Found'
-                }
-            );
-        }
-        if (user._id.toString() != req.user._id.toString())
-        {
-            return res.status(401).json(
-                {
-                    success: false,
-                    message: 'Not Authorized'
-                }
-            );
-        }
-        user.remove(function(err)
-        {
-            if (!err)
+        console.log('admin: true');
+        next();
+    }
+};
+
+var requireNoSession = function(req, res, next)
+{
+    if (req.user)
+    {
+        console.log('no session: false');
+        return res.status(411).json(
             {
-                res.status(200).json(
-                    {
-                        success: true,
-                        message: 'User Deleted'
-                    }
-                );
+                success: false,
+                message: 'Session Already Active. Please End Session'
             }
-        });
-    });
+        );
+    }
+    else
+    {
+        console.log('no session: true');
+        next();
+    }
+};
+
+var requireSession = function (req, res, next)
+{
+    if (!req.user)
+    {
+        console.log('session: false');
+        return res.status(401).json(
+            {
+                success: false,
+                message: 'No Session Active'
+            }
+        );
+    }
+    else
+    {
+        console.log('session: true');
+        next();
+    }
 };
 
 var updateRole = function (req, res)
@@ -269,66 +335,6 @@ var updateUser = function (req, res)
             message: 'Update User not yet implemented'
         }
     );
-};
-
-var requireSession = function (req, res, next)
-{
-    if (!req.user)
-    {
-        return res.status(401).json(
-            {
-                success: false,
-                message: 'No Session Active'
-            }
-        );
-    }
-    else
-    {
-        next();
-    }
-};
-
-var requireNoSession = function(req, res, next)
-{
-    if (req.user)
-    {
-        return res.status(411).json(
-            {
-                success: false,
-                message: 'Session Already Active. Please End Session'
-            }
-        );
-    }
-    else
-    {
-        next();
-    }
-};
-
-var requireAdmin = function (req, res, next)
-{
-    if (!req.user)
-    {
-        return res.status(401).json(
-            {
-                success: false,
-                message: 'No Session Active'
-            }
-        );
-    }
-    if (req.user.username != "admin@admin.com")
-    {
-        return res.status(401).json(
-            {
-                success: false,
-                message: 'Admin Authorization Required'
-            }
-        );
-    }
-    else
-    {
-        next();
-    }
 };
 
 module.exports =
