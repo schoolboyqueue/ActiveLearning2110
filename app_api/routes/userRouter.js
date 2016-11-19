@@ -102,5 +102,20 @@ Example: users/{user_id}/role?new_role=<<role>>
 userRouter.route('/:USERID/role')
     .post(userController.requireSession, userController.requireAdmin, userController.updateRole);
 
+/**
+CHANGE USER PHOTO
+
+Authentication: user session
+
+Path Parameters: user_id String
+
+Query String: new_role String
+
+Example: users/{user_id}/photo?new_photo=<<photo>>
+**/
+userRouter.route('/:USERID/photo')
+    .post(userController.requireSession, userController.updatePhoto);
+
+
 
 module.exports = userRouter;

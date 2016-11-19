@@ -297,6 +297,36 @@ var requireSession = function (req, res, next)
     }
 };
 
+var updatePhoto = function (req, res)
+{
+    User.findById(req.params.USERID, function(err, user)
+    {
+        if (err || !user)
+        {
+            return res.status(404).json(
+                {
+                    success: false,
+                    message: 'User Not Found'
+                }
+            );
+        }
+        user.photo = req.query.new_photo;
+        user.save(function(err, updated_user)
+        {
+            if (!err)
+            {
+                res.status(200).json(
+                    {
+                        success: true,
+                        message: 'Photo Updated',
+                        user: updated_user
+                    }
+                );
+            }
+        });
+    });
+};
+
 var updateRole = function (req, res)
 {
     User.findById(req.params.USERID, function(err, user)
@@ -348,6 +378,7 @@ module.exports =
     requireAdmin      :    requireAdmin,
     requireNoSession  :    requireNoSession,
     requireSession    :    requireSession,
+    updatePhoto       :    updatePhoto,
     updateRole        :    updateRole,
     updateUser        :    updateUser
 };
