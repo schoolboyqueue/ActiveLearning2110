@@ -15,6 +15,7 @@
 "use strict";
 
 var express        = require('express');
+var authController = require('./../controllers/authController');
 var userController = require('./../controllers/userController');
 var userRouter     = express.Router();
 
@@ -26,7 +27,7 @@ Authentication: no user session
 Example: users/login
 **/
 userRouter.route('/login')
-    .post(userController.requireNoSession, userController.login);
+    .post(authController.requireNoSession, userController.login);
 
 /**
 END USER SESSION
@@ -36,7 +37,7 @@ Authentication: user session
 Example: users/logout
 **/
 userRouter.route('/logout')
-    .post(userController.requireSession, userController.logout);
+    .post(authController.requireSession, userController.logout);
 
 /**
 CREATE USER
@@ -54,7 +55,7 @@ Authentication: admin session
 Example: users/
 **/
 userRouter.route('/')
-    .get(userController.requireSession, userController.requireAdmin, userController.getAll);
+    .get(authController.requireSession, authController.requireAdmin, userController.getAll);
 
 /**
 GET USER INFO
@@ -66,7 +67,7 @@ Path Parameters: user_id String
 Example: users/{user_id}/
 **/
 userRouter.route('/:USERID')
-    .get(userController.requireSession, userController.getUser);
+    .get(authController.requireSession, authController.requireAdminOrUser, userController.getUser);
 
 /**
 DELETE USER ACCOUNT.
@@ -78,14 +79,14 @@ Path Parameters: user_id String
 Example: users/{user_id}/
 **/
 userRouter.route('/:USERID')
-    .delete(userController.requireSession, userController.deleteUser);
+    .delete(authController.requireSession, authController.requireAdminOrUser, userController.deleteUser);
 
 
 /**
 UPDATE USER - TODO
 **/
 userRouter.route('/:USERID')
-    .post(userController.requireSession, userController.updateUser);
+    .post(authController.requireSession, userController.updateUser);
 
 
 /**
@@ -100,7 +101,7 @@ Query String: new_role String
 Example: users/{user_id}/role?new_role=<<role>>
 **/
 userRouter.route('/:USERID/role')
-    .post(userController.requireSession, userController.requireAdmin, userController.updateRole);
+    .post(authController.requireSession, authController.requireAdmin, userController.updateRole);
 
 /**
 CHANGE USER PHOTO
@@ -111,10 +112,10 @@ Path Parameters: user_id String
 
 Query String: new_role String
 
-Example: users/{user_id}/photo?new_photo=<<photo>>
+Example: users/{user_id}/photo?new_photo=<<photo_url>>
 **/
 userRouter.route('/:USERID/photo')
-    .post(userController.requireSession, userController.updatePhoto);
+    .post(authController.requireSession, userController.updatePhoto);
 
 
 

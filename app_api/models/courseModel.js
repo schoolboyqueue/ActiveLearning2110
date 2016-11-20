@@ -17,7 +17,38 @@
 var mongoose    = require('mongoose');
 var Schema      = mongoose.Schema;
 
-var User        = require('./userModel');
+
+var student = {
+    student_id:
+    {
+        type: String,
+        required: true
+    },
+    username:
+    {
+        type: String,
+        required: true
+    },
+    join_date:
+    {
+        type : Date,
+        default : Date.now
+    }
+};
+
+var instructor =
+{
+    instructor_id:
+    {
+        type: String,
+        required: true
+    },
+    username:
+    {
+        type: String,
+        required: true
+    }
+};
 
 var CourseSchema  = new Schema(
 {
@@ -26,11 +57,14 @@ var CourseSchema  = new Schema(
         type: String,
         required: true
     },
-    instructor_id:
+    instructor:
     {
-        type: String,
-        required: true
+        type: instructor
     },
+    students:
+    [
+        student
+    ],
     createdAt:
     {
         type : Date,

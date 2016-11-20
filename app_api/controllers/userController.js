@@ -25,15 +25,6 @@ var roles =
 
 var deleteUser = function (req, res)
 {
-    if (req.params.USERID !== req.user._id.toString() && req.user.role !== roles.ADMIN)
-    {
-        return res.status(401).json(
-            {
-                success: false,
-                message: 'Not Authorized'
-            }
-        );
-    }
     User.findById(req.params.USERID, function(err, user)
     {
         if (err || !user)
@@ -83,15 +74,6 @@ var getAll  = function (req, res)
 
 var getUser = function (req, res)
 {
-    if (req.params.USERID !== req.user._id.toString() && req.user.role !== roles.ADMIN)
-    {
-        return res.status(401).json(
-            {
-                success: false,
-                message: 'Not Authorized'
-            }
-        );
-    }
     User.findById(req.params.USERID, function(err, user)
     {
         if (err || !user)
@@ -240,63 +222,6 @@ var register = function (req, res)
     });
 };
 
-var requireAdmin = function (req, res, next)
-{
-    if (req.user.role !== roles.ADMIN)
-    {
-        console.log('admin: false');
-        return res.status(401).json(
-            {
-                success: false,
-                message: 'Admin Authorization Required'
-            }
-        );
-    }
-    else
-    {
-        console.log('admin: true');
-        next();
-    }
-};
-
-var requireNoSession = function(req, res, next)
-{
-    if (req.user)
-    {
-        console.log('no session: false');
-        return res.status(411).json(
-            {
-                success: false,
-                message: 'Session Already Active. Please End Session'
-            }
-        );
-    }
-    else
-    {
-        console.log('no session: true');
-        next();
-    }
-};
-
-var requireSession = function (req, res, next)
-{
-    if (!req.user)
-    {
-        console.log('session: false');
-        return res.status(401).json(
-            {
-                success: false,
-                message: 'No Session Active'
-            }
-        );
-    }
-    else
-    {
-        console.log('session: true');
-        next();
-    }
-};
-
 var updatePhoto = function (req, res)
 {
     User.findById(req.params.USERID, function(err, user)
@@ -375,9 +300,6 @@ module.exports =
     login             :    login,
     logout            :    logout,
     register          :    register,
-    requireAdmin      :    requireAdmin,
-    requireNoSession  :    requireNoSession,
-    requireSession    :    requireSession,
     updatePhoto       :    updatePhoto,
     updateRole        :    updateRole,
     updateUser        :    updateUser

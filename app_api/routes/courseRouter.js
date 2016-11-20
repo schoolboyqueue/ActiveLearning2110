@@ -15,31 +15,22 @@
 "use strict";
 
 var express          = require('express');
+var authController = require('./../controllers/authController');
 var courseController = require('./../controllers/courseController');
 var courseRouter     = express.Router();
 
 
-
-
+//create course
 courseRouter.route('/')
-    .post(courseController.requireInstuct, courseController.createCourse);
+    .post(authController.requireSession, authController.requireInstuctor, courseController.createCourse);
 
-/*
-//get all users
-userRouter.route('/')
-    .get(courseController.requireAdmin, courseController.getAll);
+//get all courses (admin)
+courseRouter.route('/')
+    .get(authController.requireSession, authController.requireAdmin, courseController.getAllCourses);
 
-//get course info, should be limited to user and admin
-userRouter.route('/:COURSEID')
-    .get(courseController.requireSession, courseController.getUser);
-
-//delete course
-userRouter.route('/:COURSEID')
-    .delete(courseController.requireSession, courseController.deleteCourse);
-
-*/
-
-
+//get all courses (instructor)
+courseRouter.route('/:USERID/instructor')
+    .get(authController.requireSession, authController.requireInstuctor, courseController.getInstructorCourses);
 
 
 module.exports = courseRouter;
