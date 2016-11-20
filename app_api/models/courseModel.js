@@ -19,15 +19,18 @@ var Schema      = mongoose.Schema;
 
 
 var student = {
+    _id: false,
     student_id:
     {
         type: String,
-        required: true
+        required: true,
+        unique: true,
     },
     username:
     {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     join_date:
     {
