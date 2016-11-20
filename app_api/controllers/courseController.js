@@ -101,9 +101,77 @@ var getInstructorCourses = function (req, res)
     });
 };
 
+var joinCourse = function (req, res)
+{
+  Course.findById(req.params.COURSEID, function(err, course)
+  {
+      if (err || !course)
+      {
+          return res.status(404).json(
+              {
+                  success: false,
+                  message: 'Course Not Found'
+              }
+          );
+      }
+      if (req.body.courseKey !== course.access_key)
+      {
+          return res.status(401).json(
+              {
+                  success: false,
+                  message: 'Invalid Course Key'
+              }
+          );
+      }
+      else
+      {
+          course.students.push(
+              {
+                  student_id: req.user.id.toString(),
+                  username: req.user.username
+              }
+          );
+          course.save(function(err, updated_course)
+          {
+              if (err)
+              {
+                  return res.status(200).json(
+                      {
+                          success: false,
+                          message: 'Internal Error',
+                          course: err
+                      }
+                  );
+              }
+              if (!err)
+              {
+                  res.status(200).json(
+                      {
+                          success: true,
+                          message: 'Student Added',
+                          course: updated_course
+                      }
+                  );
+              }
+          });
+      }
+  });
+};
+
+var joinCourse3 = function (req, res)
+{
+    return res.status(200).json(
+        {
+            success: true,
+            message: 'Student Added'
+        }
+    );
+};
+
 module.exports =
 {
     createCourse        :    createCourse,
     getAllCourses       :    getAllCourses,
-    getInstructorCourses:    getInstructorCourses
+    getInstructorCourses:    getInstructorCourses,
+    joinCourse          :    joinCourse
 };

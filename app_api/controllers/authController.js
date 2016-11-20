@@ -116,6 +116,25 @@ var requireSession = function (req, res, next)
     }
 };
 
+var requireStudent = function (req, res, next)
+{
+    if (req.user.role !== roles.STUDENT)
+    {
+        console.log('student: false');
+        return res.status(401).json(
+            {
+                success: false,
+                message: 'Student Authorization Required'
+            }
+        );
+    }
+    else
+    {
+        console.log('student: true');
+        next();
+    }
+};
+
 module.exports =
 {
     requireAdmin      :    requireAdmin,
@@ -123,4 +142,5 @@ module.exports =
     requireInstuctor  :    requireInstuctor,
     requireNoSession  :    requireNoSession,
     requireSession    :    requireSession,
+    requireStudent    :    requireStudent
 };
