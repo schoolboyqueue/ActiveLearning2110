@@ -2,12 +2,16 @@ extends default
 
 block content
     +navmenu('main-nav', 'left', 'custom')
-        +img-circle-label('//lh3.googleusercontent.com/-6V8xOA6M7BA/AAAAAAAAAAI/AAAAAAAAAAA/rzlHcD0KYwo/photo.jpg?sz=120', '', 'Keep it 100')
-        p.text-center.uppercase.voffset3 #{username}
+        .profile-container.clearfix
+            +img-circle-left(photo)
+            .contrainer
+                p.uppercase.voffset3 #{username}
+                p.capitalize.rounded-back #{role}
+        .profile-sep.voffset3
+        p.uppercase.voffset3 course list
     +navbar-menu('Active Learning 2110', 'main-nav')
     .container.dash
         h1.text-center #{id}
-        h1.text-center #{role}
 
 block extraScripts
     script(src='./scripts/dashboard.js')

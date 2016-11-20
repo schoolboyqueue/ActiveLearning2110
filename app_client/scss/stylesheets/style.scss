@@ -74,9 +74,18 @@
     max-width: 300px;
 }
 
-p.uppercase
+p
 {
-    text-transform: uppercase;
+    margin-bottom: 0;
+
+    &.uppercase
+    {
+        text-transform: uppercase;
+    }
+    &.capitalize
+    {
+        text-transform: capitalize;
+    }
 }
 
 html, body
@@ -357,9 +366,10 @@ footer
 
 .navbar-brand
 {
+    font-size: 25px;
     position: absolute;
     left: 50%;
-    margin-left: -100px !important;
+    margin-left: -110px !important;
     display: block;
 }
 
@@ -389,11 +399,29 @@ footer
     }
 }
 
-img.img-circle
+.profile-container
 {
-    width: 120px;
-    height: 120px;
-    border: 3px solid #51D2B7;
+    margin: 10px 10px 10px 10px;
+    text-align: left;
+
+    > .img-circle
+    {
+        width: 95px;
+        height: 95px;
+        border: 3px solid #51D2B7;
+        margin-right: 10px;
+    }
+}
+
+.rounded-back
+{
+    background-color: lighten($dark-blue-text, 10%);
+    border-radius: 25px;
+}
+
+.profile-sep
+{
+    border-top: 2px dotted lighten($dark-blue-text, 10%);
 }
 
 .navbar-toggle
@@ -443,21 +471,4 @@ img.img-circle
             transform: rotate(0);
         }
     }
-}
-
-/**
- * Ranking component
- */
-.rank-label-container
-{
-    margin-top: -19px;
-    /* z-index: 1000; */
-    text-align: center;
-}
-
-.label.label-default.rank-label
-{
-    background-color: rgb(81, 210, 183);
-    padding: 5px 10px 5px 10px;
-    border-radius: 27px;
 }
