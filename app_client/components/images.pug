@@ -27,7 +27,8 @@ mixin img-circle(_src, _alt)
 mixin img-thumbnail(_src, _alt)
     img.img-thumbnail(src=_src, alt=_alt)
 
-mixin img-circle-label(_src, _alt, label)
+mixin img-circle(_src, _alt)
     img.img-circle(src=_src, alt=_alt)
-    div.rank-label-container
-        span(class=['label', 'label-default', 'rank-label'])= label
+
+mixin img-circle-left(_src, _alt)
+    img.img-circle.pull-left(src=_src, alt=_alt)

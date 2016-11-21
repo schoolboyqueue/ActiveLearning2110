@@ -46,7 +46,7 @@ module.exports = function(app)
     - parameter PATH:       SPA route
     - parameter HANDLER:    callback
     */
-    app.get('/', function(req, res)
+    app.get('/', hasSesion, function(req, res)
     {
         res.render('login', {
             title: 'Active Learning 2110'
@@ -58,11 +58,25 @@ module.exports = function(app)
         res.render('dashboard', {
             id      : req.user.id,
             role    : req.user.role,
+            photo   : req.user.photo,
             username: req.user.username
         });
     });
 
-    function isAuthenticated(req, res, next) {
+    /**
+    Middleware for checking if the current user has an active session
+    */
+    function hasSesion(req, res, next)
+    {
+        if (req.user) return res.redirect('/dashboard');
+        next();
+    }
+
+    /**
+    Middleware for checking if the current user has an active session
+    */
+    function isAuthenticated(req, res, next)
+    {
         if (req.user) return next();
         res.redirect('/');
     }

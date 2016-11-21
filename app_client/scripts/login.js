@@ -12,6 +12,12 @@
 //                          login and register              //
 //************************************************************
 
+
+/**
+ * Serializes all input fields of the object
+ *
+ * @return {object} object containing the id's of input fields and their values
+ */
 $.fn.serializeObject = function()
 {
     var o = {};
@@ -82,11 +88,11 @@ document.getElementById('register-form').addEventListener('dominarSubmitPassed',
        {
            swal(
                {
-                   title: "Register Success",
-                   type: "success",
-                   showCancelButton: false,
+                   title            : "Register Success",
+                   type             : "success",
+                   showCancelButton : false,
                    confirmButtonText: "Awesome!",
-                   closeOnConfirm: true
+                   closeOnConfirm   : true
                },
                function()
                {
@@ -129,6 +135,12 @@ function handleError(error)
     }
 }
 
+/**
+ * Clears all the input field contained in the form
+ *
+ * @param  {id} form  the form id that contains the input
+ * @param  {id} input the input id to be cleared
+ */
 function invalidateInput(form, input)
 {
     var field = $('#' + form + ' input[id=' + input + ']');
@@ -137,6 +149,11 @@ function invalidateInput(form, input)
     field.blur();
 }
 
+/**
+ * Activates the tab id passed in
+ * 
+ * @param  {id} tab the tab id to be actived
+ */
 function activeTab(tab)
 {
     $('.nav-tabs a[href="#' + tab + '"]').tab('show');
@@ -146,17 +163,17 @@ var logval = new Dominar(document.getElementById('login-form'),
 {
     username:
     {
-        rules: 'required|email|emailConfirmation',
+        rules   : 'required|email|emailConfirmation',
         triggers: ['keyup', 'change', 'focusout'],
         feedback: false,
-        message: false
+        message : false
     },
     password:
     {
-        rules: 'required|min:5|max:20',
+        rules   : 'required|min:5|max:20',
         triggers: ['keyup', 'change', 'focusout'],
         feedback: false,
-        message: false
+        message : false
     }
 });
 
@@ -164,23 +181,23 @@ var regval = new Dominar(document.getElementById('register-form'),
 {
     username:
     {
-        rules: 'required|email|emailConfirmation',
+        rules   : 'required|email|emailConfirmation',
         triggers: ['keyup', 'change', 'focusout'],
         feedback: false,
-        message: false
+        message : false
     },
     password:
     {
-        rules: 'required|min:5|max:20',
+        rules   : 'required|min:5|max:20',
         triggers: ['keyup', 'change', 'focusout'],
         feedback: false,
-        message: false
+        message : false
     },
     confirmPassword:
     {
-        rules: 'required|min:5|max:20|passConfirmation',
+        rules   : 'required|min:5|max:20|passConfirmation',
         triggers: ['keyup', 'change', 'focusout'],
         feedback: false,
-        message: false
+        message : false
     }
 });

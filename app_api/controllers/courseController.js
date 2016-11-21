@@ -15,13 +15,13 @@
 "use strict";
 
 var Course  = require('./../models/courseModel');
-var rand = require("random-key");
+var rand    = require("random-key");
 
 var roles =
 {
-    ADMIN: 'admin',
-    INSTRUCTOR: 'instructor',
-    STUDENT: 'student',
+    ADMIN       : 'admin',
+    INSTRUCTOR  : 'instructor',
+    STUDENT     : 'student',
 };
 
 var createCourse  = function (req, res)
@@ -30,15 +30,15 @@ var createCourse  = function (req, res)
 
     var course_instructor =
     {
-        instructor_id : req.user._id.toString(),
-        username:       req.user.username,
-    }
+        instructor_id   : req.user._id.toString(),
+        username        : req.user.username
+    };
 
     newCourse = new Course(
     {
-        title:          req.body.title,
-        instructor:     course_instructor,
-        access_key:     rand.generate()
+        title       : req.body.title,
+        instructor  : course_instructor,
+        access_key  : rand.generate()
     });
 
     //console.log(newCourse);
@@ -57,9 +57,9 @@ var createCourse  = function (req, res)
         }
         res.status(201).json(
             {
-                success: true,
-                message: 'Course Creation Successsful',
-                course :  savedCourse
+                success : true,
+                message : 'Course Creation Successsful',
+                course  : savedCourse
             }
         );
     });
@@ -92,7 +92,7 @@ var joinCourse = function (req, res)
           course.students.push(
               {
                   student_id: req.user.id.toString(),
-                  username: req.user.username
+                  username  : req.user.username
               }
           );
           course.save(function(err, updated_course)
@@ -101,9 +101,9 @@ var joinCourse = function (req, res)
               {
                   return res.status(200).json(
                       {
-                          success: false,
-                          message: 'Internal Error',
-                          course: err
+                          success   : false,
+                          message   : 'Internal Error',
+                          course    : err
                       }
                   );
               }
@@ -111,9 +111,9 @@ var joinCourse = function (req, res)
               {
                   res.status(200).json(
                       {
-                          success: true,
-                          message: 'Student Added',
-                          course: updated_course
+                          success   : true,
+                          message   : 'Student Added',
+                          course    : updated_course
                       }
                   );
               }
