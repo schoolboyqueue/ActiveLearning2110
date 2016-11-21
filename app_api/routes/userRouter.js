@@ -17,6 +17,7 @@
 var express        = require('express');
 var authController = require('./../controllers/authController');
 var userController = require('./../controllers/userController');
+var courseController = require('./../controllers/courseController');
 var userRouter     = express.Router();
 
 /**
@@ -81,13 +82,11 @@ Example: users/{user_id}/
 userRouter.route('/:USERID')
     .delete(authController.requireSession, authController.requireAdminOrUser, userController.deleteUser);
 
-
 /**
 UPDATE USER - TODO
 **/
 userRouter.route('/:USERID')
     .post(authController.requireSession, userController.updateUser);
-
 
 /**
 CHANGE USER ROLE
@@ -117,6 +116,17 @@ Example: users/{user_id}/photo?new_photo=<<photo_url>>
 userRouter.route('/:USERID/photo')
     .post(authController.requireSession, userController.updatePhoto);
 
+/**
+GET USERS COURSE LIST
+
+Authentication: user session
+
+Path Parameters: user_id String
+
+Example: users/{user_id}/courses
+**/
+userRouter.route('/:USERID/courses')
+    .get(authController.requireSession, courseController.getCourses);
 
 
 module.exports = userRouter;
