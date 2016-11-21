@@ -173,13 +173,13 @@ var register = function (req, res)
     }
     if (req.body.role === roles.ADMIN)
     {
-        if (req.body.username == "admin@activelearning.com")
+        if (req.body.username == "admin@gatech.edu")
         {
             addUser = new User(
             {
                 username: req.body.username,
                 password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)),
-                role    : req.body.role
+                role    : 'admin'
             });
         }
         else
@@ -201,7 +201,6 @@ var register = function (req, res)
             role    : req.body.role
         });
     }
-
     addUser.save(function(err, savedUser)
     {
         if (err)
@@ -216,7 +215,8 @@ var register = function (req, res)
         res.status(201).json(
             {
                 success: true,
-                message: 'Registration Successsful'
+                message: 'Registration Successsful',
+                id: savedUser._id.toString()
             }
         );
     });

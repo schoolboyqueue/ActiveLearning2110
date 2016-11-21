@@ -30,7 +30,7 @@ var createCourse  = function (req, res)
 
     var course_instructor =
     {
-        instructor_id : req.user.id.toString(),
+        instructor_id : req.user._id.toString(),
         username:       req.user.username,
     }
 
@@ -41,10 +41,13 @@ var createCourse  = function (req, res)
         access_key:     rand.generate()
     });
 
+    //console.log(newCourse);
+
     newCourse.save(function(err, savedCourse)
     {
         if (err)
         {
+          console.log(err);
             return res.status(500).json(
                 {
                     success: false,
@@ -57,45 +60,6 @@ var createCourse  = function (req, res)
                 success: true,
                 message: 'Course Creation Successsful',
                 course :  savedCourse
-            }
-        );
-    });
-};
-
-var getAllCourses  = function (req, res)
-{
-    Course.find(function(err, courses)
-    {
-        if (err)
-        {
-            res.status(500);
-            res.send('Internal Error');
-        }
-        else
-        {
-            res.status(200);
-            res.send(courses);
-        }
-    });
-};
-
-var getInstructorCourses = function (req, res)
-{
-    Course.find({"instructor.instructor_id": req.params.USERID}, function(err, courses)
-    {
-        if (err || !courses)
-        {
-            return res.status(404).json(
-                {
-                    success: false,
-                    message: 'No Courses Not Found'
-                }
-            );
-        }
-        res.status(200).json(
-            {
-                success: true,
-                courses: courses
             }
         );
     });
@@ -158,20 +122,67 @@ var joinCourse = function (req, res)
   });
 };
 
-var joinCourse3 = function (req, res)
+var getCourses = function (req, res)
 {
-    return res.status(200).json(
+    if (req.user.role === roles.INSTRUCTOR)
+    {
+        Course.find({"instructor.instructor_id": req.params.USERID}, function(err, courses)
         {
-            success: true,
-            message: 'Student Added'
-        }
-    );
+            if (!err && courses)
+            {
+                return res.status(200).json(
+                    {
+                        success: true,
+                        courses: courses
+                    }
+                );
+            }
+        });
+    }
+    else if (req.user.role === roles.ADMIN)
+    {
+        Course.find(function(err, courses)
+        {
+            if (!err && courses)
+            {
+                return res.status(200).json(
+                    {
+                        success: true,
+                        courses: courses
+                    }
+                );
+            }
+        });
+    }
+    else if (req.user.role === roles.STUDENT)
+    {
+        Course.find({"students.student_id": req.params.USERID}, function(err, courses)
+        {
+            if (!err && courses)
+            {
+                return res.status(200).json(
+                    {
+                        success: true,
+                        courses: courses
+                    }
+                );
+            }
+        });
+    }
+    else
+    {
+        res.status(404).json(
+            {
+                success: false,
+                message: 'No Courses Not Found'
+            }
+        );
+    }
 };
 
 module.exports =
 {
     createCourse        :    createCourse,
-    getAllCourses       :    getAllCourses,
-    getInstructorCourses:    getInstructorCourses,
+    getCourses          :    getCourses,
     joinCourse          :    joinCourse
 };

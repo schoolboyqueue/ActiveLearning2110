@@ -34,29 +34,6 @@ Request body:
 courseRouter.route('/')
     .post(authController.requireSession, authController.requireInstuctor, courseController.createCourse);
 
-//get all courses (admin)
-/**
-ADMIN GET ALL COURSES
-
-Authentication: user session, admin session
-
-Example: courses/
-**/
-courseRouter.route('/')
-    .get(authController.requireSession, authController.requireAdmin, courseController.getAllCourses);
-
-
-/**
-INSTRUCTOR GET ALL COURSES
-
-Authentication: user session, instructor session
-
-Path Parameters: course_id String
-
-Example: courses/{course_id}/instructor
-**/
-courseRouter.route('/:USERID/instructor')
-    .get(authController.requireSession, authController.requireInstuctor, courseController.getInstructorCourses);
 
 /**
 STUDENT JOIN COURSE
@@ -72,7 +49,7 @@ Request body:
   "courseKey": <<access_key>
 }
 **/
-courseRouter.route('/:COURSEID/student')
+courseRouter.route('/:COURSEID')
     .post(authController.requireSession, authController.requireStudent, courseController.joinCourse);
 
 
