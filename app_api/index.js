@@ -14,9 +14,9 @@
 //************************************************************
 "use strict";
 
-var User       = require('./models/userModel');
-var userRouter = require('./routes/userRouter');
-var courseRouter = require('./routes/courseRouter');
+var User            = require('./models/userModel');
+var userRouter      = require('./routes/userRouter');
+var courseRouter    = require('./routes/courseRouter');
 
 module.exports = function(app)
 {

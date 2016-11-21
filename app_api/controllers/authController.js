@@ -16,9 +16,9 @@
 
 var roles =
 {
-    ADMIN: 'admin',
-    INSTRUCTOR: 'instructor',
-    STUDENT: 'student',
+    ADMIN       : 'admin',
+    INSTRUCTOR  : 'instructor',
+    STUDENT     : 'student',
 };
 
 var requireAdmin = function (req, res, next)

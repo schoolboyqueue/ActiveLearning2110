@@ -18,9 +18,9 @@ var bcrypt  = require('bcryptjs');
 
 var roles =
 {
-    ADMIN: 'admin',
-    INSTRUCTOR: 'instructor',
-    STUDENT: 'student',
+    ADMIN       : 'admin',
+    INSTRUCTOR  : 'instructor',
+    STUDENT     : 'student',
 };
 
 var deleteUser = function (req, res)
@@ -87,8 +87,8 @@ var getUser = function (req, res)
         }
         res.status(200).json(
             {
-                success: true,
-                user: user
+                success : true,
+                user    : user
             }
         );
     });
@@ -242,9 +242,9 @@ var updatePhoto = function (req, res)
             {
                 res.status(200).json(
                     {
-                        success: true,
-                        message: 'Photo Updated',
-                        user: updated_user
+                        success : true,
+                        message : 'Photo Updated',
+                        user    : updated_user
                     }
                 );
             }
@@ -272,9 +272,9 @@ var updateRole = function (req, res)
             {
                 res.status(200).json(
                     {
-                        success: true,
-                        message: 'Role Updated',
-                        user: updated_user
+                        success : true,
+                        message : 'Role Updated',
+                        user    : updated_user
                     }
                 );
             }
@@ -294,13 +294,13 @@ var updateUser = function (req, res)
 
 module.exports =
 {
-    deleteUser        :    deleteUser,
-    getAll            :    getAll,
-    getUser           :    getUser,
-    login             :    login,
-    logout            :    logout,
-    register          :    register,
-    updatePhoto       :    updatePhoto,
-    updateRole        :    updateRole,
-    updateUser        :    updateUser
+    deleteUser  : deleteUser,
+    getAll      : getAll,
+    getUser     : getUser,
+    login       : login,
+    logout      : logout,
+    register    : register,
+    updatePhoto : updatePhoto,
+    updateRole  : updateRole,
+    updateUser  : updateUser
 };

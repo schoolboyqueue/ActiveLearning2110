@@ -14,10 +14,10 @@
 //************************************************************
 "use strict";
 
-var express          = require('express');
-var authController = require('./../controllers/authController');
-var courseController = require('./../controllers/courseController');
-var courseRouter     = express.Router();
+var express             = require('express');
+var authController      = require('./../controllers/authController');
+var courseController    = require('./../controllers/courseController');
+var courseRouter        = express.Router();
 
 /**
 INSTRUCTOR CREATE COURSE

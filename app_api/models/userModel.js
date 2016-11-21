@@ -21,27 +21,27 @@ var UserSchema  = new Schema(
 {
     username:
     {
-        type: String,
-        required: true,
-        unique: true,
-        lowercase: true
+        type        : String,
+        required    : true,
+        unique      : true,
+        lowercase   : true
     },
     password:
     {
-        type: String,
+        type    : String,
         required: true
     },
     role:
     {
-        type: String,
-        enum: ['student', 'instructor', 'admin'],
-        default: 'student'
+        type    : String,
+        enum    : ['student', 'instructor', 'admin'],
+        default : 'student'
     },
     photo:
     {
-        type: String,
-        lowercase: true,
-        default: 'http://toogoodbuilt.com/wp-content/uploads/2015/02/user-placeholder.jpg'
+        type        : String,
+        lowercase   : true,
+        default     : 'http://toogoodbuilt.com/wp-content/uploads/2015/02/user-placeholder.jpg'
     }
 });
 

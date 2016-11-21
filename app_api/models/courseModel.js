@@ -22,19 +22,19 @@ var student = {
     _id: false,
     student_id:
     {
-        type: String,
+        type    : String,
         required: true,
-        unique: true,
+        unique  : true,
     },
     username:
     {
-        type: String,
+        type    : String,
         required: true,
-        unique: true
+        unique  : true
     },
     join_date:
     {
-        type : Date,
+        type    : Date,
         default : Date.now
     }
 };
@@ -43,12 +43,12 @@ var instructor =
 {
     instructor_id:
     {
-        type: String,
+        type    : String,
         required: true
     },
     username:
     {
-        type: String,
+        type    : String,
         required: true
     }
 };
@@ -57,7 +57,7 @@ var CourseSchema  = new Schema(
 {
     title:
     {
-        type: String,
+        type    : String,
         required: true
     },
     instructor:
@@ -70,14 +70,14 @@ var CourseSchema  = new Schema(
     ],
     createdAt:
     {
-        type : Date,
+        type    : Date,
         default : Date.now
     },
     access_key:
     {
-        type: String,
+        type    : String,
         required: true,
-        unique: true
+        unique  : true
     },
 });
 
