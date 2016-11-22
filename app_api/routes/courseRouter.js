@@ -53,4 +53,6 @@ courseRouter.route('/:COURSEID')
     .post(authController.requireSession, authController.requireStudent, courseController.joinCourse);
 
 
+
+
 module.exports = courseRouter;

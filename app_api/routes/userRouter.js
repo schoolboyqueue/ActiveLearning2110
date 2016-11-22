@@ -83,7 +83,14 @@ userRouter.route('/:USERID')
     .delete(authController.requireSession, authController.requireAdminOrUser, userController.deleteUser);
 
 /**
-UPDATE USER - TODO
+UPDATE USER
+
+POST	/users/{userid}?{query string}
+
+Query Parameters
+new_photo String
+new_role String admin required
+
 **/
 userRouter.route('/:USERID')
     .post(authController.requireSession, userController.updateUser);
@@ -101,20 +108,6 @@ Example: users/{user_id}/role?new_role=<<role>>
 **/
 userRouter.route('/:USERID/role')
     .post(authController.requireSession, authController.requireAdmin, userController.updateRole);
-
-/**
-CHANGE USER PHOTO
-
-Authentication: user session
-
-Path Parameters: user_id String
-
-Query String: new_role String
-
-Example: users/{user_id}/photo?new_photo=<<photo_url>>
-**/
-userRouter.route('/:USERID/photo')
-    .post(authController.requireSession, userController.updatePhoto);
 
 /**
 GET USERS COURSE LIST
