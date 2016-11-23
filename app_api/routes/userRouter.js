@@ -20,12 +20,20 @@ var userController = require('./../controllers/userController');
 var courseController = require('./../controllers/courseController');
 var userRouter     = express.Router();
 
+
 /**
 START USER SESSION
 
-Authentication: no user session
+POST	/users/login
 
-Example: users/login
+Path Params
+none
+
+Request Body application/json
+{
+  "username": String Required
+  "password": String Required
+}
 **/
 userRouter.route('/login')
     .post(authController.requireNoSession, userController.login);
@@ -33,9 +41,10 @@ userRouter.route('/login')
 /**
 END USER SESSION
 
-Authentication: user session
+POST	/users/logout
 
-Example: users/logout
+Path Params
+none
 **/
 userRouter.route('/logout')
     .post(authController.requireSession, userController.logout);
@@ -43,7 +52,17 @@ userRouter.route('/logout')
 /**
 CREATE USER
 
-Example: users/
+POST	/users
+
+Path Params
+none
+
+Request Body application/json
+{
+    "username": String Required
+    "password": String Required
+    "role":     String Required
+}
 **/
 userRouter.route('/')
     .post(userController.register);
@@ -85,38 +104,27 @@ userRouter.route('/:USERID')
 /**
 UPDATE USER
 
-POST	/users/{userid}?{query string}
+POST	/users/{userid}/
 
-Query Parameters
-new_photo String
-new_role String admin required
+Path Params
+userid String Required
 
+Request Body application/json
+{
+  "new_role": String Optional (admin only)
+  "new_photo": String Optional
+}
 **/
 userRouter.route('/:USERID')
     .post(authController.requireSession, userController.updateUser);
 
 /**
-CHANGE USER ROLE
+GET COURSE LIST
 
-Authentication: admin session
+GET	/users/{userid}/courses
 
-Path Parameters: user_id String
-
-Query String: new_role String
-
-Example: users/{user_id}/role?new_role=<<role>>
-**/
-userRouter.route('/:USERID/role')
-    .post(authController.requireSession, authController.requireAdmin, userController.updateRole);
-
-/**
-GET USERS COURSE LIST
-
-Authentication: user session
-
-Path Parameters: user_id String
-
-Example: users/{user_id}/courses
+Path Params
+userid String Required
 **/
 userRouter.route('/:USERID/courses')
     .get(authController.requireSession, courseController.getCourses);

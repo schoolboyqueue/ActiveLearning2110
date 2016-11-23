@@ -222,36 +222,6 @@ var register = function (req, res)
     });
 };
 
-var updateRole = function (req, res)
-{
-    User.findById(req.params.USERID, function(err, user)
-    {
-        if (err || !user)
-        {
-            return res.status(404).json(
-                {
-                    success: false,
-                    message: 'User Not Found'
-                }
-            );
-        }
-        user.role = req.query.new_role;
-        user.save(function(err, updated_user)
-        {
-            if (!err)
-            {
-                res.status(200).json(
-                    {
-                        success : true,
-                        message : 'Role Updated',
-                        user    : updated_user
-                    }
-                );
-            }
-        });
-    });
-};
-
 var updateUser = function (req, res)
 {
     User.findById(req.params.USERID, function(err, user)
@@ -265,15 +235,24 @@ var updateUser = function (req, res)
                 }
             );
         }
-        if (req.query.new_photo)
+        if (req.body.new_photo)
         {
-            user.photo = req.query.new_photo;
+            user.photo = req.body.new_photo;
         }
-        if (req.query.new_role)
+        if (req.body.new_role)
         {
             if (req.user.role === roles.ADMIN)
             {
-                user.role = req.query.new_role;
+                if (req.body.new_role !== roles.INSTRUCTOR || req.body.new_role !== roles.STUDENT)
+                {
+                    return res.status(401).json(
+                        {
+                            success: false,
+                            message: 'Incorrect Role'
+                        }
+                    );
+                }
+                else user.role = req.body.new_role;
             }
             else
             {
@@ -287,7 +266,16 @@ var updateUser = function (req, res)
         }
         user.save(function(err, updated_user)
         {
-            if (!err)
+            if (err)
+            {
+                return res.status(401).json(
+                    {
+                        success : false,
+                        message : 'User Not Updated'
+                    }
+                );
+            }
+            else
             {
                 return res.status(200).json(
                     {
@@ -309,6 +297,5 @@ module.exports =
     login       : login,
     logout      : logout,
     register    : register,
-    updateRole  : updateRole,
     updateUser  : updateUser
 };
