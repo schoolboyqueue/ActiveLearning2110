@@ -84,7 +84,16 @@ Authentication: admin session or user session
 
 Path Parameters: user_id String
 
-Example: users/{user_id}/
+Query String
+filter boolean Required
+username boolean optional
+photo boolean optional
+role boolean optional
+
+No Query String will return entire user info.
+
+Example 1: users/{user_id}/
+Example 2: users/{user_id}?filter=true&username=true&photo=true&role=true
 **/
 userRouter.route('/:USERID')
     .get(authController.requireSession, authController.requireAdminOrUser, userController.getUser);

@@ -85,12 +85,34 @@ var getUser = function (req, res)
                 }
             );
         }
-        res.status(200).json(
+        if (req.query.filter)
+        {
+            var filteredUser =
             {
-                success : true,
-                user    : user
+                username: '',
+                photo: '',
+                role: ''
             }
-        );
+            filteredUser.username = req.query.username ? user.username : undefined;
+            filteredUser.photo = req.query.photo ? user.photo : undefined;
+            filteredUser.role = req.query.role ? user.role : undefined;
+            res.status(200).json(
+                {
+                    success : true,
+                    user    : filteredUser
+                }
+            );
+        }
+        else
+        {
+            user.password = undefined;
+            res.status(200).json(
+                {
+                    success : true,
+                    user    : user
+                }
+            );
+        }
     });
 };
 
