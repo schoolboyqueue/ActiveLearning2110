@@ -41,8 +41,6 @@ var createCourse  = function (req, res)
         access_key  : rand.generate()
     });
 
-    //console.log(newCourse);
-
     newCourse.save(function(err, savedCourse)
     {
         if (err)
@@ -122,6 +120,62 @@ var joinCourse = function (req, res)
   });
 };
 
+var getCourse = function (req, res)
+{
+    Course.findById(req.params.COURSEID, function(err, course)
+    {
+        if (err || !course)
+        {
+            return res.status(404).json(
+                {
+                    success: false,
+                    message: 'Course Not Found'
+                }
+            );
+        }
+        else
+        {
+            course.__v = undefined;
+            course._id = undefined;
+            if (req.user.role === roles.ADMIN || req.user._id.toString() === course.instructor.instructor_id)
+            {
+                if (req.query.filter)
+                {
+                    course.title = req.query.title ? course.title : undefined;
+                    course.instructor = req.query.instructor ? course.instructor : undefined;
+                    course.access_key = req.query.access_key ? course.access_key : undefined;
+                    course.createdAt = req.query.createdAt ? course.createdAt : undefined;
+                    course.students = req.query.students ? course.students : undefined;
+                }
+                return res.status(200).json(
+                    {
+                        success : true,
+                        course  : course
+                    }
+                );
+            }
+            else
+            {
+                course.instructor.instructor_id = undefined;
+                course.access_key = undefined;
+                if (req.query.filter)
+                {
+                    course.instructor = req.query.instructor ? course.instructor : undefined;
+                    course.title = req.query.title ? course.title : undefined;
+                    course.createdAt = req.query.createdAt ? course.createdAt : undefined;
+                    course.students = undefined;
+                }
+                return res.status(200).json(
+                    {
+                        success : true,
+                        course  : course
+                    }
+                );
+            }
+        }
+    });
+};
+
 var getCourses = function (req, res)
 {
     if (req.user.role === roles.INSTRUCTOR)
@@ -180,9 +234,36 @@ var getCourses = function (req, res)
     }
 };
 
+var getStudents = function (req, res)
+{
+    Course.findById(req.params.COURSEID, function(err, course)
+    {
+        if (err || !course)
+        {
+            return res.status(404).json(
+                {
+                    success: false,
+                    message: 'Course Not Found'
+                }
+            );
+        }
+        else
+        {
+            res.status(200).json(
+                {
+                    success : true,
+                    course  : course
+                }
+            );
+        }
+    });
+};
+
 module.exports =
 {
     createCourse        :    createCourse,
+    getCourse           :    getCourse,
     getCourses          :    getCourses,
+    getStudents         :    getStudents,
     joinCourse          :    joinCourse
 };

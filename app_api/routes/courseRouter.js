@@ -42,7 +42,7 @@ Authentication: user session, student session
 
 Path Parameters: course_id String
 
-Example: courses/{course_id}/student
+Example: courses/{course_id}/
 
 Request body:
 {
@@ -52,7 +52,29 @@ Request body:
 courseRouter.route('/:COURSEID')
     .post(authController.requireSession, authController.requireStudent, courseController.joinCourse);
 
+/**
+GET COURSE INFO
 
+Authentication: user session
+
+Path Parameters: course_id String
+
+Example: courses/{course_id}/
+**/
+courseRouter.route('/:COURSEID')
+    .get(authController.requireSession, courseController.getCourse);
+
+/**
+GET COURSE STUDENTS
+
+Authentication: user session, instructor session
+
+Path Parameters: course_id String
+
+Example: courses/{course_id}/students
+**/
+courseRouter.route('/:COURSEID/students')
+    .get(authController.requireSession, courseController.getStudents);
 
 
 module.exports = courseRouter;

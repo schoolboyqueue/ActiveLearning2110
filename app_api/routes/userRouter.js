@@ -80,7 +80,10 @@ userRouter.route('/')
 /**
 GET USER INFO
 
-Authentication: admin session or user session
+Authentication: user session
+
+admin and authenticated user will get all user info
+all other users will only get username and photo
 
 Path Parameters: user_id String
 
@@ -88,15 +91,14 @@ Query String
 filter boolean Required
 username boolean optional
 photo boolean optional
-role boolean optional
+role boolean optional (admin and authenticated user only)
 
-No Query String will return entire user info.
 
 Example 1: users/{user_id}/
 Example 2: users/{user_id}?filter=true&username=true&photo=true&role=true
 **/
 userRouter.route('/:USERID')
-    .get(authController.requireSession, authController.requireAdminOrUser, userController.getUser);
+    .get(authController.requireSession, userController.getUser);
 
 /**
 DELETE USER ACCOUNT.

@@ -85,33 +85,43 @@ var getUser = function (req, res)
                 }
             );
         }
-        if (req.query.filter)
-        {
-            var filteredUser =
-            {
-                username: '',
-                photo: '',
-                role: ''
-            }
-            filteredUser.username = req.query.username ? user.username : undefined;
-            filteredUser.photo = req.query.photo ? user.photo : undefined;
-            filteredUser.role = req.query.role ? user.role : undefined;
-            res.status(200).json(
-                {
-                    success : true,
-                    user    : filteredUser
-                }
-            );
-        }
         else
         {
             user.password = undefined;
-            res.status(200).json(
+            user.__v = undefined;
+
+            if (req.user.role === roles.ADMIN || req.user._id.toString() === user._id.toString())
+            {
+                if (req.query.filter)
                 {
-                    success : true,
-                    user    : user
+                    user._id = req.query.id ? user._id : undefined;
+                    user.username = req.query.username ? user.username : undefined;
+                    user.photo = req.query.photo ? user.photo : undefined;
+                    user.role = req.query.role ? user.role : undefined;
                 }
-            );
+                return res.status(200).json(
+                    {
+                        success : true,
+                        user    : user
+                    }
+                );
+            }
+            else
+            {
+                user._id = undefined;
+                user.role = undefined;
+                if (req.query.filter)
+                {
+                    user.username = req.query.username ? user.username : undefined;
+                    user.photo = req.query.photo ? user.photo : undefined;
+                }
+                return res.status(200).json(
+                    {
+                        success : true,
+                        user    : user
+                    }
+                );
+            }
         }
     });
 };
