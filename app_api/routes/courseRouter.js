@@ -38,7 +38,7 @@ courseRouter.route('/')
 /**
 STUDENT JOIN COURSE
 
-Authentication: user session, student session
+Authentication: student session
 
 Path Parameters: course_id String
 
@@ -59,7 +59,16 @@ Authentication: user session
 
 Path Parameters: course_id String
 
-Example: courses/{course_id}/
+Query String
+filter boolean Required
+title boolean optional
+instructor boolean optional (admin and authenticated instructor only)
+access_key boolean optional (admin and authenticated instructor only)
+createdAt boolean optional
+students boolean optional
+
+Example 1: courses/{course_id}/ - returns all course info
+Example 2: courses/{course_id}?filter=true&title=true - returns filtered course info
 **/
 courseRouter.route('/:COURSEID')
     .get(authController.requireSession, courseController.getCourse);
@@ -75,6 +84,18 @@ Example: courses/{course_id}/students
 **/
 courseRouter.route('/:COURSEID/students')
     .get(authController.requireSession, courseController.getStudents);
+
+/**
+DELETE STUDENT FROM COURSE
+
+Authentication: admin session, instructor session
+
+Path Parameters: course_id String, user_id String
+
+Example: courses/{course_id}/students/{user_id}/
+**/
+courseRouter.route('/:COURSEID/students/:USERID')
+    .delete(authController.requireSession, courseController.deleteStudent);
 
 
 module.exports = courseRouter;

@@ -40,25 +40,6 @@ var requireAdmin = function (req, res, next)
     }
 };
 
-var requireAdminOrInstructor = function (req, res, next)
-{
-    if (req.user.role !== roles.INSTRUCTOR && req.user.role !== roles.ADMIN)
-    {
-        console.log('admin or instructor: false');
-        return res.status(401).json(
-            {
-                success: false,
-                message: 'Not Authorized'
-            }
-        );
-    }
-    else
-    {
-        console.log('admin or instructor: true');
-        next();
-    }
-};
-
 var requireAdminOrUser = function (req, res, next)
 {
     if (req.params.USERID !== req.user._id.toString() && req.user.role !== roles.ADMIN)
@@ -157,7 +138,6 @@ var requireStudent = function (req, res, next)
 module.exports =
 {
     requireAdmin      :    requireAdmin,
-    requireAdminOrInstructor: requireAdminOrInstructor,
     requireAdminOrUser:    requireAdminOrUser,
     requireInstuctor  :    requireInstuctor,
     requireNoSession  :    requireNoSession,

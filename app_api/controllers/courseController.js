@@ -63,61 +63,54 @@ var createCourse  = function (req, res)
     });
 };
 
-var joinCourse = function (req, res)
+var deleteStudent = function (req, res)
 {
-  Course.findById(req.params.COURSEID, function(err, course)
-  {
-      if (err || !course)
-      {
-          return res.status(404).json(
-              {
-                  success: false,
-                  message: 'Course Not Found'
-              }
-          );
-      }
-      if (req.body.courseKey !== course.access_key)
-      {
-          return res.status(401).json(
-              {
-                  success: false,
-                  message: 'Invalid Course Key'
-              }
-          );
-      }
-      else
-      {
-          course.students.push(
-              {
-                  student_id: req.user.id.toString(),
-                  username  : req.user.username
-              }
-          );
-          course.save(function(err, updated_course)
+    Course.findById(req.params.COURSEID, function(err, course)
+    {
+        if (err || !course)
+        {
+            return res.status(404).json(
+                {
+                    success: false,
+                    message: 'Course Not Found'
+                }
+            );
+        }
+        else if (req.user.role === roles.ADMIN || req.user._id.toString() === course.instructor.instructor_id || req.user._id.toString() === req.params.USERID)
+        {
+
+          Course.update({ $pull: { "students" : { "student_id": req.params.USERID } } }, function(err, data)
           {
-              if (err)
+              if (err || !data)
               {
-                  return res.status(200).json(
+                  return res.status(400).json(
                       {
-                          success   : false,
-                          message   : 'Internal Error',
-                          course    : err
+                          success: false,
+                          message: 'Interal Error: Could Not Delete User'
                       }
                   );
               }
-              if (!err)
+              else
               {
                   res.status(200).json(
                       {
-                          success   : true,
-                          message   : 'Student Added',
-                          course    : updated_course
+                          success : true,
+                          message: 'Student Deleted'
                       }
                   );
               }
           });
-      }
-  });
+        }
+        else
+        {
+            return res.status(401).json(
+                {
+                    success: false,
+                    message: 'Not Authorized'
+                }
+            );
+        }
+    });
 };
 
 var getCourse = function (req, res)
@@ -137,6 +130,7 @@ var getCourse = function (req, res)
         {
             course.__v = undefined;
             course._id = undefined;
+
             if (req.user.role === roles.ADMIN || req.user._id.toString() === course.instructor.instructor_id)
             {
                 if (req.query.filter)
@@ -158,6 +152,7 @@ var getCourse = function (req, res)
             {
                 course.instructor.instructor_id = undefined;
                 course.access_key = undefined;
+
                 if (req.query.filter)
                 {
                     course.instructor = req.query.instructor ? course.instructor : undefined;
@@ -172,6 +167,7 @@ var getCourse = function (req, res)
                     }
                 );
             }
+
         }
     });
 };
@@ -252,16 +248,72 @@ var getStudents = function (req, res)
             res.status(200).json(
                 {
                     success : true,
-                    course  : course
+                    students  : course.students
                 }
             );
         }
     });
 };
 
+var joinCourse = function (req, res)
+{
+  Course.findById(req.params.COURSEID, function(err, course)
+  {
+      if (err || !course)
+      {
+          return res.status(404).json(
+              {
+                  success: false,
+                  message: 'Course Not Found'
+              }
+          );
+      }
+      if (req.body.courseKey !== course.access_key)
+      {
+          return res.status(401).json(
+              {
+                  success: false,
+                  message: 'Invalid Course Key'
+              }
+          );
+      }
+      else
+      {
+          course.students.push(
+              {
+                  student_id: req.user.id.toString(),
+                  username  : req.user.username
+              }
+          );
+          course.save(function(err, updated_course)
+          {
+              if (err)
+              {
+                  return res.status(200).json(
+                      {
+                          success   : false,
+                          message   : 'Internal Error'
+                      }
+                  );
+              }
+              if (!err)
+              {
+                  res.status(200).json(
+                      {
+                          success   : true,
+                          message   : 'Student Added'
+                      }
+                  );
+              }
+          });
+      }
+  });
+};
+
 module.exports =
 {
     createCourse        :    createCourse,
+    deleteStudent       :    deleteStudent,
     getCourse           :    getCourse,
     getCourses          :    getCourses,
     getStudents         :    getStudents,
