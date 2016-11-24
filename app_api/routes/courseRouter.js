@@ -97,5 +97,16 @@ Example: courses/{course_id}/students/{user_id}/
 courseRouter.route('/:COURSEID/students/:USERID')
     .delete(authController.requireSession, courseController.deleteStudent);
 
+/**
+CREATE COURSE LECTURE
+
+Authentication: instructor session
+
+Path Parameters: course_id String
+
+Example: courses/{course_id}/lectures
+**/
+courseRouter.route('/:COURSEID/lectures')
+    .post(authController.requireSession, courseController.createLecture);
 
 module.exports = courseRouter;

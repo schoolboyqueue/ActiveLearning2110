@@ -53,6 +53,23 @@ var instructor =
     }
 };
 
+var QuestionSchema  = new Schema(
+{
+    question_num: Number,
+    question_body: String,
+    answer_choices: [String],
+    answer: Number
+});
+
+var LectureSchema  = new Schema(
+{
+    lecture_num: Number,
+    title: String,
+    day: String,
+    inSession: Boolean,
+    questions: [QuestionSchema]
+});
+
 var CourseSchema  = new Schema(
 {
     title:
@@ -79,6 +96,23 @@ var CourseSchema  = new Schema(
         required: true,
         unique  : true
     },
+    lectures:
+    [
+        LectureSchema
+    ]
 });
+
+CourseSchema.methods.lectureOneQuestions = function(question_array)
+{
+    var question1 =
+    {
+        question_num: 1,
+        question_body: 'this is a test question',
+        answer_choices: ['a', 'b', 'c', 'd'],
+        answer: 0
+    }
+    question_array.push(question1);
+    return question_array;
+};
 
 module.exports = mongoose.model('Course', CourseSchema);

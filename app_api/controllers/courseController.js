@@ -63,6 +63,67 @@ var createCourse  = function (req, res)
     });
 };
 
+var createLecture  = function (req, res)
+{
+    Course.findById(req.params.COURSEID, function(err, course)
+    {
+        if (err || !course)
+        {
+            return res.status(404).json(
+                {
+                    success: false,
+                    message: 'Course Not Found'
+                }
+            );
+        }
+        else
+        {
+          if (req.user._id.toString() !== course.instructor.instructor_id)
+          {
+              return res.status(401).json(
+                  {
+                      success: false,
+                      message: 'User not Authorized to create lecture'
+                  }
+              );
+          }
+          else
+          {
+              var question_array = [];
+              course.lectures.push(
+                  {
+                      lecture_num: 1,
+                      title: "Lecture 5",
+                      day: "Monday",
+                      inSession: false,
+                      questions: course.lectureOneQuestions(question_array)
+                  }
+              )
+              course.save( function(err2, updatedCourse) {
+                  if (err2 || !updatedCourse)
+                  {
+                      return res.status(404).json(
+                          {
+                              success: false,
+                              message: 'Lecture Not Created'
+                          }
+                      );
+                  }
+                  else
+                  {
+                      res.status(201).json(
+                          {
+                              success : true,
+                              message : 'Lecture Creation Successsful'
+                          }
+                      );
+                  }
+              });
+          }
+        }
+    });
+};
+
 var deleteStudent = function (req, res)
 {
     Course.findById(req.params.COURSEID, function(err, course)
@@ -313,6 +374,7 @@ var joinCourse = function (req, res)
 module.exports =
 {
     createCourse        :    createCourse,
+    createLecture       :    createLecture,
     deleteStudent       :    deleteStudent,
     getCourse           :    getCourse,
     getCourses          :    getCourses,
