@@ -40,11 +40,13 @@ $.fn.serializeObject = function()
     return o;
 };
 
-Dominar.Validator.register('passConfirmation', function(confirmPassword) {
+Dominar.Validator.register('passConfirmation', function(confirmPassword)
+{
     return document.getElementById('register-form').password.value === confirmPassword;
 });
 
-Dominar.Validator.register('emailConfirmation', function(username) {
+Dominar.Validator.register('emailConfirmation', function(username)
+{
     return username.toLowerCase().indexOf('gatech.edu') !== -1;
 });
 
@@ -88,18 +90,20 @@ document.getElementById('register-form').addEventListener('dominarSubmitPassed',
        {
            swal(
                {
-                   title            : "Register Success",
-                   type             : "success",
-                   showCancelButton : false,
-                   confirmButtonText: "Awesome!",
-                   closeOnConfirm   : true
+                   title                : "Register Success",
+                   type                 : "success",
+                   showCancelButton     : false,
+                   confirmButtonText    : "Awesome!",
+                   closeOnConfirm       : true
                },
                function()
                {
-                   $('#register-form input[id=username]').val('');
-                   $('#register-form input[id=password]').val('');
-                   $('#register-form input[id=confirmPassword]').val('');
+                   $('#login-form input[id=username]').val($('#register-form input[id=username]').val());
+                   document.getElementById('register-form').reset();
                    activeTab('tabLogin');
+                   $('#login-form input[id=username]').focus();
+                   $('#login-form input[id=username]').blur();
+                   $('#login-form input[id=password]').focus();
                }
            );
        },
@@ -151,7 +155,7 @@ function invalidateInput(form, input)
 
 /**
  * Activates the tab id passed in
- * 
+ *
  * @param  {id} tab the tab id to be actived
  */
 function activeTab(tab)
