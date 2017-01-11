@@ -19,7 +19,6 @@ var Schema      = mongoose.Schema;
 
 
 var student = {
-    _id: false,
     student_id:
     {
         type    : String,

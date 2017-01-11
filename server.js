@@ -16,8 +16,11 @@
 "use strict";
 
 var app_api    = require('./app_api'),
+    app_api_v2 = require('./app_api_v2'),
     app_client = require('./app_client'),
+    set_session = require('./session'),
     bodyparser = require('body-parser'),
+    cookieParser = require('cookie-parser'),
     express    = require('express'),
     mongoose   = require('mongoose'),
     path       = require('path'),
@@ -45,21 +48,29 @@ app.use(sass({
 app.set('views', path.join(__dirname, '/app_client/views'));
 app.set('view engine', 'pug');
 
-app.use(bodyparser.urlencoded({
-    extended: true
-}));
+app.use(bodyparser.urlencoded(
+    {
+        extended: true
+    }
+));
+
+app.use(cookieParser());
+
 app.use(bodyparser.json());
 
-app.use(sessions({
-    cookieName: 'session',
-    secret: config.secret,
-    duration: 30 * 60 * 1000,
-    activeDuration: 5 * 60 * 1000,
-}));
+app.use(sessions(
+    {
+        cookieName: 'session',
+        secret: config.session_secret,
+        duration: 30 * 60 * 1000,
+        activeDuration: 5 * 60 * 1000,
+    }
+));
 
-app_api(app);
+//set_session(app);
 app_client(app);
-
+app_api(app);
+app_api_v2(app);
 
 /**
 Binds and listens for connections on the specified host and port

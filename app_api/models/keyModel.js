@@ -1,7 +1,7 @@
 /* jshint node: true */
 
 //************************************************************
-//  index.js                                                //
+//  userModel.js                                            //
 //  Active Learning 2110                                    //
 //                                                          //
 //  Created by Odell Mizrahi on 9/18/16.                    //
@@ -14,11 +14,38 @@
 //************************************************************
 "use strict";
 
-var userRouter      = require('./routes/userRouter');
-var courseRouter    = require('./routes/courseRouter');
+var mongoose    = require('mongoose');
+var Schema      = mongoose.Schema;
 
-module.exports = function(app)
+var RegistrationKeySchema  = new Schema(
 {
-    app.use('/users', userRouter);
-    app.use('/courses', courseRouter);
-};
+    role:
+    {
+        type    : String,
+        enum    : ['instructor', 'admin'],
+        required: true
+    },
+    createdAt:
+    {
+        type    : Date,
+        default : Date.now
+    },
+    key:
+    {
+        type    : String,
+        required: true,
+        unique  : true
+    },
+    validated:
+    {
+        type    : Boolean,
+        default : false
+    },
+    user:
+    {
+        type    : String,
+        default : null
+    }
+});
+
+module.exports = mongoose.model('RegisterKey', RegistrationKeySchema);

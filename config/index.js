@@ -15,6 +15,10 @@
 "use strict";
 
 module.exports = {
-    'database': 'mongodb://localhost/ActiveLearning2110',
-    'secret': 'jkkwefjfisieie894jlsidifispe4iuls'
+    'database'        : 'mongodb://localhost/ActiveLearning2110',
+    'session_secret'  : 'jkkwefjfisieie894jlsidifispe4iuls',
+    'jwt_secret'      : 'activelearning',
+    'jwt_settings'    : {
+                            expiresIn: '1hr'
+                        }
 };
