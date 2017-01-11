@@ -12,7 +12,7 @@ block content
                     p.capitalize.rounded-back #{role}
             .profile-sep.voffset3
             p.uppercase.voffset3 course list
-            p.voffset2(ng-repeat='course in dash.courses') {{course}}
+            p.voffset2(ng-repeat='course in courses') {{course}}
     +navbar-menu('Active Learning 2110', 'main-nav')
     .container.dash
         h1.text-center #{id}

@@ -16,7 +16,7 @@
 /**
  * Serializes all input fields of the object
  *
- * @return {object} object containing the id's of input fields and their values
+ * @return {dictionary} dictionary containing the id's of input fields and their values
  */
 $.fn.serializeObject = function()
 {
@@ -114,6 +114,10 @@ document.getElementById('register-form').addEventListener('dominarSubmitPassed',
     });
 });
 
+/**
+ * Handles errors recieved from the backend REST
+ * @param  {int} error the error code
+ */
 function handleError(error)
 {
     switch (error)

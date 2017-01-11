@@ -90,6 +90,8 @@ p
 
 html, body
 {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
     height: 100%;
 }
 
@@ -422,7 +424,6 @@ h1, h2, h3, h4, h5, h6
 .navbar-toggle
 {
     float: left;
-    margin-left: 15px;
     border: none;
     background: transparent !important;
 
