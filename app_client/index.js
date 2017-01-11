@@ -14,15 +14,16 @@
 //****************************************************************
 
 "use strict";
-var User = require('../app_api/models/userModel');
+//var User = require('../app_api/models/userModel');
 
 module.exports = function(app)
 {
+    /*
     app.use(function(req, res, next)
     {
         if (req.session && req.session.user)
         {
-            console.log("SESSION FOUND");
+            console.log("SESSION FOUND FROM APP CLIENT");
             User.findOne({username: req.session.user.username}, function(err, user)
             {
                 if (user)
@@ -36,10 +37,12 @@ module.exports = function(app)
         }
         else
         {
-            console.log("SESSION NOT FOUND");
+            console.log("SESSION NOT FOUND FROM APP CLIENT");
             next();
         }
     });
+    */
+
     /**
     Respond to GET request
 

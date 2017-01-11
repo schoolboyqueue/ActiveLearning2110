@@ -9,16 +9,20 @@
 //                                                          //
 //  Date        Name        Description                     //
 //  -------     ---------   --------------                  //
-//  18Sep16     O. Mizrahi  Initial Design                  //
+//  27Dec16     O. Mizrahi  Initial Design                  //
 //                                                          //
 //************************************************************
 "use strict";
 
-var userRouter      = require('./routes/userRouter');
-var courseRouter    = require('./routes/courseRouter');
+var authRouter    = require('./authRouter');
+var signupRouter  = require('./signupRouter');
+var userRouter    = require('./userRouter');
+var courseRouter  = require('./courseRouter');
 
-module.exports = function(app)
+module.exports  = function(api_v2_router)
 {
-    app.use('/users', userRouter);
-    app.use('/courses', courseRouter);
+    api_v2_router.use('/authenticate', authRouter);
+    api_v2_router.use('/user', userRouter);
+    api_v2_router.use('/signup', signupRouter);
+    api_v2_router.use('/course', courseRouter);
 };
