@@ -46,6 +46,7 @@ signupRouter.route('/')
           inputController.requirePassword,
           signupController.registerAdmin,
           signupController.registerInstructor,
+          signupController.registerStudent,
           signupController.savedUserToDB);
 
 /**
