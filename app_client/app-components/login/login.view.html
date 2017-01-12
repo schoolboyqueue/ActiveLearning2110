@@ -1,0 +1,100 @@
+<div class="modal fade align-middle" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h2 class="text-center pb-2">{{title}}</h2>
+                <!-- Login Form -->
+                <form name="loginForm">
+                    <div
+                        class="form-group"
+                        ng-class="{ 'has-danger': loginForm.email.$touched && (loginForm.email.$error.invalidGatech
+                                    || loginForm.email.$invalid) }">
+                        <label for="email">E-Mail</label>
+                        <input
+                            type="email"
+                            name="email"
+                            class="form-control"
+                            ng-model="email"
+                            required gatech/>
+                    </div>
+                    <div
+                        class="form-group" n
+                        g-class="{ 'has-danger': loginForm.password.$touched && (loginForm.password.$invalid
+                                   || loginform.password.$error.minlength) }">
+                        <label for="password">Password</label>
+                        <input
+                            type="password"
+                            name="password"
+                            class="form-control"
+                            ng-minlength="5"
+                            ng-model="password"
+                            required />
+                    </div>
+                    <!-- Extra Register Fields -->
+                    <div
+                        class="form-group"
+                        ng-show="register"
+                        ng-class="{ 'has-danger': loginForm.passwordVerify.$touched && (loginForm.passwordVerify.$invalid
+                                    || loginForm.passwordVerify.$error.minlength || loginform.passwordVerify.$error.invalidEqPass) }">
+                        <label for="passwordVerify">Verify Password</label>
+                        <input
+                            type="password"
+                            name="passwordVerify"
+                            class="form-control"
+                            ng-minlength="5"
+                            ng-model="passwordVerify"
+                            ng-required="register"
+                            verifypass/>
+                    </div>
+                    <div class="input-group pb-2" ng-show="register">
+                        <span class="input-group-addon">
+                            <button
+                                ng-model="professor"
+                                type="button"
+                                class="btn btn-primary"
+                                ng-click="professorClick()"
+                                data-toggle="button"
+                                aria-pressed="false"
+                                autocomplete="off">
+                                Professor
+                            </button>
+                        </span>
+                        <input
+                            name="professorKey"
+                            type="text"
+                            ng-disabled="!professor"
+                            class="form-control"
+                            ng-minlength="5"
+                            ng-model="professorKey"
+                            ng-required="professor"/>
+                    </div>
+                    <!-- Error Message -->
+                    <div ng-if="error" class="alert alert-danger">{{error}}</div>
+                    <!-- Login/Register Buttons -->
+                    <div class="form-group pt-1">
+                        <div ng-class="{ 'btn-toolbar justify-content-between': !register,
+                                         'text-center': register }" role="toolbar">
+                            <div class="btn-group" role="group" >
+                                <button
+                                    ng-click="submit()"
+                                    ng-disabled="loginForm.$invalid"
+                                    class="btn btn-primary">
+                                    <span ng-show="loading">
+                                        <i class="fa fa-circle-o-notch fa-spin"></i>
+                                    </span>
+                                    {{title}}
+                                </button>
+                            </div>
+                            <button
+                                class="btn btn-primary"
+                                ng-hide="register"
+                                class="ng-hide"
+                                ng-click="startRegister()">Register
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

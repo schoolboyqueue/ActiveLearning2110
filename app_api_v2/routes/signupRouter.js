@@ -25,7 +25,7 @@ var authController    = require('./../controllers/authController');
 /**
 REGISTER USER
 
-POST	/api_v2/signup?role={user_role}/
+POST    /api_v2/signup?role={user_role}/
 
 Authentication: none
 Authorization:  none
@@ -52,7 +52,7 @@ signupRouter.route('/')
 /**
 CREATE ADMIN REGISTRATION KEY
 
-GET	/api_v2/signup/admin_key
+GET    /api_v2/signup/admin_key
 
 Authentication:   user token        required
 Authorization:    admin             required
@@ -70,7 +70,7 @@ signupRouter.route('/admin_key')
 /**
 CREATE INSTRUCTOR REGISTRATION KEY
 
-GET	/api_v2/signup/instructor_key
+GET    /api_v2/signup/instructor_key
 
 Authentication:   user token        required
 Authorization:    admin             required
@@ -88,7 +88,7 @@ signupRouter.route('/instructor_key')
 /**
 CREATE REGISTRATION KEY
 
-GET	/api_v2/signup/registration_key?role={user_role}/
+GET    /api_v2/signup/registration_key?role={user_role}/
 
 Authentication:   user token        required
 Authorization:    admin             required
