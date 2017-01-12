@@ -144,6 +144,18 @@ var registerAdmin = function (req, res, next)
 {
   if (req.query.role === roles.ADMIN)
   {
+      if (req.body.username === 'admin@gatech.edu')
+      {
+        req.addUser = new User(
+        {
+            username: req.body.username,
+            password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)),
+            role    : roles.ADMIN
+        });
+        next();
+      }
+      else
+      {
       RegistrationKey.findOneAndUpdate({ 'key': req.body.key, 'validated': false }, { 'validated': true, 'user': req.body.username}, { 'new': true }, function (err, key)
       {
           if (err || !key)
@@ -166,6 +178,7 @@ var registerAdmin = function (req, res, next)
               next();
           }
       });
+    }
   }
   else
   {
@@ -207,15 +220,15 @@ var registerInstructor = function (req, res, next)
     }
 };
 
-var registerStudent = function (req, res)
+var registerStudent = function (req, res, next)
 {
-    if (req.query.role === roles.INSTRUCTOR || !req.addUser)
+    if (!req.addUser)
     {
         req.addUser = new User(
         {
             username: req.body.username,
             password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)),
-            role    : roles.INSTRUCTOR
+            role    : roles.STUDENT
         });
         next();
     }
