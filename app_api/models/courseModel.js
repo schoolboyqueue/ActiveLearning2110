@@ -35,7 +35,8 @@ var student = {
     {
         type    : Date,
         default : Date.now
-    }
+    },
+    "_id": false
 };
 
 var instructor =
@@ -51,6 +52,27 @@ var instructor =
         required: true
     }
 };
+
+var StudentSchema  = new Schema(
+{
+    student_id:
+    {
+        type    : String,
+        required: true,
+        unique  : true,
+    },
+    username:
+    {
+        type    : String,
+        required: true,
+        unique  : true
+    },
+    join_date:
+    {
+        type    : Date,
+        default : Date.now
+    }
+});
 
 var QuestionSchema  = new Schema(
 {

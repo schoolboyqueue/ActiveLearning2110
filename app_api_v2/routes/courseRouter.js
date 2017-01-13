@@ -20,6 +20,7 @@ var courseRouter      = express.Router();
 var authorizeController  = require('./../controllers/authorizeController');
 var inputController      = require('./../controllers/inputController');
 var tokenController      = require('./../controllers/tokenController');
+var userController       = require('./../controllers/userController');
 var courseController     = require('./../controllers/courseController');
 
 /**
@@ -47,10 +48,33 @@ courseRouter.route('/')
 /**
 STUDENT JOIN COURSE
 
-POST	/api_v2/course{course_id}/
+POST	/api_v2/course/students
 
 Authentication:   user token
 Authorization:    student
+
+Path Parameters:  none
+Query String:     none
+Request Body:     application/json    required
+{
+  "course_key":   String              required
+}
+**/
+courseRouter.route('/students')
+    .post(tokenController.validateToken,
+          tokenController.refreshToken,
+          authorizeController.student,
+          inputController.requireCourseKey,
+          userController.setUserName,
+          courseController.joinCourse);
+
+/**
+GET STUDENTS IN COURSE
+
+GET	/api_v2/course/{course_id}/students
+
+Authentication:   user token
+Authorization:    instructor
 
 Path Parameters:  course_id String    required
 Query String:     none
@@ -59,11 +83,102 @@ Request Body:     application/json    required
   "course_key":   String              required
 }
 **/
+courseRouter.route('/:COURSEID/students')
+    .get(tokenController.validateToken,
+         tokenController.refreshToken,
+         courseController.getStudents);
+
+/**
+STUDENT DELETE FROM COURSE
+
+DELETE	/api_v2/course/{course_id}/students?id={student_id}/
+
+Authentication:   user token
+Authorization:    admin, instructor or self student
+
+Path Parameters:  course_id String    required
+Query String:     id        String    Pass the 'student_id' of the student to remove from course
+Request Body:     none
+**/
+courseRouter.route('/:COURSEID/students')
+    .delete(tokenController.validateToken,
+            tokenController.refreshToken,
+            authorizeController.adminOrInstructorOrSelf,
+            courseController.deleteStudentFromCourse);
+
+/**
+GET COURSE INFO
+
+GET	/api_v2/course/{course_id}/
+
+Authentication:   user token
+Authorization:    instructor
+
+Path Parameters:  course_id String    required
+Query String:     none
+Request Body:     none
+**/
 courseRouter.route('/:COURSEID')
-    .post(tokenController.validateToken,
-          tokenController.refreshToken,
-          authorizeController.student,
-          inputController.requireCourseKey,
-          courseController.joinCourse);
+    .get(tokenController.validateToken,
+         tokenController.refreshToken,
+         courseController.getCourse);
+
+/**
+CREATE COURSE LECTURE
+
+POST	/api_v2/course/{course_id}/lectures
+
+Authentication:   user token
+Authorization:    instructor
+
+Path Parameters:  course_id String    required
+Query String:     none
+Request Body:     application/json    required
+{
+  "title":        String              required
+  "day":          String              required
+}
+**/
+courseRouter.route('/:COURSEID/lectures')
+   .post(tokenController.validateToken,
+         tokenController.refreshToken,
+         authorizeController.instructor,
+         courseController.createLecture);
+
+/**
+DELETE COURSE LECTURE
+
+DELETE	/api_v2/course/{course_id}/lectures/{lecture_id}/
+
+Authentication:   user token
+Authorization:    instructor
+
+Path Parameters:  course_id String, lecture_id String     required
+Query String:     none
+Request Body:     none
+**/
+courseRouter.route('/:COURSEID/lectures/:LECTUREID')
+  .delete(tokenController.validateToken,
+        tokenController.refreshToken,
+        authorizeController.instructor,
+        courseController.deleteLecture);
+
+/**
+GET COURSE LECTURES
+
+GET	/api_v2/course/{course_id}/lectures
+
+Authentication:   user token
+Authorization:    instructor
+
+Path Parameters:  course_id String     required
+Query String:     none
+Request Body:     none
+**/
+courseRouter.route('/:COURSEID/lectures')
+  .get(tokenController.validateToken,
+       tokenController.refreshToken,
+       authorizeController.instructor,
+       courseController.getLectures);
 
 module.exports = courseRouter;

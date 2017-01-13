@@ -99,7 +99,6 @@ var generateToken = function (req, res)
         {
             setCookieJWT(res, token, function()
             {
-                //console.log('token: '+token);
 
                 return res.status(200).json(
                     {
@@ -144,15 +143,6 @@ var refreshToken = function (req, res, next)
                   req.token = token;
                   next();
               });
-              /*
-              res.cookie('jwtToken', token,
-                  {
-                      httpOnly : true
-                  }
-              );
-              req.token = token;
-              next();
-              */
           }
       });
     }
@@ -171,7 +161,7 @@ var validateToken = function (req, res, next)
 
     //var token = req.body.token || req.headers['Authorization'] || req.headers['x-access-token'] || req.cookies['jwtToken'];
     //req.token = req.body.token || req.cookies['jwtToken'];
-    var token = req.body.token || req.cookies['jwtToken'];
+    var token = req.body.token || req.cookies['jwtToken'] || req.headers['Authorization'];
 
     if (!token)
     {

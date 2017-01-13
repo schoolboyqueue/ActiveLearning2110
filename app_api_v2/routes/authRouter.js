@@ -17,7 +17,6 @@
 var express           = require('express');
 var authRouter        = express.Router();
 
-//var authController    = require('./../controllers/authController');
 var authenticateController    = require('./../controllers/authenticateController');
 var inputController    = require('./../controllers/inputController');
 var tokenController    = require('./../controllers/tokenController');

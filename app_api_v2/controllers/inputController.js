@@ -16,6 +16,8 @@
 
 var requireCourseTitle = function (req, res, next)
 {
+    console.log('inputController requireCourseTitle');
+
     if (!req.body.title)
     {
         return res.status(400).json(
@@ -33,6 +35,8 @@ var requireCourseTitle = function (req, res, next)
 
 var requireCourseKey = function (req, res, next)
 {
+    console.log('inputController requireCourseKey');
+
     if (!req.body.course_key)
     {
         return res.status(400).json(
@@ -50,6 +54,8 @@ var requireCourseKey = function (req, res, next)
 
 var requireCurrentPassword = function (req, res, next)
 {
+    console.log('inputController requireCurrentPassword');
+
     if (!req.body.cur_password)
     {
         return res.status(400).json(
@@ -67,6 +73,8 @@ var requireCurrentPassword = function (req, res, next)
 
 var requireNewPassword = function (req, res, next)
 {
+    console.log('inputController requireNewPassword');
+
     if (!req.body.new_password)
     {
         return res.status(400).json(
@@ -84,6 +92,8 @@ var requireNewPassword = function (req, res, next)
 
 var requireUsername = function (req, res, next)
 {
+    console.log('inputController requireUsername');
+
     if (!req.body.username)
     {
         return res.status(400).json(
@@ -101,6 +111,8 @@ var requireUsername = function (req, res, next)
 
 var requirePassword = function (req, res, next)
 {
+    console.log('inputController requirePassword');
+
     if (!req.body.password)
     {
         return res.status(400).json(
