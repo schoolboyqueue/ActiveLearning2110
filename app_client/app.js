@@ -27,16 +27,20 @@ app.config(function($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise("/");
 
     // app state and individual views
-    // $stateProvider
-    //     .state('dashboard', {
-    //         url: '/',
-    //         views: {
-    //             'login': {
-    //                 templateUrl: '/app-components/login/login.view.html',
-    //                 controller: 'Login.Controller'
-    //             }
-    //         }
-    //     });
+    $stateProvider
+        .state('dashboard', {
+            url: '/',
+            views: {
+                'sidebar': {
+                    templateUrl: '/app-components/sidebar/sidebar.view.html',
+                    controller: 'Sidebar.Controller'
+                },
+                'dashboard': {
+                    templateUrl: '/app-components/dashboard/dashboard.view.html',
+                    controller: 'Dashboard.Controller'
+                }
+            }
+        });
 });
 
 app.controller('Main.Controller', function($scope, $http, $localStorage, ModalService, AuthenticationService) {
@@ -59,6 +63,7 @@ app.controller('Main.Controller', function($scope, $http, $localStorage, ModalSe
     if ($localStorage.currentUser && !AuthenticationService.Expired($localStorage.currentUser.token)) {
         $http.defaults.headers.common.Authorization = $localStorage.currentUser.token;
     } else {
+        AuthenticationService.Logout(false);
         showLogin();
     }
 });

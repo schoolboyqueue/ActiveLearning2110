@@ -38,9 +38,13 @@ app.controller('Login.Controller', [
             AuthenticationService.Logout();
         }
 
-        $scope.startRegister = function() {
+        $scope.toggleRegister = function() {
             $scope.error = null;
             $scope.title = $scope.title === 'Login' ? 'Register' : 'Login';
+            if ($scope.register) {
+                $scope.passwordVerify = null;
+                $scope.professorKey = null;
+            }
             $scope.register = !$scope.register;
         };
 
@@ -80,7 +84,7 @@ app.controller('Login.Controller', [
                     $scope.professorKey,
                     function(result, status, text) {
                         if (result === true) {
-                            $scope.startRegister();
+                            $scope.toggleRegister();
                             handleStatus(status, text);
                         } else {
                             handleStatus(status, text);

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-ng-app="app" data-ng-controller="Main.Controller as vm">
+<html lang="en" data-ng-app="app" data-ng-controller="Main.Controller">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,7 +8,7 @@
         <title>Active Learning 2110</title>
 
         <!-- Bootstrap -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"/>
         <!-- Font Awesome -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
         <!-- Custom CSS -->
@@ -21,8 +21,11 @@
         <![endif]-->
     </head>
     <body>
-        <!-- Login/Register Modal -->
-        <div ui-view="login"></div>
+        <div id="wrapper">
+            <!-- Views -->
+            <div ui-view="sidebar"></div>
+            <div ui-view="dashboard"></div>
+        </div>
 
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
@@ -39,7 +42,10 @@
 
         <!-- application scripts -->
         <script src="app.js"></script>
+        <script src="app-services/user.service.js"></script>
         <script src="app-services/authentication.service.js"></script>
         <script src="app-components/login/login.controller.js"></script>
+        <script src="app-components/sidebar/sidebar.controller.js"></script>
+        <script src="app-components/dashboard/dashboard.controller.js"></script>
     </body>
 </html>

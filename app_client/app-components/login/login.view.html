@@ -2,15 +2,25 @@
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-body">
-                <h2 class="text-center pb-2">{{title}}</h2>
+                <h2 class="text-center pb-2">
+                    <span>{{title}}</span>
+                    <button
+                        type="btn float-right"
+                        ng-click="toggleRegister()"
+                        class="close"
+                        ng-show="register">
+                        &times;
+                    </button>
+                </h2>
                 <!-- Login Form -->
                 <form name="loginForm">
                     <div
                         class="form-group"
                         ng-class="{ 'has-danger': loginForm.email.$touched && (loginForm.email.$error.invalidGatech
                                     || loginForm.email.$invalid) }">
-                        <label for="email">E-Mail</label>
+                        <label for="email" class="sr-only">E-Mail</label>
                         <input
+                            placeholder="Email Address"
                             type="email"
                             name="email"
                             class="form-control"
@@ -21,8 +31,9 @@
                         class="form-group" n
                         g-class="{ 'has-danger': loginForm.password.$touched && (loginForm.password.$invalid
                                    || loginform.password.$error.minlength) }">
-                        <label for="password">Password</label>
+                        <label for="password" class="sr-only">Password</label>
                         <input
+                            placeholder="Password"
                             type="password"
                             name="password"
                             class="form-control"
@@ -36,8 +47,9 @@
                         ng-show="register"
                         ng-class="{ 'has-danger': loginForm.passwordVerify.$touched && (loginForm.passwordVerify.$invalid
                                     || loginForm.passwordVerify.$error.minlength || loginform.passwordVerify.$error.invalidEqPass) }">
-                        <label for="passwordVerify">Verify Password</label>
+                        <label for="passwordVerify" class="sr-only">Verify Password</label>
                         <input
+                            placeholder="Verify Password"
                             type="password"
                             name="passwordVerify"
                             class="form-control"
@@ -51,7 +63,7 @@
                             <button
                                 ng-model="professor"
                                 type="button"
-                                class="btn btn-primary"
+                                class="btn btn-outline-success"
                                 ng-click="professorClick()"
                                 data-toggle="button"
                                 aria-pressed="false"
@@ -60,6 +72,7 @@
                             </button>
                         </span>
                         <input
+                            placeholder="Professor Key"
                             name="professorKey"
                             type="text"
                             ng-disabled="!professor"
@@ -78,7 +91,7 @@
                                 <button
                                     ng-click="submit()"
                                     ng-disabled="loginForm.$invalid"
-                                    class="btn btn-primary">
+                                    class="btn btn-outline-primary">
                                     <span ng-show="loading">
                                         <i class="fa fa-circle-o-notch fa-spin"></i>
                                     </span>
@@ -86,10 +99,10 @@
                                 </button>
                             </div>
                             <button
-                                class="btn btn-primary"
+                                class="btn btn-outline-primary"
                                 ng-hide="register"
                                 class="ng-hide"
-                                ng-click="startRegister()">Register
+                                ng-click="toggleRegister()">Register
                             </button>
                         </div>
                     </div>

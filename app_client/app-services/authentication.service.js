@@ -15,7 +15,7 @@
 
 var app = angular.module('app');
 
-app.factory('AuthenticationService', function($http, $localStorage, jwtHelper) {
+app.factory('AuthenticationService', function($http, $localStorage, UserService, jwtHelper) {
 
     var service = {};
 
@@ -28,8 +28,13 @@ app.factory('AuthenticationService', function($http, $localStorage, jwtHelper) {
                     if (response.data.jwt_token) {
                         $localStorage.currentUser = {
                             username: email,
-                            token: response.data.jwt_token
+                            token: response.data.jwt_token,
+                            id: response.data.user_id
                         };
+
+                        UserService.id = response.data.user_id;
+                        UserService.email = email;
+
                         $http.defaults.headers.common.Authorization = response.data.jwt_token;
                         callback(true, response.status, response.data.message);
                     } else {
@@ -61,10 +66,19 @@ app.factory('AuthenticationService', function($http, $localStorage, jwtHelper) {
         return jwtHelper.isTokenExpired(token);
     };
 
-    service.Logout = function() {
-        // remove user from local storage and clear http auth header
+    service.Logout = function(request) {
+        if (request) {
+            $http.delete('/api_v2/authenticate')
+                .then(function() {
+
+                },
+                function() {
+
+                });
+        }
         delete $localStorage.currentUser;
         $http.defaults.headers.common.Authorization = '';
+        UserService.Clear();
     };
 
     return service;
