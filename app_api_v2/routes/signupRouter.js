@@ -32,7 +32,7 @@ Authorization:  none
 
 Path Parameters: none
 Query String:    none
-Query String:    user_role  Pass either 'admin' or 'instructor' required for admin or instructor registration
+Query String:    role  Pass either 'admin' or 'instructor' required for admin or instructor registration
 
 Request Body application/json
 {

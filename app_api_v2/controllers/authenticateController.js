@@ -66,23 +66,7 @@ var authenticate = function (req, res, next)
     });
 };
 
-var logout = function(req, res)
-{
-    console.log('authController logout');
-
-    setCookieJWT(res, undefined, function()
-    {
-        return res.status(200).json(
-            {
-                success: true,
-                message: 'Logout Successful'
-            }
-        );
-    });
-};
-
 module.exports =
 {
-    authenticate        :   authenticate,
-    logout              :   logout
+    authenticate        :   authenticate
 };

@@ -14,11 +14,20 @@
 //************************************************************
 "use strict";
 
+<<<<<<< HEAD
 var express                = require('express');
 var authRouter             = express.Router();
 var authenticateController = require('./../controllers/authenticateController');
 var inputController        = require('./../controllers/inputController');
 var tokenController        = require('./../controllers/tokenController');
+=======
+var express           = require('express');
+var authRouter        = express.Router();
+
+var authenticateController    = require('./../controllers/authenticateController');
+var inputController    = require('./../controllers/inputController');
+var tokenController    = require('./../controllers/tokenController');
+>>>>>>> 90871731968b67b9ce90355391b4199dea75fa8c
 
 /**
 AUTHENTICATE USER

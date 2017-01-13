@@ -126,6 +126,29 @@ var getUser = function (req, res)
     });
 };
 
+var setUserName = function (req, res, next)
+{
+    console.log('userController setUserName');
+
+    User.findById(req.decodedToken.sub, function(err, user)
+    {
+        if (err)
+        {
+            return res.status(404).json(
+                {
+                    success: false,
+                    message: 'User Not Found'
+                }
+            );
+        }
+        else
+        {
+            req.user = user;
+            next();
+        }
+    });
+}
+
 var updateUser = function (req, res)
 {
     User.findById(req.params.USERID, function(err, user)
@@ -251,6 +274,7 @@ module.exports =
     deleteUser  : deleteUser,
     getAll      : getAll,
     getUser     : getUser,
+    setUserName : setUserName,
     updatePassword : updatePassword,
     updateUser  : updateUser
 };

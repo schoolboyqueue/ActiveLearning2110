@@ -86,6 +86,25 @@ var roleUpdate = function (req, res, next)
     }
 }
 
+var adminOrInstructorOrSelf = function (req, res, next)
+{
+    console.log('authorizeController adminOrInstructorOrSelf');
+
+    if (req.decodedToken.sub !== req.query.id && req.decodedToken.role !== roles.ADMIN && req.decodedToken.role !== roles.INSTRUCTOR)
+    {
+        return res.status(401).json(
+            {
+                success: false,
+                message: 'Not Authorized: Admin or Instructor or Self Only'
+            }
+        );
+    }
+    else
+    {
+        next();
+    }
+}
+
 var adminOrSelf = function (req, res, next)
 {
     console.log('authorizeController adminOrSelf');
@@ -108,8 +127,6 @@ var adminOrSelf = function (req, res, next)
 var self = function (req, res, next)
 {
     console.log('authController authorizeSelf');
-    //console.log('Decoded Token: ')
-    //console.log(req.decodedToken);
 
     if (req.decodedToken.sub !== req.params.USERID)
     {
@@ -148,6 +165,7 @@ var student = function (req, res, next)
 module.exports =
 {
     admin         :   admin,
+    adminOrInstructorOrSelf :   adminOrInstructorOrSelf,
     adminOrSelf   :   adminOrSelf,
     instructor    :   instructor,
     roleUpdate    :   roleUpdate,

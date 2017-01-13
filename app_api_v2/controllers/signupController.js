@@ -144,46 +144,46 @@ var registerAdmin = function (req, res, next)
 {
   if (req.query.role === roles.ADMIN)
   {
-      if (req.body.username === 'admin@gatech.edu')
-      {
-        req.addUser = new User(
+        if (req.body.username === 'admin@gatech.edu')
         {
-            username: req.body.username,
-            password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)),
-            role    : roles.ADMIN
-        });
-        next();
+            req.addUser = new User(
+            {
+                username: req.body.username,
+                password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)),
+                role    : roles.ADMIN
+            });
+            next();
+        }
+        else
+        {
+            RegistrationKey.findOneAndUpdate({ 'key': req.body.key, 'validated': false }, { 'validated': true, 'user': req.body.username}, { 'new': true }, function (err, key)
+            {
+                if (err || !key)
+                {
+                    return res.status(400).json(
+                        {
+                            success: false,
+                            message: "Invalid Admin Registration Key"
+                        }
+                    );
+                }
+                else
+                {
+                    req.addUser = new User(
+                    {
+                        username: req.body.username,
+                        password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)),
+                        role    : roles.ADMIN
+                    });
+                    next();
+                }
+          });
       }
-      else
-      {
-      RegistrationKey.findOneAndUpdate({ 'key': req.body.key, 'validated': false }, { 'validated': true, 'user': req.body.username}, { 'new': true }, function (err, key)
-      {
-          if (err || !key)
-          {
-              return res.status(400).json(
-                  {
-                      success: false,
-                      message: "Invalid Admin Registration Key"
-                  }
-              );
-          }
-          else
-          {
-              req.addUser = new User(
-              {
-                  username: req.body.username,
-                  password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)),
-                  role    : roles.ADMIN
-              });
-              next();
-          }
-      });
     }
-  }
-  else
-  {
-      next();
-  }
+    else
+    {
+        next();
+    }
 };
 
 var registerInstructor = function (req, res, next)

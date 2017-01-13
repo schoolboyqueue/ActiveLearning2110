@@ -7,8 +7,6 @@ A Junior Design Project at Gatech
 
 - [Node and npm](http://nodejs.org)
 - [MongoDB](https://mongodb.com)
-- [*](*)
-- [*](*)
 
 ## Installation
 
@@ -19,6 +17,10 @@ git clone https://github.com/omizrahi3/ActiveLearning2110.git
 Install the application:
 ```bash
 npm install
+```
+Start MongoDB:
+```bash
+mongod
 ```
 Start the server:
 ```bash
