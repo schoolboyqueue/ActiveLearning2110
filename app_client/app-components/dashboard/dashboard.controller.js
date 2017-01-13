@@ -5,7 +5,7 @@
 //  Active Learning 2110                                    //
 //                                                          //
 //  Created by Jeremy Carter on 01/12/17.                   //
-//  Copyright © 2016 Odell Mizrahi. All rights reserved.    //
+//  Copyright © 2016 Jeremy Carter. All rights reserved.    //
 //                                                          //
 //  Date        Name        Description                     //
 //  -------     ---------   --------------                  //
