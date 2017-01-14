@@ -18,6 +18,13 @@ var User    = require('./../models/userModel');
 var Course  = require('./../models/courseModel');
 var rand    = require("random-key");
 
+var roles =
+{
+    ADMIN       : 'admin',
+    INSTRUCTOR  : 'instructor',
+    STUDENT     : 'student',
+};
+
 function checkForStudent(req, res, course, callback)
 {
     console.log('courseController checkForStudent');
@@ -387,6 +394,61 @@ var deleteLecture  = function (req, res)
     });
 };
 
+var getUserCourses  = function (req, res)
+{
+    console.log('userController getUserCourses');
+
+    if (req.decodedToken.role === roles.STUDENT)
+    {
+        Course.find({'students.student_id' : req.decodedToken.sub}, function(err, courses)
+        {
+            if (err || !courses)
+            {
+                return res.status(404).json(
+                    {
+                        success: false,
+                        message: 'No Coures Found'
+                    }
+                );
+            }
+            else
+            {
+                return res.status(201).json(
+                    {
+                        success : true,
+                        courses : courses
+                    }
+                );
+            }
+        });
+    }
+    else
+    {
+        Course.find({'instructor.instructor_id' : req.decodedToken.sub}, function(err, courses)
+        {
+            if (err || !courses)
+            {
+                return res.status(404).json(
+                    {
+                        success: false,
+                        message: 'No Coures Found'
+                    }
+                );
+            }
+            else
+            {
+                return res.status(201).json(
+                    {
+                        success : true,
+                        courses : courses
+                    }
+                );
+            }
+        });
+    }
+
+};
+
 module.exports =
 {
     createCourse      :     createCourse,
@@ -396,5 +458,6 @@ module.exports =
     joinCourse        :     joinCourse,
     getCourse         :     getCourse,
     getLectures       :     getLectures,
-    getStudents       :     getStudents
+    getStudents       :     getStudents,
+    getUserCourses    :     getUserCourses
 };

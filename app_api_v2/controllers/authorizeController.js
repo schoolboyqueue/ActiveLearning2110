@@ -162,6 +162,25 @@ var student = function (req, res, next)
     }
 }
 
+var studentOrInstructor = function (req, res, next)
+{
+    console.log('authorizeController instructor');
+
+    if (req.decodedToken.role !== roles.STUDENT && req.decodedToken.role !== roles.INSTRUCTOR)
+    {
+        return res.status(401).json(
+            {
+                success: false,
+                message: 'Student or Instructor Authorization Required'
+            }
+        );
+    }
+    else
+    {
+        next();
+    }
+}
+
 module.exports =
 {
     admin         :   admin,
@@ -170,5 +189,6 @@ module.exports =
     instructor    :   instructor,
     roleUpdate    :   roleUpdate,
     self          :   self,
-    student       :   student
+    student       :   student,
+    studentOrInstructor   :     studentOrInstructor
 };

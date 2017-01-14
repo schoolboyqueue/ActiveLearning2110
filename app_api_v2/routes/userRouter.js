@@ -18,6 +18,7 @@ var express           = require('express');
 var userRouter        = express.Router();
 
 var userController        = require('./../controllers/userController');
+var courseController        = require('./../controllers/courseController');
 var tokenController       = require('./../controllers/tokenController');
 var authorizeController   = require('./../controllers/authorizeController');
 var inputController       = require('./../controllers/inputController');
@@ -57,6 +58,24 @@ userRouter.route('/:USERID')
           tokenController.refreshToken,
           authorizeController.adminOrSelf,
           userController.getUser);
+
+/**
+GET USER COURSES
+
+GET	/api_v2/user/{user_id}/courses
+
+Authentication:   user token                required
+Authorization:    student or instructor     required
+
+Path Parameters:  user_id String    required
+Query String:     none
+Request Body:     none
+**/
+userRouter.route('/:USERID/courses')
+    .get( tokenController.validateToken,
+          tokenController.refreshToken,
+          authorizeController.studentOrInstructor,
+          courseController.getUserCourses);
 
 /**
 UPDATE USER
