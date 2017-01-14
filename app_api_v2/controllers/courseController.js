@@ -14,8 +14,8 @@
 //************************************************************
 "use strict";
 
-var User    = require('./../../app_api/models/userModel');
-var Course  = require('./../../app_api/models/courseModel');
+var User    = require('./../models/userModel');
+var Course  = require('./../models/courseModel');
 var rand    = require("random-key");
 
 function checkForStudent(req, res, course, callback)

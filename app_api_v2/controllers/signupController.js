@@ -14,8 +14,8 @@
 //************************************************************
 "use strict";
 
-var User            = require('./../../app_api/models/userModel');
-var RegistrationKey = require('./../../app_api/models/keyModel');
+var User            = require('./../models/userModel');
+var RegistrationKey = require('./../models/keyModel');
 
 var bcrypt  = require('bcryptjs');
 var rand    = require("random-key");

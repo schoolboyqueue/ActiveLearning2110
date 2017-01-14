@@ -16,8 +16,7 @@
 //************************************************************
 "use strict";
 
-var app_api      = require('./app_api'),
-    app_api_v2   = require('./app_api_v2'),
+var app_api_v2   = require('./app_api_v2'),
     app_client   = require('./app_client'),
     bodyparser   = require('body-parser'),
     cookieParser = require('cookie-parser'),
@@ -56,7 +55,6 @@ app.use(sessions(
 ));
 
 app_client(app);
-app_api(app);
 app_api_v2(app);
 
 /**

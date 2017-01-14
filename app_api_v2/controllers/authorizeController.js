@@ -14,7 +14,7 @@
 //************************************************************
 "use strict";
 
-var User       = require('./../../app_api/models/userModel');
+var User       = require('./../models/userModel');
 
 var roles =   {
                   ADMIN       : 'admin',
