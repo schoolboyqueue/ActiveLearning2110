@@ -1,4 +1,4 @@
-/* Toggle Styles */
+/** ALL CSS SHOULD START WITH #sidebar with the exception of #wrapper */
 
 #wrapper {
     padding-left: 0;
@@ -20,7 +20,7 @@
     height: 100%;
     margin-left: -250px;
     overflow-y: auto;
-    background: #000;
+    background: #F7F7F7;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
@@ -61,13 +61,13 @@
 .sidebar-nav li a {
     display: block;
     text-decoration: none;
-    color: #999999;
+    color: black;
 }
 
 .sidebar-nav li a:hover {
     text-decoration: none;
-    color: #fff;
-    background: rgba(255,255,255,0.2);
+    color: white;
+    background: grey;
 }
 
 .sidebar-nav li a:active,
@@ -82,11 +82,11 @@
 }
 
 .sidebar-nav > .sidebar-brand a {
-    color: #999999;
+    color: black;
 }
 
 .sidebar-nav > .sidebar-brand a:hover {
-    color: #fff;
+    color: grey;
     background: none;
 }
 

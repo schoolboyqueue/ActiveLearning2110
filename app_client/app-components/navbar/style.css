@@ -1,0 +1,9 @@
+/** ALL CSS SHOULD START WITH #navbar */
+
+.navbar-brand {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    text-align: center;
+    margin:0 auto;
+}
