@@ -15,25 +15,28 @@
 
 var app = angular.module('app');
 
-app.factory('UserService', function() {
+app.factory('UserService', function($http, $localStorage) {
 
-    var user = {
-        id: '',
-        email: '',
-        course_list: [],
-        notifications: {
-            count: 0,
-            data: []
-        },
+    var service = {};
+
+    service.getUserInfo = function(callback) {
+        $http.post('/api_v2/user/' + $localStorage.id)
+            .then(function (response) {
+                $localStorage.id = response.data.user._id;
+                $localStorage.email = response.data.user.username;
+                $localStorage.photo = response.data.user.photo;
+                $localStorage.role = response.data.user.role;
+                callback(true, response.status, response.data.message);
+            },
+            function(response) {
+                callback(false, response.status, response.data.message);
+            }
+        );
     };
 
-    user.Clear = function() {
-        user.id = '';
-        user.email = '';
-        user.course_list = [];
-        user.notifications.count = 0;
-        user.notifications.data = [];
+    service.Clear = function() {
+        $localStorage.$reset();
     };
 
-    return user;
+    return service;
 });

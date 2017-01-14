@@ -47,7 +47,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
         });
 });
 
-app.controller('Main.Controller', function($scope, $http, $localStorage, ModalService, AuthenticationService) {
+app.controller('Main.Controller', function($scope, $http, $localStorage, ModalService, AuthenticationService, UserService) {
 
     var showLogin = function() {
         ModalService.showModal({
@@ -58,14 +58,11 @@ app.controller('Main.Controller', function($scope, $http, $localStorage, ModalSe
                 backdrop: 'static',
                 keyboard: false
             });
-            modal.close.then(function(result) {
-                console.log(result);
-            });
         });
     };
 
-    if ($localStorage.currentUser && !AuthenticationService.Expired($localStorage.currentUser.token)) {
-        $http.defaults.headers.common.Authorization = $localStorage.currentUser.token;
+    if ($localStorage.token && !AuthenticationService.Expired($localStorage.token)) {
+        $http.defaults.headers.common.Authorization = $localStorage.token;
     } else {
         AuthenticationService.Logout(false);
         showLogin();

@@ -25,26 +25,20 @@ app.factory('AuthenticationService', function($http, $localStorage, UserService,
             username: email,
             password: password
         }).then(function (response) {
-                    if (response.data.jwt_token) {
-                        $localStorage.currentUser = {
-                            username: email,
-                            token: response.data.jwt_token,
-                            id: response.data.user_id
-                        };
-
-                        UserService.id = response.data.user_id;
-                        UserService.email = email;
-
-                        $http.defaults.headers.common.Authorization = response.data.jwt_token;
-                        callback(true, response.status, response.data.message);
-                    } else {
-                        callback(false, response.status, response.data.message);
-                    }
-                },
-                function(response) {
+                if (response.data.jwt_token) {
+                    $localStorage.email = email;
+                    $localStorage.token = response.data.jwt_token;
+                    $localStorage.id = response.data.user_id;
+                    $http.defaults.headers.common.Authorization = response.data.jwt_token;
+                    callback(true, response.status, response.data.message);
+                } else {
                     callback(false, response.status, response.data.message);
                 }
-            );
+            },
+            function(response) {
+                callback(false, response.status, response.data.message);
+            }
+        );
     };
 
     service.Register = function(email, password, professor, key, callback) {
@@ -54,12 +48,12 @@ app.factory('AuthenticationService', function($http, $localStorage, UserService,
             username: email,
             password: password, key: key
         }).then(function (response) {
-                    callback(true, response.status, response.data.message);
-                },
-                function (response) {
-                    callback(false, response.status, response.data.message);
-                }
-            );
+                callback(true, response.status, response.data.message);
+            },
+            function (response) {
+                callback(false, response.status, response.data.message);
+            }
+        );
     };
 
     service.Expired = function(token) {
@@ -76,7 +70,6 @@ app.factory('AuthenticationService', function($http, $localStorage, UserService,
 
                 });
         }
-        delete $localStorage.currentUser;
         $http.defaults.headers.common.Authorization = '';
         UserService.Clear();
     };

@@ -19,8 +19,9 @@ app.controller('Login.Controller', [
     '$scope',
     '$element',
     'AuthenticationService',
+    'UserService',
     'close',
-    function($scope, $element, AuthenticationService, close) {
+    function($scope, $element, AuthenticationService, UserService, close) {
         $scope.title = 'Login';
         $scope.email = null;
         $scope.password = null;
@@ -83,7 +84,7 @@ app.controller('Login.Controller', [
                     $scope.professor,
                     $scope.professorKey,
                     function(result, status, text) {
-                        if (result === true) {
+                        if (result) {
                             $scope.toggleRegister();
                             handleStatus(status, text);
                         } else {
@@ -93,9 +94,15 @@ app.controller('Login.Controller', [
                     });
             } else {
                 AuthenticationService.Login($scope.email, $scope.password, function(result, status, text) {
-                    if (result === true) {
-                        $element.modal('hide');
-                        handleStatus(status, text);
+                    if (result) {
+                        UserService.getUserInfo(function(success, status, text) {
+                            if (success) {
+                                $element.modal('hide');
+                            } else {
+                                AuthenticationService.Logout(true);
+                                handleStatus(status, text);
+                            }
+                        });
                     } else {
                         handleStatus(status, text);
                     }
