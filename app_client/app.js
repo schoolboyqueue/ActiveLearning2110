@@ -49,6 +49,10 @@ app.config(function($stateProvider, $urlRouterProvider) {
 
 app.controller('Main.Controller', function($scope, $http, $localStorage, ModalService, AuthenticationService, UserService) {
 
+    // All user info once fetched will be stored in local storage. now any of the other controllers can access user info
+    // by using $storage.<field>. Ex: to get the user's e-mail do -> $storage.email
+    $scope.$storage = $localStorage;
+
     var showLogin = function() {
         ModalService.showModal({
             templateUrl: '/app-components/login/login.view.html',

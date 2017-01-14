@@ -18,10 +18,7 @@ var app = angular.module('app');
 app.controller('Navbar.Controller', [
     '$scope',
     '$element',
-    '$localStorage',
-    function($scope, $element, $localStorage) {
-
-        $scope.$storage = $localStorage;
+    function($scope, $element) {
 
     }
 ]);
