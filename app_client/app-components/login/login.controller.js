@@ -90,7 +90,7 @@ app.controller('Login.Controller', [
                             handleStatus(status, text);
                         }
                         $scope.loading = false;
-                });
+                    });
             } else {
                 AuthenticationService.Login($scope.email, $scope.password, function(result, status, text) {
                     if (result === true) {

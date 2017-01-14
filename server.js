@@ -55,7 +55,6 @@ app.use(sessions(
     }
 ));
 
-//set_session(app);
 app_client(app);
 app_api(app);
 app_api_v2(app);

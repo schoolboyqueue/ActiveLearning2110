@@ -1,4 +1,6 @@
-<div class="modal fade align-middle" tabindex="-1" role="dialog">
+<div class="login modal fade align-middle" tabindex="-1" role="dialog">
+    <!-- Style sheet must be here and not as the first element -->
+    <link rel="stylesheet" href="app-components/login/style.css"/>
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-body">
@@ -16,8 +18,10 @@
                 <form name="loginForm">
                     <div
                         class="form-group"
-                        ng-class="{ 'has-danger': loginForm.email.$touched && (loginForm.email.$error.invalidGatech
-                                    || loginForm.email.$invalid) }">
+                        ng-class="{ 'has-danger':
+                                        loginForm.password.$touched &&
+                                        (loginForm.email.$error.invalidGatech || loginForm.email.$invalid),
+                                    'has-success': loginForm.email.$valid }">
                         <label for="email" class="sr-only">E-Mail</label>
                         <input
                             placeholder="Email Address"
@@ -28,9 +32,11 @@
                             required gatech/>
                     </div>
                     <div
-                        class="form-group" n
-                        g-class="{ 'has-danger': loginForm.password.$touched && (loginForm.password.$invalid
-                                   || loginform.password.$error.minlength) }">
+                        class="form-group"
+                        ng-class="{ 'has-danger':
+                                        loginForm.password.$touched &&
+                                        (loginForm.password.$invalid || loginform.password.$error.minlength),
+                                   'has-success': loginForm.password.$valid }">
                         <label for="password" class="sr-only">Password</label>
                         <input
                             placeholder="Password"
@@ -45,8 +51,12 @@
                     <div
                         class="form-group"
                         ng-show="register"
-                        ng-class="{ 'has-danger': loginForm.passwordVerify.$touched && (loginForm.passwordVerify.$invalid
-                                    || loginForm.passwordVerify.$error.minlength || loginform.passwordVerify.$error.invalidEqPass) }">
+                        ng-class="{ 'has-danger':
+                                        loginForm.passwordVerify.$touched &&
+                                        (loginForm.passwordVerify.$invalid ||
+                                        loginForm.passwordVerify.$error.minlength ||
+                                        loginform.passwordVerify.$error.invalidEqPass),
+                                    'has-success': loginForm.passwordVerify.$valid }">
                         <label for="passwordVerify" class="sr-only">Verify Password</label>
                         <input
                             placeholder="Verify Password"

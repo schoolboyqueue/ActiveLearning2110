@@ -31,13 +31,17 @@ app.config(function($stateProvider, $urlRouterProvider) {
         .state('dashboard', {
             url: '/',
             views: {
+                'navbar': {
+                    templateUrl: 'app-components/navbar/navbar.view.html',
+                    controller: 'Navbar.Controller',
+                },
                 'sidebar': {
                     templateUrl: '/app-components/sidebar/sidebar.view.html',
-                    controller: 'Sidebar.Controller'
+                    controller: 'Sidebar.Controller',
                 },
                 'dashboard': {
                     templateUrl: '/app-components/dashboard/dashboard.view.html',
-                    controller: 'Dashboard.Controller'
+                    controller: 'Dashboard.Controller',
                 }
             }
         });
