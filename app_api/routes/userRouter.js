@@ -14,11 +14,11 @@
 //************************************************************
 "use strict";
 
-var express        = require('express');
-var authController = require('./../controllers/authController');
-var userController = require('./../controllers/userController');
+var express          = require('express');
+var authController   = require('./../controllers/authController');
+var userController   = require('./../controllers/userController');
 var courseController = require('./../controllers/courseController');
-var userRouter     = express.Router();
+var userRouter       = express.Router();
 
 
 /**

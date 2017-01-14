@@ -4,27 +4,35 @@
 //  authRouter.js                                           //
 //  Active Learning 2110                                    //
 //                                                          //
-//  Created by Odell Mizrahi on 12/22/16.                   //
+//  Created by Odell Mizrahi on 12/22/17.                   //
 //  Copyright © 2016 Odell Mizrahi. All rights reserved.    //
 //                                                          //
 //  Date        Name        Description                     //
 //  -------     ---------   --------------                  //
-//  22Dec16     O. Mizrahi  Initial Design                  //
+//  22Dec17     O. Mizrahi  Initial Design                  //
 //                                                          //
 //************************************************************
 "use strict";
 
+<<<<<<< HEAD
+var express                = require('express');
+var authRouter             = express.Router();
+var authenticateController = require('./../controllers/authenticateController');
+var inputController        = require('./../controllers/inputController');
+var tokenController        = require('./../controllers/tokenController');
+=======
 var express           = require('express');
 var authRouter        = express.Router();
 
 var authenticateController    = require('./../controllers/authenticateController');
 var inputController    = require('./../controllers/inputController');
 var tokenController    = require('./../controllers/tokenController');
+>>>>>>> 90871731968b67b9ce90355391b4199dea75fa8c
 
 /**
 AUTHENTICATE USER
 
-POST	/api_v2/authenticate
+POST    /api_v2/authenticate
 
 Authentication:   none
 Authorization:    none
@@ -46,7 +54,7 @@ authRouter.route('/')
 /**
 LOG OUT USER
 
-DELETE	/api_v2/authenticate
+DELETE    /api_v2/authenticate
 
 Authentication:  user token        required
 Authorization:   none

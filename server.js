@@ -12,41 +12,29 @@
 //  13Sep16     O. Mizrahi  Initial Design                  //
 //  08Oct16     J. Carter   Added Sass Support              //
 //  16Nov16     J. Carter   Added urlencoded to bodyparser  //
+//  12Jan17     J. Carter   Removed unused libraries        //
 //************************************************************
 "use strict";
 
-var app_api    = require('./app_api'),
-    app_api_v2 = require('./app_api_v2'),
-    app_client = require('./app_client'),
-    set_session = require('./session'),
-    bodyparser = require('body-parser'),
+var app_api      = require('./app_api'),
+    app_api_v2   = require('./app_api_v2'),
+    app_client   = require('./app_client'),
+    bodyparser   = require('body-parser'),
     cookieParser = require('cookie-parser'),
-    express    = require('express'),
-    mongoose   = require('mongoose'),
-    path       = require('path'),
-    sass       = require('node-sass-middleware'),
-    sessions   = require('client-sessions'),
-    config     = require('./config'),
-    app        = express();
+    express      = require('express'),
+    mongoose     = require('mongoose'),
+    path         = require('path'),
+    sessions     = require('client-sessions'),
+    config       = require('./config'),
+    app          = express();
 
 /**
 Must have MongoDB installed and run mongod
 */
 mongoose.Promise = global.Promise;
-//mongoose.connect('mongodb://localhost/ActiveLearning2110');
 mongoose.connect(config.database);
 
-app.use(sass({
-        src: path.join(__dirname, '/app_client/scss'),
-        dest: path.join(__dirname, '/app_client'),
-        debug: false,
-        outputStyle: 'compressed'
-    }),
-    express.static(path.join(__dirname, '/app_client'))
-);
-
-app.set('views', path.join(__dirname, '/app_client/views'));
-app.set('view engine', 'pug');
+app.use(express.static(path.join(__dirname, '/app_client')));
 
 app.use(bodyparser.urlencoded(
     {
