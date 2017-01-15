@@ -10,7 +10,8 @@
 //  Date        Name        Description                     //
 //  -------     ---------   --------------                  //
 //  11Jan16     J. Carter  Initial Design                   //
-//                                                          //
+//  14Jan16     J. Carter  Implemented local storage for    //
+//                          data persistance.               //
 //************************************************************
 
 var app = angular
@@ -51,10 +52,6 @@ app.controller('Main.Controller', function($scope, $http, $localStorage, $rootSc
 
     // All user info once fetched will be stored in local storage. now any of the other controllers can access user info
     // by using $storage.<field>. Ex: to get the user's e-mail do -> $storage.email
-
-    $rootScope.app = {
-        loaded: false
-    };
 
     $scope.$storage = $localStorage;
 

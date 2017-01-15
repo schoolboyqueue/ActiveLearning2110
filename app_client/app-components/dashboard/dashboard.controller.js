@@ -18,7 +18,11 @@ var app = angular.module('app');
 app.controller('Dashboard.Controller', [
     '$scope',
     '$element',
-    function($scope, $element) {
+    'UserService',
+    function($scope, $element, UserService) {
 
+        $scope.courseAC = function() {
+            UserService.ShowACCourse();
+        };
     }
 ]);

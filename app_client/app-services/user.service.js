@@ -10,7 +10,8 @@
 //  Date        Name        Description                     //
 //  -------     ---------   --------------                  //
 //  12Jan17     J. Carter  Initial Design                   //
-//                                                          //
+//  15Jan17     J. Carter  Moved in ShowLogin & created     //
+//                          ShowACCourse                    //
 //************************************************************
 
 var app = angular.module('app');
@@ -39,6 +40,15 @@ app.factory('UserService', function($http, $localStorage, ModalService) {
                 backdrop: 'static',
                 keyboard: false
             });
+        });
+    };
+
+    service.ShowACCourse = function() {
+        ModalService.showModal({
+            templateUrl: '/app-components/coursemodal/coursemodal.view.html',
+            controller: 'CourseModal.Controller'
+        }).then(function(modal) {
+            modal.element.modal();
         });
     };
 
