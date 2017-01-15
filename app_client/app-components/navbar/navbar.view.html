@@ -2,7 +2,12 @@
 
 <nav class="navbar sticky-top navbar-inverse">
     <div class="navbar-header">
-        <button class="navbar-toggler nav-button" id="menu-toggle" type="button" aria-label="Toggle navigation">
+        <button
+            class="navbar-toggler nav-button"
+            id="menu-toggle"
+            type="button"
+            aria-label="Toggle navigation"
+            ng-click="$storage.hideSidebar = !$storage.hideSidebar">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="form-group">
@@ -15,11 +20,3 @@
         </div>
     </div>
 </nav>
-
-<!-- Menu Toggle Script -->
-<script>
-$("#menu-toggle").click(function(e) {
-    e.preventDefault();
-    $("#wrapper").toggleClass("toggled");
-});
-</script>

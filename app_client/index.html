@@ -22,7 +22,7 @@
     </head>
     <body>
         <div ui-view="navbar"></div>
-        <div id="wrapper">
+        <div id="wrapper" ng-class="{'toggled' : $storage.hideSidebar }">
             <!-- Views -->
             <div ui-view="sidebar"></div>
             <div ui-view="dashboard"></div>

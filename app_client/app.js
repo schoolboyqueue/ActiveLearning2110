@@ -53,6 +53,10 @@ app.controller('Main.Controller', function($scope, $http, $localStorage, ModalSe
     // by using $storage.<field>. Ex: to get the user's e-mail do -> $storage.email
     $scope.$storage = $localStorage;
 
+    if (!$scope.$storage.hideSidebar) {
+        $scope.$storage.hideSidebar = false;
+    }
+
     var showLogin = function() {
         ModalService.showModal({
             templateUrl: '/app-components/login/login.view.html',
