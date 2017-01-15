@@ -72,6 +72,7 @@ app.factory('AuthenticationService', function($http, $localStorage, UserService,
         }
         $http.defaults.headers.common.Authorization = '';
         UserService.Clear();
+        UserService.ShowLogin();
     };
 
     return service;

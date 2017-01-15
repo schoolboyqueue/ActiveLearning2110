@@ -15,9 +15,32 @@
 
 var app = angular.module('app');
 
-app.factory('UserService', function($http, $localStorage) {
+app.factory('UserService', function($http, $localStorage, ModalService) {
 
     var service = {};
+
+    $localStorage.$default({
+        id: '',
+        email: '',
+        photo: '',
+        role: '',
+        notifications: {
+            count: 0,
+            data: []
+        }
+    });
+
+    service.ShowLogin = function() {
+        ModalService.showModal({
+            templateUrl: '/app-components/login/login.view.html',
+            controller: 'Login.Controller'
+        }).then(function(modal) {
+            modal.element.modal({
+                backdrop: 'static',
+                keyboard: false
+            });
+        });
+    };
 
     service.getUserInfo = function(callback) {
         $http.post('/api_v2/user/' + $localStorage.id)

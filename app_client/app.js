@@ -47,32 +47,27 @@ app.config(function($stateProvider, $urlRouterProvider) {
         });
 });
 
-app.controller('Main.Controller', function($scope, $http, $localStorage, ModalService, AuthenticationService, UserService) {
+app.controller('Main.Controller', function($scope, $http, $localStorage, $rootScope, AuthenticationService, UserService) {
 
     // All user info once fetched will be stored in local storage. now any of the other controllers can access user info
     // by using $storage.<field>. Ex: to get the user's e-mail do -> $storage.email
+
+    $rootScope.app = {
+        loaded: false
+    };
+
     $scope.$storage = $localStorage;
 
     if (!$scope.$storage.hideSidebar) {
         $scope.$storage.hideSidebar = false;
     }
 
-    var showLogin = function() {
-        ModalService.showModal({
-            templateUrl: '/app-components/login/login.view.html',
-            controller: 'Login.Controller'
-        }).then(function(modal) {
-            modal.element.modal({
-                backdrop: 'static',
-                keyboard: false
-            });
-        });
-    };
-
     if ($localStorage.token && !AuthenticationService.Expired($localStorage.token)) {
         $http.defaults.headers.common.Authorization = $localStorage.token;
     } else {
         AuthenticationService.Logout(false);
-        showLogin();
+        $rootScope.$on('$includeContentLoaded', function() {
+            showLogin();
+        });
     }
 });

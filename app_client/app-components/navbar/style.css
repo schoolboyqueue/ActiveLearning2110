@@ -3,17 +3,5 @@
     width: 100%;
     left: 0;
     text-align: center;
-    margin:0 auto;
-}
-
-.nav-button {
-    position: absolute;
-    text-align: left;
-    margin: 0 auto;
-    z-index: 9999;
-}
-
-.navbar {
-    background-color: #324066;
-    color: white;
+    z-index: -1000;
 }

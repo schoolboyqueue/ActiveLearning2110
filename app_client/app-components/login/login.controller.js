@@ -32,13 +32,6 @@ app.controller('Login.Controller', [
         $scope.register = false;
         $scope.professor = false;
 
-        initController();
-
-        function initController() {
-            // reset login status
-            AuthenticationService.Logout();
-        }
-
         $scope.toggleRegister = function() {
             $scope.error = null;
             $scope.title = $scope.title === 'Login' ? 'Register' : 'Login';
