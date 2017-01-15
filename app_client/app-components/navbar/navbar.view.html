@@ -1,15 +1,26 @@
 <link rel="stylesheet" href="app-components/navbar/style.css"/>
 
-<nav class="navbar sticky-top navbar-light bg-faded">
-    <div class="navbar-header">
-        <div class="form-group">
-            <p class="navbar-brand">Class</p>
-            <form class="form-inline float-right">
-                <div class="input-group">
-                    <span class="input-group-addon" id="basic-addon1">:-)</span>
-                    <input type="text" class="form-control" placeholder="Search Classes" aria-describedby="basic-addon1">
-                </div>
-            </form>
+<nav class="navbar sticky-top navbar-inverse bg-primary pb-2 pt-2">
+    <div class="nav-header">
+        <button
+            class="navbar-toggler"
+            id="menu-toggle"
+            type="button"
+            aria-label="Toggle navigation"
+            ng-click="$storage.hideSidebar = !$storage.hideSidebar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand text-center" href="#">Active Learning 2110</a>
+        <div class="dropdown float-right pt-1">
+            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{$storage.email}}
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                <button class="dropdown-item" type="button">Edit Profile</button>
+                <div class="dropdown-divider"></div>
+                <button class="dropdown-item" type="button" ng-click="logout()">Logout</button>
+            </div>
         </div>
     </div>
 </nav>
+

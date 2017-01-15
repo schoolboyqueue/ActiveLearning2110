@@ -1,32 +1,45 @@
 <link rel="stylesheet" href="app-components/sidebar/style.css"/>
 
-<div id="sidebar sidebar-wrapper">
+<div class="sidebar bg-primary" id="sidebar-wrapper">
     <ul class="sidebar-nav">
         <li class="sidebar-brand">
+            <div class="container-fluid p-0 m-0">
             <a href="#">
-                Start Bootstrap
+                <i class="fa fa-linode fa-2x align-middle pr-2" aria-hidden="true" style="color: #5DC461"></i>
+                <strong>
+                    Active Learning
+                </strong>
             </a>
+            </div>
         </li>
         <li>
-            <a href="#">Dashboard</a>
+            <a href="#"><i class="fa fa-tachometer pr-3" aria-hidden="true"></i>Dashboard</a>
         </li>
         <li>
-            <a href="#">Shortcuts</a>
+            <a
+                href="#classList"
+                data-toggle="collapse"
+                aria-expanded="false"
+                aria-controls="classList"
+                ng-click="classExpand = !classExpand">
+                    <i class="fa fa-book pr-3 mr-auto" aria-hidden="true"></i>
+                    Courses
+                    <i class="fa fa-angle-down" aria-hidden="true" ng-hide="classExpand"></i>
+                    <i class="fa fa-angle-up" aria-hidden="true" ng-hide="!classExpand"></i>
+            </a>
+            <div class="collapse" id="classList">
+                <ul>
+                    <li>
+                        <a href="#">Example</a>
+                    </li>
+                </ul>
+            </div>
         </li>
         <li>
-            <a href="#">Overview</a>
+            <a href="#"><i class="fa fa-graduation-cap pr-3" aria-hidden="true"></i>Students</a>
         </li>
         <li>
-            <a href="#">Events</a>
-        </li>
-        <li>
-            <a href="#">About</a>
-        </li>
-        <li>
-            <a href="#">Services</a>
-        </li>
-        <li>
-            <a href="#">Contact</a>
+            <a href="#"><i class="fa fa-area-chart pr-3" aria-hidden="true"></i>Analytics</a>
         </li>
     </ul>
 </div>

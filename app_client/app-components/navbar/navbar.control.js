@@ -18,7 +18,12 @@ var app = angular.module('app');
 app.controller('Navbar.Controller', [
     '$scope',
     '$element',
-    function($scope, $element) {
+    'AuthenticationService',
+    function($scope, $element, AuthenticationService) {
+
+        $scope.logout = function() {
+            AuthenticationService.Logout(true);
+        };
 
     }
 ]);

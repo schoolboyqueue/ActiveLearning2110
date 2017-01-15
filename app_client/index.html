@@ -8,7 +8,7 @@
         <title>Active Learning 2110</title>
 
         <!-- Bootstrap -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="http://bootswatch.com/4-alpha/flatly/bootstrap.min.css"/>
         <!-- Font Awesome -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
         <!-- Custom CSS -->
@@ -22,7 +22,7 @@
     </head>
     <body>
         <div ui-view="navbar"></div>
-        <div id="wrapper">
+        <div id="wrapper" ng-class="{'toggled' : $storage.hideSidebar }">
             <!-- Views -->
             <div ui-view="sidebar"></div>
             <div ui-view="dashboard"></div>
@@ -49,5 +49,6 @@
         <script src="app-components/navbar/navbar.control.js"></script>
         <script src="app-components/sidebar/sidebar.controller.js"></script>
         <script src="app-components/dashboard/dashboard.controller.js"></script>
+        <script src="app-components/coursemodal/coursemodal.controller.js"></script>
     </body>
 </html>

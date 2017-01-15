@@ -1,5 +1,3 @@
-/** ALL CSS SHOULD START WITH #sidebar with the exception of #wrapper */
-
 #wrapper {
     padding-left: 0;
     -webkit-transition: all 0.5s ease;
@@ -20,7 +18,6 @@
     height: 100%;
     margin-left: -250px;
     overflow-y: auto;
-    background: #F7F7F7;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
@@ -29,12 +26,6 @@
 
 #wrapper.toggled #sidebar-wrapper {
     width: 250px;
-}
-
-#page-content-wrapper {
-    width: 100%;
-    position: absolute;
-    padding: 15px;
 }
 
 #wrapper.toggled #page-content-wrapper {
@@ -54,20 +45,20 @@
 }
 
 .sidebar-nav li {
-    text-indent: 20px;
+    text-indent: 10px;
     line-height: 40px;
 }
 
 .sidebar-nav li a {
     display: block;
     text-decoration: none;
-    color: black;
+    color: #9EACD0;
 }
 
 .sidebar-nav li a:hover {
     text-decoration: none;
-    color: white;
-    background: grey;
+    color: #59BC61;
+    background: #354A60;
 }
 
 .sidebar-nav li a:active,
@@ -76,18 +67,19 @@
 }
 
 .sidebar-nav > .sidebar-brand {
+    text-indent: 10px;
     height: 65px;
     font-size: 18px;
     line-height: 60px;
 }
 
 .sidebar-nav > .sidebar-brand a {
-    color: black;
+    color: white;
+    background: #354A60;
 }
 
 .sidebar-nav > .sidebar-brand a:hover {
-    color: grey;
-    background: none;
+    color: white;
 }
 
 @media(min-width:768px) {
@@ -105,11 +97,6 @@
 
     #wrapper.toggled #sidebar-wrapper {
         width: 0;
-    }
-
-    #page-content-wrapper {
-        padding: 20px;
-        position: relative;
     }
 
     #wrapper.toggled #page-content-wrapper {

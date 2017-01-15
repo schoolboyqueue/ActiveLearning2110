@@ -1,10 +1,10 @@
-<div class="login modal fade align-middle" tabindex="-1" role="dialog">
+<div class="login modal fade" tabindex="-1" role="dialog">
     <!-- Style sheet must be here and not as the first element -->
     <link rel="stylesheet" href="app-components/login/style.css"/>
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-body">
-                <h2 class="text-center pb-2">
+                <h2 class="text-center pb-4">
                     <span>{{title}}</span>
                     <button
                         type="btn float-right"
@@ -68,6 +68,7 @@
                             ng-required="register"
                             verifypass/>
                     </div>
+                    <!-- Professor Specific -->
                     <div class="input-group pb-2" ng-show="register">
                         <span class="input-group-addon">
                             <button
