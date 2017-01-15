@@ -45,14 +45,14 @@
 }
 
 .sidebar-nav li {
-    text-indent: 20px;
+    text-indent: 10px;
     line-height: 40px;
 }
 
 .sidebar-nav li a {
     display: block;
     text-decoration: none;
-    color: white;
+    color: #9EACD0;
 }
 
 .sidebar-nav li a:hover {
@@ -67,7 +67,7 @@
 }
 
 .sidebar-nav > .sidebar-brand {
-    text-indent: 0;
+    text-indent: 10px;
     height: 65px;
     font-size: 18px;
     line-height: 60px;

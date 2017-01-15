@@ -20,5 +20,7 @@ app.controller('Sidebar.Controller', [
     '$element',
     function($scope, $element) {
 
+        $scope.classExpand = false;
+
     }
 ]);
