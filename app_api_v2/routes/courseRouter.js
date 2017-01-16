@@ -48,7 +48,7 @@ courseRouter.route('/')
 /**
 STUDENT JOIN COURSE
 
-POST	/api_v2/course/students
+POST	/api_v2/course/{course_id}/students
 
 Authentication:   user token
 Authorization:    student
@@ -60,7 +60,7 @@ Request Body:     application/json    required
   "course_key":   String              required
 }
 **/
-courseRouter.route('/students')
+courseRouter.route('/:COURSEID/students')
     .post(tokenController.validateToken,
           tokenController.refreshToken,
           authorizeController.student,
