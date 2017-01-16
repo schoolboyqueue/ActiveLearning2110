@@ -20,6 +20,5 @@ app.controller('Navbar.Controller', function($scope, $element, AuthenticationSer
         $scope.logout = function() {
             AuthenticationService.Logout();
         };
-
     }
 );
