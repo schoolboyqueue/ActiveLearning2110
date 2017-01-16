@@ -15,14 +15,10 @@
 
 var app = angular.module('app');
 
-app.controller('Dashboard.Controller', [
-    '$scope',
-    '$element',
-    'UserService',
-    function($scope, $element, UserService) {
+app.controller('Dashboard.Controller', function($scope, $element, UserService) {
 
         $scope.courseAC = function() {
             UserService.ShowACCourse();
         };
     }
-]);
+);

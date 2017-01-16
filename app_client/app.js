@@ -59,12 +59,10 @@ app.controller('Main.Controller', function($scope, $http, $localStorage, $rootSc
         $scope.$storage.hideSidebar = false;
     }
 
-    if ($localStorage.token && !AuthenticationService.Expired($localStorage.token)) {
+    if (AuthenticationService.LoggedIn()) {
         $http.defaults.headers.common.Authorization = $localStorage.token;
     } else {
-        AuthenticationService.Logout(false);
-        $rootScope.$on('$includeContentLoaded', function() {
-            showLogin();
-        });
+        AuthenticationService.Logout();
+        UserService.ShowLogin();
     }
 });

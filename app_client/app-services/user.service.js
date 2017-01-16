@@ -66,6 +66,9 @@ app.factory('UserService', function($http, $localStorage, ModalService) {
                 callback(false, response.status, response.data.message);
             }
         );
+    };
+
+    service.getCourseList = function(callback) {
         $http.get('api_v2/user/' + $localStorage.id + '/courses')
             .then(function (response) {
                 $localStorage.courses = response.data.courses;
@@ -75,7 +78,6 @@ app.factory('UserService', function($http, $localStorage, ModalService) {
                 callback(false, response.status, response.data.message);
             }
         );
-
     };
 
     service.Clear = function() {

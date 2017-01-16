@@ -15,12 +15,8 @@
 
 var app = angular.module('app');
 
-app.controller('Sidebar.Controller', [
-    '$scope',
-    '$element',
-    function($scope, $element) {
+app.controller('Sidebar.Controller', function($scope, $element) {
 
         $scope.classExpand = false;
-
     }
-]);
+);

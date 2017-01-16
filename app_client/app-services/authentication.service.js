@@ -60,8 +60,16 @@ app.factory('AuthenticationService', function($http, $localStorage, UserService,
         return jwtHelper.isTokenExpired(token);
     };
 
-    service.Logout = function(request) {
-        if (request) {
+    service.LoggedIn = function() {
+        if ($localStorage.token && !jwtHelper.isTokenExpired($localStorage.token)) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    service.Logout = function() {
+        if (service.LoggedIn()) {
             $http.delete('/api_v2/authenticate')
                 .then(function() {
 
@@ -69,10 +77,10 @@ app.factory('AuthenticationService', function($http, $localStorage, UserService,
                 function() {
 
                 });
+            UserService.ShowLogin();
         }
         $http.defaults.headers.common.Authorization = '';
         UserService.Clear();
-        UserService.ShowLogin();
     };
 
     return service;
