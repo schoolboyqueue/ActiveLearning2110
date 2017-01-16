@@ -17,28 +17,6 @@
 var mongoose    = require('mongoose');
 var Schema      = mongoose.Schema;
 
-
-var student = {
-    student_id:
-    {
-        type    : String,
-        required: true,
-        unique  : true,
-    },
-    username:
-    {
-        type    : String,
-        required: true,
-        unique  : true
-    },
-    join_date:
-    {
-        type    : Date,
-        default : Date.now
-    },
-    "_id": false
-};
-
 var instructor =
 {
     instructor_id:
@@ -58,20 +36,19 @@ var StudentSchema  = new Schema(
     student_id:
     {
         type    : String,
-        required: true,
-        unique  : true,
+        required: true
     },
     username:
     {
         type    : String,
-        required: true,
-        unique  : true
+        required: true
     },
     join_date:
     {
         type    : Date,
         default : Date.now
-    }
+    },
+    "_id": false
 });
 
 var QuestionSchema  = new Schema(
@@ -104,7 +81,7 @@ var CourseSchema  = new Schema(
     },
     students:
     [
-        student
+        StudentSchema
     ],
     createdAt:
     {
