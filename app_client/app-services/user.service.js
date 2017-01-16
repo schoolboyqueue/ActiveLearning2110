@@ -53,9 +53,9 @@ app.factory('UserService', function($http, $localStorage, ModalService) {
         });
     };
 
-    service.getUserInfo = function(callback) {
+    service.GetUserInfo = function(callback) {
         $http.get('/api_v2/user/' + $localStorage.id)
-            .then(function (response) {
+            .then(function(response) {
                 $localStorage.id = response.data.user._id;
                 $localStorage.email = response.data.user.username;
                 $localStorage.photo = response.data.user.photo;
@@ -68,10 +68,21 @@ app.factory('UserService', function($http, $localStorage, ModalService) {
         );
     };
 
-    service.getCourseList = function(callback) {
+    service.GetCourseList = function(callback) {
         $http.get('api_v2/user/' + $localStorage.id + '/courses')
-            .then(function (response) {
+            .then(function(response) {
                 $localStorage.courses = response.data.courses;
+                callback(true, response.status, response.data.message);
+            },
+            function(response) {
+                callback(false, response.status, response.data.message);
+            }
+        );
+    };
+
+    service.CreateCourse = function(name, callback) {
+        $http.post('/api_v2/course', {title: name})
+            .then(function(response) {
                 callback(true, response.status, response.data.message);
             },
             function(response) {

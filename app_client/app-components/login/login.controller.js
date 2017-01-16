@@ -15,7 +15,7 @@
 
 var app = angular.module('app');
 
-app.controller('Login.Controller', function($scope, $element, AuthenticationService, UserService, close) {
+app.controller('Login.Controller', function($scope, $element, AuthenticationService, UserService) {
         $scope.title = 'Login';
         $scope.email = null;
         $scope.password = null;
@@ -91,7 +91,7 @@ app.controller('Login.Controller', function($scope, $element, AuthenticationServ
                 failed(status, text);
                 return;
             }
-            UserService.getUserInfo(getCourses);
+            UserService.GetUserInfo(getCourses);
         }
 
         function getCourses(result, status, text) {
@@ -99,7 +99,7 @@ app.controller('Login.Controller', function($scope, $element, AuthenticationServ
                 failed(status, text);
                 return;
             }
-            UserService.getCourseList(finalize);
+            UserService.GetCourseList(finalize);
         }
 
         function finalize(result, status, text) {
