@@ -25,6 +25,7 @@ app.factory('UserService', function($http, $localStorage, ModalService) {
         email: '',
         photo: '',
         role: '',
+        courses: [],
         notifications: {
             count: 0,
             data: []
@@ -53,7 +54,7 @@ app.factory('UserService', function($http, $localStorage, ModalService) {
     };
 
     service.getUserInfo = function(callback) {
-        $http.post('/api_v2/user/' + $localStorage.id)
+        $http.get('/api_v2/user/' + $localStorage.id)
             .then(function (response) {
                 $localStorage.id = response.data.user._id;
                 $localStorage.email = response.data.user.username;
@@ -65,6 +66,16 @@ app.factory('UserService', function($http, $localStorage, ModalService) {
                 callback(false, response.status, response.data.message);
             }
         );
+        $http.get('api_v2/user/' + $localStorage.id + '/courses')
+            .then(function (response) {
+                $localStorage.courses = response.data.courses;
+                callback(true, response.status, response.data.message);
+            },
+            function(response) {
+                callback(false, response.status, response.data.message);
+            }
+        );
+
     };
 
     service.Clear = function() {
