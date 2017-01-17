@@ -1,0 +1,17 @@
+<div class="login modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h4 class="text-center pb-4">
+                    {{title}}
+                    <button type="btn float-right" class="close" data-dismiss="modal">&times;</button>
+                </h4>
+                <form name="courseForm" class="text-center">
+                    <input name="course" class="form-control mb-3" type="text" ng-model="course" placeholder="{{placeholder}}" required />
+                    <div ng-if="error" class="alert alert-danger">{{error}}</div>
+                    <button class="btn btn-outline-success" ng-click="jnCreate()" ng-disabled="courseForm.$invalid">{{btnTitle}}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -23,9 +23,12 @@ var app = angular
         'angular-jwt'
     ]);
 
-app.config(function($stateProvider, $urlRouterProvider) {
+app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
     // default route
     $urlRouterProvider.otherwise("/");
+
+    //Setup default timeout for REST requests.
+    $httpProvider.defaults.timeout = 5000;
 
     // app state and individual views
     $stateProvider

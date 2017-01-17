@@ -44,6 +44,15 @@ app.factory('UserService', function($http, $localStorage, ModalService) {
         });
     };
 
+    service.ShowProfile = function() {
+        ModalService.showModal({
+            templateUrl: '/app-components/profilemodal/profile.view.html',
+            controller: 'Profile.Controller'
+        }).then(function(modal) {
+            modal.element.modal();
+        });
+    };
+
     service.ShowACCourse = function() {
         ModalService.showModal({
             templateUrl: '/app-components/coursemodal/coursemodal.view.html',
