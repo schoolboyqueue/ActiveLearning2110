@@ -36,13 +36,21 @@ app.controller('CourseModal.Controller', function($scope, $element, $localStorag
 
         $scope.jnCreate = function() {
             if ($localStorage.role === 'student') {
-                console.log('student');
+                UserService.JoinCourseNoID($scope.course, joinCourse);
             } else {
                 UserService.CreateCourse($scope.course, createPost);
             }
         };
 
         function createPost(result, status, text) {
+            if (!result) {
+                handleStatus(status, text);
+                return;
+            }
+            $element.modal('hide');
+        }
+
+        function joinCourse(result, status, text) {
             if (!result) {
                 handleStatus(status, text);
                 return;

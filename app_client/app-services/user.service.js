@@ -93,6 +93,7 @@ app.factory('UserService', function($http, $localStorage, ModalService) {
     service.CreateCourse = function(name, callback) {
         $http.post('/api_v2/course', {title: name})
             .then(function(response) {
+                $localStorage.courses = response.data.courses;
                 callback(true, response.status, response.data.message);
             },
             function(response) {
@@ -104,6 +105,7 @@ app.factory('UserService', function($http, $localStorage, ModalService) {
     service.JoinCourseNoID = function(key, callback) {
         $http.post('/api_v2/course/students', { course_key: key })
             .then(function(response) {
+                $localStorage.courses = response.data.courses;
                 callback(true, response.status, response.data.message);
             },
             function(response) {
