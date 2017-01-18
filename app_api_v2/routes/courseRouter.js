@@ -69,6 +69,29 @@ courseRouter.route('/:COURSEID/students')
           courseController.joinCourse);
 
 /**
+STUDENT JOIN COURSE ~ no course_id
+
+POST	/api_v2/course/students
+
+Authentication:   user token
+Authorization:    student
+
+Path Parameters:  none
+Query String:     none
+Request Body:     application/json    required
+{
+  "course_key":   String              required
+}
+**/
+courseRouter.route('/students')
+    .post(tokenController.validateToken,
+          tokenController.refreshToken,
+          authorizeController.student,
+          inputController.requireCourseKey,
+          userController.setUserName,
+          courseController.joinCourse);
+
+/**
 GET STUDENTS IN COURSE
 
 GET	/api_v2/course/{course_id}/students
