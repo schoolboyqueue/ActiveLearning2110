@@ -20,15 +20,24 @@ var app = angular
         'ngMessages',
         'ngStorage',
         'angularModalService',
-        'angular-jwt'
+        'angular-jwt',
+        'oc.lazyLoad'
     ]);
 
-app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
+app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLoadProvider) {
     // default route
     $urlRouterProvider.otherwise("/");
 
-    //Setup default timeout for REST requests.
-    $httpProvider.defaults.timeout = 5000;
+    $ocLazyLoadProvider.config({
+        'debug': true, // For debugging 'true/false'
+        'events': true, // For Event 'true/false'
+        'modules': [{ // Set modules initially
+            name : 'dashboard', // Dashboard
+            files: ['app-components/navbar/navbar.controller.js',
+                    'app-components/sidebar/sidebar.controller.js',
+                    'app-components/dashboard/dashboard.controller.js']
+        }]
+    });
 
     // app state and individual views
     $stateProvider
@@ -47,6 +56,11 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
                     templateUrl: '/app-components/dashboard/dashboard.view.html',
                     controller: 'Dashboard.Controller',
                 }
+            },
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load('dashboard');
+                }]
             }
         });
 });
