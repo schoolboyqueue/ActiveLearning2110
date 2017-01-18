@@ -28,7 +28,7 @@
             <div class="collapse" id="classList">
                 <ul>
                     <li ng-repeat="course in $storage.courses">
-                        <a href="#">{{course.title}}</a>
+                        <a href="#" ng-click="courseClick($index)">{{course.title}}</a>
                     </li>
                 </ul>
             </div>

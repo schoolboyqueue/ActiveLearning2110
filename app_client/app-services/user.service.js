@@ -26,6 +26,7 @@ app.factory('UserService', function($http, $localStorage, ModalService) {
         photo: '',
         role: '',
         courses: [],
+        selectedCourse: 0,
         notifications: {
             count: 0,
             data: []
@@ -100,8 +101,29 @@ app.factory('UserService', function($http, $localStorage, ModalService) {
         );
     };
 
+    service.JoinCourseNoID = function(key, callback) {
+        $http.post('/api_v2/course/students', { course_key: key })
+            .then(function(response) {
+                callback(true, response.status, response.data.message);
+            },
+            function(response) {
+                callback(false, response.status, response.data.message);
+            });
+    };
+
     service.Clear = function() {
-        $localStorage.$reset();
+        $localStorage.$reset({
+            id: '',
+            email: '',
+            photo: '',
+            role: '',
+            courses: [],
+            selectedCourse: 0,
+            notifications: {
+                count: 0,
+                data: []
+            }
+        });
     };
 
     return service;
