@@ -43,7 +43,8 @@ courseRouter.route('/')
           tokenController.refreshToken,
           authorizeController.instructor,
           inputController.requireCourseTitle,
-          courseController.createCourse);
+          courseController.createCourse,
+          courseController.getUserCourses);
 
 /**
 STUDENT JOIN COURSE
@@ -89,7 +90,8 @@ courseRouter.route('/students')
           authorizeController.student,
           inputController.requireCourseKey,
           userController.setUserName,
-          courseController.joinCourse);
+          courseController.joinCourse,
+          courseController.getUserCourses);
 
 /**
 GET STUDENTS IN COURSE
