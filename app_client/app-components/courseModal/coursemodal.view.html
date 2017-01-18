@@ -12,7 +12,12 @@
                         <input name="course" class="form-control" type="text" ng-model="course" placeholder="{{placeholder}}" required />
                     </div>
                     <div ng-if="error" class="alert alert-danger">{{error}}</div>
-                    <button class="btn btn-outline-success" ng-click="jnCreate()" ng-disabled="courseForm.$invalid">{{btnTitle}}</button>
+                    <button class="btn btn-outline-success" ng-click="jnCreate()" ng-disabled="courseForm.$invalid">
+                        <span ng-show="loading">
+                            <i class="fa fa-circle-o-notch fa-spin"></i>
+                        </span>
+                        {{btnTitle}}
+                    </button>
                 </form>
             </div>
         </div>

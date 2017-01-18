@@ -19,6 +19,7 @@ app.controller('CourseModal.Controller', function($scope, $element, $localStorag
 
         $scope.course = null;
         $scope.error = null;
+        $scope.loading = false;
 
         if ($localStorage.role === 'student') {
             $scope.btnTitle = 'Join';
@@ -31,10 +32,13 @@ app.controller('CourseModal.Controller', function($scope, $element, $localStorag
         }
 
         var handleStatus = function(error, text) {
-            console.log(error + ' : ' + text);
+            $scope.loading = false;
+            $scope.error = text;
         };
 
         $scope.jnCreate = function() {
+            $scope.error = null;
+            $scope.loading = true;
             if ($localStorage.role === 'student') {
                 UserService.JoinCourseNoID($scope.course, joinCourse);
             } else {
@@ -47,6 +51,7 @@ app.controller('CourseModal.Controller', function($scope, $element, $localStorag
                 handleStatus(status, text);
                 return;
             }
+            $scope.loading = false;
             $element.modal('hide');
         }
 
@@ -55,6 +60,7 @@ app.controller('CourseModal.Controller', function($scope, $element, $localStorag
                 handleStatus(status, text);
                 return;
             }
+            $scope.loading = false;
             $element.modal('hide');
         }
     }
