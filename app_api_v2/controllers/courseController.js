@@ -48,7 +48,7 @@ function checkForStudent(req, res, course, callback)
     }
 }
 
-var createCourse = function(req, res)
+var createCourse = function(req, res, next)
 {
     console.log('courseController createCourse');
 
@@ -80,6 +80,7 @@ var createCourse = function(req, res)
                     }
                 );
             }
+            /*
             res.status(201).json(
                 {
                     success   : true,
@@ -87,11 +88,13 @@ var createCourse = function(req, res)
                     course_id : savedCourse._id.toString()
                 }
             );
+            */
+            next();
         });
     });
 }
 
-var joinCourse = function(req, res)
+var joinCourse = function(req, res, next)
 {
     console.log('courseController joinCourse');
 
@@ -140,6 +143,7 @@ var joinCourse = function(req, res)
                         }
                         else
                         {
+                            /*
                             res.status(200).json(
                                 {
                                     success   : true,
@@ -147,6 +151,8 @@ var joinCourse = function(req, res)
                                     course_id : updated_course._id.toString()
                                 }
                             );
+                            */
+                            next();
                         }
                     });
                 }
