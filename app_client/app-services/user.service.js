@@ -23,6 +23,8 @@ app.factory('UserService', function($http, $localStorage, ModalService) {
     $localStorage.$default({
         id: '',
         email: '',
+        firstname: '',
+        lastname: '',
         photo: '',
         role: '',
         courses: [],
@@ -70,6 +72,8 @@ app.factory('UserService', function($http, $localStorage, ModalService) {
                 $localStorage.email = response.data.user.username;
                 $localStorage.photo = response.data.user.photo;
                 $localStorage.role = response.data.user.role;
+                $localStorage.firstname = response.data.firstname;
+                $localStorage.lastname = response.data.lastname;
                 callback(true, response.status, response.data.message);
             },
             function(response) {
@@ -118,6 +122,8 @@ app.factory('UserService', function($http, $localStorage, ModalService) {
         $localStorage.$reset({
             id: '',
             email: '',
+            firstname: '',
+            lastname: '',
             photo: '',
             role: '',
             courses: [],

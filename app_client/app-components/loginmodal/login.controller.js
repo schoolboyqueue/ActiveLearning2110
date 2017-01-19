@@ -41,38 +41,26 @@ app.controller('Login.Controller', function($scope, $element, AuthenticationServ
             $scope.professor = !$scope.professor;
         };
 
-        var handleStatus = function(error, text) {
-            switch (error) {
-                case 200:
-                    $scope.error = null;
-                    break;
-                case 400:
-                    $scope.error = text;
-                    $scope.professorKey = null;
-                    break;
-                case 401:
-                case 404:
-                    $scope.error = text;
-                    break;
-                case 500:
-                    $scope.error = text;
-                    $scope.email = null;
-                    break;
-            }
-        };
-
         $scope.submit = function() {
             $scope.loading = true;
             if ($scope.register) {
-                AuthenticationService.Register(
-                    $scope.email,
-                    $scope.password,
-                    $scope.professor,
-                    $scope.professorKey,
-                    Login);
+                var info = {
+                    firstname: $scope.firstname.trim(),
+                    lastname: $scope.lastname.trim(),
+                    username: $scope.email.trim(),
+                    password: $scope.password.trim(),
+                    professor: $scope.professor,
+                    key: $scope.professorKey.trim()
+
+                };
+                AuthenticationService.Register(info, Login);
             } else {
                 Login(true, '', '');
             }
+        };
+
+        var handleStatus = function(error, text) {
+            $scope.error = text;
         };
 
         function Login(result, status, text) {
@@ -83,7 +71,11 @@ app.controller('Login.Controller', function($scope, $element, AuthenticationServ
             if ($scope.register) {
                 $scope.toggleRegister();
             }
-            AuthenticationService.Login($scope.email, $scope.password, getInfo);
+            var info = {
+                username: $scope.email.trim(),
+                password: $scope.password.trim()
+            };
+            AuthenticationService.Login(info, getInfo);
         }
 
         function getInfo(result, status, text) {

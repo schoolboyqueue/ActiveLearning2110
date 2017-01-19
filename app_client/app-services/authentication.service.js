@@ -19,14 +19,11 @@ app.factory('AuthenticationService', function($http, $localStorage, UserService,
 
     var service = {};
 
-    service.Login = function(email, password, callback) {
+    service.Login = function(info, callback) {
 
-        $http.post('/api_v2/authenticate', {
-            username: email,
-            password: password
-        }).then(function (response) {
+        $http.post('/api_v2/authenticate', info).then(function (response) {
                 if (response.data.jwt_token) {
-                    $localStorage.email = email;
+                    $localStorage.email = info.email;
                     $localStorage.token = response.data.jwt_token;
                     $localStorage.id = response.data.user_id;
                     $localStorage.LoggedIn = true;
@@ -42,13 +39,10 @@ app.factory('AuthenticationService', function($http, $localStorage, UserService,
         );
     };
 
-    service.Register = function(email, password, professor, key, callback) {
-        var role = professor ? 'instructor' : undefined;
+    service.Register = function(info, callback) {
+        var role = info.professor ? 'instructor' : undefined;
         var addr = role === 'instructor' ? '/api_v2/signup?role=' + role : '/api_v2/signup/';
-        $http.post(addr, {
-            username: email,
-            password: password, key: key
-        }).then(function (response) {
+        $http.post(addr, info).then(function (response) {
                 callback(true, response.status, response.data.message);
             },
             function (response) {
