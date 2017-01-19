@@ -20,24 +20,12 @@ var app = angular
         'ngMessages',
         'ngStorage',
         'angularModalService',
-        'angular-jwt',
-        'oc.lazyLoad'
+        'angular-jwt'
     ]);
 
-app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLoadProvider) {
+app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
     // default route
     $urlRouterProvider.otherwise("/");
-
-    $ocLazyLoadProvider.config({
-        'debug': true, // For debugging 'true/false'
-        'events': true, // For Event 'true/false'
-        'modules': [{ // Set modules initially
-            name : 'dashboard', // Dashboard
-            files: ['app-components/navbar/navbar.controller.js',
-                    'app-components/sidebar/sidebar.controller.js',
-                    'app-components/dashboard/dashboard.controller.js']
-        }]
-    });
 
     // app state and individual views
     $stateProvider
@@ -56,11 +44,6 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
                     templateUrl: '/app-components/dashboard/dashboard.view.html',
                     controller: 'Dashboard.Controller',
                 }
-            },
-            resolve: {
-                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
-                    return $ocLazyLoad.load('dashboard');
-                }]
             }
         });
 });

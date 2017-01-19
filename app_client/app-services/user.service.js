@@ -35,7 +35,7 @@ app.factory('UserService', function($http, $localStorage, ModalService) {
 
     service.ShowLogin = function() {
         ModalService.showModal({
-            templateUrl: '/app-components/login/login.view.html',
+            templateUrl: '/app-components/loginmodal/login.view.html',
             controller: 'Login.Controller'
         }).then(function(modal) {
             modal.element.modal({
@@ -81,6 +81,7 @@ app.factory('UserService', function($http, $localStorage, ModalService) {
     service.GetCourseList = function(callback) {
         $http.get('api_v2/user/' + $localStorage.id + '/courses')
             .then(function(response) {
+                console.log(response);
                 $localStorage.courses = response.data.courses;
                 callback(true, response.status, response.data.message);
             },

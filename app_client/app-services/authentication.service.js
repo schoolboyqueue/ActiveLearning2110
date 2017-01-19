@@ -29,6 +29,7 @@ app.factory('AuthenticationService', function($http, $localStorage, UserService,
                     $localStorage.email = email;
                     $localStorage.token = response.data.jwt_token;
                     $localStorage.id = response.data.user_id;
+                    $localStorage.LoggedIn = true;
                     $http.defaults.headers.common.Authorization = response.data.jwt_token;
                     callback(true, response.status, response.data.message);
                 } else {
@@ -62,8 +63,10 @@ app.factory('AuthenticationService', function($http, $localStorage, UserService,
 
     service.LoggedIn = function() {
         if ($localStorage.token && !jwtHelper.isTokenExpired($localStorage.token)) {
+            $localStorage.LoggedIn = true;
             return true;
         } else {
+            $localStorage.LoggedIn = false;
             return false;
         }
     };
