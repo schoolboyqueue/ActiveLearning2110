@@ -36,9 +36,11 @@ Query String:    role  Pass either 'admin' or 'instructor' required for admin or
 
 Request Body application/json
 {
-  "username": String Required
-  "password": String Required
-  "key":      String Required for admin or instructor registration
+  "username"  : String Required
+  "password"  : String Required
+  "firstname" : String Required
+  "lastname"  : String Required
+  "key"       : String Required for admin or instructor registration
 }
 **/
 signupRouter.route('/')

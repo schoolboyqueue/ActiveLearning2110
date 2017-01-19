@@ -148,9 +148,11 @@ var registerAdmin = function (req, res, next)
         {
             req.addUser = new User(
             {
-                username: req.body.username,
-                password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)),
-                role    : roles.ADMIN
+                username:   req.body.username,
+                password:   bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)),
+                firstname:  req.body.firstname,
+                lastname:   req.body.lastname,
+                role    :   roles.ADMIN
             });
             next();
         }
