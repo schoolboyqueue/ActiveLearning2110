@@ -171,9 +171,11 @@ var registerAdmin = function (req, res, next)
                 {
                     req.addUser = new User(
                     {
-                        username: req.body.username,
-                        password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)),
-                        role    : roles.ADMIN
+                        username:   req.body.username,
+                        password:   bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)),
+                        firstname:  req.body.firstname,
+                        lastname:   req.body.lastname,
+                        role    :   roles.ADMIN
                     });
                     next();
                 }
@@ -206,9 +208,11 @@ var registerInstructor = function (req, res, next)
                 console.log(key);
                 req.addUser = new User(
                 {
-                    username: req.body.username,
-                    password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)),
-                    role    : roles.INSTRUCTOR
+                    username:   req.body.username,
+                    password:   bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)),
+                    firstname:  req.body.firstname,
+                    lastname:   req.body.lastname,
+                    role    :   roles.INSTRUCTOR
                 });
                 next();
             }
@@ -226,9 +230,11 @@ var registerStudent = function (req, res, next)
     {
         req.addUser = new User(
         {
-            username: req.body.username,
-            password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)),
-            role    : roles.STUDENT
+            username:   req.body.username,
+            password:   bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)),
+            firstname:  req.body.firstname,
+            lastname:   req.body.lastname,
+            role    :   roles.STUDENT
         });
         next();
     }
@@ -244,10 +250,15 @@ var savedUserToDB = function(req, res)
     {
         if (err)
         {
+            var errorMessage = 'Internal Error'
+            if (err.code == '11000')
+            {
+                errorMessage = 'Username Already Exist'
+            }
             return res.status(500).json(
                 {
                     success: false,
-                    message: "Internal Error"
+                    message: errorMessage
                 }
             );
         }
