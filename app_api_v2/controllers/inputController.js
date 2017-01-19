@@ -109,6 +109,44 @@ var requireUsername = function (req, res, next)
     }
 };
 
+var requireFirstname = function (req, res, next)
+{
+    console.log('inputController requireFirstname');
+
+    if (!req.body.firstname)
+    {
+        return res.status(400).json(
+            {
+                success: false,
+                message: 'Please Enter First Name'
+            }
+        );
+    }
+    else
+    {
+      next();
+    }
+};
+
+var requireLastname = function (req, res, next)
+{
+    console.log('inputController requireLastname');
+
+    if (!req.body.lastname)
+    {
+        return res.status(400).json(
+            {
+                success: false,
+                message: 'Please Enter Last Name'
+            }
+        );
+    }
+    else
+    {
+      next();
+    }
+};
+
 var requirePassword = function (req, res, next)
 {
     console.log('inputController requirePassword');
@@ -135,5 +173,7 @@ module.exports =
     requireCurrentPassword  :   requireCurrentPassword,
     requireNewPassword      :   requireNewPassword,
     requireUsername         :   requireUsername,
+    requireLastname         :   requireLastname,
+    requireFirstname        :   requireFirstname,
     requirePassword         :   requirePassword
 };
