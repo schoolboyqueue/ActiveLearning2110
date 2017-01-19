@@ -42,7 +42,9 @@ Request Body application/json
 }
 **/
 signupRouter.route('/')
-    .post(inputController.requireUsername,
+    .post(inputController.requireFirstname,
+          inputController.requireLastname,
+          inputController.requireUsername,
           inputController.requirePassword,
           signupController.registerAdmin,
           signupController.registerInstructor,

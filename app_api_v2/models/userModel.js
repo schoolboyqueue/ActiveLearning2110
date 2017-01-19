@@ -26,6 +26,18 @@ var UserSchema  = new Schema(
         unique      : true,
         lowercase   : true
     },
+    firstname:
+    {
+        type        : String,
+        required    : true,
+        lowercase   : true
+    },
+    lastname:
+    {
+        type        : String,
+        required    : true,
+        lowercase   : true
+    },
     password:
     {
         type    : String,
