@@ -20,7 +20,8 @@ app.controller('Profile.Controller', function($scope, $element, $localStorage) {
         $scope.title = 'Profile';
         $scope.email = $localStorage.email;
         $scope.role = $localStorage.role;
-        $scope.courses = $localStorage.courses;
         $scope.photo = $localStorage.photo;
+        $scope.firstname = $localStorage.firstname;
+        $scope.lastname = $localStorage.lastname;
     }
 );

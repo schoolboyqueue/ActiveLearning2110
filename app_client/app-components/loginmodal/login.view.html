@@ -18,10 +18,10 @@
                         ng-show="register"
                         class="input-group pb-2"
                         ng-class="{ 'has-danger':
-                                        loginForm.firstname.$touched && loginForm.firstname.$invalid,
-                                    'has-success': loginForm.firstname.$valid }">
-                        <label for="firstname" class="sr-only">E-Mail</label>
-                        <div class="input-group-addon"><i class="fa fa-address-book-o fa-fw" aria-hidden="true"></i></div>
+                                        (loginForm.firstname.$touched && loginForm.firstname.$invalid)
+                                        || (loginForm.lastname.$touched && loginForm.lastname.$invalid),
+                                    'has-success': loginForm.firstname.$valid || loginForm.lastname.$valid}">
+                        <div class="input-group-addon"><i class="fa fa-address-book fa-fw" aria-hidden="true"></i></div>
                         <input
                             placeholder="First name"
                             type="text"
@@ -29,15 +29,6 @@
                             class="form-control"
                             ng-model="firstname"
                             ng-required="register" />
-                    </div>
-                    <div
-                        ng-show="register"
-                        class="input-group pb-2"
-                        ng-class="{ 'has-danger':
-                                        loginForm.lastname.$touched && loginForm.lastname.$invalid,
-                                    'has-success': loginForm.lastname.$valid }">
-                        <label for="lastname" class="sr-only">E-Mail</label>
-                        <div class="input-group-addon"><i class="fa fa-address-book fa-fw" aria-hidden="true"></i></div>
                         <input
                             placeholder="Last name"
                             type="text"
@@ -52,7 +43,6 @@
                                         loginForm.email.$touched &&
                                         (loginForm.email.$error.invalidGatech || loginForm.email.$invalid),
                                     'has-success': loginForm.email.$valid }">
-                        <label for="email" class="sr-only">E-Mail</label>
                         <div class="input-group-addon"><i class="fa fa-envelope fa-fw" aria-hidden="true"></i></div>
                         <input
                             placeholder="Email Address"
@@ -68,7 +58,6 @@
                                         loginForm.password.$touched &&
                                         (loginForm.password.$invalid || loginform.password.$error.minlength),
                                    'has-success': loginForm.password.$valid }">
-                        <label for="password" class="sr-only">Password</label>
                         <div class="input-group-addon"><i class="fa fa-unlock-alt fa-fw" aria-hidden="true"></i></div>
                         <input
                             placeholder="Password"
@@ -89,7 +78,6 @@
                                         loginForm.passwordVerify.$error.minlength ||
                                         loginform.passwordVerify.$error.invalidEqPass),
                                     'has-success': loginForm.passwordVerify.$valid }">
-                        <label for="passwordVerify" class="sr-only">Verify Password</label>
                         <div class="input-group-addon"><i class="fa fa-check-circle fa-fw" aria-hidden="true"></i></div>
                         <input
                             placeholder="Verify Password"

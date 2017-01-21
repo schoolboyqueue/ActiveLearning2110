@@ -1,5 +1,5 @@
 <div class="login modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-md">
+    <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
             <div class="modal-body">
                 <h2 class="text-center pb-4">
@@ -14,8 +14,23 @@
                             <a href="#" class="btn btn-outline-primary">Change Photo</a>
                         </div>
                     </div>
-                    <div class="form-group pt-2">
-                        <label for="email">E-Mail:</label>
+                    <div class="input-group pb-2 pt-2">
+                        <div class="input-group-addon"><i class="fa fa-address-book fa-fw" aria-hidden="true"></i></div>
+                        <input
+                            type="firstname"
+                            name="firstname"
+                            placeholder="{{firstname}}"
+                            class="form-control text-capitalize"
+                            disabled/>
+                        <input
+                            type="lastname"
+                            name="lastname"
+                            placeholder="{{lastname}}"
+                            class="form-control text-capitalize"
+                            disabled/>
+                    </div>
+                    <div class="input-group pb-2">
+                        <div class="input-group-addon"><i class="fa fa-envelope fa-fw" aria-hidden="true"></i></div>
                         <input
                             type="email"
                             name="email"
@@ -23,27 +38,14 @@
                             class="form-control"
                             disabled/>
                     </div>
-                    <div class="form-group">
-                        <label for="role">Role:</label>
+                    <div class="input-group pb-2">
+                        <div class="input-group-addon"><i class="fa fa-graduation-cap fa-fw" aria-hidden="true"></i></div>
                         <input
                             placeholder="{{role}}"
                             type="text"
                             name="role"
-                            class="form-control"
-                            style="text-transform: capitalize;"
+                            class="form-control text-capitalize"
                             disabled/>
-                    </div>
-                    <div class="form-group">
-                        <label for="defaultClass">Default Class:</label>
-                        <select
-                            class="form-control"
-                            id="defaultClass"
-                            style="text-transform: uppercase;">
-                                <option
-                                    ng-repeat="course in courses">
-                                        {{course.title}}
-                                </option>
-                        </select>
                     </div>
                 </form>
             </div>

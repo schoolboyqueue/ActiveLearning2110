@@ -10,10 +10,10 @@
         </button>
         <a class="navbar-brand align-self-center" href="#">Active Learning 2110</a>
         <div class="dropdown align-self-center">
-            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                {{$storage.email}}
+            <button class="btn btn-secondary btn-sm dropdown-toggle text-capitalize" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{$storage.firstname}} {{$storage.lastname}}
             </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
                 <button class="dropdown-item" type="button" ng-click="profile()">Profile</button>
                 <div class="dropdown-divider"></div>
                 <button class="dropdown-item" type="button" ng-click="logout()">Logout</button>

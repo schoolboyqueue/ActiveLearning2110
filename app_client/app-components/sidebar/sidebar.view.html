@@ -11,7 +11,7 @@
             </div>
         </li>
         <li>
-            <a href="#"><i class="fa fa-tachometer pr-3" aria-hidden="true"></i>Dashboard</a>
+            <a ui-sref=".dashboard"><i class="fa fa-tachometer pr-3" aria-hidden="true"></i>Dashboard</a>
         </li>
         <li>
             <a
@@ -28,7 +28,7 @@
             <div class="collapse" id="classList">
                 <ul>
                     <li ng-repeat="course in $storage.courses">
-                        <a href="#" ng-click="courseClick($index)">{{course.title}}</a>
+                        <a ui-sref=".course" ng-click="courseClick($index)">{{course.title}}</a>
                     </li>
                 </ul>
             </div>
