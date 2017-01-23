@@ -4,13 +4,13 @@
         "url": "https://github.com/omizrahi3/ActiveLearning2110/issues"
     },
     "dependencies": {
-        "bcryptjs": "^2.3.0",
+        "bcryptjs": "^2.4.0",
         "body-parser": "^1.15.2",
         "client-sessions": "^0.7.0",
         "cookie-parser": "^1.4.3",
         "express": "^4.14.0",
         "jsonwebtoken": "^7.2.1",
-        "mongoose": "^4.6.0",
+        "mongoose": "^4.7.7",
         "random-key": "^0.3.2"
     },
     "description": "Active Learning Application for 2110",

@@ -15,13 +15,7 @@
 
 var app = angular.module('app');
 
-app.controller('Login.Controller', [
-    '$scope',
-    '$element',
-    'AuthenticationService',
-    'UserService',
-    'close',
-    function($scope, $element, AuthenticationService, UserService, close) {
+app.controller('Login.Controller', function($scope, $element, AuthenticationService, UserService) {
         $scope.title = 'Login';
         $scope.email = null;
         $scope.password = null;
@@ -47,64 +41,76 @@ app.controller('Login.Controller', [
             $scope.professor = !$scope.professor;
         };
 
-        var handleStatus = function(error, text) {
-            console.log(error);
-            switch (error) {
-                case 200:
-                    $scope.error = null;
-                    break;
-                case 400:
-                    $scope.error = text;
-                    $scope.professorKey = null;
-                    break;
-                case 401:
-                case 404:
-                    $scope.error = text;
-                    break;
-                case 500:
-                    $scope.error = 'Username taken';
-                    $scope.email = null;
-                    break;
-            }
-        };
-
         $scope.submit = function() {
             $scope.loading = true;
             if ($scope.register) {
-                AuthenticationService.Register(
-                    $scope.email,
-                    $scope.password,
-                    $scope.professor,
-                    $scope.professorKey,
-                    function(result, status, text) {
-                        if (result) {
-                            $scope.toggleRegister();
-                            handleStatus(status, text);
-                        } else {
-                            handleStatus(status, text);
-                        }
-                        $scope.loading = false;
-                    });
+                var info = {
+                    firstname: $scope.firstname.trim(),
+                    lastname: $scope.lastname.trim(),
+                    username: $scope.email.trim(),
+                    password: $scope.password.trim(),
+                    professor: $scope.professor
+                };
+                if ($scope.professor) {
+                    info.key = $scope.professorKey.trim();
+                }
+                AuthenticationService.Register(info, Login);
             } else {
-                AuthenticationService.Login($scope.email, $scope.password, function(result, status, text) {
-                    if (result) {
-                        UserService.getUserInfo(function(success, status, text) {
-                            if (success) {
-                                $element.modal('hide');
-                            } else {
-                                AuthenticationService.Logout(true);
-                                handleStatus(status, text);
-                            }
-                        });
-                    } else {
-                        handleStatus(status, text);
-                    }
-                    $scope.loading = false;
-                });
+                Login(true, '', '');
             }
         };
+
+        var handleStatus = function(error, text) {
+            $scope.error = text;
+        };
+
+        function Login(result, status, text) {
+            if (!result) {
+                failed(status, text);
+                return;
+            }
+            if ($scope.register) {
+                $scope.toggleRegister();
+            }
+            var info = {
+                username: $scope.email.trim(),
+                password: $scope.password.trim()
+            };
+            AuthenticationService.Login(info, getInfo);
+        }
+
+        function getInfo(result, status, text) {
+            if (!result) {
+                failed(status, text);
+                return;
+            }
+            UserService.GetUserInfo(getCourses);
+        }
+
+        function getCourses(result, status, text) {
+            if (!result) {
+                failed(status, text);
+                return;
+            }
+            UserService.GetCourseList(finalize);
+        }
+
+        function finalize(result, status, text) {
+            if (!result) {
+                failed(status, text);
+                return;
+            }
+            $scope.loading = false;
+            $element.modal('hide');
+        }
+
+        function failed(status, text) {
+            $scope.loading = false;
+            handleStatus(status, text);
+            AuthenticationService.Logout();
+        }
     }
-]);
+);
 
 app.directive('gatech', function() {
     return {

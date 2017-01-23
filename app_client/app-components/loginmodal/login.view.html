@@ -1,6 +1,4 @@
 <div class="login modal fade" tabindex="-1" role="dialog">
-    <!-- Style sheet must be here and not as the first element -->
-    <link rel="stylesheet" href="app-components/login/style.css"/>
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-body">
@@ -17,12 +15,35 @@
                 <!-- Login Form -->
                 <form name="loginForm">
                     <div
-                        class="form-group"
+                        ng-show="register"
+                        class="input-group pb-2"
                         ng-class="{ 'has-danger':
-                                        loginForm.password.$touched &&
+                                        (loginForm.firstname.$touched && loginForm.firstname.$invalid)
+                                        || (loginForm.lastname.$touched && loginForm.lastname.$invalid),
+                                    'has-success': loginForm.firstname.$valid || loginForm.lastname.$valid}">
+                        <div class="input-group-addon"><i class="fa fa-address-book fa-fw" aria-hidden="true"></i></div>
+                        <input
+                            placeholder="First name"
+                            type="text"
+                            name="firstname"
+                            class="form-control"
+                            ng-model="firstname"
+                            ng-required="register" />
+                        <input
+                            placeholder="Last name"
+                            type="text"
+                            name="lastname"
+                            class="form-control"
+                            ng-model="lastname"
+                            ng-required="register" />
+                    </div>
+                    <div
+                        class="input-group pb-2"
+                        ng-class="{ 'has-danger':
+                                        loginForm.email.$touched &&
                                         (loginForm.email.$error.invalidGatech || loginForm.email.$invalid),
                                     'has-success': loginForm.email.$valid }">
-                        <label for="email" class="sr-only">E-Mail</label>
+                        <div class="input-group-addon"><i class="fa fa-envelope fa-fw" aria-hidden="true"></i></div>
                         <input
                             placeholder="Email Address"
                             type="email"
@@ -32,12 +53,12 @@
                             required gatech/>
                     </div>
                     <div
-                        class="form-group"
+                        class="input-group pb-2"
                         ng-class="{ 'has-danger':
                                         loginForm.password.$touched &&
                                         (loginForm.password.$invalid || loginform.password.$error.minlength),
                                    'has-success': loginForm.password.$valid }">
-                        <label for="password" class="sr-only">Password</label>
+                        <div class="input-group-addon"><i class="fa fa-unlock-alt fa-fw" aria-hidden="true"></i></div>
                         <input
                             placeholder="Password"
                             type="password"
@@ -49,7 +70,7 @@
                     </div>
                     <!-- Extra Register Fields -->
                     <div
-                        class="form-group"
+                        class="input-group pb-2"
                         ng-show="register"
                         ng-class="{ 'has-danger':
                                         loginForm.passwordVerify.$touched &&
@@ -57,7 +78,7 @@
                                         loginForm.passwordVerify.$error.minlength ||
                                         loginform.passwordVerify.$error.invalidEqPass),
                                     'has-success': loginForm.passwordVerify.$valid }">
-                        <label for="passwordVerify" class="sr-only">Verify Password</label>
+                        <div class="input-group-addon"><i class="fa fa-check-circle fa-fw" aria-hidden="true"></i></div>
                         <input
                             placeholder="Verify Password"
                             type="password"

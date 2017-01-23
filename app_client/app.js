@@ -23,13 +23,13 @@ var app = angular
         'angular-jwt'
     ]);
 
-app.config(function($stateProvider, $urlRouterProvider) {
+app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
     // default route
-    $urlRouterProvider.otherwise("/");
+    $urlRouterProvider.otherwise("dashboard");
 
     // app state and individual views
     $stateProvider
-        .state('dashboard', {
+        .state('main', {
             url: '/',
             views: {
                 'navbar': {
@@ -41,10 +41,20 @@ app.config(function($stateProvider, $urlRouterProvider) {
                     controller: 'Sidebar.Controller',
                 },
                 'dashboard': {
-                    templateUrl: '/app-components/dashboard/dashboard.view.html',
-                    controller: 'Dashboard.Controller',
+                    templateUrl: '/app-components/dashboard/container.view.html',
+                    controller: 'Container.Controller',
                 }
             }
+        })
+
+        .state('main.dashboard', {
+            url: 'dashboard',
+            templateUrl: 'app-components/dashboard/dashboard.view.html'
+        })
+
+        .state ('main.course', {
+            url: 'course',
+            templateUrl: 'app-components/dashboard/course.view.html'
         });
 });
 
@@ -59,12 +69,10 @@ app.controller('Main.Controller', function($scope, $http, $localStorage, $rootSc
         $scope.$storage.hideSidebar = false;
     }
 
-    if ($localStorage.token && !AuthenticationService.Expired($localStorage.token)) {
+    if (AuthenticationService.LoggedIn()) {
         $http.defaults.headers.common.Authorization = $localStorage.token;
     } else {
-        AuthenticationService.Logout(false);
-        $rootScope.$on('$includeContentLoaded', function() {
-            showLogin();
-        });
+        AuthenticationService.Logout();
+        UserService.ShowLogin();
     }
 });

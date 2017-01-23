@@ -1,7 +1,5 @@
-<link rel="stylesheet" href="app-components/navbar/style.css"/>
-
 <nav class="navbar sticky-top navbar-inverse bg-primary pb-2 pt-2">
-    <div class="nav-header">
+    <div class="d-flex justify-content-between">
         <button
             class="navbar-toggler"
             id="menu-toggle"
@@ -10,13 +8,13 @@
             ng-click="$storage.hideSidebar = !$storage.hideSidebar">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand text-center" href="#">Active Learning 2110</a>
-        <div class="dropdown float-right pt-1">
-            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                {{$storage.email}}
+        <a class="navbar-brand align-self-center" href="#">Active Learning 2110</a>
+        <div class="dropdown align-self-center">
+            <button class="btn btn-secondary btn-sm dropdown-toggle text-capitalize" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{$storage.firstname}} {{$storage.lastname}}
             </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                <button class="dropdown-item" type="button">Edit Profile</button>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
+                <button class="dropdown-item" type="button" ng-click="profile()">Profile</button>
                 <div class="dropdown-divider"></div>
                 <button class="dropdown-item" type="button" ng-click="logout()">Logout</button>
             </div>
