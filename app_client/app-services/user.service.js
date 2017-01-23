@@ -118,6 +118,16 @@ app.factory('UserService', function($http, $localStorage, ModalService) {
             });
     };
 
+    service.UpdateUserInfo = function(info) {
+        $http.post('/api_v2/user/' + $localStorage.id, info)
+            .then(function(response) {
+                callback(true, response.status, response.data.message);
+            },
+            function(response) {
+                callback(false, response.status, response.data.message);
+            });
+    };
+
     service.Clear = function() {
         $localStorage.$reset({
             id: '',

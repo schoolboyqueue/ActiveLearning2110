@@ -49,10 +49,11 @@ app.controller('Login.Controller', function($scope, $element, AuthenticationServ
                     lastname: $scope.lastname.trim(),
                     username: $scope.email.trim(),
                     password: $scope.password.trim(),
-                    professor: $scope.professor,
-                    key: $scope.professorKey.trim()
-
+                    professor: $scope.professor
                 };
+                if ($scope.professor) {
+                    info.key = $scope.professorKey.trim();
+                }
                 AuthenticationService.Register(info, Login);
             } else {
                 Login(true, '', '');

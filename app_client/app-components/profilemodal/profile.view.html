@@ -11,7 +11,7 @@
                     <div class="card">
                         <img class="card-img-top" src="{{photo}}">
                         <div class="card-block text-center p-2">
-                            <a href="#" class="btn btn-outline-primary">Change Photo</a>
+                            <button type="button" class="btn btn-primary btn-outline-primary" ng-disabled="!edit">Change Photo</button>
                         </div>
                     </div>
                     <div class="input-group pb-2 pt-2">
@@ -21,13 +21,13 @@
                             name="firstname"
                             placeholder="{{firstname}}"
                             class="form-control text-capitalize"
-                            disabled/>
+                            ng-disabled="!edit"/>
                         <input
                             type="lastname"
                             name="lastname"
                             placeholder="{{lastname}}"
                             class="form-control text-capitalize"
-                            disabled/>
+                            ng-disabled="!edit"/>
                     </div>
                     <div class="input-group pb-2">
                         <div class="input-group-addon"><i class="fa fa-envelope fa-fw" aria-hidden="true"></i></div>
@@ -46,6 +46,56 @@
                             name="role"
                             class="form-control text-capitalize"
                             disabled/>
+                    </div>
+                    <div
+                        class="input-group pb-2"
+                        ng-show="edit"
+                        ng-class="{ 'has-danger':
+                                        profileForm.password.$touched &&
+                                        (profileForm.password.$invalid || profileForm.password.$error.minlength),
+                                   'has-success': profileForm.password.$valid }">
+                        <div class="input-group-addon"><i class="fa fa-unlock-alt fa-fw" aria-hidden="true"></i></div>
+                        <input
+                            placeholder="Password"
+                            type="password"
+                            name="password"
+                            class="form-control"
+                            ng-minlength="5"
+                            ng-model="password"
+                            ng-required="edit" />
+                    </div>
+                    <div
+                        class="input-group pb-2"
+                        ng-show="edit"
+                        ng-class="{ 'has-danger':
+                                        profileForm.passwordVerify.$touched &&
+                                        (profileForm.passwordVerify.$invalid ||
+                                        profileForm.passwordVerify.$error.minlength ||
+                                        profileForm.passwordVerify.$error.invalidEqPass),
+                                    'has-success': profileForm.passwordVerify.$valid }">
+                        <div class="input-group-addon"><i class="fa fa-check-circle fa-fw" aria-hidden="true"></i></div>
+                        <input
+                            placeholder="Verify Password"
+                            type="password"
+                            name="passwordVerify"
+                            class="form-control"
+                            ng-minlength="5"
+                            ng-model="passwordVerify"
+                            ng-required="edit"
+                            verifypass/>
+                    </div>
+                    <div class="text-center">
+                        <button
+                            type="button"
+                            class="btn"
+                            ng-class="{'btn-danger btn-outline-danger' : !edit,
+                                       'btn-success btn-outline-success': edit}"
+                            ng-click="editProfile()">
+                                <span ng-show="loading">
+                                    <i class="fa fa-circle-o-notch fa-spin"></i>
+                                </span>
+                                {{editTitle}}
+                            </button>
                     </div>
                 </form>
             </div>
