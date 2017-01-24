@@ -174,6 +174,7 @@ var validateToken = function (req, res, next)
     }
     else
     {
+        
         jwt.verify(token, config.jwt_secret, function(err, decode)
         {
             if (err)
