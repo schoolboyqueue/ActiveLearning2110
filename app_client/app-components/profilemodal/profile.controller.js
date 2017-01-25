@@ -16,23 +16,40 @@
 var app = angular.module('app');
 
 app.controller('Profile.Controller', function($scope, $element, $localStorage, UserService) {
+    $scope.croppedPhoto = '';
     $scope.edit = false;
-    $scope.loading = false;
-    $scope.title = 'Profile';
     $scope.editTitle = 'Edit Profile';
     $scope.email = $localStorage.email;
-    $scope.role = $localStorage.role;
-    $scope.photo = $localStorage.photo;
-    $scope.selectedPhoto = '';
-    $scope.croppedPhoto = '';
-    $scope.firstname = $localStorage.firstname;
-    $scope.lastname = $localStorage.lastname;
-    $scope.password = null;
+    $scope.loading = false;
     $scope.newPassword = null;
+    $scope.password = null;
+    $scope.photo = $localStorage.photo;
+    $scope.role = $localStorage.role;
+    $scope.firstnamePh = $localStorage.firstname;
+    $scope.lastnamePh = $localStorage.lastname;
+    $scope.selectedPhoto = '';
+    $scope.title = 'Profile';
 
     $scope.editProfile = function() {
+        if ($scope.editTitle === 'Edit Profile') {
+            $scope.editTitle = 'Save Changes';
+            $scope.firstname = $localStorage.firstname;
+            $scope.lastname = $localStorage.lastname;
+        } else {
+            $scope.editTitle = 'Edit Profile';
+            $scope.firstname = '';
+            $scope.lastname = '';
+            $scope.selectedPhoto = '';
+        }
         $scope.edit = !$scope.edit;
-        $scope.editTitle = $scope.editTitle === 'Edit Profile' ? 'Save Changes' : 'Edit Profile';
+    };
+
+    $scope.closeProfile = function() {
+        if ($scope.edit) {
+            $scope.editProfile();
+        } else {
+            $element.modal('hide');
+        }
     };
 
     $scope.resImgFormat = 'image/jpeg';
@@ -68,19 +85,3 @@ app.directive("fileread", [function() {
         }
     };
 }]);
-
-app.directive('verifypass', function() {
-    return {
-        require: 'ngModel',
-        link: function(scope, elm, attrs, ctrl) {
-            ctrl.$parsers.unshift(function(value) {
-                var valid = false;
-                if (value) {
-                    valid = value === scope.password;
-                    ctrl.$setValidity('invalidEqPass', valid);
-                }
-                return valid ? value : undefined;
-            });
-        }
-    };
-});
