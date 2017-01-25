@@ -8,10 +8,26 @@
                 </h2>
                 <!-- Profile Form -->
                 <form name="profileForm">
-                    <div class="card">
-                        <img class="card-img-top" src="{{photo}}">
-                        <div class="card-block text-center p-2">
-                            <button type="button" class="btn btn-primary btn-outline-primary" ng-disabled="!edit">Change Photo</button>
+                    <div class="text-center">
+                        <div class="cropArea">
+                            <ui-cropper
+                                image="selectedPhoto"
+                                area-type="square"
+                                area-min-size="selMinSize"
+                                area-init-size="selInitSize"
+                                result-image-format="resImgFormat"
+                                result-image-size="resImgSize"
+                                allow-crop-resize-on-corners="false"
+                                area-coords="myAreaCoords"
+                                canvas-scalemode="true" >
+                                    <canvas width="300" height="216" style="margin-top: 0px; cursor: default;"></canvas>
+                                </ui-cropper>
+                        </div>
+                        <div class="pt-2">
+                            <label class="custom-file text-left">
+                                <input type="file" id="file" class="custom-file-input" fileread="selectedPhoto">
+                                <span class="custom-file-control"></span>
+                            </label>
                         </div>
                     </div>
                     <div class="input-group pb-2 pt-2">

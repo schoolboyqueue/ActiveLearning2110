@@ -20,7 +20,8 @@ var app = angular
         'ngMessages',
         'ngStorage',
         'angularModalService',
-        'angular-jwt'
+        'angular-jwt',
+        'uiCropper'
     ]);
 
 app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
@@ -52,7 +53,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
             templateUrl: 'app-components/dashboard/dashboard.view.html'
         })
 
-        .state ('main.course', {
+        .state('main.course', {
             url: 'course',
             templateUrl: 'app-components/dashboard/course.view.html'
         });
