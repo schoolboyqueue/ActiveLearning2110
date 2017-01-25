@@ -28,7 +28,7 @@ app.controller('Profile.Controller', function($scope, $element, $localStorage, U
     $scope.firstname = $localStorage.firstname;
     $scope.lastname = $localStorage.lastname;
     $scope.password = null;
-    $scope.passwordVerify = null;
+    $scope.newPassword = null;
 
     $scope.editProfile = function() {
         $scope.edit = !$scope.edit;

@@ -176,3 +176,14 @@ html, body {
     width: 400px;
     height: 300px;
 }
+
+.image-upload > input
+{
+    display: none;
+    z-index: 9999;
+}
+
+.image-upload-sty
+{
+    cursor: pointer;
+}

@@ -8,27 +8,25 @@
                 </h2>
                 <!-- Profile Form -->
                 <form name="profileForm">
-                    <div class="text-center">
-                        <div class="cropArea">
-                            <ui-cropper
-                                image="selectedPhoto"
-                                area-type="square"
-                                area-min-size="selMinSize"
-                                area-init-size="selInitSize"
-                                result-image-format="resImgFormat"
-                                result-image-size="resImgSize"
-                                allow-crop-resize-on-corners="false"
-                                area-coords="myAreaCoords"
-                                canvas-scalemode="true" >
-                                    <canvas width="300" height="216" style="margin-top: 0px; cursor: default;"></canvas>
-                                </ui-cropper>
-                        </div>
-                        <div class="pt-2">
-                            <label class="custom-file text-left">
-                                <input type="file" id="file" class="custom-file-input" fileread="selectedPhoto">
-                                <span class="custom-file-control"></span>
-                            </label>
-                        </div>
+                    <div class="image-upload text-center">
+                        <label for="file-input">
+                            <img ng-src="{{photo}}" ng-hide="selectedPhoto" ng-class="{'image-upload-sty': edit}"/>
+                            <div class="cropArea" ng-hide="!selectedPhoto">
+                                <ui-cropper
+                                    image="selectedPhoto"
+                                    area-type="square"
+                                    area-min-size="selMinSize"
+                                    area-init-size="selInitSize"
+                                    result-image-format="resImgFormat"
+                                    result-image-size="resImgSize"
+                                    allow-crop-resize-on-corners="false"
+                                    area-coords="myAreaCoords"
+                                    canvas-scalemode="true" >
+                                        <canvas width="300" height="216" style="margin-top: 0px; cursor: default;"></canvas>
+                                    </ui-cropper>
+                            </div>
+                        </label>
+                        <input type="file" id="file-input" fileread="selectedPhoto" ng-disabled="selectedPhoto || !edit">
                     </div>
                     <div class="input-group pb-2 pt-2">
                         <div class="input-group-addon"><i class="fa fa-address-book fa-fw" aria-hidden="true"></i></div>
@@ -72,7 +70,7 @@
                                    'has-success': profileForm.password.$valid }">
                         <div class="input-group-addon"><i class="fa fa-unlock-alt fa-fw" aria-hidden="true"></i></div>
                         <input
-                            placeholder="Password"
+                            placeholder="Old Password"
                             type="password"
                             name="password"
                             class="form-control"
@@ -84,19 +82,19 @@
                         class="input-group pb-2"
                         ng-show="edit"
                         ng-class="{ 'has-danger':
-                                        profileForm.passwordVerify.$touched &&
-                                        (profileForm.passwordVerify.$invalid ||
-                                        profileForm.passwordVerify.$error.minlength ||
-                                        profileForm.passwordVerify.$error.invalidEqPass),
-                                    'has-success': profileForm.passwordVerify.$valid }">
+                                        profileForm.newPassword.$touched &&
+                                        (profileForm.newPassword.$invalid ||
+                                        profileForm.newPassword.$error.minlength ||
+                                        profileForm.newPassword.$error.invalidEqPass),
+                                    'has-success': profileForm.newPassword.$valid }">
                         <div class="input-group-addon"><i class="fa fa-check-circle fa-fw" aria-hidden="true"></i></div>
                         <input
-                            placeholder="Verify Password"
+                            placeholder="New Password"
                             type="password"
-                            name="passwordVerify"
+                            name="newPassword"
                             class="form-control"
                             ng-minlength="5"
-                            ng-model="passwordVerify"
+                            ng-model="newPassword"
                             ng-required="edit"
                             verifypass/>
                     </div>
