@@ -20,8 +20,7 @@ var app = angular
         'ngMessages',
         'ngStorage',
         'angularModalService',
-        'angular-jwt',
-        'uiCropper'
+        'angular-jwt'
     ]);
 
 app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {

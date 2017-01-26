@@ -10,23 +10,20 @@
                 <form name="profileForm">
                     <div class="image-upload text-center">
                         <label for="file-input">
-                            <img ng-src="{{photo}}" ng-hide="selectedPhoto" ng-class="{'image-upload-sty': edit}"/>
+                            <img data-ng-src="{{photo}}" ng-hide="selectedPhoto" style="cursor: pointer;"/>
                             <div class="cropArea" ng-hide="!selectedPhoto">
-                                <ui-cropper
-                                    image="selectedPhoto"
-                                    area-type="square"
-                                    area-min-size="selMinSize"
-                                    area-init-size="selInitSize"
-                                    result-image-format="resImgFormat"
-                                    result-image-size="resImgSize"
-                                    allow-crop-resize-on-corners="false"
-                                    area-coords="myAreaCoords"
-                                    canvas-scalemode="true" >
-                                        <canvas width="300" height="216" style="margin-top: 0px; cursor: default;"></canvas>
-                                    </ui-cropper>
+                                <img ng-src="{{selectedPhoto}}" width="400px" height="300px"/>
                             </div>
                         </label>
-                        <input type="file" id="file-input" fileread="selectedPhoto" ng-disabled="selectedPhoto || !edit" style="display: none;">
+                        <input
+                            type="file"
+                            id="file-input"
+                            fileread="selectedPhoto"
+                            context="context"
+                            photo="selectedPhoto"
+                            ng-disabled="!edit"
+                            accept="image/jpeg"
+                            style="display: none;" />
                     </div>
                     <div class="input-group pb-2 pt-2">
                         <div class="input-group-addon"><i class="fa fa-address-book fa-fw" aria-hidden="true"></i></div>

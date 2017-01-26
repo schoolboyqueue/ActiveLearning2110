@@ -16,7 +16,6 @@
 var app = angular.module('app');
 
 app.controller('Profile.Controller', function($scope, $element, $localStorage, UserService) {
-    $scope.croppedPhoto = '';
     $scope.edit = false;
     $scope.editTitle = 'Edit Profile';
     $scope.email = $localStorage.email;
@@ -28,7 +27,14 @@ app.controller('Profile.Controller', function($scope, $element, $localStorage, U
     $scope.firstnamePh = $localStorage.firstname;
     $scope.lastnamePh = $localStorage.lastname;
     $scope.selectedPhoto = '';
+    $scope.croppedPhoto = '';
     $scope.title = 'Profile';
+
+    var img = new Image();
+    img.onload = imageToDataUri;
+    $scope.$watch('selectedPhoto', function() {
+        img.src = $scope.selectedPhoto;
+    });
 
     $scope.editProfile = function() {
         if ($scope.editTitle === 'Edit Profile') {
@@ -36,10 +42,11 @@ app.controller('Profile.Controller', function($scope, $element, $localStorage, U
             $scope.firstname = $localStorage.firstname;
             $scope.lastname = $localStorage.lastname;
         } else {
+            $scope.selectedPhoto = '';
+            $scope.croppedPhoto = '';
             $scope.editTitle = 'Edit Profile';
             $scope.firstname = '';
             $scope.lastname = '';
-            $scope.selectedPhoto = '';
         }
         $scope.edit = !$scope.edit;
     };
@@ -52,19 +59,20 @@ app.controller('Profile.Controller', function($scope, $element, $localStorage, U
         }
     };
 
-    $scope.resImgFormat = 'image/jpeg';
-    $scope.selMinSize = 100;
-    $scope.selInitSize = [{
-        w: 200,
-        h: 80
-    }];
-    $scope.resImgSize = [{
-        w: 200,
-        h: 150
-    }, {
-        w: 300,
-        h: 200
-    }];
+    function imageToDataUri() {
+
+        var ratio = Math.min(400 / this.width, 300 / this.height);
+
+        var canvas = document.createElement('canvas'),
+        ctx = canvas.getContext('2d');
+
+        canvas.width = this.width*ratio;
+        canvas.height = this.height*ratio;
+
+        ctx.drawImage(this, 0, 0, this.width*ratio, this.height*ratio);
+
+        $scope.croppedPhoto = canvas.toDataURL('image/jpeg', 0.7);
+    }
 });
 
 app.directive("fileread", [function() {
@@ -78,6 +86,7 @@ app.directive("fileread", [function() {
                 reader.onload = function(loadEvent) {
                     scope.$apply(function() {
                         scope.fileread = loadEvent.target.result;
+                        element.val(null);
                     });
                 };
                 reader.readAsDataURL(changeEvent.target.files[0]);
