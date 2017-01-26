@@ -90,6 +90,8 @@ Query String:     none
 Request Body:     application/json  required
 {
   "new_photo"   : String            Optional
+  "new_firstname":String
+  "new_lastname": String
   "new_role"    : String            Optional (admin only)
 }
 **/
