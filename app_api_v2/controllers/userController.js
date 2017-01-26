@@ -164,6 +164,14 @@ var updateUser = function (req, res)
         }
         else
         {
+            if (req.body.new_firstname)
+            {
+                user.firstname = req.body.new_firstname;
+            }
+            if (req.body.new_lastname)
+            {
+                user.lastname = req.body.new_lastname;
+            }
             if (req.body.new_photo)
             {
                 user.photo = req.body.new_photo;
