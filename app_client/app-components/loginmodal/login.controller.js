@@ -60,13 +60,9 @@ app.controller('Login.Controller', function($scope, $element, AuthenticationServ
         }
     };
 
-    var handleStatus = function(error, text) {
-        $scope.error = text;
-    };
-
     function Login(result, status, text) {
         if (!result) {
-            failed(status, text);
+            failed(text);
             return;
         }
         if ($scope.register) {
@@ -81,7 +77,7 @@ app.controller('Login.Controller', function($scope, $element, AuthenticationServ
 
     function getInfo(result, status, text) {
         if (!result) {
-            failed(status, text);
+            failed(text);
             return;
         }
         UserService.GetUserInfo(getCourses);
@@ -89,7 +85,7 @@ app.controller('Login.Controller', function($scope, $element, AuthenticationServ
 
     function getCourses(result, status, text) {
         if (!result) {
-            failed(status, text);
+            failed(text);
             return;
         }
         UserService.GetCourseList(finalize);
@@ -97,16 +93,16 @@ app.controller('Login.Controller', function($scope, $element, AuthenticationServ
 
     function finalize(result, status, text) {
         if (!result) {
-            failed(status, text);
+            failed(text);
             return;
         }
         $scope.loading = false;
         $element.modal('hide');
     }
 
-    function failed(status, text) {
+    function failed(text) {
         $scope.loading = false;
-        handleStatus(status, text);
+        $scope.error = text;
         AuthenticationService.Logout();
     }
 });

@@ -18,17 +18,14 @@ var app = angular.module('app');
 app.controller('Profile.Controller', function($scope, $element, $localStorage, UserService) {
     $scope.edit = false;
     $scope.editTitle = 'Edit Profile';
-    $scope.email = $localStorage.email;
     $scope.loading = false;
     $scope.newPassword = null;
     $scope.password = null;
-    $scope.photo = $localStorage.photo;
-    $scope.role = $localStorage.role;
-    $scope.firstnamePh = $localStorage.firstname;
-    $scope.lastnamePh = $localStorage.lastname;
     $scope.selectedPhoto = '';
     $scope.croppedPhoto = '';
     $scope.title = 'Profile';
+    $scope.error = null;
+    syncInfo();
 
     var img = new Image();
     img.onload = imageToDataUri;
@@ -41,23 +38,107 @@ app.controller('Profile.Controller', function($scope, $element, $localStorage, U
             $scope.editTitle = 'Save Changes';
             $scope.firstname = $localStorage.firstname;
             $scope.lastname = $localStorage.lastname;
+            $scope.edit = !$scope.edit;
+            $scope.error = null;
         } else {
+            $scope.loading = true;
+            updateProfile();
+        }
+    };
+
+    $scope.closeProfile = function() {
+        if ($scope.edit) {
             $scope.selectedPhoto = '';
             $scope.croppedPhoto = '';
             $scope.editTitle = 'Edit Profile';
             $scope.firstname = '';
             $scope.lastname = '';
-        }
-        $scope.edit = !$scope.edit;
-    };
-
-    $scope.closeProfile = function() {
-        if ($scope.edit) {
-            $scope.editProfile();
+            $scope.loading = false;
+            $scope.edit = !$scope.edit;
+            $scope.error = null;
+            $scope.password = null;
+            $scope.newPassword = null;
         } else {
             $element.modal('hide');
         }
     };
+
+    function updateProfile() {
+        var info = aggregateInfo();
+        if (info) {
+            UserService.UpdateUserInfo(info, infoUpdated);
+        } else {
+            infoUpdated(true,'','');
+        }
+    }
+
+    function infoUpdated(result, status, text) {
+        if (!result) {
+            failed(text);
+            return;
+        }
+        syncInfo();
+        updatePassword();
+    }
+
+    function updatePassword() {
+        $scope.loading = true;
+        if ($scope.password) {
+            UserService.UpdateUserPass({
+                cur_password: $scope.password,
+                new_password: $scope.newPassword
+            }, passFinished);
+        }
+        $scope.loading = false;
+    }
+
+    function passFinished(result, status, text) {
+        if (!result) {
+            failed(text);
+            return;
+        }
+        $scope.selectedPhoto = '';
+        $scope.croppedPhoto = '';
+        $scope.editTitle = 'Edit Profile';
+        $scope.firstname = '';
+        $scope.lastname = '';
+        $scope.loading = false;
+        $scope.edit = !$scope.edit;
+        $scope.error = null;
+        $scope.password = null;
+        $scope.newPassword = null;
+    }
+
+    function syncInfo() {
+        $scope.email = $localStorage.email;
+        $scope.photo = $localStorage.photo;
+        $scope.role = $localStorage.role;
+        $scope.firstnamePh = $localStorage.firstname;
+        $scope.lastnamePh = $localStorage.lastname;
+    }
+
+    function failed(text) {
+        $scope.loading = false;
+        $scope.error = text;
+    }
+
+    function aggregateInfo() {
+        var info = {};
+        if ($scope.croppedPhoto) {
+            info.new_photo = $scope.croppedPhoto;
+        }
+        if ($scope.firstname !== $localStorage.firstname) {
+            info.new_firstname = $scope.firstname;
+        }
+        if ($scope.lastname !== $localStorage.lastname) {
+            info.new_lastname = $scope.lastname;
+        }
+        if (angular.equals(info, {})) {
+            return null;
+        } else {
+            return info;
+        }
+    }
 
     function imageToDataUri() {
 

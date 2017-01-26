@@ -96,7 +96,9 @@
                             ng-disabled="!profileForm.password.$dirty || profileForm.password.$invalid"
                             ng-required="edit && profileForm.password.$dirty"/>
                     </div>
-                    <div class="text-center">
+                    <!-- Error Message -->
+                    <div ng-if="error" class="alert alert-danger pt-2">{{error}}</div>
+                    <div class="text-center pt-1">
                         <button
                             type="button"
                             class="btn"

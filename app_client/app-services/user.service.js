@@ -68,12 +68,7 @@ app.factory('UserService', function($http, $localStorage, ModalService) {
     service.GetUserInfo = function(callback) {
         $http.get('/api_v2/user/' + $localStorage.id)
             .then(function(response) {
-                    $localStorage.id = response.data.user._id;
-                    $localStorage.email = response.data.user.username;
-                    $localStorage.photo = response.data.user.photo;
-                    $localStorage.role = response.data.user.role;
-                    $localStorage.firstname = response.data.user.firstname;
-                    $localStorage.lastname = response.data.user.lastname;
+                    syncUserInfo(response);
                     callback(true, response.status, response.data.message);
                 },
                 function(response) {
@@ -121,12 +116,26 @@ app.factory('UserService', function($http, $localStorage, ModalService) {
                 });
     };
 
-    service.UpdateUserInfo = function(info) {
+    service.UpdateUserInfo = function(info, callback) {
         $http.post('/api_v2/user/' + $localStorage.id, info)
             .then(function(response) {
+                    syncUserInfo(response);
                     callback(true, response.status, response.data.message);
                 },
                 function(response) {
+                    callback(false, response.status, response.data.message);
+                });
+    };
+
+    service.UpdateUserPass = function(info, callback) {
+        console.log('hit user service pass update');
+        $http.post('/api_v2/user/' + $localStorage.id + '/password', info)
+            .then(function(response) {
+                    console.log(response);
+                    callback(true, response.status, response.data.message);
+                },
+                function(response) {
+                    console.log(response);
                     callback(false, response.status, response.data.message);
                 });
     };
@@ -147,6 +156,15 @@ app.factory('UserService', function($http, $localStorage, ModalService) {
             }
         });
     };
+
+    function syncUserInfo(new_info) {
+        $localStorage.id = new_info.data.user._id;
+        $localStorage.email = new_info.data.user.username;
+        $localStorage.photo = new_info.data.user.photo;
+        $localStorage.role = new_info.data.user.role;
+        $localStorage.firstname = new_info.data.user.firstname;
+        $localStorage.lastname = new_info.data.user.lastname;
+    }
 
     return service;
 });
