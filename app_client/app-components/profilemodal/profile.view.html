@@ -10,9 +10,9 @@
                 <form name="profileForm">
                     <div class="image-upload text-center">
                         <label for="file-input">
-                            <img data-ng-src="{{photo}}" ng-hide="selectedPhoto" style="cursor: pointer;"/>
+                            <img data-ng-src="{{photo}}" ng-hide="selectedPhoto" style="cursor: pointer;" class="rounded"/>
                             <div class="cropArea" ng-hide="!selectedPhoto">
-                                <img ng-src="{{selectedPhoto}}" width="400px" height="300px"/>
+                                <img ng-src="{{selectedPhoto}}" width="400px" height="300px" class="rounded"/>
                             </div>
                         </label>
                         <input
@@ -97,7 +97,7 @@
                             ng-required="edit && profileForm.password.$dirty"/>
                     </div>
                     <!-- Error Message -->
-                    <div ng-if="error" class="alert alert-danger pt-2">{{error}}</div>
+                    <div ng-if="error" class="alert alert-danger animated fadeIn text-center pt-2">{{error}}</div>
                     <div class="text-center pt-1">
                         <button
                             type="button"

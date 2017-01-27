@@ -6,7 +6,7 @@
     </div>
     <!-- Courses cards  -->
     <div ng-show="$storage.courses.length !== 0">
-        <div class="row">
+        <div class="row" style="overflow: hidden;">
             <div class="col-md-4 pb-4" ng-repeat="course in $storage.courses">
                 <div class="card animated fadeIn" ng-click="cardClick($index)">
                     <div class="card-header text-uppercase">

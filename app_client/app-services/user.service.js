@@ -69,6 +69,7 @@ app.factory('UserService', function($http, $localStorage, ModalService) {
         $http.get('/api_v2/user/' + $localStorage.id)
             .then(function(response) {
                     syncUserInfo(response);
+                    updateToken(response.data.jwt_token);
                     callback(true, response.status, response.data.message);
                 },
                 function(response) {
@@ -81,6 +82,7 @@ app.factory('UserService', function($http, $localStorage, ModalService) {
         $http.get('api_v2/user/' + $localStorage.id + '/courses')
             .then(function(response) {
                     $localStorage.courses = response.data.courses;
+                    updateToken(response.data.jwt_token);
                     callback(true, response.status, response.data.message);
                 },
                 function(response) {
@@ -95,6 +97,7 @@ app.factory('UserService', function($http, $localStorage, ModalService) {
             })
             .then(function(response) {
                     $localStorage.courses = response.data.courses;
+                    updateToken(response.data.jwt_token);
                     callback(true, response.status, response.data.message);
                 },
                 function(response) {
@@ -109,6 +112,7 @@ app.factory('UserService', function($http, $localStorage, ModalService) {
             })
             .then(function(response) {
                     $localStorage.courses = response.data.courses;
+                    updateToken(response.data.jwt_token);
                     callback(true, response.status, response.data.message);
                 },
                 function(response) {
@@ -120,6 +124,7 @@ app.factory('UserService', function($http, $localStorage, ModalService) {
         $http.post('/api_v2/user/' + $localStorage.id, info)
             .then(function(response) {
                     syncUserInfo(response);
+                    updateToken(response.data.jwt_token);
                     callback(true, response.status, response.data.message);
                 },
                 function(response) {
@@ -128,14 +133,12 @@ app.factory('UserService', function($http, $localStorage, ModalService) {
     };
 
     service.UpdateUserPass = function(info, callback) {
-        console.log('hit user service pass update');
         $http.post('/api_v2/user/' + $localStorage.id + '/password', info)
             .then(function(response) {
-                    console.log(response);
+                    updateToken(response.data.jwt_token);
                     callback(true, response.status, response.data.message);
                 },
                 function(response) {
-                    console.log(response);
                     callback(false, response.status, response.data.message);
                 });
     };
@@ -156,6 +159,11 @@ app.factory('UserService', function($http, $localStorage, ModalService) {
             }
         });
     };
+
+    function updateToken(token) {
+        $localStorage.token = token;
+        $http.defaults.headers.common.Authorization = token;
+    }
 
     function syncUserInfo(new_info) {
         $localStorage.id = new_info.data.user._id;
