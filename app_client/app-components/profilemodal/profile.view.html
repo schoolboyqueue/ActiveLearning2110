@@ -4,29 +4,42 @@
             <div class="modal-body">
                 <h2 class="text-center pb-4">
                     <span>{{title}}</span>
-                    <button type="btn float-right" class="close" data-dismiss="modal">&times;</button>
+                    <button type="btn float-right" class="close" ng-click="closeProfile()">&times;</button>
                 </h2>
                 <!-- Profile Form -->
                 <form name="profileForm">
-                    <div class="card">
-                        <img class="card-img-top" src="{{photo}}">
-                        <div class="card-block text-center p-2">
-                            <button type="button" class="btn btn-primary btn-outline-primary" ng-disabled="!edit">Change Photo</button>
-                        </div>
+                    <div class="image-upload text-center">
+                        <label for="file-input">
+                            <img data-ng-src="{{photo}}" ng-hide="selectedPhoto" style="cursor: pointer;"/>
+                            <div class="cropArea" ng-hide="!selectedPhoto">
+                                <img ng-src="{{selectedPhoto}}" width="400px" height="300px"/>
+                            </div>
+                        </label>
+                        <input
+                            type="file"
+                            id="file-input"
+                            fileread="selectedPhoto"
+                            context="context"
+                            photo="selectedPhoto"
+                            ng-disabled="!edit"
+                            accept="image/jpeg"
+                            style="display: none;" />
                     </div>
                     <div class="input-group pb-2 pt-2">
                         <div class="input-group-addon"><i class="fa fa-address-book fa-fw" aria-hidden="true"></i></div>
                         <input
                             type="firstname"
                             name="firstname"
-                            placeholder="{{firstname}}"
+                            placeholder="{{firstnamePh}}"
                             class="form-control text-capitalize"
+                            ng-model="firstname"
                             ng-disabled="!edit"/>
                         <input
                             type="lastname"
                             name="lastname"
-                            placeholder="{{lastname}}"
+                            placeholder="{{lastnamePh}}"
                             class="form-control text-capitalize"
+                            ng-model="lastname"
                             ng-disabled="!edit"/>
                     </div>
                     <div class="input-group pb-2">
@@ -51,40 +64,41 @@
                         class="input-group pb-2"
                         ng-show="edit"
                         ng-class="{ 'has-danger':
-                                        profileForm.password.$touched &&
+                                        profileForm.password.$dirty &&
                                         (profileForm.password.$invalid || profileForm.password.$error.minlength),
-                                   'has-success': profileForm.password.$valid }">
+                                   'has-success': profileForm.password.$valid && profileForm.password.$dirty}">
                         <div class="input-group-addon"><i class="fa fa-unlock-alt fa-fw" aria-hidden="true"></i></div>
                         <input
-                            placeholder="Password"
+                            placeholder="Old Password"
                             type="password"
                             name="password"
                             class="form-control"
                             ng-minlength="5"
                             ng-model="password"
-                            ng-required="edit" />
+                            ng-required="edit && profileForm.password.$dirty" />
                     </div>
                     <div
                         class="input-group pb-2"
                         ng-show="edit"
                         ng-class="{ 'has-danger':
-                                        profileForm.passwordVerify.$touched &&
-                                        (profileForm.passwordVerify.$invalid ||
-                                        profileForm.passwordVerify.$error.minlength ||
-                                        profileForm.passwordVerify.$error.invalidEqPass),
-                                    'has-success': profileForm.passwordVerify.$valid }">
+                                        profileForm.newPassword.$dirty &&
+                                        (profileForm.newPassword.$invalid ||
+                                        profileForm.newPassword.$error.minlength ),
+                                    'has-success': profileForm.newPassword.$valid && profileForm.password.$dirty}">
                         <div class="input-group-addon"><i class="fa fa-check-circle fa-fw" aria-hidden="true"></i></div>
                         <input
-                            placeholder="Verify Password"
+                            placeholder="New Password"
                             type="password"
-                            name="passwordVerify"
+                            name="newPassword"
                             class="form-control"
                             ng-minlength="5"
-                            ng-model="passwordVerify"
-                            ng-required="edit"
-                            verifypass/>
+                            ng-model="newPassword"
+                            ng-disabled="!profileForm.password.$dirty || profileForm.password.$invalid"
+                            ng-required="edit && profileForm.password.$dirty"/>
                     </div>
-                    <div class="text-center">
+                    <!-- Error Message -->
+                    <div ng-if="error" class="alert alert-danger pt-2">{{error}}</div>
+                    <div class="text-center pt-1">
                         <button
                             type="button"
                             class="btn"

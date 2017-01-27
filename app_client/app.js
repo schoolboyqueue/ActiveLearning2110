@@ -52,7 +52,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
             templateUrl: 'app-components/dashboard/dashboard.view.html'
         })
 
-        .state ('main.course', {
+        .state('main.course', {
             url: 'course',
             templateUrl: 'app-components/dashboard/course.view.html'
         });
