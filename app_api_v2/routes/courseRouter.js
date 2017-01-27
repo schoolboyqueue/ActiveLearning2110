@@ -22,6 +22,7 @@ var inputController      = require('./../controllers/inputController');
 var tokenController      = require('./../controllers/tokenController');
 var userController       = require('./../controllers/userController');
 var courseController     = require('./../controllers/courseController');
+var signupController     = require('./../controllers/signupController');
 
 /**
 INSTRUCTOR CREATE COURSE
@@ -68,6 +69,33 @@ courseRouter.route('/:COURSEID/students')
           inputController.requireCourseKey,
           userController.setUserName,
           courseController.joinCourse);
+
+/**
+INSTRUCTOR ADD STUDENT
+
+POST  /api_v2/course/{course_id}/students/{student_id}
+
+Authentication:   user token
+Authorization:    instructor
+
+Path Parameters:  none
+Query String:     none
+Request Body:     application/json    required
+{
+  "username":   String              required
+  "firstname":   String              required
+  "lastname":   String              required
+}
+**/
+courseRouter.route('/:COURSEID/students')
+    .put(tokenController.validateToken,
+          tokenController.refreshToken,
+          authorizeController.instructor,
+          userController.isValidStudent,
+          signupController.registerStudent,
+          signupController.savedUserToDB,
+          courseController.instructorAddStudent
+          );
 
 /**
 STUDENT JOIN COURSE ~ no course_id
