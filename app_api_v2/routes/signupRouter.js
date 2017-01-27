@@ -108,7 +108,7 @@ signupRouter.route('/registration_key')
           signupController.createRegistrationKey);
 
  /**
- GET REGISTRATION KEYS **TODO**
+ GET REGISTRATION KEYS
 
  GET	/api_v2/signup/registration_key
 

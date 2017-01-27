@@ -19,6 +19,7 @@ var jwt           = require('jsonwebtoken');
 var config        = require('./../../config');
 
 var FIVE_MINUTES = 5;
+var THREE_MINUTES = 180;
 
 function clearCookieJWT(res, callback)
 {
@@ -119,9 +120,9 @@ var refreshToken = function (req, res, next)
 
     var timeInS = Math.floor(Date.now() / 1000);
     var secondsTilExp = req.decodedToken.exp - timeInS;
-    console.log('exp - current: '+ secondsTilExp)
+    //console.log('exp - current: '+ secondsTilExp)
 
-    if (secondsTilExp < 180)
+    if (secondsTilExp < THREE_MINUTES)
     {
       console.log("REFRESHING TOKEN");
 
@@ -139,7 +140,7 @@ var refreshToken = function (req, res, next)
           {
               setCookieJWT(res, token, function()
               {
-                  console.log('token: '+token);
+                  //console.log('token: '+token);
                   req.token = token;
                   next();
               });
@@ -174,7 +175,7 @@ var validateToken = function (req, res, next)
     }
     else
     {
-        
+
         jwt.verify(token, config.jwt_secret, function(err, decode)
         {
             if (err)
