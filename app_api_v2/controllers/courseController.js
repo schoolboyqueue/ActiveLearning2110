@@ -94,6 +94,56 @@ var createCourse = function(req, res, next)
     });
 }
 
+var instructorAddStudent = function(req, res, next)
+{
+    console.log('courseController instructorAddStudent');
+
+    Course.findById(req.params.COURSEID, function(err, course)
+    {
+        if (err || !course)
+        {
+            return res.status(404).json(
+                {
+                    success: false,
+                    message: 'Course Not Found'
+                }
+            );
+        }
+        else
+        {
+           course.students.push(
+                        {
+                            student_id: req.user.id.toString(),
+                            username  : req.user.username
+                        }
+                    );
+                    course.save(function(err, updated_course)
+                    {
+                        if (err)
+                        {
+                            return res.status(200).json(
+                                {
+                                    success   : false,
+                                    message   : 'Internal Error'
+                                }
+                            );
+                        }
+                        else
+                        {
+                            res.status(200).json(
+                                {
+                                    success   : true,
+                                    message   : 'Student Added to Course',
+                                    course    : course
+                                }
+                            );
+                        }
+                    }); 
+        }
+
+    });
+}
+
 var joinCourse = function(req, res, next)
 {
     console.log('courseController joinCourse');
@@ -465,5 +515,6 @@ module.exports =
     getCourse         :     getCourse,
     getLectures       :     getLectures,
     getStudents       :     getStudents,
-    getUserCourses    :     getUserCourses
+    getUserCourses    :     getUserCourses,
+    instructorAddStudent    : instructorAddStudent 
 };
