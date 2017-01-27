@@ -25,7 +25,7 @@ var roles =
     STUDENT     : 'student',
 };
 
-function checkForStudent(req, res, course, callback)
+function checkForStudent(req, res, course, student_id, callback)
 {
     console.log('courseController checkForStudent');
 
@@ -38,7 +38,7 @@ function checkForStudent(req, res, course, callback)
     {
         for (var i = 0; i < course.students.length; i++)
         {
-            if (course.students[i].student_id === req.decodedToken.sub)
+            if (course.students[i].student_id === student_id)
             {
                 callback(true);
                 return;
@@ -98,6 +98,8 @@ var instructorAddStudent = function(req, res, next)
 {
     console.log('courseController instructorAddStudent');
 
+    var student_id = req.user.id.toString();
+
     Course.findById(req.params.COURSEID, function(err, course)
     {
         if (err || !course)
@@ -111,9 +113,22 @@ var instructorAddStudent = function(req, res, next)
         }
         else
         {
-           course.students.push(
+            checkForStudent(req, res, course, student_id, function(student)
+            {
+                if (student)
+                {
+                    return res.status(404).json(
                         {
-                            student_id: req.user.id.toString(),
+                            success: false,
+                            message: 'Student Already In Course'
+                        }
+                    );
+                }
+                else
+                {
+                    course.students.push(
+                        {
+                            student_id: student_id,
                             username  : req.user.username
                         }
                     );
@@ -121,7 +136,7 @@ var instructorAddStudent = function(req, res, next)
                     {
                         if (err)
                         {
-                            return res.status(200).json(
+                            return res.status(404).json(
                                 {
                                     success   : false,
                                     message   : 'Internal Error'
@@ -133,14 +148,16 @@ var instructorAddStudent = function(req, res, next)
                             res.status(200).json(
                                 {
                                     success   : true,
+                                    jwt_token : req.token,
                                     message   : 'Student Added to Course',
                                     course    : course
                                 }
                             );
                         }
-                    }); 
+                    });
+                }
+            });
         }
-
     });
 }
 
@@ -161,7 +178,7 @@ var joinCourse = function(req, res, next)
         }
         else
         {
-            checkForStudent(req, res, course, function(student)
+            checkForStudent(req, res, course, req.decodedToken.sub, function(student)
             {
                 if (student)
                 {
@@ -184,7 +201,7 @@ var joinCourse = function(req, res, next)
                     {
                         if (err)
                         {
-                            return res.status(200).json(
+                            return res.status(500).json(
                                 {
                                     success   : false,
                                     message   : 'Internal Error'
@@ -231,6 +248,7 @@ var deleteStudentFromCourse = function (req, res)
             res.status(200).json(
                 {
                     success : true,
+                    jwt_token : req.token,
                     message: 'Student Deleted',
                     data  :   data
                 }
@@ -260,6 +278,7 @@ var getCourse = function (req, res)
             return res.status(200).json(
                 {
                     success   : true,
+                    jwt_token : req.token,
                     course    : course
                 }
             );
@@ -296,6 +315,7 @@ var getLectures = function (req, res)
             return res.status(200).json(
                 {
                     success   : true,
+                    jwt_token : req.token,
                     lectures  : course.lectures
                 }
             );
@@ -323,7 +343,8 @@ var getStudents = function (req, res)
             return res.status(200).json(
                 {
                     success   : true,
-                    students    : course.students
+                    jwt_token : req.token,
+                    students  : course.students
                 }
             );
         }
@@ -384,6 +405,7 @@ var createLecture  = function (req, res)
                         return res.status(201).json(
                             {
                                 success : true,
+                                jwt_token : req.token,
                                 message : 'Lecture Creation Successsful',
                                 lecture_id: updatedCourse.lectures[updatedCourse.lectures.length-1]._id
                             }
@@ -412,40 +434,41 @@ var deleteLecture  = function (req, res)
         }
         else
         {
-          if (req.decodedToken.sub !== course.instructor.instructor_id)
-          {
-              return res.status(401).json(
-                  {
-                      success: false,
-                      message: 'User not Authorized to delete lecture'
-                  }
-              );
-          }
-          else
-          {
-              course.lectures.id(req.params.LECTUREID).remove();
-              course.save(function (err)
-              {
-                  if (err)
-                  {
-                      return res.status(401).json(
-                          {
-                              success: false,
-                              message: 'Unable To Delete Lecture'
-                          }
-                      );
-                  }
-                  else
-                  {
-                      return res.status(201).json(
-                          {
-                              success : true,
-                              message : 'Lecture Deletion Successsful'
-                          }
-                      );
-                  }
-              });
-          }
+            if (req.decodedToken.sub !== course.instructor.instructor_id)
+            {
+                return res.status(401).json(
+                    {
+                        success: false,
+                        message: 'User not Authorized to delete lecture'
+                    }
+                );
+            }
+            else
+            {
+                course.lectures.id(req.params.LECTUREID).remove();
+                course.save(function (err)
+                {
+                    if (err)
+                    {
+                        return res.status(401).json(
+                            {
+                                success: false,
+                                message: 'Unable To Delete Lecture'
+                            }
+                        );
+                    }
+                    else
+                    {
+                        return res.status(201).json(
+                            {
+                                success : true,
+                                jwt_token : req.token,
+                                message : 'Lecture Deletion Successsful'
+                            }
+                        );
+                    }
+                });
+            }
         }
     });
 };
@@ -472,6 +495,7 @@ var getUserCourses  = function (req, res)
                 return res.status(201).json(
                     {
                         success : true,
+                        jwt_token : req.token,
                         courses : courses
                     }
                 );
@@ -496,25 +520,25 @@ var getUserCourses  = function (req, res)
                 return res.status(201).json(
                     {
                         success : true,
+                        jwt_token : req.token,
                         courses : courses
                     }
                 );
             }
         });
     }
-
 };
 
 module.exports =
 {
-    createCourse      :     createCourse,
-    createLecture     :     createLecture,
-    deleteLecture     :     deleteLecture,
-    deleteStudentFromCourse :   deleteStudentFromCourse,
-    joinCourse        :     joinCourse,
-    getCourse         :     getCourse,
-    getLectures       :     getLectures,
-    getStudents       :     getStudents,
-    getUserCourses    :     getUserCourses,
-    instructorAddStudent    : instructorAddStudent 
+    createCourse            :     createCourse,
+    createLecture           :     createLecture,
+    deleteLecture           :     deleteLecture,
+    deleteStudentFromCourse :     deleteStudentFromCourse,
+    getCourse               :     getCourse,
+    getLectures             :     getLectures,
+    getStudents             :     getStudents,
+    getUserCourses          :     getUserCourses,
+    instructorAddStudent    :     instructorAddStudent,
+    joinCourse              :     joinCourse
 };

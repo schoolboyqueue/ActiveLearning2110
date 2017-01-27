@@ -149,13 +149,12 @@ var setUserName = function (req, res, next)
     });
 }
 
-
 var isValidStudent = function (req, res, next)
 {
     console.log('userController isValidStudent');
+
     User.findOne({'username': req.body.username}, function (err, user)
     {
-        console.log(user);
         if (err || !user)
         {
           req.body.password = "123456";
@@ -164,7 +163,6 @@ var isValidStudent = function (req, res, next)
         }
         else
         {
-          console.log(user);
           req.user = user;
           next();
         }
@@ -289,6 +287,7 @@ var updatePassword = function(req, res)
                       return res.status(200).json(
                           {
                               success   : true,
+                              jwt_token : req.token,
                               message   : 'User Password Updated',
                               user_id   : updated_user._id.toString()
                           }
