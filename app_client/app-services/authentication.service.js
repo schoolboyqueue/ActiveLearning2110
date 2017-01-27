@@ -51,10 +51,6 @@ app.factory('AuthenticationService', function($http, $localStorage, UserService,
         );
     };
 
-    service.Expired = function(token) {
-        return jwtHelper.isTokenExpired(token);
-    };
-
     service.LoggedIn = function() {
         if ($localStorage.token && !jwtHelper.isTokenExpired($localStorage.token)) {
             $localStorage.LoggedIn = true;

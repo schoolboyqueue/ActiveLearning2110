@@ -8,6 +8,7 @@ body {
 html, body {
     height: 100%;
     background-color: #F8F9FA;
+    overflow-x: hidden;
 }
 
 .add-card {

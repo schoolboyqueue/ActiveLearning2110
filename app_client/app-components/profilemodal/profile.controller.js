@@ -48,16 +48,7 @@ app.controller('Profile.Controller', function($scope, $element, $localStorage, U
 
     $scope.closeProfile = function() {
         if ($scope.edit) {
-            $scope.selectedPhoto = '';
-            $scope.croppedPhoto = '';
-            $scope.editTitle = 'Edit Profile';
-            $scope.firstname = '';
-            $scope.lastname = '';
-            $scope.loading = false;
-            $scope.edit = !$scope.edit;
-            $scope.error = null;
-            $scope.password = null;
-            $scope.newPassword = null;
+            resetEditProfile();
         } else {
             $element.modal('hide');
         }
@@ -88,8 +79,9 @@ app.controller('Profile.Controller', function($scope, $element, $localStorage, U
                 cur_password: $scope.password,
                 new_password: $scope.newPassword
             }, passFinished);
+        } else {
+            resetEditProfile();
         }
-        $scope.loading = false;
     }
 
     function passFinished(result, status, text) {
@@ -97,6 +89,10 @@ app.controller('Profile.Controller', function($scope, $element, $localStorage, U
             failed(text);
             return;
         }
+        resetEditProfile();
+    }
+
+    function resetEditProfile() {
         $scope.selectedPhoto = '';
         $scope.croppedPhoto = '';
         $scope.editTitle = 'Edit Profile';
