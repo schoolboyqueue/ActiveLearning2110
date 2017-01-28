@@ -99,7 +99,7 @@ app.controller('Profile.Controller', function($scope, $element, $localStorage, U
         $scope.firstname = '';
         $scope.lastname = '';
         $scope.loading = false;
-        $scope.edit = !$scope.edit;
+        $scope.edit = false;
         $scope.error = null;
         $scope.password = null;
         $scope.newPassword = null;

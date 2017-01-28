@@ -10,7 +10,7 @@
                 <form name="profileForm">
                     <div class="image-upload text-center">
                         <label for="file-input">
-                            <img data-ng-src="{{photo}}" ng-hide="selectedPhoto" style="cursor: pointer;" class="rounded"/>
+                            <img data-ng-src="{{photo}}" ng-hide="selectedPhoto" ng-class="{ 'handCursor': edit }" class="rounded"/>
                             <div class="cropArea" ng-hide="!selectedPhoto">
                                 <img ng-src="{{selectedPhoto}}" width="400px" height="300px" class="rounded"/>
                             </div>

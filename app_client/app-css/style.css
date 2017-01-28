@@ -184,3 +184,7 @@ button.close {
     cursor: pointer;
     opacity: .50
 }
+
+.handCursor {
+    cursor: pointer;
+}
