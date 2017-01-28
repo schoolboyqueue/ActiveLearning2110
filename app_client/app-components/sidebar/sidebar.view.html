@@ -17,13 +17,12 @@
             <a
                 href="#classList"
                 data-toggle="collapse"
-                aria-expanded="false"
+                aria-expanded="{{$storage.classExpand}}"
                 aria-controls="classList"
-                ng-click="classExpand = !classExpand">
+                ng-click="$storage.classExpand = !$storage.classExpand">
                     <i class="fa fa-book pr-3 mr-auto" aria-hidden="true"></i>
                     Courses
-                    <i class="fa fa-angle-down" aria-hidden="true" ng-hide="classExpand"></i>
-                    <i class="fa fa-angle-up" aria-hidden="true" ng-hide="!classExpand"></i>
+                    <i class="fa fa-angle-down" aria-hidden="true"></i>
             </a>
             <div class="collapse" id="classList">
                 <ul>

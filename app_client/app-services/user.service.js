@@ -16,11 +16,11 @@
 
 var app = angular.module('app');
 
-app.factory('UserService', function($http, $localStorage, ModalService) {
+app.factory('UserService', function($http, $localStorage, $state, ModalService) {
 
     var service = {};
 
-    $localStorage.$default({
+    var defVals = {
         id: '',
         email: '',
         firstname: '',
@@ -29,11 +29,15 @@ app.factory('UserService', function($http, $localStorage, ModalService) {
         role: '',
         courses: [],
         selectedCourse: 0,
+        classExpand: false,
+        LoggedIn: false,
         notifications: {
             count: 0,
             data: []
         }
-    });
+    };
+
+    $localStorage.$default(defVals);
 
     service.ShowLogin = function() {
         ModalService.showModal({
@@ -43,6 +47,12 @@ app.factory('UserService', function($http, $localStorage, ModalService) {
             modal.element.modal({
                 backdrop: 'static',
                 keyboard: false
+            });
+            modal.close.then(function(result) {
+                if (result) {
+                    $('.modal-backdrop').remove();
+                    $state.go('main.dashboard');
+                }
             });
         });
     };
@@ -144,20 +154,7 @@ app.factory('UserService', function($http, $localStorage, ModalService) {
     };
 
     service.Clear = function() {
-        $localStorage.$reset({
-            id: '',
-            email: '',
-            firstname: '',
-            lastname: '',
-            photo: '',
-            role: '',
-            courses: [],
-            selectedCourse: 0,
-            notifications: {
-                count: 0,
-                data: []
-            }
-        });
+        $localStorage.$reset(defVals);
     };
 
     function updateToken(token) {
