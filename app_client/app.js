@@ -67,9 +67,7 @@ app.controller('Main.Controller', function($scope, $http, $localStorage, $rootSc
         $scope.$storage.hideSidebar = false;
     }
 
-    if (AuthenticationService.LoggedIn()) {
-        $http.defaults.headers.common.Authorization = $localStorage.token;
-    } else {
+    if (!AuthenticationService.LoggedIn()) {
         AuthenticationService.Logout();
         UserService.ShowLogin();
     }
