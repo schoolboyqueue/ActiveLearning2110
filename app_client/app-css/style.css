@@ -177,3 +177,14 @@ html, body {
     width: 400px;
     height: 300px;
 }
+
+button.close {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+    opacity: .50
+}
+
+.handCursor {
+    cursor: pointer;
+}

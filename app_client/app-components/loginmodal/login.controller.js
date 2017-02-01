@@ -15,7 +15,7 @@
 
 var app = angular.module('app');
 
-app.controller('Login.Controller', function($scope, $element, AuthenticationService, UserService) {
+app.controller('Login.Controller', function($scope, $element, AuthenticationService, UserService, close) {
     $scope.title = 'Login';
     $scope.email = null;
     $scope.password = null;
@@ -97,7 +97,7 @@ app.controller('Login.Controller', function($scope, $element, AuthenticationServ
             return;
         }
         $scope.loading = false;
-        $element.modal('hide');
+        close(true);
     }
 
     function failed(text) {
