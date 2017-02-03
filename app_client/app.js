@@ -56,7 +56,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         });
 });
 
-app.controller('Main.Controller', function($scope, $http, $localStorage, $rootScope, AuthenticationService, UserService) {
+app.controller('Main.Controller', function($scope, $http, $state, $localStorage, $rootScope, AuthenticationService, UserService) {
 
     // All user info once fetched will be stored in local storage. now any of the other controllers can access user info
     // by using $storage.<field>. Ex: to get the user's e-mail do -> $storage.email
@@ -70,5 +70,7 @@ app.controller('Main.Controller', function($scope, $http, $localStorage, $rootSc
     if (!AuthenticationService.LoggedIn()) {
         AuthenticationService.Logout();
         UserService.ShowLogin();
+    } else {
+        $state.go('main.dashboard');
     }
 });

@@ -15,7 +15,11 @@
 
 var app = angular.module('app');
 
-app.controller('Container.Controller', function($scope, $element, $state, UserService) {
+app.controller('Container.Controller', function($scope, $element, $localStorage, $state, UserService) {
+
+    $scope.sortType = 'firstname';
+    $scope.sortReverse = false;
+    $scope.searchUsers = '';
 
     $scope.courseAC = function() {
         UserService.ShowACCourse();
