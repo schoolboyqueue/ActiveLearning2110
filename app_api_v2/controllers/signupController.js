@@ -33,7 +33,7 @@ var keys =
     INSTRUCTOR  : 'instructorKey'
 }
 
-var createAdminKey = function (req, res)
+var createAdminKey = function (req, res, next)
 {
     console.log('signupController createAdminKey');
 
@@ -59,17 +59,43 @@ var createAdminKey = function (req, res)
                 }
             );
         }
-        res.status(201).json(
-            {
-                success: true,
-                message: 'Admin Key Creation Successsful',
-                key:      savedKey
-            }
-        );
+        req.savedKey = savedKey;
+        next();
     });
 }
 
-var createInstructorKey = function (req, res)
+var getAllOnSuccess = function(req, res)
+{    
+    console.log('signupController getAllOnSuccess');
+
+    RegistrationKey.find({'admin_creator.user_id' : req.decodedToken.sub}, function(err, keys)
+    {
+        if (err || !keys)
+        {
+            return res.status(404).json(
+                {
+                    success: false,
+                    message: 'No keys Found'
+                }
+            );
+        }
+        else
+        {
+            return res.status(201).json(
+                {
+                    success: true,
+                    message: 'Admin Key Creation Successsful',
+                    key:      req.savedKey,
+                    keys: keys
+
+                }
+            );
+        }
+    });
+
+}
+
+var createInstructorKey = function (req, res, next)
 {
     console.log('signupController createInstructorKey');
 
@@ -94,13 +120,8 @@ var createInstructorKey = function (req, res)
                 }
             );
         }
-        res.status(201).json(
-            {
-                success: true,
-                message: 'Instructor Key Creation Successsful',
-                key:      savedKey
-            }
-        );
+        req.savedKey = savedKey;
+        next();
     });
 }
 
@@ -449,5 +470,6 @@ module.exports =
     registerInstructor        :   registerInstructor,
     registerStudent           :   registerStudent,
     registerUser              :   registerUser,
-    savedUserToDB             :   savedUserToDB
+    savedUserToDB             :   savedUserToDB,
+    getAllOnSuccess           :   getAllOnSuccess
 };
