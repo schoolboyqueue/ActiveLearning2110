@@ -179,7 +179,8 @@ var getAll  = function (req, res)
                 {
                     success   : true,
                     jwt_token : req.token,
-                    user      : users
+                    user      : users,
+                    message   : "Success on getAll"
                 }
             );
         }
