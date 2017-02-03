@@ -14,6 +14,13 @@
 //************************************************************
 "use strict";
 
+var roles =
+{
+    ADMIN       : 'admin',
+    INSTRUCTOR  : 'instructor',
+    STUDENT     : 'student',
+};
+
 var requireCourseTitle = function (req, res, next)
 {
     console.log('inputController requireCourseTitle');
@@ -166,6 +173,36 @@ var requirePassword = function (req, res, next)
     }
 };
 
+var requireRole = function (req, res, next)
+{
+    console.log('inputController requireRole');
+
+    console.log(req.body.new_role);
+
+    if (!req.body.new_role)
+    {
+        return res.status(400).json(
+            {
+                success: false,
+                message: 'Role Required'
+            }
+        );
+    }
+    else if(req.body.new_role != roles.ADMIN && req.body.new_role != roles.INSTRUCTOR && req.body.new_role != roles.STUDENT)
+    {
+        return res.status(400).json(
+            {
+                success: false,
+                message: 'Invalid Role'
+            }
+        );
+    }
+    else
+    {
+      next();
+    }
+};
+
 module.exports =
 {
     requireCourseKey        :   requireCourseKey,
@@ -175,5 +212,6 @@ module.exports =
     requireUsername         :   requireUsername,
     requireLastname         :   requireLastname,
     requireFirstname        :   requireFirstname,
-    requirePassword         :   requirePassword
+    requirePassword         :   requirePassword,
+    requireRole             :   requireRole
 };

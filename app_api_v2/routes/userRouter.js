@@ -103,6 +103,29 @@ userRouter.route('/:USERID')
           userController.updateUser);
 
 /**
+UPDATE USER ROLE
+
+POST	/api_v2/user/{user_id}/role
+
+Authentication:   user token        required
+Authorization:    admin             required
+
+Path Parameters:  user_id String    required
+Query String:     none
+Request Body:     application/json  required
+{
+  "new_role"   :  String            required
+}
+**/
+userRouter.route('/:USERID/role')
+    .post(tokenController.validateToken,
+          tokenController.refreshToken,
+          authorizeController.admin,
+          inputController.requireRole,
+          userController.updateRole);
+
+
+/**
 UPDATE USER PASSWORD
 
 POST	/api_v2/user/{user_id}/password
@@ -145,5 +168,25 @@ userRouter.route('/:USERID')
             userController.deleteUser,
             tokenController.clearToken);
 
+/**
+DEACTIVATE/REACTIVATE USER
+
+POST	/api_v2/user/{user_id}/deactivate
+
+Authentication:   user token       required
+Authorization:    admin            required
+
+Path Parameters:  user_id String   required
+Query String:     none
+Request Body:     application/json  required
+{
+  "deactivate":   String            required
+}
+**/
+userRouter.route('/:USERID/deactivate')
+    .post(tokenController.validateToken,
+          tokenController.refreshToken,
+          authorizeController.admin,
+          userController.deactivateUser);
 
 module.exports = userRouter;
