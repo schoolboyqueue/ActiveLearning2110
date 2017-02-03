@@ -157,9 +157,18 @@ app.factory('UserService', function($http, $localStorage, $state, ModalService) 
     service.GetAllUsers = function(callback) {
         $http.get('/api_v2/user')
             .then(function(response) {
-                console.log(response.data.user);
                 $localStorage.users = response.data.user;
                 callback(true, response.status, response.data.message);
+            },
+            function(response) {
+                callback(false, response.status, response.data.message);
+            });
+    };
+
+    service.GenerateInstructorKey = function(callback) {
+        $http.get('/api_v2/signup/instructor_key')
+            .then(function(response) {
+                callback(true, response.status, response.data);
             },
             function(response) {
                 callback(false, response.status, response.data.message);

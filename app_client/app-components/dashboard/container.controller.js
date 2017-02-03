@@ -21,6 +21,19 @@ app.controller('Container.Controller', function($scope, $element, $localStorage,
     $scope.sortReverse = false;
     $scope.searchUsers = '';
 
+    $scope.changes = {};
+
+    $scope.roles = [{
+        id: "1",
+        name: "instructor"
+    }, {
+        id: "2",
+        name: "student"
+    }, {
+        id: "3",
+        name: "admin"
+    }];
+
     $scope.courseAC = function() {
         UserService.ShowACCourse();
     };
@@ -29,4 +42,16 @@ app.controller('Container.Controller', function($scope, $element, $localStorage,
         $scope.$storage.selectedCourse = index;
         $state.go('main.course');
     };
+
+    $scope.getInstructorKey = function() {
+        UserService.GenerateInstructorKey(postGetKey);
+    };
+
+    function postGetKey(result, status, data) {
+        if (!result) {
+            $scope.error = data.message;
+            return;
+        }
+        $scope.generatedKey = data.key.key;
+    }
 });

@@ -64,23 +64,33 @@
             </td>
         </thead>
         <tbody>
-            <tr ng-repeat="user in $storage.users | orderBy:sortType:sortReverse | filter:searchUsers" class="text-center">
-                <td>
+            <tr
+                ng-repeat="user in $storage.users | orderBy:sortType:sortReverse | filter:searchUsers"
+                class="text-center"
+                ng-if="user.role != 'admin'">
+                <td class="align-middle text-capitalize">
                     {{user.firstname}}
                 </td>
-                <td>
+                <td class="align-middle text-capitalize">
                     {{user.lastname}}
                 </td>
-                <td>
+                <td class="align-middle">
                     {{user.username}}
                 </td>
                 <td>
-                    {{user.role}}
+                    <select
+                        class="form-control form-control-sm text-capitalize"
+                        ng-init="changes[user.username].role = user.role"
+                        ng-model="changes[user.username].role"
+                        ng-click="changes[user.username].changed = true"
+                        ng-options="role.name as role.name for role in roles">
+                    </select>
                 </td>
-                <td>
-
+                <td class="align-middle">
+                    asdf
                 </td>
             </tr>
         </tbody>
     </table>
+    <pre>{{changes | json}}</pre>
 </div>
