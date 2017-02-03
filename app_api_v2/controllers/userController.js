@@ -24,6 +24,96 @@ var roles =
     STUDENT     : 'student',
 };
 
+var updateRole = function (req, res, next)
+{
+    console.log('userController updateRole');
+
+    User.findById(req.params.USERID, function(err, user)
+    {
+        if (err || !user)
+        {
+            return res.status(404).json(
+                {
+                    success: false,
+                    message: 'User Not Found'
+                }
+            );
+        }
+        else
+        {
+            user.role = req.body.new_role;
+            user.save(function(err, updated_user)
+            {
+                if (err)
+                {
+                    return res.status(401).json(
+                        {
+                            success : false,
+                            message : 'User Not Updated'
+                        }
+                    );
+                }
+                else
+                {
+                    return res.status(200).json(
+                        {
+                            success   : true,
+                            jwt_token : req.token,
+                            message   : 'User Role Updated',
+                            user      : updated_user
+                        }
+                    );
+                }
+            });
+        }
+    });
+};
+
+var deactivateUser = function (req, res, next)
+{
+    console.log('userController deactivateUser');
+
+    User.findById(req.params.USERID, function(err, user)
+    {
+        if (err || !user)
+        {
+            return res.status(404).json(
+                {
+                    success: false,
+                    message: 'User Not Found'
+                }
+            );
+        }
+        else
+        {
+            user.deactivated = req.body.deactivate;
+            user.save(function(err, updated_user)
+            {
+                if (err)
+                {
+                    return res.status(401).json(
+                        {
+                            success : false,
+                            message : 'User Not Updated'
+                        }
+                    );
+                }
+                else
+                {
+                    return res.status(200).json(
+                        {
+                            success   : true,
+                            jwt_token : req.token,
+                            message   : 'User Deactivation Updated',
+                            user      : updated_user
+                        }
+                    );
+                }
+            });
+        }
+    });
+};
+
 var deleteUser = function (req, res, next)
 {
     console.log('userController deleteUser');
@@ -301,11 +391,13 @@ var updatePassword = function(req, res)
 
 module.exports =
 {
-    deleteUser  : deleteUser,
-    getAll      : getAll,
-    getUser     : getUser,
-    setUserName : setUserName,
-    updatePassword : updatePassword,
-    updateUser  : updateUser,
-    isValidStudent: isValidStudent
+    deactivateUser  : deactivateUser,
+    deleteUser      : deleteUser,
+    getAll          : getAll,
+    getUser         : getUser,
+    setUserName     : setUserName,
+    updatePassword  : updatePassword,
+    updateRole      : updateRole,
+    updateUser      : updateUser,
+    isValidStudent  : isValidStudent
 };

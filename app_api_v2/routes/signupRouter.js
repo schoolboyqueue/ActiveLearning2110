@@ -66,7 +66,7 @@ Query String:     none
 Request Body:     none
 **/
 signupRouter.route('/admin_key')
-    .get(tokenController.validateToken,
+    .post(tokenController.validateToken,
          tokenController.refreshToken,
          authorizeController.admin,
          signupController.createAdminKey);
@@ -84,7 +84,7 @@ Query String:     none
 Request Body:     none
 **/
 signupRouter.route('/instructor_key')
-    .get(tokenController.validateToken,
+    .post(tokenController.validateToken,
          tokenController.refreshToken,
          authorizeController.admin,
          signupController.createInstructorKey);
@@ -120,7 +120,7 @@ signupRouter.route('/registration_key')
  Request Body:     none
  **/
  signupRouter.route('/registration_key')
-     .post(tokenController.validateToken,
+     .get(tokenController.validateToken,
            tokenController.refreshToken,
            authorizeController.admin,
            signupController.getRegistrationKeys);
