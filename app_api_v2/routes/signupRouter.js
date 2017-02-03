@@ -69,7 +69,8 @@ signupRouter.route('/admin_key')
     .post(tokenController.validateToken,
          tokenController.refreshToken,
          authorizeController.admin,
-         signupController.createAdminKey);
+         signupController.createAdminKey,
+         signupController.getAllOnSuccess);
 
 /**
 CREATE INSTRUCTOR REGISTRATION KEY
@@ -87,25 +88,8 @@ signupRouter.route('/instructor_key')
     .post(tokenController.validateToken,
          tokenController.refreshToken,
          authorizeController.admin,
-         signupController.createInstructorKey);
-
-/**
-CREATE REGISTRATION KEY
-
-POST	/api_v2/signup/registration_key?role={user_role}/
-
-Authentication:   user token        required
-Authorization:    admin             required
-
-Path Parameters:  none
-Query String:     role  Pass either 'admin' or 'instructor' required
-Request Body:     none
-**/
-signupRouter.route('/registration_key')
-    .post(tokenController.validateToken,
-          tokenController.refreshToken,
-          authorizeController.admin,
-          signupController.createRegistrationKey);
+         signupController.createInstructorKey,
+         signupController.getAllOnSuccess);
 
  /**
  GET REGISTRATION KEYS
