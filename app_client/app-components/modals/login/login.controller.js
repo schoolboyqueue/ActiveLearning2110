@@ -12,7 +12,6 @@
 //  11Jan17     J. Carter  Initial Design                   //
 //                                                          //
 //************************************************************
-
 var app = angular.module('app');
 
 app.controller('Login.Controller', function($scope, $element, $localStorage, AuthenticationService, UserService, close) {

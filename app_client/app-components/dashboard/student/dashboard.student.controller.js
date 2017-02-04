@@ -4,26 +4,26 @@
 //  sidebar.controller.js                                   //
 //  Active Learning 2110                                    //
 //                                                          //
-//  Created by Jeremy Carter on 01/13/17.                   //
+//  Created by Jeremy Carter on 02/03/17.                   //
 //  Copyright © 2016 Jeremy Carter. All rights reserved.    //
 //                                                          //
 //  Date        Name        Description                     //
 //  -------     ---------   --------------                  //
-//  13Jan17     J. Carter  Initial Design                   //
+//  03Feb17     J. Carter  Initial Design                   //
 //                                                          //
 //************************************************************
 
 var app = angular.module('app');
 
-app.controller('Navbar.Controller', function($scope, $localStorage, $element, AuthenticationService, UserService) {
+app.controller('Student.Dashboard.Controller', function($scope, $state, $localStorage, UserService) {
 
-    $scope.$storage = $localStorage;
-    
-    $scope.logout = function() {
-        AuthenticationService.Logout();
+    $scope.courseAC = function() {
+        UserService.ShowACCourse();
     };
 
-    $scope.profile = function() {
-        UserService.ShowProfile();
+    $scope.cardClick = function(index) {
+        $scope.$storage.selectedCourse = index;
+        $state.go('main.' + $localStorage.role + '_course');
     };
+
 });
