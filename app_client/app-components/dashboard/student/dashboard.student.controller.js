@@ -17,8 +17,8 @@ var app = angular.module('app');
 
 app.controller('Student.Dashboard.Controller', function($scope, $state, $localStorage, UserService) {
 
-    $scope.courseAC = function() {
-        UserService.ShowACCourse();
+    $scope.joinCourse = function() {
+        UserService.ShowJoinCourse();
     };
 
     $scope.cardClick = function(index) {

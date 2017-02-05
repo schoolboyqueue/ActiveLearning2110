@@ -1,7 +1,7 @@
 /* jshint node: true */
 
 //************************************************************
-//  sidebar.controller.js                                   //
+//  navbar.controller.js                                    //
 //  Active Learning 2110                                    //
 //                                                          //
 //  Created by Jeremy Carter on 01/13/17.                   //
@@ -18,7 +18,7 @@ var app = angular.module('app');
 app.controller('Navbar.Controller', function($scope, $localStorage, $element, AuthenticationService, UserService) {
 
     $scope.$storage = $localStorage;
-    
+
     $scope.logout = function() {
         AuthenticationService.Logout();
     };

@@ -1,7 +1,7 @@
 /* jshint node: true */
 
 //************************************************************
-//  sidebar.controller.js                                   //
+//  course.student.controller.js                            //
 //  Active Learning 2110                                    //
 //                                                          //
 //  Created by Jeremy Carter on 02/03/17.                   //

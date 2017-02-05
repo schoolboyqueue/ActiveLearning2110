@@ -67,10 +67,10 @@ app.factory('UserService', function($http, $localStorage, $state, $ocLazyLoad, M
         });
     };
 
-    service.ShowACCourse = function() {
+    service.ShowJoinCourse = function() {
         ModalService.showModal({
             templateUrl: '/app-components/modals/join_course/join_course.view.html',
-            controller: '/app-components/modals/join_course/join_course.controller.js'
+            controller: 'JoinCourse.Controller'
         }).then(function(modal) {
             modal.element.modal();
         });

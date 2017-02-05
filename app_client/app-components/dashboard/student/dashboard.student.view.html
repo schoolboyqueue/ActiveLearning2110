@@ -7,7 +7,7 @@
                 data-toggle="tooltip"
                 data-placement="top"
                 data-delay='{"show":"500", "hide":"50"}'
-                ng-click="courseAC()"
+                ng-click="joinCourse()"
                 title="Add a course">
                 <i class="fa fa-plus align-middle" aria-hidden="true"></i>
             </button>
@@ -15,11 +15,11 @@
         <div class="align-self-center">
             <div class="input-group">
                 <div class="input-group-addon"><i class="fa fa-search fa-fw" aria-hidden="true"></i></div>
-                <input class="form-control" type="text" placeholder="Search Class">
+                <input class="form-control" type="text" placeholder="Search Courses">
             </div>
         </div>
     </div>
-    <hr class="m-0" style="border-top: dashed 1px; color: #D5D6D8" />
+    <hr class="m-0 pb-2" style="border-top: dashed 1px; color: #D5D6D8" />
     <!-- No courses display -->
     <div class="text-center no-courses" ng-show="$storage.courses.length === 0">
         <i class="fa fa-child fa-4x pb-4" aria-hidden="true"></i>

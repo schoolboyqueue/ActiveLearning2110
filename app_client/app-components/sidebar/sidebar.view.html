@@ -20,8 +20,9 @@
         </li>
         <li ng-hide="$storage.role === 'admin'">
             <a
-                href="#classList"
+                role="button" href="javascript:;"
                 data-toggle="collapse"
+                data-target="#classList"
                 aria-expanded="{{$storage.classExpand}}"
                 aria-controls="classList"
                 ng-click="$storage.classExpand = !$storage.classExpand">
