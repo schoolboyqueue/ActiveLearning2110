@@ -58,7 +58,7 @@ signupRouter.route('/')
 /**
 CREATE ADMIN REGISTRATION KEY
 
-GET	/api_v2/signup/admin_key
+POST	/api_v2/signup/admin_key
 
 Authentication:   user token        required
 Authorization:    admin             required
@@ -77,7 +77,7 @@ signupRouter.route('/admin_key')
 /**
 CREATE INSTRUCTOR REGISTRATION KEY
 
-GET	/api_v2/signup/instructor_key
+POST	/api_v2/signup/instructor_key
 
 Authentication:   user token        required
 Authorization:    admin             required

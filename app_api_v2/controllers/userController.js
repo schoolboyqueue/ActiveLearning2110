@@ -210,6 +210,7 @@ var getUser = function (req, res)
                 {
                     success   : true,
                     jwt_token : req.token,
+                    message   : 'Request Success',
                     user      : user
                 }
             );
