@@ -45,6 +45,9 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
             name: 'admin.dashboard',
             files: ['app-components/dashboard/admin/dashboard.admin.controller.js']
         }, {
+            name: 'admin.keys',
+            files: ['app-components/dashboard/admin/keys/keys.admin.controller.js']
+        }, {
             name: 'instructor.course',
             files: ['app-components/dashboard/instructor/course/course.instructor.controller.js']
         }, {
@@ -128,6 +131,16 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load('admin.dashboard'); // Resolve promise and load before view
+                }]
+            }
+        })
+
+        .state('main.admin_keys', {
+            url: '/admin/keys',
+            templateUrl: 'app-components/dashboard/admin/keys/keys.admin.view.html',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load('admin.keys'); // Resolve promise and load before view
                 }]
             }
         });

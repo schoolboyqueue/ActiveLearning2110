@@ -1,9 +1,22 @@
-<div class="container-fluid p-2" ng-controller="Admin.Dashboard.Controller">
+<div class="container-fluid p-2" ng-controller="Admin.Keys.Controller">
     <div class="container-fluid p-0 pb-2">
       <div class="input-group">
-          <div class="input-group-addon"><i class="fa fa-search fa-fw" aria-hidden="true"></i></div>
-          <input class="form-control" type="text" placeholder="Search Users" ng-model="searchUsers">
+          <input type="text" class="form-control" placeholder="Instructor Key" ng-model="generatedKey" readonly>
+          <span class="input-group-btn">
+              <button class="btn btn-secondary" type="button" ng-click="getInstructorKey()">
+                  <span ng-show="keyLoading">
+                      <i class="fa fa-circle-o-notch fa-spin"></i>
+                  </span>
+                  Instructor Key
+              </button>
+          </span>
       </div>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert" ng-if="error">
+            <button type="button" class="close" aria-label="Close" ng-click="error = null">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            {{error}}
+        </div>
     </div>
     <table class="table table-bordered table-sm">
         <thead class="text-center thead-inverse">
@@ -36,52 +49,31 @@
                 </a>
             </td>
             <td>
-                Status
+                Key
             </td>
         </thead>
         <tbody>
             <tr
-                ng-repeat="user in $storage.users | orderBy:sortType:sortReverse | filter:searchUsers"
-                ng-init="changes[user.username].changed = false"
-                class="text-center"
-                ng-class="{ 'table-active': changes[user.username].changed === true }"
-                ng-if="user.role != 'admin'">
+                ng-repeat="key in $storage.keys | orderBy:sortType:sortReverse"
+                class="text-center">
                 <td class="align-middle text-capitalize">
-                    {{user.firstname}}
+                    {{key.user.firstname}}
                 </td>
                 <td class="align-middle text-capitalize">
-                    {{user.lastname}}
+                    {{key.user.lastname}}
                 </td>
                 <td class="align-middle">
-                    {{user.username}}
+                    {{key.user.username}}
                 </td>
                 <td>
-                    <select
-                        class="form-control form-control-sm text-capitalize"
-                        ng-init="changes[user.username].role = user.role"
-                        ng-model="changes[user.username].role"
-                        ng-click="changes[user.username].changed = true"
-                        ng-options="role.name as role.name for role in roles">
-                    </select>
+                    {{key.role}}
                 </td>
                 <td class="align-middle">
-                    <button
-                        type="button"
-                        class="btn btn-sm"
-                        ng-init="changes[user.username].deactivated = user.deactivated"
-                        ng-class="{ 'btn-warning': changes[user.username].deactivated === false,
-                                    'btn-success': changes[user.username].deactivated === true }"
-                        ng-click="changes[user.username].deactivated = !changes[user.username].deactivated;
-                                  changes[user.username].changed = true">
-                        {{changes[user.username].deactivated | activation}}
-                    </button>
+                    {{key.key}}
                 </td>
             </tr>
         </tbody>
     </table>
-    <div class="d-flex flex-row-reverse">
-      <button type="button" class="btn btn-outline-success" ng-disabled="">Save Changes</button>
-    </div>
 </div>
 
 <script>

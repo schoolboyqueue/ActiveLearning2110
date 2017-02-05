@@ -1,7 +1,7 @@
 /* jshint node: true */
 
 //************************************************************
-//  sidebar.controller.js                                   //
+//  dashboard.admin.controller.js                           //
 //  Active Learning 2110                                    //
 //                                                          //
 //  Created by Jeremy Carter on 02/03/17.                   //
@@ -15,11 +15,10 @@
 
 var app = angular.module('app');
 
-app.controller('Admin.Dashboard.Controller', function($scope, $element, $localStorage, $state, UserService) {
+app.controller('Admin.Dashboard.Controller', function($scope, $localStorage, $state, UserService) {
 
     $scope.sortType = 'firstname';
     $scope.sortReverse = false;
-    $scope.keyLoading = false;
     $scope.searchUsers = '';
 
     $scope.changes = {};
@@ -35,18 +34,14 @@ app.controller('Admin.Dashboard.Controller', function($scope, $element, $localSt
         name: "admin"
     }];
 
-    $scope.getInstructorKey = function() {
-        $scope.keyLoading = true;
-        UserService.GenerateInstructorKey(postGetKey);
-    };
+});
 
-    function postGetKey(result, status, data) {
-        if (!result) {
-            $scope.error = data.message;
-            $scope.keyLoading = false;
-            return;
+app.filter('activation', function() {
+    return function(deactivated) {
+        if (!deactivated) {
+            return 'Deactivate';
+        } else {
+            return 'Activate';
         }
-        $scope.generatedKey = data.key.key;
-        $scope.keyLoading = false;
-    }
+    };
 });

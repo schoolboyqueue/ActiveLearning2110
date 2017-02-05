@@ -31,6 +31,7 @@ app.factory('UserService', function($http, $localStorage, $state, $ocLazyLoad, M
         classExpand: false,
         LoggedIn: false,
         users: [],
+        keys: [],
         notifications: {
             count: 0,
             data: []
@@ -173,10 +174,22 @@ app.factory('UserService', function($http, $localStorage, $state, $ocLazyLoad, M
     };
 
     service.GenerateInstructorKey = function(callback) {
-        $http.get('/api_v2/signup/instructor_key')
+        $http.post('/api_v2/signup/instructor_key')
             .then(function(response) {
+                $localStorage.keys = response.data.keys;
                 callback(true, response.status, response.data);
-                console.log(response);
+            },
+            function(response) {
+                callback(false, response.status, response.data.message);
+            });
+    };
+
+    service.GetAllKeys = function(callback) {
+        $http.get('/api_v2/signup/registration_key')
+            .then(function(response) {
+                $localStorage.keys = response.data.keys;
+                //console.log(response);
+                callback(true, response.status, response.data.message);
             },
             function(response) {
                 callback(false, response.status, response.data.message);

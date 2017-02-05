@@ -28,8 +28,7 @@
 <body>
     <!-- Views -->
     <div class="super-container" ng-controller="Main.Controller">
-        <div class="container-fluid login-back" ng-hide="$storage.LoggedIn">
-        </div>
+        <div class="container-fluid login-back" ng-hide="$storage.LoggedIn"></div>
         <div ui-view="navbar"></div>
         <div id="wrapper" ng-class="{'toggled' : $storage.hideSidebar }">
             <div ui-view="sidebar"></div>
@@ -57,6 +56,7 @@
     <script src="app-services/authentication.service.js"></script>
     <script src="app-components/modals/login/login.controller.js"></script>
     <script src="app-components/modals/profile/profile.controller.js"></script>
+    <script src="app-components/modals/join_course/join_course.controller.js"></script>
 </body>
 
 </html>
