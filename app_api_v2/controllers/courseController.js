@@ -324,6 +324,7 @@ var getCourse = function (req, res)
                 {
                     success   : true,
                     jwt_token : req.token,
+                    message   : 'Request Success',
                     course    : course
                 }
             );
@@ -361,6 +362,7 @@ var getLectures = function (req, res)
                 {
                     success   : true,
                     jwt_token : req.token,
+                    message   : 'Request Success',
                     lectures  : course.lectures
                 }
             );
@@ -389,6 +391,7 @@ var getStudents = function (req, res)
                 {
                     success   : true,
                     jwt_token : req.token,
+                    message   : 'Request Success',
                     students  : course.students
                 }
             );
@@ -539,9 +542,10 @@ var getUserCourses  = function (req, res)
             {
                 return res.status(201).json(
                     {
-                        success : true,
+                        success   : true,
                         jwt_token : req.token,
-                        courses : courses
+                        message   : 'Request Success',
+                        courses   : courses
                     }
                 );
             }
@@ -566,6 +570,7 @@ var getUserCourses  = function (req, res)
                     {
                         success : true,
                         jwt_token : req.token,
+                        message   : 'Request Success',
                         courses : courses
                     }
                 );
