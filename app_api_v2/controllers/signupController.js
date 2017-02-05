@@ -83,10 +83,11 @@ var getAllOnSuccess = function(req, res)
         {
             return res.status(201).json(
                 {
-                    success: true,
-                    message: 'Admin Key Creation Successsful',
-                    key:      req.savedKey,
-                    keys: keys
+                    success   :   true,
+                    jwt_token :   req.token,
+                    message   :   'Admin Key Creation Successsful',
+                    key       :   req.savedKey,
+                    keys      :   keys
 
                 }
             );
@@ -144,8 +145,10 @@ var getRegistrationKeys = function (req, res)
         {
             return res.status(201).json(
                 {
-                    success : true,
-                    keys    : keys
+                    success   : true,
+                    jwt_token : req.token,
+                    message   : 'Request Sucess',
+                    keys      : keys
                 }
             );
         }
