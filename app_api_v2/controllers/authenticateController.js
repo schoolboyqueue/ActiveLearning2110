@@ -57,6 +57,15 @@ var authenticate = function (req, res, next)
                 }
             );
         }
+        else if (user.deactivated)
+        {
+            return res.status(401).json(
+                {
+                    success: false,
+                    message: 'Account Has Been Locked. Please Contact Admin'
+                }
+            );
+        }
         else
         {
             req.user_id    = user._id.toString();
