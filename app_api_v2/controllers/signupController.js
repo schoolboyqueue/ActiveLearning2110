@@ -65,7 +65,7 @@ var createAdminKey = function (req, res, next)
 }
 
 var getAllOnSuccess = function(req, res)
-{    
+{
     console.log('signupController getAllOnSuccess');
 
     RegistrationKey.find({'admin_creator.user_id' : req.decodedToken.sub}, function(err, keys)
@@ -122,58 +122,6 @@ var createInstructorKey = function (req, res, next)
         }
         req.savedKey = savedKey;
         next();
-    });
-}
-
-var createRegistrationKey = function (req, res)
-{
-    console.log('signupController createRegistrationKey');
-
-    var newKey;
-
-    if (!req.query.role)
-    {
-        return res.status(500).json(
-            {
-                success: false,
-                message: "Invalid Query String"
-            }
-        );
-    }
-    else if (req.query.role === roles.ADMIN)
-    {
-        newKey = new RegistrationKey(
-                    {
-                        role    :   roles.ADMIN,
-                        key     :   rand.generate()
-                    });
-    }
-    else if (req.query.role === roles.INSTRUCTOR)
-    {
-        newKey = new RegistrationKey(
-                    {
-                        role    :   roles.INSTRUCTOR,
-                        key     :   rand.generate()
-                    });
-    }
-    newKey.save(function(err, savedKey)
-    {
-        if (err)
-        {
-            return res.status(500).json(
-                {
-                    success: false,
-                    message: "Internal Error"
-                }
-            );
-        }
-        res.status(201).json(
-            {
-                success: true,
-                message: 'Registration Key Creation Successsful',
-                key:      savedKey
-            }
-        );
     });
 }
 
@@ -325,9 +273,9 @@ var registerStudent = function (req, res, next)
     }
 };
 
-var instructorRegisterStudent = function (req, res, next)
+var preRegisterStudent = function (req, res, next)
 {
-    console.log('signupController InstructorRegisterStudent');
+    console.log('signupController preRegisterStudent');
 
     if (!req.instructorRegisteredStudent)
     {
@@ -341,7 +289,8 @@ var instructorRegisterStudent = function (req, res, next)
             password:   bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)),
             firstname:  req.body.firstname,
             lastname:   req.body.lastname,
-            role    :   roles.STUDENT
+            role    :   roles.STUDENT,
+            pre_register_key : rand.generate()
         });
 
         newUser.save(function(err, savedUser)
@@ -402,74 +351,15 @@ var savedUserToDB = function(req, res)
     });
 }
 
-var registerUser = function (req, res)
-{
-    console.log('signupController registerUser');
-
-    var addUser = null;
-
-    if (req.body.role === roles.ADMIN)
-    {
-        if (req.body.username === "admin@gatech.edu")
-        {
-            addUser = new User(
-            {
-                username: req.body.username,
-                password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)),
-                role    : 'admin'
-            });
-        }
-        else
-        {
-            return res.status(401).json(
-                {
-                    success: false,
-                    message: 'Not Authorized'
-                }
-            );
-        }
-    }
-    else
-    {
-        addUser = new User(
-        {
-            username: req.body.username,
-            password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)),
-            role    : req.body.role
-        });
-    }
-    addUser.save(function(err, savedUser)
-    {
-        if (err)
-        {
-            return res.status(500).json(
-                {
-                    success: false,
-                    message: "Internal Error"
-                }
-            );
-        }
-        res.status(201).json(
-            {
-                success: true,
-                message: 'Registration Successsful',
-                id: savedUser._id.toString()
-            }
-        );
-    });
-};
-
 module.exports =
 {
-    createAdminKey            :   createAdminKey,
-    createInstructorKey       :   createInstructorKey,
-    createRegistrationKey     :   createRegistrationKey,
-    getRegistrationKeys       :   getRegistrationKeys,
-    instructorRegisterStudent :   instructorRegisterStudent,
-    registerAdmin             :   registerAdmin,
-    registerInstructor        :   registerInstructor,
-    registerStudent           :   registerStudent,
-    registerUser              :   registerUser,
-    savedUserToDB             :   savedUserToDB,
-    getAllOnSuccess           :   getAllOnSuccess
+    createAdminKey          :   createAdminKey,
+    createInstructorKey     :   createInstructorKey,
+    getRegistrationKeys     :   getRegistrationKeys,
+    preRegisterStudent      :   preRegisterStudent,
+    registerAdmin           :   registerAdmin,
+    registerInstructor      :   registerInstructor,
+    registerStudent         :   registerStudent,
+    savedUserToDB           :   savedUserToDB,
+    getAllOnSuccess         :   getAllOnSuccess
 };

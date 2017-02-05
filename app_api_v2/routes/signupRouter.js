@@ -20,6 +20,8 @@ var signupRouter      = express.Router();
 var signupController    = require('./../controllers/signupController');
 var inputController     = require('./../controllers/inputController');
 var tokenController     = require('./../controllers/tokenController');
+var userController     = require('./../controllers/userController');
+var courseController     = require('./../controllers/courseController');
 var authorizeController = require('./../controllers/authorizeController');
 
 /**
@@ -67,10 +69,10 @@ Request Body:     none
 **/
 signupRouter.route('/admin_key')
     .post(tokenController.validateToken,
-         tokenController.refreshToken,
-         authorizeController.admin,
-         signupController.createAdminKey,
-         signupController.getAllOnSuccess);
+          tokenController.refreshToken,
+          authorizeController.admin,
+          signupController.createAdminKey,
+          signupController.getAllOnSuccess);
 
 /**
 CREATE INSTRUCTOR REGISTRATION KEY
@@ -86,27 +88,47 @@ Request Body:     none
 **/
 signupRouter.route('/instructor_key')
     .post(tokenController.validateToken,
-         tokenController.refreshToken,
-         authorizeController.admin,
-         signupController.createInstructorKey,
-         signupController.getAllOnSuccess);
+          tokenController.refreshToken,
+          authorizeController.admin,
+          signupController.createInstructorKey,
+          signupController.getAllOnSuccess);
 
- /**
- GET REGISTRATION KEYS
+/**
+GET REGISTRATION KEYS
 
- GET	/api_v2/signup/registration_key
+GET	/api_v2/signup/registration_key
 
- Authentication:   user token        required
- Authorization:    admin             required
+Authentication:   user token        required
+Authorization:    admin             required
 
- Path Parameters:  none
- Query String:     none
- Request Body:     none
- **/
- signupRouter.route('/registration_key')
-     .get(tokenController.validateToken,
-           tokenController.refreshToken,
-           authorizeController.admin,
-           signupController.getRegistrationKeys);
+Path Parameters:  none
+Query String:     none
+Request Body:     none
+**/
+signupRouter.route('/registration_key')
+   .get(tokenController.validateToken,
+        tokenController.refreshToken,
+        authorizeController.admin,
+        signupController.getRegistrationKeys);
+
+/**
+COMPLETE PREREGISTRATION
+
+POST	/api_v2/signup/preregister
+
+Authentication:   none
+Authorization:    none
+
+Path Parameters:  none
+Query String:     none
+Request Body application/json
+{
+  "pre_register_key"  : String Required
+}
+**/
+signupRouter.route('/preregister')
+  .post(inputController.requirePreRegisterKey,
+        userController.completePreRegistration,
+        courseController.updateStudentStatus);
 
 module.exports = signupRouter;
