@@ -57,7 +57,11 @@ var UserSchema  = new Schema(
     deactivated:
     {
         type    : Boolean,
-        default :  false
+        default : false
+    },
+    pre_register_key:
+    {
+        type    : String
     }
 });
 
