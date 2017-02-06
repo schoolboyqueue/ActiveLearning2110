@@ -13,24 +13,25 @@
 //  15Jan17     J. Carter  Moved in ShowLogin & created     //
 //                          ShowACCourse                    //
 //************************************************************
-
 var app = angular.module('app');
 
-app.factory('UserService', function($http, $localStorage, $state, ModalService) {
+app.factory('UserService', function($http, $localStorage, $state, $ocLazyLoad, ModalService) {
 
     var service = {};
 
-    var defVals = {
+    defVals = {
         id: '',
         email: '',
         firstname: '',
         lastname: '',
         photo: '',
-        role: '',
+        role: 'student',
         courses: [],
         selectedCourse: 0,
         classExpand: false,
         LoggedIn: false,
+        users: [],
+        keys: [],
         notifications: {
             count: 0,
             data: []
@@ -41,7 +42,7 @@ app.factory('UserService', function($http, $localStorage, $state, ModalService) 
 
     service.ShowLogin = function() {
         ModalService.showModal({
-            templateUrl: '/app-components/loginmodal/login.view.html',
+            templateUrl: '/app-components/modals/login/login.view.html',
             controller: 'Login.Controller'
         }).then(function(modal) {
             modal.element.modal({
@@ -51,7 +52,7 @@ app.factory('UserService', function($http, $localStorage, $state, ModalService) 
             modal.close.then(function(result) {
                 if (result) {
                     $('.modal-backdrop').remove();
-                    $state.go('main.dashboard');
+                    $state.go('main.' + $localStorage.role);
                 }
             });
         });
@@ -59,27 +60,28 @@ app.factory('UserService', function($http, $localStorage, $state, ModalService) 
 
     service.ShowProfile = function() {
         ModalService.showModal({
-            templateUrl: '/app-components/profilemodal/profile.view.html',
+            templateUrl: '/app-components/modals/profile/profile.view.html',
             controller: 'Profile.Controller'
         }).then(function(modal) {
             modal.element.modal();
         });
     };
 
-    service.ShowACCourse = function() {
+    service.ShowJoinCourse = function() {
         ModalService.showModal({
-            templateUrl: '/app-components/coursemodal/coursemodal.view.html',
-            controller: 'CourseModal.Controller'
+            templateUrl: '/app-components/modals/join_course/join_course.view.html',
+            controller: 'JoinCourse.Controller'
         }).then(function(modal) {
             modal.element.modal();
         });
     };
 
     service.GetUserInfo = function(callback) {
-        $http.get('/api_v2/user/' + $localStorage.id)
+        $http.get('api_v2/user/' + $localStorage.id)
             .then(function(response) {
                     syncUserInfo(response);
-                    //updateToken(response.data.jwt_token);
+                    //updateToken(response);
+                    //console.log(response);
                     callback(true, response.status, response.data.message);
                 },
                 function(response) {
@@ -89,10 +91,12 @@ app.factory('UserService', function($http, $localStorage, $state, ModalService) 
     };
 
     service.GetCourseList = function(callback) {
-        $http.get('api_v2/user/' + $localStorage.id + '/courses')
+        $http.get('/api_v2/user/' + $localStorage.id + '/courses')
             .then(function(response) {
                     $localStorage.courses = response.data.courses;
-                    //updateToken(response.data.jwt_token);
+                    //updateToken(response);
+                    //console.log(response);
+                    //why does this say 'created' for statusText?
                     callback(true, response.status, response.data.message);
                 },
                 function(response) {
@@ -107,7 +111,8 @@ app.factory('UserService', function($http, $localStorage, $state, ModalService) 
             })
             .then(function(response) {
                     $localStorage.courses = response.data.courses;
-                    //updateToken(response.data.jwt_token);
+                    //updateToken(response);
+                    //console.log(response);
                     callback(true, response.status, response.data.message);
                 },
                 function(response) {
@@ -122,7 +127,8 @@ app.factory('UserService', function($http, $localStorage, $state, ModalService) 
             })
             .then(function(response) {
                     $localStorage.courses = response.data.courses;
-                    //updateToken(response.data.jwt_token);
+                    //updateToken(response);
+                    //console.log(response);
                     callback(true, response.status, response.data.message);
                 },
                 function(response) {
@@ -134,7 +140,8 @@ app.factory('UserService', function($http, $localStorage, $state, ModalService) 
         $http.post('/api_v2/user/' + $localStorage.id, info)
             .then(function(response) {
                     syncUserInfo(response);
-                    //updateToken(response.data.jwt_token);
+                    //updateToken(response);
+                    //console.log(response);
                     callback(true, response.status, response.data.message);
                 },
                 function(response) {
@@ -145,7 +152,8 @@ app.factory('UserService', function($http, $localStorage, $state, ModalService) 
     service.UpdateUserPass = function(info, callback) {
         $http.post('/api_v2/user/' + $localStorage.id + '/password', info)
             .then(function(response) {
-                    //updateToken(response.data.jwt_token);
+                    //updateToken(response);
+                    //console.log(response);
                     callback(true, response.status, response.data.message);
                 },
                 function(response) {
@@ -153,13 +161,97 @@ app.factory('UserService', function($http, $localStorage, $state, ModalService) 
                 });
     };
 
+    service.GetAllUsers = function(callback) {
+        $http.get('/api_v2/user')
+            .then(function(response) {
+                $localStorage.users = response.data.user;
+                //console.log(response);
+                callback(true, response.status, response.data.message);
+            },
+            function(response) {
+                callback(false, response.status, response.data.message);
+            });
+    };
+
+    service.GenerateInstructorKey = function(callback) {
+        $http.post('/api_v2/signup/instructor_key')
+            .then(function(response) {
+                $localStorage.keys = response.data.keys;
+                callback(true, response.status, response.data);
+            },
+            function(response) {
+                callback(false, response.status, response.data.message);
+            });
+    };
+
+    service.GetAllKeys = function(callback) {
+        $http.get('/api_v2/signup/registration_key')
+            .then(function(response) {
+                $localStorage.keys = response.data.keys;
+                //console.log(response);
+                callback(true, response.status, response.data.message);
+            },
+            function(response) {
+                callback(false, response.status, response.data.message);
+            });
+    };
+
+    service.UpdateUserRole = function(info, callback) {
+        $http.post('/api_v2/user/' + info.id + '/role', {
+            "new_role": info.new_role
+        })
+            .then(function(response) {
+                var retInfo = genRetInfo(response, true);
+                retInfo.key = info.key;
+                for (var key in $localStorage.users) {
+                    if ($localStorage.users[key].username === info.key) {
+                        $localStorage.users[key].role = info.new_role;
+                    }
+                }
+                callback(retInfo);
+            },
+            function(response) {
+                var retInfo = genRetInfo(response, false);
+                retInfo.key = info.key;
+                callback(retInfo);
+            });
+    };
+
+    service.UpdateUserDeactivation = function(info, callback) {
+        $http.post('/api_v2/user/' + info.id + '/deactivate')
+            .then(function(response) {
+                console.log(response);
+                var retInfo = genRetInfo(response, true);
+                retInfo.key = info.key;
+                for (var key in $localStorage.users) {
+                    if ($localStorage.users[key].username === info.key) {
+                        $localStorage.users[key].deactivated = response.data.user.deactivated;
+                    }
+                }
+                callback(retInfo);
+            },
+            function(response) {
+                var retInfo = genRetInfo(response, false);
+                retInfo.key = info.key;
+                callback(retInfo);
+            });
+    };
+
     service.Clear = function() {
         $localStorage.$reset(defVals);
     };
 
-    function updateToken(token) {
-        $localStorage.token = token;
-        $http.defaults.headers.common.Authorization = token;
+    function genRetInfo(response, result) {
+        return  {
+            "status": response.status,
+            "message": response.data.message,
+            "result": result
+        };
+    }
+
+    function updateToken(response) {
+        $localStorage.token = response.data.jwt_token;
+        $http.defaults.headers.common.Authorization = response.data.jwt_token;
     }
 
     function syncUserInfo(new_info) {
