@@ -196,9 +196,58 @@ app.factory('UserService', function($http, $localStorage, $state, $ocLazyLoad, M
             });
     };
 
+    service.UpdateUserRole = function(info, callback) {
+        $http.post('/api_v2/user/' + info.id + '/role', {
+            "new_role": info.new_role
+        })
+            .then(function(response) {
+                var retInfo = genRetInfo(response, true);
+                retInfo.key = info.key;
+                for (var key in $localStorage.users) {
+                    if ($localStorage.users[key].username === info.key) {
+                        $localStorage.users[key].role = info.new_role;
+                    }
+                }
+                callback(retInfo);
+            },
+            function(response) {
+                var retInfo = genRetInfo(response, false);
+                retInfo.key = info.key;
+                callback(retInfo);
+            });
+    };
+
+    service.UpdateUserDeactivation = function(info, callback) {
+        $http.post('/api_v2/user/' + info.id + '/deactivate')
+            .then(function(response) {
+                console.log(response);
+                var retInfo = genRetInfo(response, true);
+                retInfo.key = info.key;
+                for (var key in $localStorage.users) {
+                    if ($localStorage.users[key].username === info.key) {
+                        $localStorage.users[key].deactivated = response.data.user.deactivated;
+                    }
+                }
+                callback(retInfo);
+            },
+            function(response) {
+                var retInfo = genRetInfo(response, false);
+                retInfo.key = info.key;
+                callback(retInfo);
+            });
+    };
+
     service.Clear = function() {
         $localStorage.$reset(defVals);
     };
+
+    function genRetInfo(response, result) {
+        return  {
+            "status": response.status,
+            "message": response.data.message,
+            "result": result
+        };
+    }
 
     function updateToken(response) {
         $localStorage.token = response.data.jwt_token;

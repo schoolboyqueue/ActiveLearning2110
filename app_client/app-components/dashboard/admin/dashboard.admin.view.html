@@ -42,9 +42,12 @@
         <tbody>
             <tr
                 ng-repeat="user in $storage.users | orderBy:sortType:sortReverse | filter:searchUsers"
-                ng-init="changes[user.username].changed = false"
+                ng-init="initUser(user, $index)"
                 class="text-center"
-                ng-class="{ 'table-active': changes[user.username].changed === true }"
+                ng-class="{ 'table-active': changes[user.username].changed_role ||
+                            changes[user.username].changed_deactivated,
+                            'table-success': changes[user.username].commited === true,
+                            'table-error': changes[user.username].error === true}"
                 ng-if="user.role != 'admin'">
                 <td class="align-middle text-capitalize">
                     {{user.firstname}}
@@ -58,9 +61,9 @@
                 <td>
                     <select
                         class="form-control form-control-sm text-capitalize"
-                        ng-init="changes[user.username].role = user.role"
                         ng-model="changes[user.username].role"
-                        ng-click="changes[user.username].changed = true"
+                        ng-click="changes[user.username].changed_role = true;
+                                  changes[user.username].commited = false"
                         ng-options="role.name as role.name for role in roles">
                     </select>
                 </td>
@@ -68,11 +71,11 @@
                     <button
                         type="button"
                         class="btn btn-sm"
-                        ng-init="changes[user.username].deactivated = user.deactivated"
                         ng-class="{ 'btn-warning': changes[user.username].deactivated === false,
                                     'btn-success': changes[user.username].deactivated === true }"
                         ng-click="changes[user.username].deactivated = !changes[user.username].deactivated;
-                                  changes[user.username].changed = true">
+                                  changes[user.username].changed_deactivated = !changes[user.username].changed_deactivated;
+                                  changes[user.username].commited = false">
                         {{changes[user.username].deactivated | activation}}
                     </button>
                 </td>
@@ -80,7 +83,12 @@
         </tbody>
     </table>
     <div class="d-flex flex-row-reverse">
-      <button type="button" class="btn btn-outline-success" ng-disabled="">Save Changes</button>
+      <button type="button" class="btn btn-outline-success" ng-disabled="" ng-click="commitChanges()">
+          <span ng-show="loading">
+              <i class="fa fa-circle-o-notch fa-spin"></i>
+          </span>
+          Save Changes
+      </button>
     </div>
 </div>
 
