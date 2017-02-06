@@ -17,10 +17,6 @@ var app = angular.module('app');
 
 app.controller('Instructor.Dashboard.Controller', function($scope, $state, $localStorage, UserService) {
 
-    $scope.courseAC = function() {
-        UserService.ShowACCourse();
-    };
-
     $scope.cardClick = function(index) {
         $scope.$storage.selectedCourse = index;
         $state.go('main.' + $localStorage.role + '_course');
