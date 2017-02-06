@@ -86,7 +86,7 @@ var deactivateUser = function (req, res, next)
         }
         else
         {
-            user.deactivated = req.body.deactivate;
+            user.deactivated = !user.deactivated;
             user.save(function(err, updated_user)
             {
                 if (err)
