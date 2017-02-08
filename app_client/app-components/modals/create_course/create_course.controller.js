@@ -1,7 +1,7 @@
 /* jshint node: true */
 
 //************************************************************
-//  course.create.instructor.controller.js                  //
+//  create_course.controller.js                             //
 //  Active Learning 2110                                    //
 //                                                          //
 //  Created by Jeremy Carter on 02/03/17.                   //
@@ -15,25 +15,40 @@
 
 var app = angular.module('app');
 
-app.controller('Instructor.Course.Create.Controller', function($scope, $localStorage, $state, UserService) {
+app.controller('CreateCourse.Controller', function($scope, $localStorage, $state, UserService) {
 
-    $scope.course = {};
+    $scope.course = {
+        "prefix": 1,
+        "days": 1,
+        "sections": [],
+        "number": ""
+    };
 
     $scope.prefixes = [{
-        id: "1",
+        id: 1,
         name: "CS"
     }, {
-        id: "2",
+        id: 2,
         name: "CE"
     }, {
-        id: "3",
+        id: 3,
         name: "CM"
     }, {
-        id: "4",
+        id: 4,
         name: "ME"
     },  {
-        id: "5",
+        id: 5,
         name: "MA"
+    }];
+
+    $scope.days = [{
+        id: 1,
+        name: "MWF",
+        daysArr: ["mon", "wed", "fri"]
+    }, {
+        id: 2,
+        name: "TR",
+        daysArr: ["tue", "thu"]
     }];
 
 });

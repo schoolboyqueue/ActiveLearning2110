@@ -76,6 +76,15 @@ app.factory('UserService', function($http, $localStorage, $state, $ocLazyLoad, M
         });
     };
 
+    service.ShowCreateCourse = function() {
+        ModalService.showModal({
+            templateUrl: '/app-components/modals/create_course/create_course.view.html',
+            controller: 'CreateCourse.Controller'
+        }).then(function(modal) {
+            modal.element.modal();
+        });
+    };
+
     service.GetUserInfo = function(callback) {
         $http.get('api_v2/user/' + $localStorage.id)
             .then(function(response) {

@@ -17,12 +17,12 @@
 var app = angular
     .module('app', [
         'ui.router',
-        'ngMessages',
         'ngStorage',
         'angularModalService',
         'angular-jwt',
         'oc.lazyLoad',
-        'moment-picker'
+        'moment-picker',
+        'ngTagsInput'
     ]);
 
 app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLoadProvider) {
@@ -51,9 +51,6 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
         }, {
             name: 'instructor.course',
             files: ['app-components/dashboard/instructor/course/course.instructor.controller.js']
-        }, {
-            name: 'instructor.create_course',
-            files: ['app-components/dashboard/instructor/course/course.create.instructor.controller.js']
         }, {
             name: 'student.course',
             files: ['app-components/dashboard/student/course/course.student.controller.js']
@@ -125,16 +122,6 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load('instructor.course'); // Resolve promise and load before view
-                }]
-            }
-        })
-
-        .state('main.instructor_course_create', {
-            url: '/instructor/course',
-            templateUrl: 'app-components/dashboard/instructor/course/course.create.instructor.view.html',
-            resolve: {
-                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
-                    return $ocLazyLoad.load('instructor.create_course'); // Resolve promise and load before view
                 }]
             }
         })

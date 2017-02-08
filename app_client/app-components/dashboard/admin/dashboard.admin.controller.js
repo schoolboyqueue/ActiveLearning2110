@@ -15,7 +15,7 @@
 
 var app = angular.module('app');
 
-app.controller('Admin.Dashboard.Controller', function($scope, $localStorage, $state, UserService) {
+app.controller('Admin.Dashboard.Controller', function($scope, $localStorage, $state, $timeout, UserService) {
 
     $scope.loading = false;
     $scope.sortType = 'firstname';
@@ -81,8 +81,12 @@ app.controller('Admin.Dashboard.Controller', function($scope, $localStorage, $st
         $scope.changes[info.key].commited = true;
         $scope.changes[info.key].changed_role = false;
         $scope.changes[info.key].changed_deactivated = false;
+        $timeout(function() {
+            $scope.changes[info.key].commited = false;
+        }, 5000);
         $scope.loading = false;
     }
+
 });
 
 app.filter('activation', function() {
