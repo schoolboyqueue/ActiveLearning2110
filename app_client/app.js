@@ -26,7 +26,7 @@ var app = angular
         'restangular'
     ]);
 
-app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLoadProvider, RestangularProvider) {
+app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLoadProvider) {
 
     $ocLazyLoadProvider.config({
         'debug': true, // For debugging 'true/false'
@@ -55,6 +55,9 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
         }, {
             name: 'student.course',
             files: ['app-components/dashboard/student/course/course.student.controller.js']
+        }, {
+            name: 'services',
+            files: ['app-services/storage.service.js', 'app-services/user.service.js', 'app-services/rest.service.js']
         }]
     });
 
@@ -62,6 +65,12 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
     $stateProvider
         .state('main', {
             url: 'main',
+            abstract: true,
+            resolve: {
+                loadServices: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load('services'); // Resolve promise and load before view
+                }]
+            },
             views: {
                 'navbar': {
                     templateUrl: 'app-components/navbar/navbar.view.html',
@@ -146,14 +155,9 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
                 }]
             }
         });
-
-        // RestangularProvider.addResponseInterceptor(function(data, operation, what, url, response, deferred) {
-        //     console.log(data);
-        //     return data;
-        // });
 });
 
-app.controller('Main.Controller', function($scope, $state, $localStorage, RESTService, UserStorage, UserService) {
+app.controller('Main.Controller', function($scope, $state, $localStorage, $injector, $ocLazyLoad) {
 
     $scope.$storage = $localStorage;
 
@@ -161,10 +165,16 @@ app.controller('Main.Controller', function($scope, $state, $localStorage, RESTSe
         $scope.$storage.hideSidebar = false;
     }
 
-    if (!UserStorage.LoggedIn()) {
-        RESTService.Logout();
-        UserService.ShowLogin();
-    } else {
-        $state.go('main.' + $localStorage.role);
-    }
+    $ocLazyLoad.load('services').then(function() {
+        var UserStorage = $injector.get('UserStorage');
+        var RESTService = $injector.get('RESTService');
+        var UserService = $injector.get('UserService');
+
+        if (!UserStorage.LoggedIn()) {
+            RESTService.Logout();
+            UserService.ShowLogin();
+        } else {
+            $state.go('main.' + $localStorage.role);
+        }
+    });
 });
