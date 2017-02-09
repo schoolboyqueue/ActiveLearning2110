@@ -29,13 +29,13 @@ var app = angular
 app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLoadProvider) {
 
     $ocLazyLoadProvider.config({
-        'debug': true, // For debugging 'true/false'
-        'events': true, // For Event 'true/false'
-        'modules': [{ // Set modules initially
-            name: 'navbar', // State1 module
+        'debug': true,
+        'events': true,
+        'modules': [{
+            name: 'navbar',
             files: ['app-components/navbar/navbar.controller.js']
         }, {
-            name: 'sidebar', // State2 module
+            name: 'sidebar',
             files: ['app-components/sidebar/sidebar.controller.js']
         }, {
             name: 'student.dashboard',

@@ -15,26 +15,22 @@
 
 var app = angular.module('app');
 
-app.controller('JoinCourse.Controller', function($scope, $element, $localStorage, UserService) {
+app.controller('JoinCourse.Controller', function($scope, $element, $localStorage, RESTService) {
 
     $scope.course = null;
     $scope.error = null;
     $scope.loading = false;
 
-    var handleStatus = function(error, text) {
-        $scope.loading = false;
-        $scope.error = text;
-    };
-
     $scope.join = function() {
         $scope.error = null;
         $scope.loading = true;
-        UserService.JoinCourseNoID($scope.course, joinCourse);
+        RESTService.JoinCourse({course_key: $scope.crouse}, finishJoinCourse);
     };
 
-    function joinCourse(result, status, text) {
-        if (!result) {
-            handleStatus(status, text);
+    function finishJoinCourse(info) {
+        if (!info.success) {
+            $scope.loading = false;
+            $scope.error = info.message;
             return;
         }
         $scope.loading = false;

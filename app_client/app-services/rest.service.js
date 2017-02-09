@@ -185,6 +185,18 @@ app.factory('RESTService', function($http, $localStorage, $state, Restangular, U
         );
     };
 
+    service.JoinCourse = function(info, callback) {
+        baseREST.one("course").one("students").post("", info).then(
+            function(response) {
+                UserStorage.UpdateUserInfo({courses: response.courses});
+                callback(genRetInfo(response));
+            },
+            function(response) {
+                callback(genRetInfo(response));
+            }
+        );
+    };
+
     service.Logout = function() {
         if (UserStorage.LoggedIn()) {
             baseREST.one("authenticate").remove();

@@ -19,6 +19,7 @@ app.controller('CreateCourse.Controller', function($scope, $element, $state, RES
 
     $scope.loading = false;
     $scope.error = null;
+    $scope.onlyNumbers = /^\d+$/;
 
     $scope.course = {
         "prefix": 0,
@@ -51,7 +52,7 @@ app.controller('CreateCourse.Controller', function($scope, $element, $state, RES
     }, {
         id: 3,
         name: "ME"
-    },  {
+    }, {
         id: 4,
         name: "MA"
     }];
@@ -72,7 +73,7 @@ app.controller('CreateCourse.Controller', function($scope, $element, $state, RES
         for (var item in $scope.course.sections) {
             sections.push($scope.course.sections[item].text);
         }
-        var data =  {
+        var data = {
             "title": $scope.prefixes[$scope.course.prefix].name + " " + $scope.course.number,
             "sections": sections,
             "course_schedule": {
@@ -93,5 +94,24 @@ app.controller('CreateCourse.Controller', function($scope, $element, $state, RES
         $scope.loading = false;
         $element.modal('hide');
     }
+});
 
+app.directive('numbersOnly', function() {
+    return {
+        require: 'ngModel',
+        link: function(scope, element, attr, ngModelCtrl) {
+            function fromUser(text) {
+                if (text) {
+                    var transformedInput = text.replace(/[^0-9-]/g, '');
+                    if (transformedInput !== text) {
+                        ngModelCtrl.$setViewValue(transformedInput);
+                        ngModelCtrl.$render();
+                    }
+                    return transformedInput;
+                }
+                return undefined;
+            }
+            ngModelCtrl.$parsers.push(fromUser);
+        }
+    };
 });

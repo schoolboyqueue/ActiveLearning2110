@@ -48,7 +48,7 @@
                             changes[user.username].changed_deactivated,
                             'table-success': changes[user.username].commited === true,
                             'table-error': changes[user.username].error === true}"
-                ng-if="user.role != 'admin'">
+                ng-if="user.username != $storage.username">
                 <td class="align-middle text-capitalize">
                     {{user.firstname}}
                 </td>
