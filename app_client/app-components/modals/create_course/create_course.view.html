@@ -8,25 +8,25 @@
                 </h2>
                 <!-- Create Course Form -->
                 <form name="createCourseForm">
-                  <div class="d-flex justify-content-between mb-2">
+                    <div class="d-flex justify-content-between mb-2">
                       <select
                           class="form-control text-capitalize mr-sm-2"
                           ng-model="course.prefix"
-                          ng-options="prefix.id as prefix.name for prefix in prefixes">
+                          ng-options="prefix.id as prefix.name for prefix in prefixes" required>
                       </select>
                       <input
                           placeholder="Class Number"
                           type="text"
                           name="firstname"
                           class="form-control mr-sm-2"
-                          ng-model="course.number" autofocus/>
+                          ng-model="course.number" autofocus required/>
                       <select
                           class="form-control text-capitalize"
                           ng-model="course.days"
                           ng-options="day.id as day.name for day in days">
                       </select>
-                  </div>
-                  <div class="input-group pb-2"
+                    </div>
+                    <div class="input-group pb-2"
                       moment-picker="course.time"
                       locale="en"
                       format="h:mm A"
@@ -38,20 +38,32 @@
                           <input class="form-control"
                           placeholder="Select a time"
                           ng-model="course.time"
-                          ng-model-options="{ updateOn: 'blur' }">
-                  </div>
-                  <div class="input-group">
-                      <tags-input
+                          ng-model-options="{ updateOn: 'blur' }" required>
+                    </div>
+                    <select
+                        class="form-control text-capitalize"
+                        ng-model="course.semester_pre"
+                        ng-options="semeseter_prefixes.id as semeseter_prefixes.name for semeseter_prefixes in semeseter_pre" required>
+                    </select>
+                    <div class="input-group pt-2 pb-2">
+                        <tags-input
                           class="text-uppercase form-control"
                           ng-model="course.sections"
                           min-length="1"
-                          placeholder="Add a section">
-                      </tags-input>
-                  </div>
+                          placeholder="Add a section" required>
+                        </tags-input>
+                    </div>
+                    <!-- Error Message -->
+                    <div ng-if="error" class="alert alert-danger text-center animated fadeIn">{{error}}</div>
+                    <div class="container-fluid text-center">
+                        <button class="btn btn-outline-success" ng-click="create()" ng-disabled="createCourseForm.$invalid">
+                            <span ng-show="loading">
+                                <i class="fa fa-circle-o-notch fa-spin"></i>
+                            </span>
+                            Create
+                        </button>
+                    </div>
                 </form>
-                <pre>
-                    {{course | json}}
-                </pre>
             </div>
         </div>
     </div>

@@ -71,10 +71,9 @@ tags-input .autocomplete .suggestion-item em {
 }
 
 tags-input.ng-invalid .tags {
-    border-color: #843534;
-    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ce8483;
-    -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ce8483;
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ce8483;
+    border-color: #E74C3C;
+    -webkit-box-shadow: 0 0 0 0px;
+    box-shadow: 0 0 0 0px;
 }
 
 tags-input[disabled] .tags {
@@ -189,11 +188,11 @@ tags-input.ti-input-sm .tags .input, .input-group-sm tags-input .tags .input {
 }
 
 .has-error tags-input .tags {
-    border-color: #a94442;
+    border-color: #E74C3C;
 }
 
 .has-error tags-input .tags.focused {
-    border-color: #843534;
+    border-color: #E74C3C;
     -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ce8483;
     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ce8483;
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ce8483;

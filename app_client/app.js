@@ -22,10 +22,11 @@ var app = angular
         'angular-jwt',
         'oc.lazyLoad',
         'moment-picker',
-        'ngTagsInput'
+        'ngTagsInput',
+        'restangular'
     ]);
 
-app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLoadProvider) {
+app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLoadProvider, RestangularProvider) {
 
     $ocLazyLoadProvider.config({
         'debug': true, // For debugging 'true/false'
@@ -145,9 +146,14 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
                 }]
             }
         });
+
+        // RestangularProvider.addResponseInterceptor(function(data, operation, what, url, response, deferred) {
+        //     console.log(data);
+        //     return data;
+        // });
 });
 
-app.controller('Main.Controller', function($scope, $state, $localStorage, AuthenticationService, UserService) {
+app.controller('Main.Controller', function($scope, $state, $localStorage, RESTService, UserStorage, UserService) {
 
     $scope.$storage = $localStorage;
 
@@ -155,8 +161,8 @@ app.controller('Main.Controller', function($scope, $state, $localStorage, Authen
         $scope.$storage.hideSidebar = false;
     }
 
-    if (!AuthenticationService.LoggedIn()) {
-        AuthenticationService.Logout();
+    if (!UserStorage.LoggedIn()) {
+        RESTService.Logout();
         UserService.ShowLogin();
     } else {
         $state.go('main.' + $localStorage.role);

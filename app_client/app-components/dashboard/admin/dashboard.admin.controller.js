@@ -15,7 +15,7 @@
 
 var app = angular.module('app');
 
-app.controller('Admin.Dashboard.Controller', function($scope, $localStorage, $state, $timeout, UserService) {
+app.controller('Admin.Dashboard.Controller', function($scope, $localStorage, $state, $timeout, RESTService) {
 
     $scope.loading = false;
     $scope.sortType = 'firstname';
@@ -25,26 +25,26 @@ app.controller('Admin.Dashboard.Controller', function($scope, $localStorage, $st
     $scope.changes = {};
 
     $scope.roles = [{
-        id: "1",
+        id: 1,
         name: "instructor"
     }, {
-        id: "2",
+        id: 2,
         name: "student"
     }, {
-        id: "3",
+        id: 3,
         name: "admin"
     }];
 
     $scope.initUser = function(user, index) {
         var info = {
-            "role": user.role,
-            "deactivated": user.deactivated,
-            "id": user._id,
-            "commited": false,
-            "error": false,
-            "index": index,
-            "changed_role": false,
-            "changed_deactivated": false
+            role: user.role,
+            deactivated: user.deactivated,
+            id: user._id,
+            commited: false,
+            error: false,
+            index: index,
+            changed_role: false,
+            changed_deactivated: false
         };
         $scope.changes[user.username] = info;
     };
@@ -54,16 +54,16 @@ app.controller('Admin.Dashboard.Controller', function($scope, $localStorage, $st
         var changed = false;
         for (var key in $scope.changes) {
             var info =  {
-                "id": $scope.changes[key].id,
-                "key": key,
-                "new_role": $scope.changes[key].role
+                id: $scope.changes[key].id,
+                key: key,
+                new_role: $scope.changes[key].role
             };
             if ($scope.changes[key].changed_role === true) {
-                UserService.UpdateUserRole(info, finishChange);
+                RESTService.UpdateUserRole(info, finishChange);
                 changed = true;
             }
             if ($scope.changes[key].changed_deactivated === true) {
-                UserService.UpdateUserDeactivation(info, finishChange);
+                RESTService.UpdateUserDeactivation(info, finishChange);
                 changed = true;
             }
         }
@@ -73,7 +73,7 @@ app.controller('Admin.Dashboard.Controller', function($scope, $localStorage, $st
     };
 
     function finishChange(info) {
-        if (!info.result) {
+        if (!info.success) {
             $scope.changes[info.key].error = true;
             return;
         }
