@@ -1,4 +1,19 @@
 <div class="animated fadeIn container-fluid p-2">
+    <div class="row" style="overflow: hidden;">
+        <div class="col-md-4 pb-4" ng-repeat="section in $storage.courses[$storage.selectedCourse].sections">
+            <div class="card animated fadeIn">
+                <div class="card-header text-uppercase">
+                    {{section.name}}
+                </div>
+                <div class="card-block">
+                    placeholder
+                </div>
+                <div class="card-footer text-muted">
+                    {{sections.students.length}} Total Students Enrolled
+                </div>
+            </div>
+        </div>
+    </div>
     <p>Course name: {{$storage.courses[$storage.selectedCourse].title}}</p>
     <p>Course Key: {{$storage.courses[$storage.selectedCourse].access_key}}</p>
 </div>

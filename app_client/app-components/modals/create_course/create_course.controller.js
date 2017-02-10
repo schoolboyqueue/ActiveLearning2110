@@ -64,7 +64,7 @@ app.controller('CreateCourse.Controller', function($scope, $element, $state, RES
     }, {
         id: 1,
         name: "TR",
-        daysArr: ["tue", "thu"]
+        daysArr: ["tue", "thr"]
     }];
 
     $scope.create = function() {
@@ -82,6 +82,7 @@ app.controller('CreateCourse.Controller', function($scope, $element, $state, RES
                 "time": $scope.course.time
             }
         };
+        console.log(data);
         RESTService.CreateCourse(data, finishCreateCourse);
     };
 

@@ -68,7 +68,7 @@ courseRouter.route('/')
 /**
 STUDENT JOIN COURSE
 
-POST	/api_v2/course/students
+POST	se
 
 Authentication:   user token
 Authorization:    student
