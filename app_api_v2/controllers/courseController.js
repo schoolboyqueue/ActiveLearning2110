@@ -25,26 +25,51 @@ var roles =
     STUDENT     : 'student',
 };
 
-function checkForStudent(req, res, students, student_id, callback)
+function checkForStudent(req, res, section, student_id, callback)
 {
     console.log('courseController checkForStudent');
 
-    if (students === undefined || students === null)
+    if (section.students === undefined || section.students === null)
     {
-      callback(false);
-      return;
+        callback(false);
+        return;
     }
     else
     {
-        for (var i = 0; i < students.length; i++)
+        for (var i = 0; i < section.students.length; i++)
         {
-            if (students[i].student_id === student_id)
+            if (section.students[i].student_id === student_id)
             {
                 callback(true);
                 return;
             }
         }
         callback(false);
+    }
+}
+
+function createSectionKeys(req, res, sections, callback)
+{
+    console.log('courseController createSectionKeys');
+
+    for (var i = 0; i < sections.length; i++)
+    {
+        sections[i].section_key = rand.generate();
+    }
+
+    callback(sections);
+}
+
+function findSectionID(req, res, sections, key, callback)
+{
+    console.log('courseController findSectionID');
+
+    for (var i = 0; i < sections.length; i++)
+    {
+        if (sections[i].section_key === key)
+        {
+            callback(sections[i]._id.toString());
+        }
     }
 }
 
@@ -64,45 +89,29 @@ var createCourse = function(req, res, next)
             lastname        : user.lastname
         };
 
-        newCourse = new Course(
+        createSectionKeys(req, res, req.body.sections, function(sections)
         {
-            title       : req.body.title,
-            instructor  : course_instructor,
-            schedule    : req.body.course_schedule,
-            sections    : req.body.sections,
-            course_key  : rand.generate()
-        });
-
-        /*
-        for (var i = 0; i < req.body.name; i++)
-        {
-          newCourse.sections2.push({
-              name: req.body.name[i]
-          });
-        }
-        */
-
-        newCourse.save(function(err, savedCourse)
-        {
-            if (err)
+            newCourse = new Course(
             {
-                return res.status(500).json(
-                    {
-                        success: false,
-                        message: err
-                    }
-                );
-            }
-            /*
-            res.status(201).json(
+                title       : req.body.title,
+                instructor  : course_instructor,
+                schedule    : req.body.course_schedule,
+                sections    : sections,
+                course_key  : rand.generate()
+            });
+            newCourse.save(function(err, savedCourse)
+            {
+                if (err)
                 {
-                    success   : true,
-                    message   : 'Course Creation Successsful',
-                    course_id : savedCourse._id.toString()
+                    return res.status(500).json(
+                        {
+                            success: false,
+                            message: err
+                        }
+                    );
                 }
-            );
-            */
-            next();
+                next();
+            });
         });
     });
 }
@@ -126,7 +135,7 @@ var instructorAddStudent = function(req, res, next)
         }
         else
         {
-            checkForStudent(req, res, course.sections.id(req.body.section_id).students, student_id, function(student)
+            checkForStudent(req, res, course.sections.id(req.body.section_id), student_id, function(student)
             {
                 if (student)
                 {
@@ -153,18 +162,6 @@ var instructorAddStudent = function(req, res, next)
                                 status    : 'pending'
                             }
                         );
-                        /*
-                        course.students.push(
-                            {
-                                student_id: student_id,
-                                username  : req.user.username,
-                                firstname : req.user.firstname,
-                                lastname  : req.user.lastname,
-                                section   : req.body.section,
-                                status    : 'pending'
-                            }
-                        );
-                        */
                     }
                     else
                     {
@@ -180,18 +177,6 @@ var instructorAddStudent = function(req, res, next)
                                 status    : 'complete'
                             }
                         );
-                        /*
-                        course.students.push(
-                            {
-                                student_id: student_id,
-                                username  : req.user.username,
-                                firstname : req.user.firstname,
-                                lastname  : req.user.lastname,
-                                section   : req.body.section,
-                                status    : 'complete'
-                            }
-                        );
-                        */
                     }
                     course.save(function(err, updated_course)
                     {
@@ -243,7 +228,17 @@ var joinCourse = function(req, res, next)
 {
     console.log('courseController joinCourse');
 
-    Course.findOne({'course_key': req.body.course_key}, function (err, course)
+    if (!req.body.section_key)
+    {
+        return res.status(400).json(
+            {
+                success: false,
+                message: 'Please Enter Section Key'
+            }
+        );
+    }
+
+    Course.findOne({'sections.section_key': req.body.section_key}, function (err, course)
     {
         if (err || !course)
         {
@@ -256,67 +251,49 @@ var joinCourse = function(req, res, next)
         }
         else
         {
-            checkForStudent(req, res, course.sections.id(req.body.section_id).students, req.decodedToken.sub, function(student)
+            findSectionID(req, res, course.sections, req.body.section_key, function(id)
             {
-                if (student)
+                checkForStudent(req, res, course.sections.id(id), req.decodedToken.sub, function(student)
                 {
-                    return res.status(404).json(
-                        {
-                            success: false,
-                            message: 'Student Already In Course'
-                        }
-                    );
-                }
-                else
-                {
-                    /*
-                    course.students.push(
-                        {
-                            student_id: req.user.id.toString(),
-                            username  : req.user.username,
-                            firstname : req.user.firstname,
-                            lastname  : req.user.lastname,
-                            section   : req.body.section,
-                            status    : 'complete'
-                        }
-                    );
-                    */
-                    course.sections.id(req.body.section_id).students.push(
-                        {
-                            student_id: req.user.id.toString(),
-                            username  : req.user.username,
-                            firstname : req.user.firstname,
-                            lastname  : req.user.lastname,
-                            section   : req.body.section,
-                            status    : 'complete'
-                        }
-                    );
-                    course.save(function(err, updated_course)
+                    if (student)
                     {
-                        if (err)
+                        return res.status(404).json(
+                            {
+                                success: false,
+                                message: 'Student Already In Course'
+                            }
+                        );
+                    }
+                    else
+                    {
+                        course.sections.id(id).students.push(
+                            {
+                                student_id: req.user.id.toString(),
+                                username  : req.user.username,
+                                firstname : req.user.firstname,
+                                lastname  : req.user.lastname,
+                                section   : req.body.section,
+                                status    : 'complete'
+                            }
+                        );
+                        course.save(function(err, updated_course)
                         {
-                            return res.status(500).json(
-                                {
-                                    success   : false,
-                                    message   : err
-                                }
-                            );
-                        }
-                        else
-                        {
-                            /*
-                            res.status(200).json(
-                                {
-                                    success   : true,
-                                    message   : 'Student Added to Course',
-                                    course_id : updated_course._id.toString()
-                                }
-                            );
-                            */
-                            next();
-                        }
-                    });
-                }
+                            if (err)
+                            {
+                                return res.status(500).json(
+                                    {
+                                        success   : false,
+                                        message   : err
+                                    }
+                                );
+                            }
+                            else
+                            {
+                                next();
+                            }
+                        });
+                    }
+                });
             });
         }
     });

@@ -73,16 +73,13 @@ Path Parameters:  none
 Query String:     none
 Request Body:     application/json    required
 {
-  "course_key":   String              required
-  "section":      String              required
-  "section_id":   String              required
+  "section_key":   String             required
 }
 **/
 courseRouter.route('/students')
     .post(tokenController.validateToken,
           tokenController.refreshToken,
           authorizeController.student,
-          inputController.requireCourseKey,
           userController.setUserName,
           courseController.joinCourse,
           courseController.getUserCourses);
