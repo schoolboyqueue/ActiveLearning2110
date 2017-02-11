@@ -67,8 +67,14 @@ app.factory('UserService', function($state, $localStorage, ModalService) {
     return service;
 });
 
-app.filter('days', [function () {
+app.filter('days', function () {
     return function (str) {
         return str.includes("mon") ? "MWF": "TR";
     };
-}]);
+});
+
+app.filter('offset', function() {
+    return function(input, start) {
+    	return input.slice(start);
+ 	};
+});

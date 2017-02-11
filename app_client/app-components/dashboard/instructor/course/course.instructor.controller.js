@@ -19,9 +19,26 @@ app.controller('Instructor.Course.Controller', function($scope, $state, $localSt
 
     $scope.status_labels = ["Verified", "Pending"];
     $scope.status_data = {};
+
     $scope.status_options = {
         responsive:false,
         maintainAspectRatio: false
+    };
+
+    $scope.currentSectionPage = 1;
+    $scope.itemsPerPage = 3;
+
+    $scope.updateSectionPage = function(index) {
+        $scope.currentSectionPage = index;
+    };
+
+    $scope.getPages = function(list, itemsPer) {
+        var total = Math.ceil(list.length / itemsPer);
+        var arr = [];
+        for (var i = 0; i < total; i++) {
+            arr.push(i);
+        }
+        return arr;
     };
 
     $scope.statusPopulate = function(section) {

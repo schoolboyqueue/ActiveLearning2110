@@ -177,6 +177,7 @@ app.controller('Main.Controller', function($scope, $state, $localStorage, $injec
             UserService.ShowLogin();
         } else {
             $state.go('main.' + $localStorage.role);
+            $localStorage.selectedCourse = -1;
         }
     });
 });

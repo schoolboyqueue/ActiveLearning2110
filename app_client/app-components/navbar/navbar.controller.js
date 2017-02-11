@@ -15,9 +15,9 @@
 
 var app = angular.module('app');
 
-app.controller('Navbar.Controller', function($scope, $localStorage, $element, RESTService, UserService) {
+app.controller('Navbar.Controller', function($scope, $localStorage, $state, RESTService, UserService) {
 
-    $scope.$storage = $localStorage;
+    $scope.title = 'Active Learning 2110';
 
     $scope.logout = function() {
         RESTService.Logout();
@@ -26,4 +26,13 @@ app.controller('Navbar.Controller', function($scope, $localStorage, $element, RE
     $scope.profile = function() {
         UserService.ShowProfile();
     };
+
+    $scope.$watch(function() {
+        return $state.current.url;
+    }, function(newVal, oldVal) {
+        if (newVal !== undefined) {
+            $scope.title = $state.current.url === '/' + $localStorage.role ?
+                    'Active Learning 2110' : $localStorage.courses[$localStorage.selectedCourse].title;
+        }
+    });
 });

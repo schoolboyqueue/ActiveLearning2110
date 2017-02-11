@@ -1,7 +1,7 @@
-@import 'http://fonts.googleapis.com/css?family=Montserrat:300,400,700';
+@import url('https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i');
 body {
     -webkit-font-smoothing: antialiased;
-    font-family: Montserrat, sans-serif;
+    font-family: Roboto, sans-serif;
     text-rendering: optimizeLegibility;
 }
 
@@ -130,6 +130,11 @@ html, body {
     color: white;
 }
 
+.sidebar-nav li>.classList {
+    text-decoration: none;
+    background: #243342;
+}
+
 @media(min-width:768px) {
     #wrapper {
         padding-left: 250px;
@@ -219,4 +224,36 @@ button.close {
 
 .border-right {
     border-right: 1px solid #ddd;
+}
+
+.divide-header {
+    display: block;
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.divide-header > span {
+    position: relative;
+    display: inline-block;
+}
+
+.divide-header > span:before,
+.divide-header > span:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 9999px;
+    height: 1px;
+    background: #ddd;
+}
+
+.divide-header > span:before {
+    right: 100%;
+    margin-right: 15px;
+}
+
+.divide-header > span:after {
+    left: 100%;
+    margin-left: 15px;
 }
