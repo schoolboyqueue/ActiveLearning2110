@@ -52,6 +52,8 @@ var createCourse = function(req, res, next)
 {
     console.log('courseController createCourse');
 
+    console.log(req.body.sections2);
+
     User.findById(req.decodedToken.sub, function(err, user)
     {
         var newCourse = null;
@@ -72,6 +74,15 @@ var createCourse = function(req, res, next)
             sections    : req.body.sections,
             course_key  : rand.generate()
         });
+
+        /*
+        for (var i = 0; i < req.body.name; i++)
+        {
+          newCourse.sections2.push({
+              name: req.body.name[i]
+          });
+        }
+        */
 
         newCourse.save(function(err, savedCourse)
         {
@@ -119,6 +130,7 @@ var instructorAddStudent = function(req, res, next)
         {
             checkForStudent(req, res, course, student_id, function(student)
             {
+                console.log(course.sections.id(req.body.section_id).students);
                 if (student)
                 {
                     return res.status(404).json(
@@ -132,6 +144,19 @@ var instructorAddStudent = function(req, res, next)
                 {
                     if (req.instructorRegisteredStudent)
                     {
+                        console.log('instructorRegisteredStudent');
+
+                        course.sections.id(req.body.section_id).students.push(
+                            {
+                                student_id: student_id,
+                                username  : req.user.username,
+                                firstname : req.user.firstname,
+                                lastname  : req.user.lastname,
+                                section   : req.body.section,
+                                status    : 'pending'
+                            }
+                        );
+                        /*
                         course.students.push(
                             {
                                 student_id: student_id,
@@ -142,9 +167,23 @@ var instructorAddStudent = function(req, res, next)
                                 status    : 'pending'
                             }
                         );
+                        */
                     }
                     else
                     {
+                        console.log('NOT instructorRegisteredStudent');
+
+                        course.sections.id(req.body.section_id).students.push(
+                            {
+                                student_id: student_id,
+                                username  : req.user.username,
+                                firstname : req.user.firstname,
+                                lastname  : req.user.lastname,
+                                section   : req.body.section,
+                                status    : 'complete'
+                            }
+                        );
+                        /*
                         course.students.push(
                             {
                                 student_id: student_id,
@@ -155,6 +194,7 @@ var instructorAddStudent = function(req, res, next)
                                 status    : 'complete'
                             }
                         );
+                        */
                     }
                     course.save(function(err, updated_course)
                     {
@@ -163,7 +203,7 @@ var instructorAddStudent = function(req, res, next)
                             return res.status(404).json(
                                 {
                                     success   : false,
-                                    message   : 'Internal Error'
+                                    message   : err
                                 }
                             );
                         }
@@ -232,9 +272,21 @@ var joinCourse = function(req, res, next)
                 }
                 else
                 {
+                    /*
                     course.students.push(
                         {
                             student_id: req.user.id.toString(),
+                            username  : req.user.username,
+                            firstname : req.user.firstname,
+                            lastname  : req.user.lastname,
+                            section   : req.body.section,
+                            status    : 'complete'
+                        }
+                    );
+                    */
+                    course.sections.id(req.body.section_id).students.push(
+                        {
+                            student_id: student_id,
                             username  : req.user.username,
                             firstname : req.user.firstname,
                             lastname  : req.user.lastname,
