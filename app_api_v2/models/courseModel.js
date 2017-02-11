@@ -17,13 +17,6 @@
 var mongoose    = require('mongoose');
 var Schema      = mongoose.Schema;
 
-var day =
-{
-    type    : String,
-    enum    : ['mon', 'tue', 'wed', 'thr', 'fri'],
-    required: true
-};
-
 var schedule =
 {
     semester:
@@ -49,13 +42,11 @@ var instructor =
     lastname       :  String
 };
 
-var section =
+var lecture_snapshot =
 {
-    section_title:
-    {
-        type    : String,
-        required: true
-    }
+    instructor_id  :  String,
+    title          :  String,
+    date           :  String
 };
 
 var StudentSchema  = new Schema(
@@ -87,6 +78,15 @@ var LectureSchema  = new Schema(
     questions: [QuestionSchema]
 });
 
+var SectionSchema  = new Schema(
+{
+    name      :  {type: String},
+    students:
+    [
+        StudentSchema
+    ]
+});
+
 var CourseSchema  = new Schema(
 {
     title:
@@ -110,9 +110,10 @@ var CourseSchema  = new Schema(
         semester: {type: String, required: true},
         time: {type: String, required: true}
     },
-    sections: {
-        type: [{ type: String, required: true }]
-    },
+    sections:
+    [
+        SectionSchema
+    ],
     students:
     [
         StudentSchema
@@ -130,7 +131,7 @@ var CourseSchema  = new Schema(
     },
     lectures:
     [
-        LectureSchema
+        lecture_snapshot
     ]
 });
 

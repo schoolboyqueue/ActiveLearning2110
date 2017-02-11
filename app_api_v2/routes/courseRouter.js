@@ -22,6 +22,7 @@ var inputController      = require('./../controllers/inputController');
 var tokenController      = require('./../controllers/tokenController');
 var userController       = require('./../controllers/userController');
 var courseController     = require('./../controllers/courseController');
+var lectureController     = require('./../controllers/lectureController');
 var signupController     = require('./../controllers/signupController');
 
 /**
@@ -37,11 +38,12 @@ Query String:     none
 Request Body:     application/json     required
 {
     "title":      String               required
-    "sections":   [String]             required
+    "sections":   [{"name": String}]   required
     "course_schedule":
     {
         "semester": String             required
-        "days":     [String]           required     enum ["mon", "tue", "wed", "thu", "fri"] required
+        "days":     [String]           required     enum ["mon", "tue", "wed", "thr", "fri"] required
+        "time":     String             required
     }
 }
 **/
@@ -54,16 +56,6 @@ courseRouter.route('/')
           inputController.requireSections,
           courseController.createCourse,
           courseController.getUserCourses);
-
-
-/*
-courseRouter.route('/')
-    .post(tokenController.validateToken,
-          tokenController.refreshToken,
-          authorizeController.instructor,
-          inputController.requireCourseTitle,
-          courseController2.createCourse);
-*/
 
 /**
 STUDENT JOIN COURSE
@@ -79,6 +71,7 @@ Request Body:     application/json    required
 {
   "course_key":   String              required
   "section":      String              required
+  "section_id":   String              required
 }
 **/
 courseRouter.route('/students')
@@ -106,9 +99,10 @@ Request Body:     application/json    required
   "firstname":    String              required
   "lastname":     String              required
   "section":      String              required
+  "section_id":   String              required
 }
 **/
-courseRouter.route('/:COURSEID/student')
+courseRouter.route('/:COURSEID/students')
     .put(tokenController.validateToken,
          tokenController.refreshToken,
          authorizeController.instructor,
@@ -195,6 +189,28 @@ courseRouter.route('/:COURSEID/lectures')
          tokenController.refreshToken,
          authorizeController.instructor,
          courseController.createLecture);
+
+/**
+CREATE COURSE LECTURE 2
+
+POST	/api_v2/course/lectures
+
+Authentication:   user token
+Authorization:    instructor
+
+Path Parameters:  course_id String    required
+Query String:     none
+Request Body:     application/json    required
+{
+ "title":        String              required
+ "day":          String              required
+}
+**/
+courseRouter.route('/testing/lectures')
+  .post(tokenController.validateToken,
+        tokenController.refreshToken,
+        authorizeController.instructor,
+        lectureController.initialSetup);
 
 /**
 DELETE COURSE LECTURE
