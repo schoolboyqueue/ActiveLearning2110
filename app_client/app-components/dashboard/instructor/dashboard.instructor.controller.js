@@ -25,4 +25,5 @@ app.controller('Instructor.Dashboard.Controller', function($scope, $state, $loca
         $scope.$storage.selectedCourse = index;
         $state.go('main.' + $localStorage.role + '_course');
     };
+
 });

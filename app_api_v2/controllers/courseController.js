@@ -286,7 +286,7 @@ var joinCourse = function(req, res, next)
                     */
                     course.sections.id(req.body.section_id).students.push(
                         {
-                            student_id: student_id,
+                            student_id: req.user.id.toString(),
                             username  : req.user.username,
                             firstname : req.user.firstname,
                             lastname  : req.user.lastname,

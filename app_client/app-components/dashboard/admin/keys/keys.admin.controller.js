@@ -40,6 +40,8 @@ app.controller('Admin.Keys.Controller', function($scope, $localStorage, $state, 
         if (!failed(info)) {
             $scope.generatedKey = info.key;
             $scope.keyLoading = false;
+            $scope.tableParams.settings().dataset = $localStorage.keys;
+            $scope.tableParams.reload();
         }
     }
 

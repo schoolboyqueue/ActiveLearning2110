@@ -28,7 +28,7 @@
     <!-- Courses cards  -->
     <div ng-show="$storage.courses.length !== 0">
         <div class="row" style="overflow: hidden;">
-            <div class="col-md-4 pb-4" ng-repeat="course in $storage.courses | filter:searchCourses:strict">
+            <div class="col-xl-4 pb-4" ng-repeat="course in $storage.courses | filter:searchCourses:strict">
                 <div class="card animated fadeIn" ng-click="cardClick($index)">
                     <div class="card-header text-uppercase">
                         <div>
@@ -45,6 +45,12 @@
                                 <i class="fa fa-users pr-1" aria-hidden="true"></i>
                             </span>
                             {{course.students.length}} Students
+                        </div>
+                        <div>
+                            <span>
+                                <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+                            </span>
+                            {{course.schedule.days | days}}
                         </div>
                         <div>
                             <span>

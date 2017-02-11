@@ -24,7 +24,8 @@ var app = angular
         'moment-picker',
         'ngTagsInput',
         'restangular',
-        'ngTable'
+        'ngTable',
+        'chart.js'
     ]);
 
 app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLoadProvider) {

@@ -66,3 +66,9 @@ app.factory('UserService', function($state, $localStorage, ModalService) {
 
     return service;
 });
+
+app.filter('days', [function () {
+    return function (str) {
+        return str.includes("mon") ? "MWF": "TR";
+    };
+}]);

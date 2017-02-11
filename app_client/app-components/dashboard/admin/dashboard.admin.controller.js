@@ -91,6 +91,8 @@ app.controller('Admin.Dashboard.Controller', function($scope, $localStorage, $st
         $scope.changes[info.key].commited = true;
         $scope.changes[info.key].changed_role = false;
         $scope.changes[info.key].changed_deactivated = false;
+        $scope.tableParams.settings().dataset = $localStorage.users;
+        $scope.tableParams.reload();
         $timeout(function() {
             $scope.changes[info.key].commited = false;
         }, 5000);
