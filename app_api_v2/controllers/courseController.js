@@ -25,20 +25,20 @@ var roles =
     STUDENT     : 'student',
 };
 
-function checkForStudent(req, res, course, student_id, callback)
+function checkForStudent(req, res, students, student_id, callback)
 {
     console.log('courseController checkForStudent');
 
-    if (course.students === null)
+    if (students === undefined || students === null)
     {
       callback(false);
       return;
     }
     else
     {
-        for (var i = 0; i < course.students.length; i++)
+        for (var i = 0; i < students.length; i++)
         {
-            if (course.students[i].student_id === student_id)
+            if (students[i].student_id === student_id)
             {
                 callback(true);
                 return;
@@ -51,8 +51,6 @@ function checkForStudent(req, res, course, student_id, callback)
 var createCourse = function(req, res, next)
 {
     console.log('courseController createCourse');
-
-    console.log(req.body.sections2);
 
     User.findById(req.decodedToken.sub, function(err, user)
     {
@@ -128,9 +126,8 @@ var instructorAddStudent = function(req, res, next)
         }
         else
         {
-            checkForStudent(req, res, course, student_id, function(student)
+            checkForStudent(req, res, course.sections.id(req.body.section_id).students, student_id, function(student)
             {
-                console.log(course.sections.id(req.body.section_id).students);
                 if (student)
                 {
                     return res.status(404).json(
@@ -259,7 +256,7 @@ var joinCourse = function(req, res, next)
         }
         else
         {
-            checkForStudent(req, res, course, req.decodedToken.sub, function(student)
+            checkForStudent(req, res, course.sections.id(req.body.section_id).students, req.decodedToken.sub, function(student)
             {
                 if (student)
                 {
@@ -416,6 +413,35 @@ var getLectures = function (req, res)
                     jwt_token : req.token,
                     message   : 'Request Success',
                     lectures  : course.lectures
+                }
+            );
+        }
+    });
+};
+
+var getSectionNames = function (req, res)
+{
+    console.log('userController getSectionNames');
+
+    Course.findById(req.params.COURSEID, {"sections._id": 0, "sections.students": 0}, function(err, course)
+    {
+        if (err || !course)
+        {
+            return res.status(404).json(
+                {
+                    success: false,
+                    message: 'Course Not Found'
+                }
+            );
+        }
+        else
+        {
+            return res.status(200).json(
+                {
+                    success   : true,
+                    jwt_token : req.token,
+                    message   : 'Sections Retrieved Successful',
+                    sections  : course.sections
                 }
             );
         }
@@ -639,6 +665,7 @@ module.exports =
     deleteStudentFromCourse :     deleteStudentFromCourse,
     getCourse               :     getCourse,
     getLectures             :     getLectures,
+    getSectionNames             :     getSectionNames,
     getStudents             :     getStudents,
     getUserCourses          :     getUserCourses,
     instructorAddStudent    :     instructorAddStudent,

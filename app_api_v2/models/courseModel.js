@@ -114,10 +114,6 @@ var CourseSchema  = new Schema(
     [
         SectionSchema
     ],
-    students:
-    [
-        StudentSchema
-    ],
     createdAt:
     {
         type    : Date,
