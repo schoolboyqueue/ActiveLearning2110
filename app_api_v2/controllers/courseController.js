@@ -605,7 +605,7 @@ var getUserCourses  = function (req, res)
 
     if (req.decodedToken.role === roles.STUDENT)
     {
-        Course.find({'students.student_id' : req.decodedToken.sub}, function(err, courses)
+        Course.find({'sections.students.student_id' : req.decodedToken.sub}, function(err, courses)
         {
             if (err || !courses)
             {
