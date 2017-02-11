@@ -23,7 +23,8 @@ var app = angular
         'oc.lazyLoad',
         'moment-picker',
         'ngTagsInput',
-        'restangular'
+        'restangular',
+        'ngTable'
     ]);
 
 app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLoadProvider) {

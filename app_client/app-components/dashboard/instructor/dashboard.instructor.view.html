@@ -15,7 +15,7 @@
         <div class="align-self-center">
             <div class="input-group">
                 <div class="input-group-addon"><i class="fa fa-search fa-fw" aria-hidden="true"></i></div>
-                <input class="form-control" type="text" ng-model="searchCourses" placeholder="Search Courses">
+                <input class="form-control" type="text" ng-model="searchCourses.title" placeholder="Search Courses">
             </div>
         </div>
     </div>
@@ -28,7 +28,7 @@
     <!-- Courses cards  -->
     <div ng-show="$storage.courses.length !== 0">
         <div class="row" style="overflow: hidden;">
-            <div class="col-md-4 pb-4" ng-repeat="course in $storage.courses | filter:searchCourses">
+            <div class="col-md-4 pb-4" ng-repeat="course in $storage.courses | filter:searchCourses:strict">
                 <div class="card animated fadeIn" ng-click="cardClick($index)">
                     <div class="card-header text-uppercase d-flex justify-content-between">
                         <div>
