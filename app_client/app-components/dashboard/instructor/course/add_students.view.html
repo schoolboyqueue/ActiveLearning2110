@@ -1,0 +1,36 @@
+<div class="container-fluid p-2" ng-controller="Add.Students.Controller">
+    <table ng-table="student_tableParams" class="table table-bordered table-sm text-center">
+        <tr ng-repeat="student in $data">
+            <td class="align-middle text-capitalize" title="'First'" sortable="'firstname'">
+                {{student.firstname}}
+            </td>
+            <td class="align-middle text-capitalize" title="'Last'" sortable="'lastname'">
+                {{student.lastname}}
+            </td>
+            <td title="'Username'" sortable="'username'">
+                {{student.username}}
+            </td>
+            <td title="'Status'" sortable="'status'">
+                {{student.status}}
+            </td>
+        </tr>
+    </table>
+    <label for="studentCSVInput">Student CSV for section: {{$stateParams.selectedSection.name}}</label>
+    <input type="file" ng-click="selectedCSV = null" fileread="selectedCSV" accept="text/comma-separated-values" class="form-control-file" id="studentCSVInput">
+    <table ng-table="upload_tableParams" class="table table-bordered table-sm text-center">
+        <tr ng-repeat="student in $data">
+            <td class="align-middle text-capitalize" title="'Name'" sortable="'name'">
+                {{student["Name"]}}
+            </td>
+            <td class="align-middle text-capitalize" title="'User ID'" sortable="'userid'">
+                {{student["User ID"]}}
+            </td>
+            <td title="'E-Mail'" sortable="'email'">
+                {{student["Email Address"]}}
+            </td>
+            <td title="'Role'" sortable="'role'">
+                {{student["Role"]}}
+            </td>
+        </tr>
+    </table>
+</div>

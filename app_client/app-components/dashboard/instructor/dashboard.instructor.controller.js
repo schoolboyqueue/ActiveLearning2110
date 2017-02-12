@@ -15,15 +15,20 @@
 
 var app = angular.module('app');
 
-app.controller('Instructor.Dashboard.Controller', function($scope, $state, $localStorage, UserService) {
+app.controller('Instructor.Dashboard.Controller', function($scope, $localStorage, UserService) {
+
+    $scope.coursesUserCount = {};
 
     $scope.createCourse = function() {
         UserService.ShowCreateCourse();
     };
 
-    $scope.cardClick = function(index) {
-        $scope.$storage.selectedCourse = index;
-        $state.go('main.' + $localStorage.role + '_course');
+    $scope.getUserCount = function(course) {
+        var count = 0;
+        for (var key in course.sections) {
+            count += course.sections[key].students.length;
+        }
+        $scope.coursesUserCount[course.id] = count;
     };
 
 });

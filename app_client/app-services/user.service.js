@@ -67,6 +67,41 @@ app.factory('UserService', function($state, $localStorage, ModalService) {
     return service;
 });
 
+app.directive("picread", [function() {
+    return {
+        scope: {
+            picread: "="
+        },
+        link: function(scope, element, attributes) {
+            element.on("change", function(changeEvent) {
+                var reader = new FileReader();
+                reader.onload = function(loadEvent) {
+                    scope.$apply(function() {
+                        scope.picread = loadEvent.target.result;
+                        element.val(null);
+                    });
+                };
+                reader.readAsDataURL(changeEvent.target.files[0]);
+            });
+        }
+    };
+}]);
+
+app.directive("fileread", [function () {
+    return {
+        scope: {
+            fileread: "="
+        },
+        link: function (scope, element, attributes) {
+            element.on("change", function (changeEvent) {
+                scope.$apply(function () {
+                    scope.fileread = changeEvent.target.files[0];
+                });
+            });
+        }
+    };
+}]);
+
 app.filter('days', function () {
     return function (str) {
         return str.includes("mon") ? "MWF": "TR";

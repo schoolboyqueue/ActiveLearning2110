@@ -15,7 +15,9 @@
 
 var app = angular.module('app');
 
-app.controller('Instructor.Course.Controller', function($scope, $state, $localStorage, UserService) {
+app.controller('Instructor.Course.Controller', function($scope, $localStorage, $stateParams, $rootScope, UserService) {
+
+    $rootScope.$stateParams = $stateParams;
 
     $scope.status_labels = ["Verified", "Pending"];
     $scope.status_data = {};

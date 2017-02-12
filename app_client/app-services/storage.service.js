@@ -25,7 +25,6 @@ app.factory('UserStorage', function($localStorage, jwtHelper) {
         photo: '',
         role: 'student',
         courses: [],
-        selectedCourse: 0,
         classExpand: false,
         LoggedIn: false,
         jwt_token: null,

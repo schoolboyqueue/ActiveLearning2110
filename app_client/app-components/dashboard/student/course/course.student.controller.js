@@ -15,15 +15,8 @@
 
 var app = angular.module('app');
 
-app.controller('Container.Controller', function($scope, $element, $localStorage, $state, UserService) {
+app.controller('Container.Controller', function($scope, $localStorage, $stateParams, $rootScope, UserService) {
 
-    $scope.courseAC = function() {
-        UserService.ShowACCourse();
-    };
-
-    $scope.cardClick = function(index) {
-        $scope.$storage.selectedCourse = index;
-        $state.go('main.course');
-    };
+    $rootScope.$stateParams = $stateParams;
 
 });

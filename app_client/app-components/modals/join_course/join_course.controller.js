@@ -17,14 +17,14 @@ var app = angular.module('app');
 
 app.controller('JoinCourse.Controller', function($scope, $element, $localStorage, RESTService) {
 
-    $scope.course = null;
+    $scope.section = null;
     $scope.error = null;
     $scope.loading = false;
 
     $scope.join = function() {
         $scope.error = null;
         $scope.loading = true;
-        RESTService.JoinCourse({course_key: $scope.crouse}, finishJoinCourse);
+        RESTService.JoinCourse({section_key: $scope.section}, finishJoinCourse);
     };
 
     function finishJoinCourse(info) {

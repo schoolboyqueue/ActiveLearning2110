@@ -29,7 +29,7 @@
     <div ng-show="$storage.courses.length !== 0">
         <div class="row" style="overflow: hidden;">
             <div class="col-xl-4 pb-4" ng-repeat="course in $storage.courses | filter:searchCourses:strict">
-                <div class="card animated fadeIn" ng-click="cardClick($index)">
+                <div class="card animated fadeIn">
                     <div class="card-header text-uppercase">
                         <div>
                             {{course.title}}

@@ -25,7 +25,8 @@ var app = angular
         'ngTagsInput',
         'restangular',
         'ngTable',
-        'chart.js'
+        'chart.js',
+        'papa-promise'
     ]);
 
 app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLoadProvider) {
@@ -54,6 +55,9 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
         }, {
             name: 'instructor.course',
             files: ['app-components/dashboard/instructor/course/course.instructor.controller.js']
+        }, {
+            name: 'instructor.add_students',
+            files: ['app-components/dashboard/instructor/course/add_students.controller.js']
         }, {
             name: 'student.course',
             files: ['app-components/dashboard/student/course/course.student.controller.js']
@@ -111,6 +115,9 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
         .state('main.student_course', {
             url: '/student/course',
             templateUrl: 'app-components/dashboard/student/course/course.student.view.html',
+            params: {
+                selectedCourse: null
+            },
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load('student.course'); // Resolve promise and load before view
@@ -131,12 +138,30 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
         .state('main.instructor_course', {
             url: '/instructor/course',
             templateUrl: 'app-components/dashboard/instructor/course/course.instructor.view.html',
+            params: {
+                selectedCourse: null
+            },
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load('instructor.course'); // Resolve promise and load before view
                 }]
             }
         })
+
+        .state('main.instructor_add_students', {
+            url: '/instructor/add_students',
+            templateUrl: 'app-components/dashboard/instructor/course/add_students.view.html',
+            params: {
+                selectedCourse: null,
+                selectedSection: null
+            },
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load('instructor.add_students'); // Resolve promise and load before view
+                }]
+            }
+        })
+
 
         .state('main.admin', {
             url: '/admin',

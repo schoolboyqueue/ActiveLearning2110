@@ -5,7 +5,7 @@
     <div class="row" style="overflow: hidden;">
         <div
             class="col-xl-4 pb-2"
-            ng-repeat="section in $storage.courses[$storage.selectedCourse].sections |
+            ng-repeat="section in $storage.courses[$stateParams.selectedCourse].sections |
                        offset: (currentSectionPage - 1) * itemsPerPage |
                        limitTo: itemsPerPage"
             ng-init="statusPopulate(section)">
@@ -51,7 +51,9 @@
                         </p>
                     </div>
                     <div>
-                        <button type="button" class="btn btn-primary btn-sm">Add Students</button>
+                        <a ui-sref="main.instructor_add_students({selectedSection: section, selectedCourse:$stateParams.selectedCourse})">
+                            <button type="button" class="btn btn-primary btn-sm">Manage Students</button>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -62,7 +64,7 @@
             <ul class="pagination">
                 <li
                     class="page-item"
-                    ng-repeat="section in getPages($storage.courses[$storage.selectedCourse].sections, itemsPerPage)">
+                    ng-repeat="section in getPages($storage.courses[$stateParams.selectedCourse].sections, itemsPerPage)">
                     <a href="" ng-click="updateSectionPage($index+1)" class="pr-1">
                         <i
                             class="fa fa-2"
@@ -78,4 +80,7 @@
     <div class="divide-header pt-2 pb-2 text-uppercase">
         <span>lectures</span>
     </div>
+    <pre>
+        {{$storage.courses[$stateParams.selectedCourse] | json}}
+    </pre>
 </div>

@@ -28,8 +28,11 @@
     <!-- Courses cards  -->
     <div ng-show="$storage.courses.length !== 0">
         <div class="row" style="overflow: hidden;">
-            <div class="col-xl-4 pb-4" ng-repeat="course in $storage.courses | filter:searchCourses:strict">
-                <div class="card animated fadeIn" ng-click="cardClick($index)">
+            <div
+                class="col-xl-4 pb-4"
+                ng-repeat="course in $storage.courses | filter:searchCourses:strict"
+                ng-init="getUserCount(course)">
+                <div class="card animated fadeIn">
                     <div class="card-header text-uppercase d-flex justify-content-between">
                         <div>
                             {{course.title}}
@@ -44,7 +47,7 @@
                             <span>
                                 <i class="fa fa-users pr-1" aria-hidden="true"></i>
                             </span>
-                            {{course.students.length}} Students
+                            {{coursesUserCount[course.id]}} Students
                         </div>
                         <div>
                             <span>
