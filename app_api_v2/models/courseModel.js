@@ -55,8 +55,8 @@ var StudentSchema  = new Schema(
     username       :  {type: String, required: true},
     firstname      :  {type: String, required: true},
     lastname       :  {type: String, required: true},
-    section        :  {type: String, required: true},
     status         :  {type: String, enum: ['pending', 'complete'], default: 'pending'},
+    average        :  {type: Number, default: 0},
     join_date      :  {type: Date, default : Date.now},
     "_id": false
 });
@@ -80,7 +80,13 @@ var LectureSchema  = new Schema(
 
 var SectionSchema  = new Schema(
 {
-    name      :  {type: String},
+    name        :  {type: String},
+    section_key :
+    {
+        type    : String,
+        required: true,
+        unique  : true
+    },
     students:
     [
         StudentSchema
@@ -113,10 +119,6 @@ var CourseSchema  = new Schema(
     sections:
     [
         SectionSchema
-    ],
-    students:
-    [
-        StudentSchema
     ],
     createdAt:
     {

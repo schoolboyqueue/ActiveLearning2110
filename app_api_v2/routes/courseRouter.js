@@ -38,7 +38,11 @@ Query String:     none
 Request Body:     application/json     required
 {
     "title":      String               required
-    "sections":   [{"name": String}]   required
+    "sections":   [
+                    {
+                      "name": String
+                    }
+                  ]                    required
     "course_schedule":
     {
         "semester": String             required
@@ -69,16 +73,13 @@ Path Parameters:  none
 Query String:     none
 Request Body:     application/json    required
 {
-  "course_key":   String              required
-  "section":      String              required
-  "section_id":   String              required
+  "section_key":   String             required
 }
 **/
 courseRouter.route('/students')
     .post(tokenController.validateToken,
           tokenController.refreshToken,
           authorizeController.student,
-          inputController.requireCourseKey,
           userController.setUserName,
           courseController.joinCourse,
           courseController.getUserCourses);
@@ -152,6 +153,25 @@ courseRouter.route('/:COURSEID/students')
             courseController.deleteStudentFromCourse);
 
 /**
+DELETE STUDENT FROM COURSE
+
+DELETE	/api_v2/course/{course_id}/students/{user_id}/
+
+Authentication:   user token
+Authorization:    admin, instructor or self student
+
+Path Parameters:  course_id, user_id   String    required
+Query String:     none
+Request Body:     none
+
+courseRouter.route('/:COURSEID/students/:USERID/')
+    .delete(tokenController.validateToken,
+            tokenController.refreshToken,
+            authorizeController.adminOrInstructorOrSelf,
+            courseController.deleteStudentFromCourse2);
+**/
+
+/**
 GET COURSE INFO
 
 GET	/api_v2/course/{course_id}/
@@ -167,6 +187,23 @@ courseRouter.route('/:COURSEID')
     .get(tokenController.validateToken,
          tokenController.refreshToken,
          courseController.getCourse);
+
+/**
+GET COURSE SECTION NAMES
+
+GET	/api_v2/course/{course_id}/sections
+
+Authentication:   user token
+Authorization:    instructor
+
+Path Parameters:  course_id String    required
+Query String:     none
+Request Body:     none
+**/
+courseRouter.route('/:COURSEID/sections')
+   .get(tokenController.validateToken,
+        tokenController.refreshToken,
+        courseController.getSectionNames);
 
 /**
 CREATE COURSE LECTURE
