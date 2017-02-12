@@ -277,16 +277,8 @@ var updateStudentStatus = function (req, res, next)
                             }
                             else
                             {
-                                return res.status(200).json(
-                                    {
-                                        success : true,
-                                        jwt_token : req.token,
-                                        message: 'Registration Complete',
-                                        data  :   updated_user
-                                    }
-                                );
-                                //req.user = updated_user;
-                                //next();
+                                req.user = updated_user;
+                                next();
                             }
                         });
                     }
