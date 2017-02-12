@@ -19,7 +19,6 @@ app.controller('Add.Students.Controller', function($scope, $localStorage, $state
 
     $rootScope.$stateParams = $stateParams;
     $scope.selectedCSV = null;
-    $scope.csvResults = null;
 
     var student_cnts = [];
     var upload_cnts = [];
@@ -42,12 +41,26 @@ app.controller('Add.Students.Controller', function($scope, $localStorage, $state
         dataset: []
     });
 
+    function sanitizeData(data) {
+        var new_data = [];
+        for (var key in data) {
+            var entry = {};
+            var name = data[key]["Name"].split(',');
+            entry.lastname = name[0].trim();
+            entry.firstname = name[1].trim();
+            entry.username = data[key]["Email Address"];
+            entry.role = data[key]["Role"];
+            entry.userid = data[key]["User ID"];
+            new_data.push(entry);
+        }
+        return new_data;
+    }
+
     $scope.$watch('selectedCSV', function() {
         if ($scope.selectedCSV !== null) {
             Papa.parse($scope.selectedCSV, {header: true, skipEmptyLines: true}).then(
                 function(result) {
-                    $scope.csvResults = result;
-                    $scope.upload_tableParams.settings().dataset = result.data;
+                    $scope.upload_tableParams.settings().dataset = sanitizeData(result.data);
                     $scope.upload_tableParams.reload();
                     if (result.data.length > 5) {
                         upload_cnts = [5, 10, 15];
