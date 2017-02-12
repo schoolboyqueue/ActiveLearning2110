@@ -99,7 +99,6 @@ Request Body:     application/json    required
   "username":     String              required
   "firstname":    String              required
   "lastname":     String              required
-  "section":      String              required
   "section_id":   String              required
 }
 **/
@@ -137,39 +136,23 @@ courseRouter.route('/:COURSEID/students')
 /**
 DELETE STUDENT FROM COURSE
 
-DELETE	/api_v2/course/{course_id}/students?id={student_id}/
-
-Authentication:   user token
-Authorization:    admin, instructor or self student
-
-Path Parameters:  course_id String    required
-Query String:     id        String    Pass the 'student_id' of the student to remove from course
-Request Body:     none
-**/
-courseRouter.route('/:COURSEID/students')
-    .delete(tokenController.validateToken,
-            tokenController.refreshToken,
-            authorizeController.adminOrInstructorOrSelf,
-            courseController.deleteStudentFromCourse);
-
-/**
-DELETE STUDENT FROM COURSE
-
 DELETE	/api_v2/course/{course_id}/students/{user_id}/
 
 Authentication:   user token
 Authorization:    admin, instructor or self student
 
-Path Parameters:  course_id, user_id   String    required
+Path Parameters:  course_id, user_id String    required
 Query String:     none
-Request Body:     none
-
-courseRouter.route('/:COURSEID/students/:USERID/')
+Request Body:     application/json             required
+{
+  "section_name":   String                     required
+}
+**/
+courseRouter.route('/:COURSEID/students/:USERID')
     .delete(tokenController.validateToken,
             tokenController.refreshToken,
             authorizeController.adminOrInstructorOrSelf,
-            courseController.deleteStudentFromCourse2);
-**/
+            courseController.deleteStudentFromCourse);
 
 /**
 GET COURSE INFO
