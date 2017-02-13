@@ -398,6 +398,7 @@ var deleteStudentFromCourse = function (req, res)
                 }
                 else
                 {
+                    /*
                     return res.status(200).json(
                         {
                             success : true,
@@ -406,6 +407,18 @@ var deleteStudentFromCourse = function (req, res)
                             data  :   data
                         }
                     );
+                    */
+                    Course.findById(req.params.COURSEID, function(err, updated_course)
+                    {
+                        return res.status(200).json(
+                            {
+                                success   : true,
+                                jwt_token : req.token,
+                                message   : 'Student Deleted',
+                                course    : updated_course
+                            }
+                        );
+                    });
                 }
             });
         });
