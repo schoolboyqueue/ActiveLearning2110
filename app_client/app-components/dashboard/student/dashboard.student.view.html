@@ -27,8 +27,9 @@
     </div>
     <!-- Courses cards  -->
     <div ng-show="$storage.courses.length !== 0">
-        <div class="row" style="overflow: hidden;">
-            <div class="col-xl-4 pb-4" ng-repeat="course in $storage.courses | filter:searchCourses:strict">
+        <div class="row">
+            <div class="col-12 col-xl-auto pb-2"
+                ng-repeat="course in $storage.courses | filter:searchCourses:strict">
                 <div class="card animated fadeIn">
                     <div class="card-header text-uppercase text-center p-2">
                         <b>{{course.title}}</b>

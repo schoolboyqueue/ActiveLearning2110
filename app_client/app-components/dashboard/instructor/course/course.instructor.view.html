@@ -2,9 +2,9 @@
     <div class="divide-header pt-3 pb-3 text-uppercase">
         <span>sections</span>
     </div>
-    <div class="row" style="overflow: hidden;">
+    <div class="row justify-content-md-center">
         <div
-            class="col-xl-4 pb-2"
+            class="col-12 col-xl-auto pb-2"
             ng-repeat="section in $storage.courses[$stateParams.selectedCourse].sections |
                        offset: (currentSectionPage - 1) * itemsPerPage |
                        limitTo: itemsPerPage"
