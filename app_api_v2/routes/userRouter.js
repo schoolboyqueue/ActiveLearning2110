@@ -181,16 +181,13 @@ Authorization:    admin            required
 
 Path Parameters:  user_id String   required
 Query String:     none
-Request Body:     application/json  required
-{
-  "deactivate":   String            required
-}
+Request Body:     none
 **/
 userRouter.route('/:USERID/deactivate')
     .post(tokenController.validateToken,
           tokenController.refreshToken,
           authorizeController.admin,
           userController.deactivateUser);
-
+          
 
 module.exports = userRouter;
