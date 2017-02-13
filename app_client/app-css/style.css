@@ -18,6 +18,11 @@ html, body {
     width: 80px;
 }
 
+.card-center {
+    float: none;
+    margin: 0px auto;
+}
+
 #page-content-wrapper {
     height: 100%;
     padding: 5px;
@@ -156,6 +161,13 @@ html, body {
     }
 }
 
+@media(max-width: 576px) {
+    .card {
+        float: none;
+        margin: 0px auto;
+    }
+}
+
 .no-courses {
     font-size: 48px;
     height: 100%;
@@ -202,7 +214,8 @@ button.close {
 .card {
     background-color: #fff;
     border: 1px solid rgba(0, 0, 0, 0.075);
-    border-radius: 0.25rem
+    border-radius: 0.25rem;
+    max-width: 400px;
 }
 
 .card-header {
