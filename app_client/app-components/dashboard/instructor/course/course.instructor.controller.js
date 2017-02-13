@@ -15,7 +15,7 @@
 
 var app = angular.module('app');
 
-app.controller('Instructor.Course.Controller', function($scope, $localStorage, $stateParams, $rootScope, UserService) {
+app.controller('Instructor.Course.Controller', function($scope, $localStorage, $stateParams, $rootScope, $window, UserService) {
 
     $rootScope.$stateParams = $stateParams;
 
@@ -23,7 +23,7 @@ app.controller('Instructor.Course.Controller', function($scope, $localStorage, $
     $scope.status_data = {};
 
     $scope.status_options = {
-        responsive:false,
+        responsive: false,
         maintainAspectRatio: false
     };
 
@@ -55,5 +55,30 @@ app.controller('Instructor.Course.Controller', function($scope, $localStorage, $
         }
         $scope.status_data[section.name] = [verified, pending];
     };
+
+    var w = angular.element($window);
+    $scope.$watch(
+        function() {
+            return $window.innerWidth;
+        },
+        function(value) {
+            $scope.windowWidth = value;
+            if (value <= 1542) {
+                $scope.itemsPerPage = 2;
+                $scope.$apply();
+            } else if (value > 1542 && value <= 2186) {
+                $scope.itemsPerPage = 3;
+                $scope.$apply();
+            } else {
+                $scope.itemsPerPage = 4;
+                $scope.$apply();
+            }
+        },
+        true
+    );
+
+    w.on('resize', function() {
+        $scope.$apply();
+    });
 
 });
