@@ -96,7 +96,9 @@ var savedQuestionToDB = function (req, res)
                     {
                         success: true,
                         message: 'Question successfully added',
-                        id: savedQuestion._id.toString()
+                        jwt_token : req.token,
+                        question: savedQuestion
+
                     }
                 );
             }
@@ -189,8 +191,10 @@ var addTag = function (req, res)
             }
             else
             {
+                console.log(req.body.new_tag);
                 if (req.body.new_tag)
                 {
+                    console.log("ready to push to array");
                     question.tags.push(req.body.new_tag);
                     question.save(function(err, updated_question)
                     {
@@ -250,30 +254,35 @@ var deleteTag = function (req, res)
             {
                 if (req.body.delete_tag)
                 {
-                    var tagIndex = question.tags.indexOf(req.body.delete_tag);
-                    question.tags.splice(tagIndex,1);
-                    question.save(function(err, updated_question)
-                    {
-                        if (err)
+
+
+                    Question.update(
+                        {"_id": req.params.QUESTIONID}, 
+                        {$pull: {"tags": req.body.delete_tag}}, function(err, data)
                         {
-                            return res.status(401).json(
+                            if (err || !data || data.nModified === 0)
+                            {
+                                return res.status(400).json(
                                 {
                                     success: false,
-                                    message: 'Tag Delete Failed'
-                                }
-                            );
-                        }
-                        else
-                        {
-                            return res.status(200).json(
+                                    message: "Cannot Delete Tag"
+                                });
+                            }
+                            else
+                            {
+                                return res.status(200).json(
                                 {
-                                    success : true,
-                                    message : 'Tag Deleted',
-                                    question: updated_question
-                                }
-                            );
-                        }
-                    });
+                                    success: true,
+                                    jwt_token: req.token,
+                                    message: "Tag Deleted",
+                                    data : data
+                                });
+                            }   
+                        });
+                    
+
+
+                    
                 }
             }
         }
