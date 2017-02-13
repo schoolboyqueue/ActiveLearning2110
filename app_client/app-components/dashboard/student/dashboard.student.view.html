@@ -30,14 +30,32 @@
         <div class="row" style="overflow: hidden;">
             <div class="col-xl-4 pb-4" ng-repeat="course in $storage.courses | filter:searchCourses:strict">
                 <div class="card animated fadeIn">
-                    <div class="card-header text-uppercase">
-                        <div>
-                            {{course.title}}
-                        </div>
+                    <div class="card-header text-uppercase text-center p-2">
+                        <b>{{course.title}}</b>
                     </div>
-                    <div class="card-block">
-                        <p class="card-text text-capitalize">Instructor: {{course.instructor.firstname}} {{course.instructor.lastname}}</p>
-                        <p class="card-text">Access Key: {{course.course_key}}</p>
+                    <div class="card-block d-flex justify-content-between">
+                        <div class="progress-wrapper pr-2">
+                            <round-progress
+                                max="100"
+                                current="50"
+                                color="#45ccce"
+                                bgcolor="#eaeaea"
+                                radius="45"
+                                stroke="10"
+                                semi="false"
+                                rounded="true"
+                                clockwise="false"
+                                responsive="false"
+                                duration="800"
+                                animation="easeInOutQuart"
+                                animation-delay="0">
+                            </round-progress>
+                            <div class="text text-muted"><b>100%</b></div>
+                        </div>
+                        <div class="pl-2">
+                            <p class="card-text text-capitalize">Instructor: {{course.instructor.firstname}} {{course.instructor.lastname}}</p>
+                            <p class="card-text">Access Key: {{course.course_key}}</p>
+                        </div>
                     </div>
                     <div class="card-footer text-muted d-flex justify-content-between">
                         <div>

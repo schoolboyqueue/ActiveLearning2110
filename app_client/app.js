@@ -26,7 +26,8 @@ var app = angular
         'restangular',
         'ngTable',
         'chart.js',
-        'papa-promise'
+        'papa-promise',
+        'angular-svg-round-progressbar'
     ]);
 
 app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLoadProvider) {

@@ -1,4 +1,24 @@
-<div class="animated fadeIn container-fluid p-2">
+<div class="animated fadeIn container-fluid p-2" ng-controller="Course.Student.Controller">
+    <div class="container-fluid text-center">
+        <h1>AVG</h1>
+    </div>
+    <div class="divide-header pt-3 pb-3 text-uppercase">
+        <span>contact</span>
+    </div>
+    <div class="container-fluid">
+        <p>
+            Instructor:
+        </p>
+        <p>
+            E-Mail:
+        </p>
+    </div>
+    <div class="divide-header pt-3 pb-3 text-uppercase">
+        <span>lectures</span>
+    </div>
     <p>Course name: {{$storage.courses[$stateParams.selectedCourse].title}}</p>
     <p>Course Key: {{$storage.courses[$stateParams.selectedCourse].course_key}}</p>
+    <pre>
+        {{$storage.courses[$stateParams.selectedCourse] | json}}
+    </pre>
 </div>

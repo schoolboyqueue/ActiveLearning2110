@@ -15,7 +15,7 @@
 
 var app = angular.module('app');
 
-app.controller('Container.Controller', function($scope, $localStorage, $stateParams, $rootScope, UserService) {
+app.controller('Course.Student.Controller', function($scope, $localStorage, $stateParams, $rootScope, UserService) {
 
     $rootScope.$stateParams = $stateParams;
 
