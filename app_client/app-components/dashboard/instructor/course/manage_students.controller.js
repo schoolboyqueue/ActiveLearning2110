@@ -95,8 +95,7 @@ app.controller('Manage.Students.Controller', function($scope, $localStorage, $ti
                     new_data.push($scope.upload_tableParams.settings().dataset[skey]);
                 }
             }
-            $scope.upload_tableParams.settings().dataset = new_data;
-            $scope.upload_tableParams.reload();
+            updateUploadTable(new_data);
         }, 2000);
     }
 
@@ -107,6 +106,18 @@ app.controller('Manage.Students.Controller', function($scope, $localStorage, $ti
         }
         $scope.loading = false;
         updateStudentTable();
+    }
+
+    function updateUploadTable(data) {
+        var students = data;
+        if (students.length > 5) {
+            student_cnts = [5, 10, 15];
+        } else {
+            student_cnts = [];
+        }
+        $scope.upload_tableParams.settings().counts = student_cnts;
+        $scope.upload_tableParams.settings().dataset = data;
+        $scope.upload_tableParams.reload();
     }
 
     function updateStudentTable() {
@@ -140,12 +151,7 @@ app.controller('Manage.Students.Controller', function($scope, $localStorage, $ti
         if ($scope.selectedCSV !== null) {
             Papa.parse($scope.selectedCSV, {header: true, skipEmptyLines: true}).then(
                 function(result) {
-                    if (result.data.length > 5) {
-                        upload_cnts = [5, 10, 15];
-                    }
-                    $scope.upload_tableParams.settings().dataset = sanitizeData(result.data);
-                    $scope.upload_tableParams.settings().counts = upload_cnts;
-                    $scope.upload_tableParams.reload();
+                    updateUploadTable(sanitizeData(result.data));
                 }
             );
         }
