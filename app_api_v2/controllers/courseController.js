@@ -147,7 +147,7 @@ var instructorAddStudent = function(req, res, next)
 {
     console.log('courseController instructorAddStudent');
 
-    var student_id = req.user.id.toString();
+    var student_id = req.student.id.toString();
 
     Course.findById(req.params.COURSEID, function(err, course)
     {
@@ -162,7 +162,7 @@ var instructorAddStudent = function(req, res, next)
         }
         else
         {
-            checkForStudent(req, res, course.sections.id(req.body.section_id), student_id, function(student)
+            checkForStudent(req, res, course.sections.id(req.params.SECTIONID), student_id, function(student)
             {
                 if (student)
                 {
@@ -175,16 +175,16 @@ var instructorAddStudent = function(req, res, next)
                 }
                 else
                 {
-                    if (req.instructorRegisteredStudent || req.user.pre_register_key)
+                    if (req.instructorRegisteredStudent || req.student.pre_register_key)
                     {
                         console.log('instructorRegisteredStudent');
 
-                        course.sections.id(req.body.section_id).students.push(
+                        course.sections.id(req.params.SECTIONID).students.push(
                             {
                                 student_id: student_id,
-                                username  : req.user.username,
-                                firstname : req.user.firstname,
-                                lastname  : req.user.lastname,
+                                username  : req.student.username,
+                                firstname : req.student.firstname,
+                                lastname  : req.student.lastname,
                                 status    : 'pending'
                             }
                         );
@@ -193,12 +193,12 @@ var instructorAddStudent = function(req, res, next)
                     {
                         console.log('NOT instructorRegisteredStudent');
 
-                        course.sections.id(req.body.section_id).students.push(
+                        course.sections.id(req.params.SECTIONID).students.push(
                             {
                                 student_id: student_id,
-                                username  : req.user.username,
-                                firstname : req.user.firstname,
-                                lastname  : req.user.lastname,
+                                username  : req.student.username,
+                                firstname : req.student.firstname,
+                                lastname  : req.student.lastname,
                                 status    : 'complete'
                             }
                         );
@@ -221,7 +221,7 @@ var instructorAddStudent = function(req, res, next)
                                     success   : true,
                                     jwt_token : req.token,
                                     message   : 'Student Added to Course',
-                                    course    : course
+                                    student_username    : req.student.username
                                 }
                             );
                         }
@@ -231,7 +231,6 @@ var instructorAddStudent = function(req, res, next)
         }
     });
 }
-
 
 var updateStudentStatus = function (req, res, next)
 {
@@ -300,6 +299,36 @@ var updateStudentStatus = function (req, res, next)
     });
     */
 };
+
+/*
+var updateStudentStatus2 = function (req, res, next)
+{
+    console.log('userController updateStudentStatus');
+
+    if (req.user.pre_register_key === undefined)
+    {
+        next();
+    }
+    else
+    {
+
+      Course.findOneAndUpdate(
+      {"_id" : req.user.pre_registered.course_id, "sections._id": req.user.pre_registered.section_id},
+      {$set: {"sections.$.students.status": {"student_id" : req.user_id}}},
+      {new: true}, function(err, updated_course)
+
+        Course.findOneAndUpdate(
+        {"_id" : req.user.pre_registered.course_id, "sections._id": req.user.pre_registered.section_id},
+        {$set: {{"sections.$.students.status": {"student_id" : req.user_id}}: "complete"}},
+        {new: true}, function(err, updated_course)
+        {
+
+        });
+
+
+    }
+};
+*/
 
 var joinCourse = function(req, res, next)
 {

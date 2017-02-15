@@ -114,6 +114,34 @@ courseRouter.route('/:COURSEID/students')
          courseController.instructorAddStudent);
 
 /**
+INSTRUCTOR ADD STUDENTS
+
+POST  /api_v2/course/{course_id}/students/{user_id}/
+
+Authentication:   user token
+Authorization:    instructor
+
+Path Parameters:  none
+Query String:     none
+Request Body:     application/json    required
+{
+ "username":     String              required
+ "firstname":    String              required
+ "lastname":     String              required
+}
+**/
+courseRouter.route('/:COURSEID/sections/:SECTIONID/students/:USERID')
+   .put(tokenController.validateToken,
+        tokenController.refreshToken,
+        authorizeController.instructor,
+        inputController.requireFirstname,
+        inputController.requireLastname,
+        inputController.requireUsername,
+        userController.isValidStudent,
+        signupController.preRegisterStudent,
+        courseController.instructorAddStudent);
+
+/**
 GET STUDENTS IN COURSE
 
 GET	/api_v2/course/{course_id}/students
