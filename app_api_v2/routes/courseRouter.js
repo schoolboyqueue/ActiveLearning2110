@@ -130,7 +130,7 @@ Request Body:     application/json    required
  "lastname":     String              required
 }
 **/
-courseRouter.route('/:COURSEID/sections/:SECTIONID/students/:USERID')
+courseRouter.route('/:COURSEID/sections/:SECTIONID/students')
    .post(tokenController.validateToken,
         tokenController.refreshToken,
         authorizeController.instructor,
