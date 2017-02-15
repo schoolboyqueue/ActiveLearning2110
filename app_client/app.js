@@ -57,8 +57,8 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
             name: 'instructor.course',
             files: ['app-components/dashboard/instructor/course/course.instructor.controller.js']
         }, {
-            name: 'instructor.add_students',
-            files: ['app-components/dashboard/instructor/course/add_students.controller.js']
+            name: 'instructor.manage_students',
+            files: ['app-components/dashboard/instructor/course/manage_students.controller.js']
         }, {
             name: 'student.course',
             files: ['app-components/dashboard/student/course/course.student.controller.js']
@@ -149,16 +149,19 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
             }
         })
 
-        .state('main.instructor_add_students', {
-            url: '/instructor/add_students',
-            templateUrl: 'app-components/dashboard/instructor/course/add_students.view.html',
+        .state('main.instructor_manage_students', {
+            url: '/instructor/manage_students',
+            templateUrl: 'app-components/dashboard/instructor/course/manage_students.view.html',
             params: {
                 selectedCourse: null,
-                selectedSection: null
+                selectedSection: {
+                    index: null,
+                    section: null
+                }
             },
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
-                    return $ocLazyLoad.load('instructor.add_students'); // Resolve promise and load before view
+                    return $ocLazyLoad.load('instructor.manage_students'); // Resolve promise and load before view
                 }]
             }
         })

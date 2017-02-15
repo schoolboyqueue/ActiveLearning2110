@@ -35,7 +35,7 @@ app.controller('Navbar.Controller', function($scope, $localStorage, $state, $sta
             if ($stateParams.selectedCourse !== undefined) {
                 $scope.title = $localStorage.courses[$stateParams.selectedCourse].title;
                 if ($stateParams.selectedSection !== undefined) {
-                    $scope.title = $scope.title + " - " + $stateParams.selectedSection.name;
+                    $scope.title = $scope.title + " - " + $stateParams.selectedSection.section.name;
                 }
             } else {
                 $scope.title = 'Active Learning 2110';

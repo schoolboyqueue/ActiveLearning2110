@@ -65,13 +65,10 @@ app.controller('Instructor.Course.Controller', function($scope, $localStorage, $
             $scope.windowWidth = value;
             if (value <= 1542) {
                 $scope.itemsPerPage = 2;
-                $scope.$apply();
             } else if (value > 1542 && value <= 2186) {
                 $scope.itemsPerPage = 3;
-                $scope.$apply();
             } else {
                 $scope.itemsPerPage = 4;
-                $scope.$apply();
             }
         },
         true

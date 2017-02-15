@@ -96,6 +96,7 @@ app.directive("fileread", [function () {
             element.on("change", function (changeEvent) {
                 scope.$apply(function () {
                     scope.fileread = changeEvent.target.files[0];
+                    element.val(null);
                 });
             });
         }
