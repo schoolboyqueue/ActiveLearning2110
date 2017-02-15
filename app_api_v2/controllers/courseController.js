@@ -90,6 +90,8 @@ function findStudentIndex(req, res, section, student_id, callback)
 {
     console.log('courseController findStudentIndex');
 
+    console.log(section);
+
     for (var i = 0; i < section.students.length; i++)
     {
         if (section.students[i].student_id === student_id)
@@ -244,6 +246,7 @@ var updateStudentStatus = function (req, res, next)
     {
         Course.findById(req.user.pre_registered.course_id, function(err, course)
         {
+            console.log(course.sections);
             findStudentIndex(req, res, course.sections.id(req.user.pre_registered.section_id), req.user_id, function(i)
             {
                 var query_string = "sections.$.students."+i+".status";
