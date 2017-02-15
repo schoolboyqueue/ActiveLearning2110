@@ -255,7 +255,7 @@ var isValidStudent = function (req, res, next)
         }
         else
         {
-          req.user = user;
+          req.student = user;
           next();
         }
     });
