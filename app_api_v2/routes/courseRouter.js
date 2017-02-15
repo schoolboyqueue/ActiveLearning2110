@@ -116,12 +116,12 @@ courseRouter.route('/:COURSEID/students')
 /**
 INSTRUCTOR ADD STUDENTS
 
-POST  /api_v2/course/{course_id}/students/{user_id}/
+POST  /api_v2/course/{course_id}/sections/{section_id}/students/
 
 Authentication:   user token
 Authorization:    instructor
 
-Path Parameters:  none
+Path Parameters:  course_id, section_id String    required
 Query String:     none
 Request Body:     application/json    required
 {
@@ -131,7 +131,7 @@ Request Body:     application/json    required
 }
 **/
 courseRouter.route('/:COURSEID/sections/:SECTIONID/students/:USERID')
-   .put(tokenController.validateToken,
+   .post(tokenController.validateToken,
         tokenController.refreshToken,
         authorizeController.instructor,
         inputController.requireFirstname,
