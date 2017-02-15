@@ -291,7 +291,7 @@ var preRegisterStudent = function (req, res, next)
         {
             password    :   password,
             course_id   :   req.params.COURSEID,
-            section_id  :   req.body.section_id
+            section_id  :   req.params.SECTIONID
         }
         var newUser = new User(
         {

@@ -85,35 +85,6 @@ courseRouter.route('/students')
           courseController.getUserCourses);
 
 /**
-INSTRUCTOR ADD STUDENT
-
-PUT  /api_v2/course/{course_id}/student
-
-Authentication:   user token
-Authorization:    instructor
-
-Path Parameters:  none
-Query String:     none
-Request Body:     application/json    required
-{
-  "username":     String              required
-  "firstname":    String              required
-  "lastname":     String              required
-  "section_id":   String              required
-}
-**/
-courseRouter.route('/:COURSEID/students')
-    .put(tokenController.validateToken,
-         tokenController.refreshToken,
-         authorizeController.instructor,
-         inputController.requireFirstname,
-         inputController.requireLastname,
-         inputController.requireUsername,
-         userController.isValidStudent,
-         signupController.preRegisterStudent,
-         courseController.instructorAddStudent);
-
-/**
 INSTRUCTOR ADD STUDENTS
 
 POST  /api_v2/course/{course_id}/sections/{section_id}/students/
