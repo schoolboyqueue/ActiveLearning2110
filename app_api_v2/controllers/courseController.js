@@ -112,7 +112,8 @@ var createCourse = function(req, res, next)
             instructor_id   : user._id.toString(),
             username        : user.username,
             firstname       : user.firstname,
-            lastname        : user.lastname
+            lastname        : user.lastname,
+            photo           : user.photo
         };
 
         createSectionKeys(req, res, req.body.sections, function(sections)
@@ -174,7 +175,7 @@ var instructorAddStudent = function(req, res, next)
                 }
                 else
                 {
-                    if (req.instructorRegisteredStudent)
+                    if (req.instructorRegisteredStudent || req.user.pre_register_key)
                     {
                         console.log('instructorRegisteredStudent');
 
@@ -236,20 +237,20 @@ var updateStudentStatus = function (req, res, next)
 {
     console.log('userController updateStudentStatus');
 
-    if (!req.course_info)
+    if (req.user.pre_register_key === undefined)
     {
         next();
     }
     else
     {
-        Course.findById(req.course_info[0], function(err, course)
+        Course.findById(req.user.pre_registered.course_id, function(err, course)
         {
-            findStudentIndex(req, res, course.sections.id(req.course_info[1]), req.user_id, function(i)
+            findStudentIndex(req, res, course.sections.id(req.user.pre_registered.section_id), req.user_id, function(i)
             {
                 var query_string = "sections.$.students."+i+".status";
 
                 Course.update(
-                {"_id" : req.course_info[0], "sections._id": req.course_info[1]},
+                {"_id" : req.user.pre_registered.course_id, "sections._id": req.user.pre_registered.section_id},
                 {$set: {[query_string]: "complete"}}, function(err, data)
                 {
                     if (err || !data || data.nModified === 0)
@@ -257,13 +258,14 @@ var updateStudentStatus = function (req, res, next)
                         return res.status(400).json(
                             {
                                 success: false,
-                                message: 'Interal Error: Could Not Delete User'
+                                message: 'Interal Error: Could Not Update User'
                             }
                         );
                     }
                     else
                     {
                         req.user.pre_register_key = undefined;
+                        req.user.pre_registered = undefined;
                         req.user.save(function(err, updated_user)
                         {
                             if (err)
@@ -398,16 +400,6 @@ var deleteStudentFromCourse = function (req, res)
                 }
                 else
                 {
-                    /*
-                    return res.status(200).json(
-                        {
-                            success : true,
-                            jwt_token : req.token,
-                            message: 'Student Deleted',
-                            data  :   data
-                        }
-                    );
-                    */
                     Course.findById(req.params.COURSEID, function(err, updated_course)
                     {
                         return res.status(200).json(
@@ -422,6 +414,77 @@ var deleteStudentFromCourse = function (req, res)
                 }
             });
         });
+    });
+};
+
+var deleteStudentFromCourse2 = function (req, res)
+{
+    console.log('userController deleteStudentFromCourse2');
+
+    Course.findById(req.params.COURSEID, function(err, course)
+    {
+        var query_string = "sections.$.students";
+
+        Course.update(
+        {"_id" : req.params.COURSEID, "sections._id": req.params.SECTIONID},
+        {$pull: {[query_string]: {"student_id" : req.params.USERID}}}, function(err, data)
+        {
+            if (err || !data || data.nModified === 0)
+            {
+                return res.status(400).json(
+                    {
+                        success: false,
+                        message: 'Interal Error: Could Not Delete User'
+                    }
+                );
+            }
+            else
+            {
+                Course.findById(req.params.COURSEID, function(err, updated_course)
+                {
+                    return res.status(200).json(
+                        {
+                            success   : true,
+                            jwt_token : req.token,
+                            message   : 'Student Deleted',
+                            course    : updated_course
+                        }
+                    );
+                });
+            }
+        });
+    });
+};
+
+var deleteStudentFromCourse3 = function (req, res)
+{
+    console.log('userController deleteStudentFromCourse3');
+
+    Course.findOneAndUpdate(
+    {"_id" : req.params.COURSEID, "sections._id": req.params.SECTIONID},
+    {$pull: {"sections.$.students": {"student_id" : req.params.USERID}}},
+    {new: true}, function(err, updated_course)
+    {
+        if(err)
+        {
+            return res.status(400).json(
+                {
+                    success: false,
+                    message: 'Interal Error: Could Not Delete User'
+                }
+            );
+        }
+        else
+        {
+            return res.status(200).json(
+                {
+                    success   : true,
+                    jwt_token : req.token,
+                    message   : 'Student Deleted',
+                    course    : updated_course
+                }
+            );
+        }
     });
 };
 
@@ -737,9 +800,11 @@ module.exports =
     createLecture           :     createLecture,
     deleteLecture           :     deleteLecture,
     deleteStudentFromCourse :     deleteStudentFromCourse,
+    deleteStudentFromCourse2:     deleteStudentFromCourse2,
+    deleteStudentFromCourse3:     deleteStudentFromCourse3,
     getCourse               :     getCourse,
     getLectures             :     getLectures,
-    getSectionNames             :     getSectionNames,
+    getSectionNames         :     getSectionNames,
     getStudents             :     getStudents,
     getUserCourses          :     getUserCourses,
     instructorAddStudent    :     instructorAddStudent,
