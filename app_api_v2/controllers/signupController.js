@@ -323,6 +323,7 @@ var preRegisterStudent = function (req, res, next)
             else
             {
                 req.student = new_student;
+                console.log(req.student);
                 next();
             }
         });
