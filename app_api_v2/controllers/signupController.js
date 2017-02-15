@@ -304,7 +304,7 @@ var preRegisterStudent = function (req, res, next)
             pre_registered    :   pre_registered
         });
 
-        newUser.save(function(err, savedUser)
+        newUser.save(function(err, new_student)
         {
             if (err)
             {
@@ -322,7 +322,7 @@ var preRegisterStudent = function (req, res, next)
             }
             else
             {
-                req.user = savedUser;
+                req.student = new_student;
                 next();
             }
         });
