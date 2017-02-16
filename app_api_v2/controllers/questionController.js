@@ -254,8 +254,6 @@ var deleteTag = function (req, res)
             {
                 if (req.body.delete_tag)
                 {
-
-
                     Question.update(
                         {"_id": req.params.QUESTIONID}, 
                         {$pull: {"tags": req.body.delete_tag}}, function(err, data)
