@@ -40,6 +40,7 @@ function checkForStudent(req, res, section, student_id, callback)
         {
             if (section.students[i].student_id === student_id)
             {
+
                 callback(true);
                 return;
             }
@@ -97,6 +98,50 @@ function findStudentIndex(req, res, section, student_id, callback)
         if (section.students[i].student_id === student_id)
         {
             callback(i);
+        }
+    }
+}
+
+function removeCourseData(courses, callback)
+{
+    console.log('courseController findSectionID');
+
+    for (var i = 0; i < courses.length; i++)
+    {
+        courses[i].__v = undefined;
+        courses[i].course_key = undefined;
+        courses[i].lectures = undefined;
+        courses[i].createdAt = undefined;
+        courses[i].average = 999;
+    }
+
+    callback(courses);
+}
+
+function findStudentAverage(courses, student_id, callback)
+{
+    console.log('courseController getStudentAverage');
+
+    for (var i = 0; i < courses.length; i++)
+    {
+        courses[i].average = averageHelper(courses[i], student_id);
+        courses[i].sections = undefined;
+    }
+    callback(courses)
+}
+
+function averageHelper(course, student_id, callback)
+{
+    console.log('courseController averageHelper');
+
+    for (var j = 0; j < course.sections.length; j++)
+    {
+        for (var k = 0; k < course.sections[j].students.length; k++)
+        {
+            if (course.sections[j].students[k].student_id === student_id)
+            {
+                return course.sections[j].students[k].average;
+            }
         }
     }
 }
@@ -205,6 +250,7 @@ var instructorAddStudent = function(req, res, next)
                             }
                         );
                     }
+                    course.numOfStudents++;
                     course.save(function(err, updated_course)
                     {
                         if (err)
@@ -246,7 +292,6 @@ var updateStudentStatus = function (req, res, next)
     {
         Course.findById(req.user.pre_registered.course_id, function(err, course)
         {
-            console.log(course.sections);
             findStudentIndex(req, res, course.sections.id(req.user.pre_registered.section_id), req.user_id, function(i)
             {
                 var query_string = "sections.$.students."+i+".status";
@@ -290,17 +335,6 @@ var updateStudentStatus = function (req, res, next)
             });
         });
     }
-    /*
-    Course.update( {'students.student_id': req.user.id.toString()}, {'$set': {'students.$.status': 'complete'}} , function(err, data){
-      return res.status(200).json(
-          {
-              success   : true,
-              message   : 'Registration Complete',
-              user_id   : req.user._id.toString()
-          }
-      );
-    });
-    */
 };
 
 /*
@@ -384,6 +418,7 @@ var joinCourse = function(req, res, next)
                                 status    : 'complete'
                             }
                         );
+                        course.numOfStudents++;
                         course.save(function(err, updated_course)
                         {
                             if (err)
@@ -494,7 +529,8 @@ var deleteStudentFromCourse3 = function (req, res)
 
     Course.findOneAndUpdate(
     {"_id" : req.params.COURSEID, "sections._id": req.params.SECTIONID},
-    {$pull: {"sections.$.students": {"student_id" : req.params.USERID}}},
+    {$pull: {"sections.$.students": {"student_id" : req.params.USERID}},
+     $inc: { numOfStudents: -1 }},
     {new: true}, function(err, updated_course)
     {
         if(err)
@@ -787,14 +823,43 @@ var getUserCourses  = function (req, res)
             }
             else
             {
-                return res.status(201).json(
+                var return_courses = [];
+                for (var i = 0; i < courses.length; i++)
+                {
+                    var test = courses[i].toObject();
+                    return_courses.push(courses[i].toObject());
+                }
+                removeCourseData(return_courses, function(updated_courses1)
+                {
+                    findStudentAverage(updated_courses1, req.decodedToken.sub, function(updated_courses2)
                     {
-                        success   : true,
-                        jwt_token : req.token,
-                        message   : 'Request Success',
-                        courses   : courses
-                    }
-                );
+                      return res.status(201).json(
+                          {
+                              success   : true,
+                              jwt_token : req.token,
+                              message   : 'Request Success',
+                              courses   : updated_courses2
+                          }
+                      );
+                    });
+                });
+
+                /*
+                removeCourseKey(crs, function(updated_courses)
+                {
+                    findStudentAverage(updated_courses, req.decodedToken.sub, function(crs2)
+                    {
+                        return res.status(201).json(
+                            {
+                                success   : true,
+                                jwt_token : req.token,
+                                message   : 'Request Success',
+                                courses   : crs2
+                            }
+                        );
+                    });
+                });
+                */
             }
         });
     }
