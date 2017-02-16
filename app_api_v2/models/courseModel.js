@@ -126,6 +126,11 @@ var CourseSchema  = new Schema(
         type    : Date,
         default : Date.now
     },
+    numOfStudents:
+    {
+        type    : Number,
+        default: 0
+    },
     course_key:
     {
         type    : String,
