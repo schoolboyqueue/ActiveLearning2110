@@ -106,6 +106,7 @@ var CourseSchema  = new Schema(
         username       :  {type: String, required: true},
         firstname      :  {type: String, required: true},
         lastname       :  {type: String, required: true},
+        photo          :  {type: String}
     },
     schedule:
     {
@@ -124,6 +125,11 @@ var CourseSchema  = new Schema(
     {
         type    : Date,
         default : Date.now
+    },
+    numOfStudents:
+    {
+        type    : Number,
+        default: 0
     },
     course_key:
     {

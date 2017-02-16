@@ -40,6 +40,7 @@ function checkForStudent(req, res, section, student_id, callback)
         {
             if (section.students[i].student_id === student_id)
             {
+
                 callback(true);
                 return;
             }
@@ -90,11 +91,57 @@ function findStudentIndex(req, res, section, student_id, callback)
 {
     console.log('courseController findStudentIndex');
 
+    console.log(section);
+
     for (var i = 0; i < section.students.length; i++)
     {
         if (section.students[i].student_id === student_id)
         {
             callback(i);
+        }
+    }
+}
+
+function removeCourseData(courses, callback)
+{
+    console.log('courseController findSectionID');
+
+    for (var i = 0; i < courses.length; i++)
+    {
+        courses[i].__v = undefined;
+        courses[i].course_key = undefined;
+        courses[i].lectures = undefined;
+        courses[i].createdAt = undefined;
+        courses[i].average = 999;
+    }
+
+    callback(courses);
+}
+
+function findStudentAverage(courses, student_id, callback)
+{
+    console.log('courseController getStudentAverage');
+
+    for (var i = 0; i < courses.length; i++)
+    {
+        courses[i].average = averageHelper(courses[i], student_id);
+        courses[i].sections = undefined;
+    }
+    callback(courses)
+}
+
+function averageHelper(course, student_id, callback)
+{
+    console.log('courseController averageHelper');
+
+    for (var j = 0; j < course.sections.length; j++)
+    {
+        for (var k = 0; k < course.sections[j].students.length; k++)
+        {
+            if (course.sections[j].students[k].student_id === student_id)
+            {
+                return course.sections[j].students[k].average;
+            }
         }
     }
 }
@@ -112,7 +159,8 @@ var createCourse = function(req, res, next)
             instructor_id   : user._id.toString(),
             username        : user.username,
             firstname       : user.firstname,
-            lastname        : user.lastname
+            lastname        : user.lastname,
+            photo           : user.photo
         };
 
         createSectionKeys(req, res, req.body.sections, function(sections)
@@ -146,7 +194,7 @@ var instructorAddStudent = function(req, res, next)
 {
     console.log('courseController instructorAddStudent');
 
-    var student_id = req.user.id.toString();
+    var student_id = req.student.id.toString();
 
     Course.findById(req.params.COURSEID, function(err, course)
     {
@@ -161,7 +209,7 @@ var instructorAddStudent = function(req, res, next)
         }
         else
         {
-            checkForStudent(req, res, course.sections.id(req.body.section_id), student_id, function(student)
+            checkForStudent(req, res, course.sections.id(req.params.SECTIONID), student_id, function(student)
             {
                 if (student)
                 {
@@ -174,16 +222,16 @@ var instructorAddStudent = function(req, res, next)
                 }
                 else
                 {
-                    if (req.instructorRegisteredStudent)
+                    if (req.instructorRegisteredStudent || req.student.pre_register_key)
                     {
                         console.log('instructorRegisteredStudent');
 
-                        course.sections.id(req.body.section_id).students.push(
+                        course.sections.id(req.params.SECTIONID).students.push(
                             {
                                 student_id: student_id,
-                                username  : req.user.username,
-                                firstname : req.user.firstname,
-                                lastname  : req.user.lastname,
+                                username  : req.student.username,
+                                firstname : req.student.firstname,
+                                lastname  : req.student.lastname,
                                 status    : 'pending'
                             }
                         );
@@ -192,16 +240,17 @@ var instructorAddStudent = function(req, res, next)
                     {
                         console.log('NOT instructorRegisteredStudent');
 
-                        course.sections.id(req.body.section_id).students.push(
+                        course.sections.id(req.params.SECTIONID).students.push(
                             {
                                 student_id: student_id,
-                                username  : req.user.username,
-                                firstname : req.user.firstname,
-                                lastname  : req.user.lastname,
+                                username  : req.student.username,
+                                firstname : req.student.firstname,
+                                lastname  : req.student.lastname,
                                 status    : 'complete'
                             }
                         );
                     }
+                    course.numOfStudents++;
                     course.save(function(err, updated_course)
                     {
                         if (err)
@@ -220,7 +269,7 @@ var instructorAddStudent = function(req, res, next)
                                     success   : true,
                                     jwt_token : req.token,
                                     message   : 'Student Added to Course',
-                                    course    : course
+                                    student_username    : req.student.username
                                 }
                             );
                         }
@@ -231,25 +280,24 @@ var instructorAddStudent = function(req, res, next)
     });
 }
 
-
 var updateStudentStatus = function (req, res, next)
 {
     console.log('userController updateStudentStatus');
 
-    if (!req.course_info)
+    if (req.user.pre_register_key === undefined)
     {
         next();
     }
     else
     {
-        Course.findById(req.course_info[0], function(err, course)
+        Course.findById(req.user.pre_registered.course_id, function(err, course)
         {
-            findStudentIndex(req, res, course.sections.id(req.course_info[1]), req.user_id, function(i)
+            findStudentIndex(req, res, course.sections.id(req.user.pre_registered.section_id), req.user_id, function(i)
             {
                 var query_string = "sections.$.students."+i+".status";
 
                 Course.update(
-                {"_id" : req.course_info[0], "sections._id": req.course_info[1]},
+                {"_id" : req.user.pre_registered.course_id, "sections._id": req.user.pre_registered.section_id},
                 {$set: {[query_string]: "complete"}}, function(err, data)
                 {
                     if (err || !data || data.nModified === 0)
@@ -257,13 +305,14 @@ var updateStudentStatus = function (req, res, next)
                         return res.status(400).json(
                             {
                                 success: false,
-                                message: 'Interal Error: Could Not Delete User'
+                                message: 'Interal Error: Could Not Update User'
                             }
                         );
                     }
                     else
                     {
                         req.user.pre_register_key = undefined;
+                        req.user.pre_registered = undefined;
                         req.user.save(function(err, updated_user)
                         {
                             if (err)
@@ -286,18 +335,37 @@ var updateStudentStatus = function (req, res, next)
             });
         });
     }
-    /*
-    Course.update( {'students.student_id': req.user.id.toString()}, {'$set': {'students.$.status': 'complete'}} , function(err, data){
-      return res.status(200).json(
-          {
-              success   : true,
-              message   : 'Registration Complete',
-              user_id   : req.user._id.toString()
-          }
-      );
-    });
-    */
 };
+
+/*
+var updateStudentStatus2 = function (req, res, next)
+{
+    console.log('userController updateStudentStatus');
+
+    if (req.user.pre_register_key === undefined)
+    {
+        next();
+    }
+    else
+    {
+
+      Course.findOneAndUpdate(
+      {"_id" : req.user.pre_registered.course_id, "sections._id": req.user.pre_registered.section_id},
+      {$set: {"sections.$.students.status": {"student_id" : req.user_id}}},
+      {new: true}, function(err, updated_course)
+
+        Course.findOneAndUpdate(
+        {"_id" : req.user.pre_registered.course_id, "sections._id": req.user.pre_registered.section_id},
+        {$set: {{"sections.$.students.status": {"student_id" : req.user_id}}: "complete"}},
+        {new: true}, function(err, updated_course)
+        {
+
+        });
+
+
+    }
+};
+*/
 
 var joinCourse = function(req, res, next)
 {
@@ -350,6 +418,7 @@ var joinCourse = function(req, res, next)
                                 status    : 'complete'
                             }
                         );
+                        course.numOfStudents++;
                         course.save(function(err, updated_course)
                         {
                             if (err)
@@ -398,17 +467,92 @@ var deleteStudentFromCourse = function (req, res)
                 }
                 else
                 {
-                    return res.status(200).json(
-                        {
-                            success : true,
-                            jwt_token : req.token,
-                            message: 'Student Deleted',
-                            data  :   data
-                        }
-                    );
+                    Course.findById(req.params.COURSEID, function(err, updated_course)
+                    {
+                        return res.status(200).json(
+                            {
+                                success   : true,
+                                jwt_token : req.token,
+                                message   : 'Student Deleted',
+                                course    : updated_course
+                            }
+                        );
+                    });
                 }
             });
         });
+    });
+};
+
+var deleteStudentFromCourse2 = function (req, res)
+{
+    console.log('userController deleteStudentFromCourse2');
+
+    Course.findById(req.params.COURSEID, function(err, course)
+    {
+        var query_string = "sections.$.students";
+
+        Course.update(
+        {"_id" : req.params.COURSEID, "sections._id": req.params.SECTIONID},
+        {$pull: {[query_string]: {"student_id" : req.params.USERID}}}, function(err, data)
+        {
+            if (err || !data || data.nModified === 0)
+            {
+                return res.status(400).json(
+                    {
+                        success: false,
+                        message: 'Interal Error: Could Not Delete User'
+                    }
+                );
+            }
+            else
+            {
+                Course.findById(req.params.COURSEID, function(err, updated_course)
+                {
+                    return res.status(200).json(
+                        {
+                            success   : true,
+                            jwt_token : req.token,
+                            message   : 'Student Deleted',
+                            course    : updated_course
+                        }
+                    );
+                });
+            }
+        });
+    });
+};
+
+var deleteStudentFromCourse3 = function (req, res)
+{
+    console.log('userController deleteStudentFromCourse3');
+
+    Course.findOneAndUpdate(
+    {"_id" : req.params.COURSEID, "sections._id": req.params.SECTIONID},
+    {$pull: {"sections.$.students": {"student_id" : req.params.USERID}},
+     $inc: { numOfStudents: -1 }},
+    {new: true}, function(err, updated_course)
+    {
+        if(err)
+        {
+            return res.status(400).json(
+                {
+                    success: false,
+                    message: 'Interal Error: Could Not Delete User'
+                }
+            );
+        }
+        else
+        {
+            return res.status(200).json(
+                {
+                    success   : true,
+                    jwt_token : req.token,
+                    message   : 'Student Deleted',
+                    course    : updated_course
+                }
+            );
+        }
     });
 };
 
@@ -679,14 +823,43 @@ var getUserCourses  = function (req, res)
             }
             else
             {
-                return res.status(201).json(
+                var return_courses = [];
+                for (var i = 0; i < courses.length; i++)
+                {
+                    var test = courses[i].toObject();
+                    return_courses.push(courses[i].toObject());
+                }
+                removeCourseData(return_courses, function(updated_courses1)
+                {
+                    findStudentAverage(updated_courses1, req.decodedToken.sub, function(updated_courses2)
                     {
-                        success   : true,
-                        jwt_token : req.token,
-                        message   : 'Request Success',
-                        courses   : courses
-                    }
-                );
+                      return res.status(201).json(
+                          {
+                              success   : true,
+                              jwt_token : req.token,
+                              message   : 'Request Success',
+                              courses   : updated_courses2
+                          }
+                      );
+                    });
+                });
+
+                /*
+                removeCourseKey(crs, function(updated_courses)
+                {
+                    findStudentAverage(updated_courses, req.decodedToken.sub, function(crs2)
+                    {
+                        return res.status(201).json(
+                            {
+                                success   : true,
+                                jwt_token : req.token,
+                                message   : 'Request Success',
+                                courses   : crs2
+                            }
+                        );
+                    });
+                });
+                */
             }
         });
     }
@@ -724,9 +897,11 @@ module.exports =
     createLecture           :     createLecture,
     deleteLecture           :     deleteLecture,
     deleteStudentFromCourse :     deleteStudentFromCourse,
+    deleteStudentFromCourse2:     deleteStudentFromCourse2,
+    deleteStudentFromCourse3:     deleteStudentFromCourse3,
     getCourse               :     getCourse,
     getLectures             :     getLectures,
-    getSectionNames             :     getSectionNames,
+    getSectionNames         :     getSectionNames,
     getStudents             :     getStudents,
     getUserCourses          :     getUserCourses,
     instructorAddStudent    :     instructorAddStudent,
