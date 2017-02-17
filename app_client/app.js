@@ -188,6 +188,12 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
         });
 });
 
+app.run(function($rootScope) {
+    $rootScope.$on('$stateChangeSuccess',function(){
+        $("html, body").animate({ scrollTop: 0 }, 200);
+    });
+});
+
 app.controller('Main.Controller', function($scope, $state, $localStorage, $injector, $ocLazyLoad) {
 
     $scope.$storage = $localStorage;

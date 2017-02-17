@@ -27,14 +27,16 @@ app.controller('Manage.Students.Controller', function($scope, $localStorage, $ti
     $scope.loading = false;
 
     $scope.student_tableParams = new NgTableParams({
-        count: 10
+        count: 10,
+        sorting: { username: "asc" }
     }, {
         counts: [],
         dataset: []
     });
 
     $scope.upload_tableParams = new NgTableParams({
-        count: 10
+        count: 10,
+        sorting: { username: "asc" }
     }, {
         counts: [],
         dataset: []

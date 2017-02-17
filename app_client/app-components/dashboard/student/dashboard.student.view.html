@@ -38,8 +38,8 @@
                         <div class="progress-wrapper pr-2">
                             <round-progress
                                 max="100"
-                                current="50"
-                                color="#45ccce"
+                                current="course.average"
+                                color="{{course.average | gradecolor}}"
                                 bgcolor="#eaeaea"
                                 radius="45"
                                 stroke="10"
@@ -51,11 +51,11 @@
                                 animation="easeInOutQuart"
                                 animation-delay="0">
                             </round-progress>
-                            <div class="text text-muted"><b>50%</b></div>
+                            <div class="text text-muted"><b>{{course.average}}%</b></div>
                         </div>
-                        <div class="pl-2">
-                            <p class="card-text text-capitalize">Instructor: {{course.instructor.firstname}} {{course.instructor.lastname}}</p>
-                            <p class="card-text">Access Key: {{course.course_key}}</p>
+                        <div>
+                            <p class="card-text text-capitalize"><b>Instructor:</b> {{course.instructor.firstname}} {{course.instructor.lastname}}</p>
+                            <span><b>E-mail: </b></span><a class="text-truncate" href="mailto:{{course.instructor.username}}?subject={{course.title}}">{{course.instructor.username}}</a>
                         </div>
                     </div>
                     <div class="card-footer text-muted d-flex justify-content-between align-items-center">

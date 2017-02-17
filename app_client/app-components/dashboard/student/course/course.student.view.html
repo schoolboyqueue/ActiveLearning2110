@@ -1,24 +1,30 @@
-<div class="animated fadeIn container-fluid p-2" ng-controller="Course.Student.Controller">
+<div class="animated fadeIn container-fluid p-2 pt-4" ng-controller="Course.Student.Controller">
     <div class="container-fluid text-center">
-        <h1>AVG</h1>
-    </div>
-    <div class="divide-header pt-3 pb-3 text-uppercase">
-        <span>contact</span>
-    </div>
-    <div class="container-fluid">
-        <p>
-            Instructor:
-        </p>
-        <p>
-            E-Mail:
-        </p>
+        <div class="progress-wrapper">
+            <round-progress
+                max="100"
+                current="course.average"
+                color="{{course.average | gradecolor}}"
+                bgcolor="#eaeaea"
+                radius="70"
+                stroke="15"
+                semi="false"
+                rounded="true"
+                clockwise="false"
+                responsive="false"
+                duration="800"
+                animation="easeInOutQuart"
+                animation-delay="0">
+            </round-progress>
+            <div class="text text-muted" style="font-size: 34px;"><b>{{course.average}}%</b></div>
+        </div>
     </div>
     <div class="divide-header pt-3 pb-3 text-uppercase">
         <span>lectures</span>
     </div>
-    <p>Course name: {{$storage.courses[$stateParams.selectedCourse].title}}</p>
-    <p>Course Key: {{$storage.courses[$stateParams.selectedCourse].course_key}}</p>
+    <p>Course name: {{course.title}}</p>
+    <p>Course Key: {{course.course_key}}</p>
     <pre>
-        {{$storage.courses[$stateParams.selectedCourse] | json}}
+        {{course | json}}
     </pre>
 </div>

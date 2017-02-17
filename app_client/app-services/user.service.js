@@ -103,6 +103,18 @@ app.directive("fileread", [function () {
     };
 }]);
 
+app.filter('gradecolor', function () {
+    return function (str) {
+        if (str < 50) {
+            return "#ff6384";
+        } else if (str < 70) {
+            return "#FFFFBA";
+        } else {
+            return "#45b7cd";
+        }
+    };
+});
+
 app.filter('days', function () {
     return function (str) {
         return str.includes("mon") ? "MWF": "TR";

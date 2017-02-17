@@ -18,8 +18,12 @@ var app = angular.module('app');
 app.controller('Instructor.Course.Controller', function($scope, $localStorage, $stateParams, $rootScope, $window, UserService) {
 
     $rootScope.$stateParams = $stateParams;
+    $scope.course = $localStorage.courses[$stateParams.selectedCourse];
 
-    $scope.status_labels = ["Verified", "Pending"];
+    $scope.chart_options =  {
+        labels: ["Verified", "Pending"]
+    };
+
     $scope.status_data = {};
 
     $scope.status_options = {

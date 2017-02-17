@@ -15,20 +15,12 @@
 
 var app = angular.module('app');
 
-app.controller('Instructor.Dashboard.Controller', function($scope, $localStorage, UserService) {
+app.controller('Instructor.Dashboard.Controller', function($scope, $localStorage, $window, UserService) {
 
-    $scope.coursesUserCount = {};
+    $scope.default = 100;
 
     $scope.createCourse = function() {
         UserService.ShowCreateCourse();
-    };
-
-    $scope.getUserCount = function(course) {
-        var count = 0;
-        for (var key in course.sections) {
-            count += course.sections[key].students.length;
-        }
-        $scope.coursesUserCount[course.id] = count;
     };
 
 });

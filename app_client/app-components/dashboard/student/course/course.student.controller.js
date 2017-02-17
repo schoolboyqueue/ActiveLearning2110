@@ -18,5 +18,6 @@ var app = angular.module('app');
 app.controller('Course.Student.Controller', function($scope, $localStorage, $stateParams, $rootScope, UserService) {
 
     $rootScope.$stateParams = $stateParams;
+    $scope.course = $localStorage.courses[$stateParams.selectedCourse];
 
 });

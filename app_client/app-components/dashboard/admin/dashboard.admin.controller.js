@@ -28,7 +28,8 @@ app.controller('Admin.Dashboard.Controller', function($scope, $localStorage, $st
     }
 
     $scope.tableParams = new NgTableParams({
-        count: 10
+        count: 10,
+        sorting: { username: "asc" }
     }, {
         counts: cnts,
         dataset: $localStorage.users

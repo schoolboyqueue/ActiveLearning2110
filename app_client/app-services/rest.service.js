@@ -224,6 +224,7 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
                 });
             },
             function(values) {
+                console.log('ERRRRRRR');
                 console.log(values);
             });
     };

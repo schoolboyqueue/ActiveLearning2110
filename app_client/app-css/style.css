@@ -9,7 +9,13 @@ html, body {
     background-color: #F8F9FA;
     height: 100%;
     overflow-x: hidden;
-    /*overflow-y: hidden;*/
+}
+
+a:link,
+a:visited,
+a:hover,
+a:active {
+    text-decoration: none;
 }
 
 .add-card {
@@ -289,4 +295,33 @@ button.close {
     width: 100%;
     z-index: 1;
     font-size: 24px;
+}
+
+.card-add {
+    background-color: transparent !important;
+    border: 2px dashed #45b7cd !important;
+    height: 200px;
+    width: 200px !important;
+}
+
+.card {
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.075);
+    border-radius: 0.25rem;
+    width: 400px;
+}
+
+.card-header {
+    padding: 0.75rem 1.25rem;
+    margin: 0;
+    background-color: #ECF0F1;
+    border-bottom: 0px;
+    font-size: 18px;
+}
+
+.card-footer {
+    padding: 0.75rem 1.25rem;
+    background-color: #fff;
+    border-top: 0px;
+    font-size: 14px;
 }
