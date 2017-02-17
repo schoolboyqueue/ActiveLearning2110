@@ -1,4 +1,62 @@
-<div class="animated fadeIn container-fluid p-2">
-    <p>Course name: {{$storage.courses[$storage.selectedCourse].title}}</p>
-    <p>Course Key: {{$storage.courses[$storage.selectedCourse].course_key}}</p>
+<div class="animated fadeIn container-fluid p-2 pt-4" ng-controller="Course.Student.Controller">
+    <div class="container-fluid text-center">
+        <div class="progress-wrapper">
+            <round-progress
+                max="100"
+                current="course.average"
+                color="{{course.average | gradecolor}}"
+                bgcolor="#eaeaea"
+                radius="70"
+                stroke="15"
+                semi="false"
+                rounded="true"
+                clockwise="false"
+                responsive="false"
+                duration="800"
+                animation="easeInOutQuart"
+                animation-delay="0">
+            </round-progress>
+            <div class="text text-muted" style="font-size: 34px;"><b>{{course.average}}%</b></div>
+        </div>
+    </div>
+    <div class="divide-header pt-3 pb-3 text-uppercase">
+        <span>lectures</span>
+    </div>
+    <!-- Lecture cards  -->
+    <div class="row justify-content-md-center">
+        <div
+            class="col-12 col-xl-auto pb-2"
+            ng-repeat="lecture in course.lectures |
+                       offset: (currentLecturePage - 1) * itemsPerPage |
+                       limitTo: itemsPerPage">
+            <div class="card animated fadeIn card-center">
+                <div class="card-header text-uppercase text-center p-2">
+                    <b>{{lecture.title}}</b>
+                </div>
+                <div class="card-block">
+                    {{lecture.schedule | json}}
+                </div>
+                <div class="card-footer text-muted d-flex justify-content-between align-items-center">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center">
+        <nav>
+            <ul class="pagination">
+                <li
+                    class="page-item"
+                    ng-repeat="section in getPages(course.lectures, itemsPerPage)">
+                    <a href="" ng-click="updateLecturePage($index+1)" class="pr-1">
+                        <i
+                            class="fa fa-2"
+                            aria-hidden="true"
+                            ng-class="{ 'fa-dot-circle-o': currentLecturePage === $index+1,
+                                        'fa-circle-o': currentLecturePage !== $index+1}">
+                        </i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 </div>
