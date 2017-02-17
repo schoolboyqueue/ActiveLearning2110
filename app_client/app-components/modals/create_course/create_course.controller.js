@@ -15,7 +15,7 @@
 
 var app = angular.module('app');
 
-app.controller('Create.Course.Controller', function($scope, $state, RESTService) {
+app.controller('Create.Course.Controller', function($scope, $element, $state, RESTService) {
 
     $scope.loading = false;
     $scope.error = null;
@@ -64,7 +64,7 @@ app.controller('Create.Course.Controller', function($scope, $state, RESTService)
     }, {
         id: 1,
         name: "TR",
-        daysArr: ["tue", "thr"]
+        daysArr: ["tue", "thu"]
     }];
 
     $scope.create = function() {

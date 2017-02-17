@@ -68,6 +68,14 @@ app.factory('UserStorage', function($localStorage, jwtHelper) {
         }
     };
 
+    service.UpdateCourseLectures = function(course_id, lectures) {
+        for (var key in $localStorage.courses) {
+            if ($localStorage.courses[key]._id === course_id) {
+                $localStorage.courses[key].lectures = lectures;
+            }
+        }
+    };
+
     service.LoggedIn = function() {
         if ($localStorage.jwt_token && !jwtHelper.isTokenExpired($localStorage.jwt_token) && $localStorage.LoggedIn) {
             $localStorage.LoggedIn = true;

@@ -97,18 +97,16 @@
         <div
             class="col-12 col-xl-auto pb-2"
             ng-repeat="lecture in course.lectures |
-                       offset: (currentSectionPage - 1) * itemsPerPage |
-                       limitTo: itemsPerPage"
-            ng-init="statusPopulate(section)">
+                       offset: (currentLecturePage - 1) * itemsPerPage |
+                       limitTo: itemsPerPage">
             <div class="card animated fadeIn card-center">
                 <div class="card-header text-uppercase text-center p-2">
-                    asdf
+                    <b>{{lecture.title}}</b>
                 </div>
                 <div class="card-block">
-                    asdf
+                    {{lecture.schedule | json}}
                 </div>
                 <div class="card-footer text-muted d-flex justify-content-between align-items-center">
-                    asdf
                 </div>
             </div>
         </div>
@@ -119,12 +117,12 @@
                 <li
                     class="page-item"
                     ng-repeat="section in getPages(course.lectures, itemsPerPage)">
-                    <a href="" ng-click="updateSectionPage($index+1)" class="pr-1">
+                    <a href="" ng-click="updateLecturePage($index+1)" class="pr-1">
                         <i
                             class="fa fa-2"
                             aria-hidden="true"
-                            ng-class="{ 'fa-dot-circle-o': currentSectionPage === $index+1,
-                                        'fa-circle-o': currentSectionPage !== $index+1}">
+                            ng-class="{ 'fa-dot-circle-o': currentLecturePage === $index+1,
+                                        'fa-circle-o': currentLecturePage !== $index+1}">
                         </i>
                     </a>
                 </li>

@@ -15,12 +15,12 @@
                               type="text"
                               name="title"
                               class="form-control"
-                              ng-model="course.title" autofocus required />
+                              ng-model="lecture.title" autofocus required />
                         </div>
                           <div class="input-group"
-                            moment-picker="course.date"
+                            moment-picker="lecture.date_day"
                             locale="en"
-                            format="MM/DD/YYYY"
+                            format="YYYY-MM-DD,ddd"
                             min-view="month"
                             max-view="day"
                             autoclose="true">
@@ -29,10 +29,13 @@
                                 </span>
                                 <input class="form-control"
                                 placeholder="Select a date"
-                                ng-model="course.date"
+                                ng-model="lecture.date"
                                 ng-model-options="{ updateOn: 'blur' }" required>
                           </div>
                     </div>
+                    <pre>
+                        {{lecture | json}}
+                    </pre>
                     <!-- Error Message -->
                     <div ng-if="error" class="alert alert-danger text-center animated fadeIn">{{error}}</div>
                     <div class="container-fluid text-center">

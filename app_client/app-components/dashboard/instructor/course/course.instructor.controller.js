@@ -43,9 +43,14 @@ app.controller('Instructor.Course.Controller', function($scope, $localStorage, $
 
     $scope.currentSectionPage = 1;
     $scope.itemsPerPage = 3;
+    $scope.currentLecturePage = 1;
 
     $scope.updateSectionPage = function(index) {
         $scope.currentSectionPage = index;
+    };
+
+    $scope.updateLecturePage = function(index) {
+        $scope.currentLecturePage = index;
     };
 
     $scope.getPages = function(list, itemsPer) {
