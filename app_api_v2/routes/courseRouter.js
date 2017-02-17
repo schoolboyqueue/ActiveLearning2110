@@ -46,7 +46,7 @@ Request Body:     application/json     required
     "course_schedule":
     {
         "semester": String             required
-        "days":     [String]           required     enum ["mon", "tue", "wed", "thr", "fri"] required
+        "days":     [String]           required     enum ["mon", "tue", "wed", "thu", "fri"] required
         "time":     String             required
     }
 }
@@ -200,7 +200,7 @@ Request Body:     application/json    required
     "lecture_number":       String              required
     "lecture_schedule":
     {
-        "day":      String              required     enum ["mon", "tue", "wed", "thr", "fri"] required
+        "day":      String              required     enum ["mon", "tue", "wed", "thu", "fri"] required
         "date":     String              required     'YYYY-MM-DD'
         "time":     String              required     'HH:MM:SS'
     }
