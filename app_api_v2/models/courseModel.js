@@ -25,7 +25,7 @@ var schedule =
         required  : true
     },
     days: {
-        type: [{ type: String, enum: ['mon', 'tue', 'wed', 'thr', 'fri'] }]
+        type: [{ type: String, enum: ['mon', 'tue', 'wed', 'thu', 'fri'] }]
     },
     time    :
     {
@@ -75,7 +75,7 @@ var LectureSchema2  = new Schema(
     title: String,
     schedule:
     {
-        days: {type: String, enum: ['mon', 'tue', 'wed', 'thr', 'fri']},
+        days: {type: String, enum: ['mon', 'tue', 'wed', 'thu', 'fri']},
         time: {type: Date, required: true}
     }
 });
@@ -86,7 +86,7 @@ var LectureSchema  = new Schema(
     number: Number,
     schedule:
     {
-        day: {type: String, enum: ['mon', 'tue', 'wed', 'thr', 'fri']},
+        day: {type: String, enum: ['mon', 'tue', 'wed', 'thu', 'fri']},
         date: String,
         time: String,
         iso : Date
@@ -128,7 +128,7 @@ var CourseSchema  = new Schema(
     {
         days:
         {
-            type: [{ type: String, enum: ['mon', 'tue', 'wed', 'thr', 'fri'] }]
+            type: [{ type: String, enum: ['mon', 'tue', 'wed', 'thu', 'fri'] }]
         },
         semester: {type: String, required: true},
         time: {type: String, required: true}
