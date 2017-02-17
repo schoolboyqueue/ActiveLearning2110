@@ -196,8 +196,14 @@ Path Parameters:  course_id String    required
 Query String:     none
 Request Body:     application/json    required
 {
-  "title":        String              required
-  "day":          String              required
+    "lecture_title":        String              required
+    "lecture_number":       String              required
+    "lecture_schedule":
+    {
+        "day":      String              required     enum ["mon", "tue", "wed", "thr", "fri"] required
+        "date":     String              required     'YYYY-MM-DD'
+        "time":     String              required     'HH:MM:SS'
+    }
 }
 **/
 courseRouter.route('/:COURSEID/lectures')
@@ -205,28 +211,6 @@ courseRouter.route('/:COURSEID/lectures')
          tokenController.refreshToken,
          authorizeController.instructor,
          courseController.createLecture);
-
-/**
-CREATE COURSE LECTURE 2
-
-POST	/api_v2/course/lectures
-
-Authentication:   user token
-Authorization:    instructor
-
-Path Parameters:  course_id String    required
-Query String:     none
-Request Body:     application/json    required
-{
- "title":        String              required
- "day":          String              required
-}
-**/
-courseRouter.route('/testing/lectures')
-  .post(tokenController.validateToken,
-        tokenController.refreshToken,
-        authorizeController.instructor,
-        lectureController.initialSetup);
 
 /**
 DELETE COURSE LECTURE

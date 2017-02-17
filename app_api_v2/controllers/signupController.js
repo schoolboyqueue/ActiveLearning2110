@@ -33,21 +33,6 @@ var keys =
     INSTRUCTOR  : 'instructorKey'
 }
 
-var bulkAdd = function (req, res, next)
-{
-    console.log('signupController bulkAdd');
-
-    console.log(req.body.users);
-
-    return res.status(201).json(
-        {
-            success   :   true,
-            users     :   req.body.users
-
-        }
-    );
-}
-
 var createAdminKey = function (req, res, next)
 {
     console.log('signupController createAdminKey');
@@ -380,7 +365,6 @@ var savedUserToDB = function(req, res)
 
 module.exports =
 {
-    bulkAdd                 :   bulkAdd,
     createAdminKey          :   createAdminKey,
     createInstructorKey     :   createInstructorKey,
     getRegistrationKeys     :   getRegistrationKeys,
