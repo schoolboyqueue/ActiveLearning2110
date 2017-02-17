@@ -15,18 +15,18 @@
 
 var app = angular.module('app');
 
-app.controller('CreateCourse.Controller', function($scope, $element, $state, RESTService) {
+app.controller('Create.Course.Controller', function($scope, $state, RESTService) {
 
     $scope.loading = false;
     $scope.error = null;
     $scope.onlyNumbers = /^\d+$/;
 
     $scope.course = {
-        "prefix": 0,
-        "days": 0,
-        "sections": [],
-        "number": "",
-        "semester_pre": 0
+        prefix: 0,
+        days: 0,
+        sections: [],
+        number: "",
+        semester_pre: 0
     };
 
     $scope.semeseter_pre = [{

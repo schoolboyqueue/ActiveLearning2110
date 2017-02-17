@@ -24,6 +24,10 @@ app.controller('Sidebar.Controller', function($scope, $state, $stateParams, $roo
         UserService.ShowCreateCourse();
     };
 
+    $scope.createLecture = function() {
+        UserService.ShowCreateLecture();
+    };
+
     $scope.$watch(function() {
         return $state.current.url;
     }, function(newVal, oldVal) {

@@ -197,6 +197,17 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
         );
     };
 
+    service.CreateLecture = function(info, callback) {
+        baseREST.one("course", info.course_id).one("lectures").post("", info.data).then(
+            function(response) {
+                callback(genRetInfo(response));
+            },
+            function(resposne) {
+                callback(genRetInfo(response));
+            }
+        );
+    };
+
     service.AddStudents = function(info, callback) {
         calls = [];
         retInfo = {
@@ -215,7 +226,10 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
         $q.all(calls).then(
             function(values) {
                 for (var key in values) {
-                    retInfo.students[values[key].student_username] = { success: values[key].success, message: values[key].message };
+                    retInfo.students[values[key].student_username] = {
+                        success: values[key].success,
+                        message: values[key].message
+                    };
                 }
                 service.GetCourseInfo(info.course_id, function(reply) {
                     retInfo.course.success = reply.success;

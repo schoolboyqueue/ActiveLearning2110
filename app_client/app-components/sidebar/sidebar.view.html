@@ -19,7 +19,7 @@
             <a ui-sref=".admin_keys"><i class="fa fa-key pr-3" aria-hidden="true"></i>Keys</a>
         </li>
         <li ng-show="$storage.role === 'instructor' && state === '/instructor/course'">
-            <a href=""><i class="fa fa-plus-square pr-3" aria-hidden="true"></i>Create Lecture</a>
+            <a href="" ng-click="createLecture()"><i class="fa fa-plus-square pr-3" aria-hidden="true"></i>Create Lecture</a>
         </li>
         <li ng-show="$storage.role === 'instructor' && state === '/instructor'">
             <a href="" ng-click="createCourse()"><i class="fa fa-plus-square pr-3" aria-hidden="true"></i>Create Course</a>

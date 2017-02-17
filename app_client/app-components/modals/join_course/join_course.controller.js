@@ -15,7 +15,7 @@
 
 var app = angular.module('app');
 
-app.controller('JoinCourse.Controller', function($scope, $element, $localStorage, RESTService) {
+app.controller('Join.Course.Controller', function($scope, $element, $localStorage, RESTService) {
 
     $scope.section = null;
     $scope.error = null;

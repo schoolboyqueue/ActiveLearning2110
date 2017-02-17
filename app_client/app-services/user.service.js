@@ -49,7 +49,7 @@ app.factory('UserService', function($state, $localStorage, ModalService) {
     service.ShowJoinCourse = function() {
         ModalService.showModal({
             templateUrl: '/app-components/modals/join_course/join_course.view.html',
-            controller: 'JoinCourse.Controller'
+            controller: 'Join.Course.Controller'
         }).then(function(modal) {
             modal.element.modal();
         });
@@ -58,7 +58,16 @@ app.factory('UserService', function($state, $localStorage, ModalService) {
     service.ShowCreateCourse = function() {
         ModalService.showModal({
             templateUrl: '/app-components/modals/create_course/create_course.view.html',
-            controller: 'CreateCourse.Controller'
+            controller: 'Create.Course.Controller'
+        }).then(function(modal) {
+            modal.element.modal();
+        });
+    };
+
+    service.ShowCreateLecture = function() {
+        ModalService.showModal({
+            templateUrl: '/app-components/modals/create_lecture/create_lecture.view.html',
+            controller: 'Create.Lecture.Controller'
         }).then(function(modal) {
             modal.element.modal();
         });
