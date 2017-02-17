@@ -3,7 +3,7 @@
       <div class="input-group">
           <input type="text" class="form-control" placeholder="Instructor Key" ng-model="generatedKey" readonly>
           <span class="input-group-btn">
-              <button class="btn btn-secondary" type="button" ng-click="getInstructorKey()">
+              <button class="btn btn-secondary" type="button" ng-click="getInstructorKey()" ng-disabled="keyLoading">
                   <span ng-show="keyLoading">
                       <i class="fa fa-circle-o-notch fa-spin"></i>
                   </span>

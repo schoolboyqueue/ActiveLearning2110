@@ -27,7 +27,8 @@ var app = angular
         'ngTable',
         'chart.js',
         'papa-promise',
-        'angular-svg-round-progressbar'
+        'angular-svg-round-progressbar',
+        'ngclipboard'
     ]);
 
 app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLoadProvider) {

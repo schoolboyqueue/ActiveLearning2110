@@ -11,8 +11,16 @@
                        limitTo: itemsPerPage"
             ng-init="statusPopulate(section)">
             <div class="card animated fadeIn card-center">
-                <div class="card-header text-uppercase text-center p-2">
-                    <b>Section: {{section.name}}</b>
+                <div class="card-header text-uppercase p-2">
+                    <span><b>Section: {{section.name}}</b></span>
+                    <button
+                        type="btn"
+                        class="close"
+                        title="Copy section key"
+                        ngclipboard
+                        data-clipboard-text="{{section.section_key}}">
+                            <i class="fa fa-clipboard" aria-hidden="true"></i>
+                    </button>
                 </div>
                 <div class="card-block">
                     <div class="d-flex justify-content-between align-items-center">
