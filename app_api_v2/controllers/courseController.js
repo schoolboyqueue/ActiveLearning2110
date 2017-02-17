@@ -100,7 +100,6 @@ function removeCourseData(courses, callback)
         courses[i].numOfStudents = courses[i].students.length;
         courses[i].__v = undefined;
         courses[i].course_key = undefined;
-        courses[i].lectures = undefined;
         courses[i].createdAt = undefined;
         courses[i].students = undefined;
     }
