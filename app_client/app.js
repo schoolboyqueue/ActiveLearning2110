@@ -28,7 +28,8 @@ var app = angular
         'chart.js',
         'papa-promise',
         'angular-svg-round-progressbar',
-        'ngclipboard'
+        'ngclipboard',
+        'ui-notification'
     ]);
 
 app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLoadProvider) {

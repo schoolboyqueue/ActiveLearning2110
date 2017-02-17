@@ -15,7 +15,7 @@
 
 var app = angular.module('app');
 
-app.controller('Instructor.Course.Controller', function($scope, $localStorage, $stateParams, $rootScope, $window, UserService) {
+app.controller('Instructor.Course.Controller', function($scope, $localStorage, $stateParams, $rootScope, $window, UserService, Notification) {
 
     $rootScope.$stateParams = $stateParams;
     $scope.course = $localStorage.courses[$stateParams.selectedCourse];
@@ -23,6 +23,16 @@ app.controller('Instructor.Course.Controller', function($scope, $localStorage, $
     $scope.chart_options =  {
         labels: ["Verified", "Pending"]
     };
+
+    $scope.copySuccess = function(name) {
+        Notification.success({
+            message: "Section " + name.toUpperCase() + "'s key copied to clipboard",
+            delay: 4000,
+            positionX: 'center',
+            positionY: 'top'
+        });
+    };
+
 
     $scope.status_data = {};
 

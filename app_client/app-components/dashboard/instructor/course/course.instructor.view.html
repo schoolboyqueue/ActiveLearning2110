@@ -17,6 +17,7 @@
                         type="btn"
                         class="close"
                         title="Copy section key"
+                        ng-click="copySuccess(section.name)"
                         ngclipboard
                         data-clipboard-text="{{section.section_key}}">
                             <i class="fa fa-clipboard" aria-hidden="true"></i>
