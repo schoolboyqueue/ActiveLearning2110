@@ -63,8 +63,6 @@ var requireSections = function (req, res, next)
 {
     console.log('inputController requireSections');
 
-    console.log(req.body.sections);
-
     if (!req.body.sections)
     {
         return res.status(400).json(
