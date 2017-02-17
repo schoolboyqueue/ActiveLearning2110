@@ -69,13 +69,28 @@ var QuestionSchema  = new Schema(
     answer: Number
 });
 
+var LectureSchema2  = new Schema(
+{
+    number: Number,
+    title: String,
+    schedule:
+    {
+        days: {type: String, enum: ['mon', 'tue', 'wed', 'thr', 'fri']},
+        time: {type: Date, required: true}
+    }
+});
+
 var LectureSchema  = new Schema(
 {
-    lecture_num: Number,
-    title: String,
-    day: String,
-    inSession: Boolean,
-    questions: [QuestionSchema]
+    title:  {type: String, required: true},
+    number: Number,
+    schedule:
+    {
+        day: {type: String, enum: ['mon', 'tue', 'wed', 'thr', 'fri']},
+        date: String,
+        time: String,
+        iso : Date
+    }
 });
 
 var SectionSchema  = new Schema(
@@ -135,7 +150,7 @@ var CourseSchema  = new Schema(
     },
     lectures:
     [
-        lecture_snapshot
+        LectureSchema
     ]
 });
 

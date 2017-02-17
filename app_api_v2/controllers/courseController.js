@@ -130,6 +130,7 @@ function averageHelper(course, student_id, callback)
         {
             if (course.sections[j].students[k].student_id === student_id)
             {
+                course.section = course.sections[j].name;
                 return course.sections[j].students[k].average;
             }
         }
@@ -272,9 +273,7 @@ var instructorAddStudent = function(req, res, next)
 
 var updateStudentStatus = function (req, res, next)
 {
-    console.log('userController updateStudentStatus');
-
-    console.log(req.user.pre_register_key);
+    console.log('courseController updateStudentStatus');
 
     if (req.user.pre_register_key === undefined)
     {
@@ -594,24 +593,29 @@ var createLecture  = function (req, res)
             }
             else
             {
-                var question_array = [];
                 var next_lecture_number = !course.lectures ? 1 : (course.lectures.length + 1);
-                course.lectures.push(
-                    {
-                        lecture_num: next_lecture_number,
-                        title: req.body.title,
-                        day: req.body.day,
-                        inSession: false,
-                        questions: course.lectureOneQuestions(question_array)
-                    }
-                )
+
+                //var iso_date = new Date(req.body.lecture_schedule.date+" "+req.body.lecture_schedule.time);
+                //req.body.lecture_schedule.iso = iso_date;
+
+                req.body.lecture_schedule.time = course.schedule.time;
+
+                var new_lecture =
+                {
+                    title:  req.body.lecture_title,
+                    number: next_lecture_number,
+                    schedule: req.body.lecture_schedule
+                }
+
+                course.lectures.push(new_lecture);
+
                 course.save(function(err, updatedCourse) {
                     if (err || !updatedCourse)
                     {
                         return res.status(404).json(
                             {
                                 success: false,
-                                message: 'Lecture Not Created'
+                                message: err
                             }
                         );
                     }
@@ -622,7 +626,8 @@ var createLecture  = function (req, res)
                                 success : true,
                                 jwt_token : req.token,
                                 message : 'Lecture Creation Successsful',
-                                lecture_id: updatedCourse.lectures[updatedCourse.lectures.length-1]._id
+                                course_id: updatedCourse._id.toString(),
+                                lectures: updatedCourse.lectures
                             }
                         );
                     }
