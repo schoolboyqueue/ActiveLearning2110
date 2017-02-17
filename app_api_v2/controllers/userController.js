@@ -249,12 +249,14 @@ var isValidStudent = function (req, res, next)
     {
         if (err || !user)
         {
+          console.log("Not found");
           req.body.password = "123456";
           req.instructorRegisteredStudent = true;
           next();
         }
         else
         {
+          console.log("Found");
           req.student = user;
           next();
         }
