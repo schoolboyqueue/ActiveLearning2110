@@ -71,11 +71,16 @@ var QuestionSchema  = new Schema(
 
 var LectureSchema  = new Schema(
 {
-    lecture_num: Number,
     title: String,
-    day: String,
-    inSession: Boolean,
-    questions: [QuestionSchema]
+    schedule:
+    {
+        days:
+        {
+            type: [{ type: String, enum: ['mon', 'tue', 'wed', 'thr', 'fri'] }]
+        },
+        semester: {type: String, required: true},
+        time: {type: String, required: true}
+    },
 });
 
 var SectionSchema  = new Schema(
