@@ -73,8 +73,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
     // app state and individual views
     $stateProvider
         .state('main', {
-            url: 'main',
-            abstract: true,
+            url: '/main',
             resolve: {
                 loadServices: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load('services'); // Resolve promise and load before view
