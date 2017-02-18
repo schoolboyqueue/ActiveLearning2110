@@ -249,12 +249,14 @@ var isValidStudent = function (req, res, next)
     {
         if (err || !user)
         {
+          console.log("Not found");
           req.body.password = "123456";
           req.instructorRegisteredStudent = true;
           next();
         }
         else
         {
+          console.log("Found");
           req.student = user;
           next();
         }
@@ -390,58 +392,8 @@ var updatePassword = function(req, res)
   });
 }
 
-var completePreRegistration = function (req, res, next)
-{
-    console.log('userController completePreRegistration');
-
-    User.findOne({'pre_register_key' : req.body.pre_register_key}, function(err, user)
-    {
-        if (err || !user)
-        {
-            return res.status(404).json(
-                {
-                    success: false,
-                    message: 'Pre Registration Key Not Valid'
-                }
-            );
-        }
-        else
-        {
-            user.pre_register_key = undefined;
-            user.save(function(err, updated_user)
-            {
-                if (err)
-                {
-                    return res.status(401).json(
-                        {
-                            success : false,
-                            message : 'Pre Registration Key Not Updated'
-                        }
-                    );
-                }
-                else
-                {
-
-                    req.user = updated_user;
-                    next();
-                    /*
-                    return res.status(200).json(
-                        {
-                            success   : true,
-                            message   : 'Registration Validated',
-                            user_id   : updated_user._id.toString()
-                        }
-                    );
-                    */
-                }
-            });
-        }
-    });
-}
-
 module.exports =
 {
-    completePreRegistration : completePreRegistration,
     deactivateUser  : deactivateUser,
     deleteUser      : deleteUser,
     getAll          : getAll,

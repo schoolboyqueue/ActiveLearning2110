@@ -15,14 +15,12 @@
 
 var app = angular.module('app');
 
-app.controller('Instructor.Dashboard.Controller', function($scope, $state, $localStorage, UserService) {
+app.controller('Instructor.Dashboard.Controller', function($scope, $localStorage, $window, UserService) {
+
+    $scope.default = 100;
 
     $scope.createCourse = function() {
         UserService.ShowCreateCourse();
     };
 
-    $scope.cardClick = function(index) {
-        $scope.$storage.selectedCourse = index;
-        $state.go('main.' + $localStorage.role + '_course');
-    };
 });

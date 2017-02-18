@@ -111,24 +111,4 @@ signupRouter.route('/registration_key')
         authorizeController.admin,
         signupController.getRegistrationKeys);
 
-/**
-COMPLETE PREREGISTRATION
-
-POST	/api_v2/signup/preregister
-
-Authentication:   none
-Authorization:    none
-
-Path Parameters:  none
-Query String:     none
-Request Body application/json
-{
-  "pre_register_key"  : String Required
-}
-**/
-signupRouter.route('/preregister')
-  .post(inputController.requirePreRegisterKey,
-        userController.completePreRegistration,
-        courseController.updateStudentStatus);
-
 module.exports = signupRouter;

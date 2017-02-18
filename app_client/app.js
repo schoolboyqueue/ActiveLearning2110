@@ -23,19 +23,25 @@ var app = angular
         'oc.lazyLoad',
         'moment-picker',
         'ngTagsInput',
-        'restangular'
+        'restangular',
+        'ngTable',
+        'chart.js',
+        'papa-promise',
+        'angular-svg-round-progressbar',
+        'ngclipboard',
+        'ui-notification'
     ]);
 
 app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLoadProvider) {
 
     $ocLazyLoadProvider.config({
-        'debug': true, // For debugging 'true/false'
-        'events': true, // For Event 'true/false'
-        'modules': [{ // Set modules initially
-            name: 'navbar', // State1 module
+        'debug': true,
+        'events': true,
+        'modules': [{
+            name: 'navbar',
             files: ['app-components/navbar/navbar.controller.js']
         }, {
-            name: 'sidebar', // State2 module
+            name: 'sidebar',
             files: ['app-components/sidebar/sidebar.controller.js']
         }, {
             name: 'student.dashboard',
@@ -53,6 +59,9 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
             name: 'instructor.course',
             files: ['app-components/dashboard/instructor/course/course.instructor.controller.js']
         }, {
+            name: 'instructor.manage_students',
+            files: ['app-components/dashboard/instructor/course/manage_students.controller.js']
+        }, {
             name: 'student.course',
             files: ['app-components/dashboard/student/course/course.student.controller.js']
         }, {
@@ -64,8 +73,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
     // app state and individual views
     $stateProvider
         .state('main', {
-            url: 'main',
-            abstract: true,
+            url: '/main',
             resolve: {
                 loadServices: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load('services'); // Resolve promise and load before view
@@ -109,6 +117,9 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
         .state('main.student_course', {
             url: '/student/course',
             templateUrl: 'app-components/dashboard/student/course/course.student.view.html',
+            params: {
+                selectedCourse: null
+            },
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load('student.course'); // Resolve promise and load before view
@@ -129,12 +140,33 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
         .state('main.instructor_course', {
             url: '/instructor/course',
             templateUrl: 'app-components/dashboard/instructor/course/course.instructor.view.html',
+            params: {
+                selectedCourse: null
+            },
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load('instructor.course'); // Resolve promise and load before view
                 }]
             }
         })
+
+        .state('main.instructor_manage_students', {
+            url: '/instructor/manage_students',
+            templateUrl: 'app-components/dashboard/instructor/course/manage_students.view.html',
+            params: {
+                selectedCourse: null,
+                selectedSection: {
+                    index: null,
+                    section: null
+                }
+            },
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load('instructor.manage_students'); // Resolve promise and load before view
+                }]
+            }
+        })
+
 
         .state('main.admin', {
             url: '/admin',
@@ -157,6 +189,12 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
         });
 });
 
+app.run(function($rootScope) {
+    $rootScope.$on('$stateChangeSuccess',function(){
+        $("html, body").animate({ scrollTop: 0 }, 200);
+    });
+});
+
 app.controller('Main.Controller', function($scope, $state, $localStorage, $injector, $ocLazyLoad) {
 
     $scope.$storage = $localStorage;
@@ -175,6 +213,7 @@ app.controller('Main.Controller', function($scope, $state, $localStorage, $injec
             UserService.ShowLogin();
         } else {
             $state.go('main.' + $localStorage.role);
+            $localStorage.selectedCourse = -1;
         }
     });
 });

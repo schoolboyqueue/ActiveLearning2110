@@ -15,10 +15,21 @@
 
 var app = angular.module('app');
 
-app.controller('Admin.Keys.Controller', function($scope, $localStorage, $state, RESTService) {
-    $scope.sortType = 'firstname';
-    $scope.sortReverse = false;
+app.controller('Admin.Keys.Controller', function($scope, $localStorage, $state, RESTService, NgTableParams) {
     $scope.keyLoading = false;
+
+    var cnts = [];
+
+    if ($localStorage.keys.length > 5) {
+        cnts = [5, 10, 15];
+    }
+
+    $scope.tableParams = new NgTableParams({
+        count: 10
+    }, {
+        counts: cnts,
+        dataset: $localStorage.keys
+    });
 
     $scope.getInstructorKey = function() {
         $scope.keyLoading = true;
@@ -29,6 +40,8 @@ app.controller('Admin.Keys.Controller', function($scope, $localStorage, $state, 
         if (!failed(info)) {
             $scope.generatedKey = info.key;
             $scope.keyLoading = false;
+            $scope.tableParams.settings().dataset = $localStorage.keys;
+            $scope.tableParams.reload();
         }
     }
 
