@@ -179,7 +179,10 @@ var registerAdmin = function (req, res, next)
             firstname:  req.body.firstname,
             lastname:   req.body.lastname
         }
-        RegistrationKey.findOneAndUpdate({ 'key': req.body.key, 'validated': false }, { 'validated': true, 'user': keyUser}, { 'new': true }, function (err, key)
+        RegistrationKey.findOneAndUpdate(
+        {'key': req.body.key, 'validated': false, 'role': roles.ADMIN},
+        {'validated': true, 'user': keyUser},
+        {'new': true }, function (err, key)
         {
             if (err || !key)
             {
@@ -222,7 +225,10 @@ var registerInstructor = function (req, res, next)
             firstname:  req.body.firstname,
             lastname:   req.body.lastname
         }
-        RegistrationKey.findOneAndUpdate({ 'key': req.body.key, 'validated': false, 'role': roles.INSTRUCTOR}, {'validated': true, 'user': keyUser}, { 'new': true }, function (err, key)
+        RegistrationKey.findOneAndUpdate(
+        {'key': req.body.key, 'validated': false, 'role': roles.INSTRUCTOR},
+        {'validated': true, 'user': keyUser},
+        {'new': true}, function (err, key)
         {
             if (err || !key)
             {
@@ -235,7 +241,6 @@ var registerInstructor = function (req, res, next)
             }
             else
             {
-                console.log(key);
                 req.addUser = new User(
                 {
                     username:   req.body.username,
