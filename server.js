@@ -36,19 +36,14 @@ Must have MongoDB installed and run mongod
 mongoose.Promise = global.Promise;
 mongoose.connect(config.database);
 
-io
-	.on('connection', socketioJwt.authorize({
-		secret: config.jwt_secret,
-    handshake: true,
-		timeout: 15000 // 15 seconds to send the authentication message
-	}))
-	.on('authenticated', function(socket){
-		console.log('connected & authenticated: ' + JSON.stringify(socket.decoded_token));
-		socket.on('chat message', function(msg){
-			debugger;
-			io.emit('chat message', msg);
-		});
-});
+io.sockets
+  .on('connection', socketioJwt.authorize({
+    secret: 'your secret or public key',
+    timeout: 15000 // 15 seconds to send the authentication message
+  })).on('authenticated', function(socket) {
+    //this socket is authenticated, we are good to handle more events from it.
+    console.log('hello! ' + socket.decoded_token);
+  });
 
 app.use(express.static(path.join(__dirname, '/app_client')));
 
