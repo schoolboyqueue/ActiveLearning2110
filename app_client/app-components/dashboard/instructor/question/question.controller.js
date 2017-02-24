@@ -17,17 +17,26 @@ var app = angular.module('app');
 
 app.controller('Instructor.Question.Controller', function($scope, $state, $rootScope) {
 
+    $scope.state = 'edit';
+
     $scope.edit = function() {
+        $scope.state = 'cancel';
         $scope.editor.start();
     };
 
     $scope.save = function() {
+        $scope.state = 'edit';
         $scope.editor.stop(true);
+    };
+
+    $scope.cancel = function() {
+        $scope.state = 'edit';
+        $scope.editor.stop(false);
     };
 
     $rootScope.$on('$stateChangeStart', function() {
         if ($scope.editor.isEditing()) {
-            $scope.editor.stop();
+            $scope.editor.stop(false);
         }
     });
 });

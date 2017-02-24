@@ -46,7 +46,7 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
                     jwt_token: response.jwt_token,
                     LoggedIn: true
                 };
-                // SocketService.connect(response.user_id);
+                SocketService.connect();
                 UserStorage.UpdateUserInfo(data);
                 callback(genRetInfo(response));
             },

@@ -13,18 +13,23 @@
 //************************************************************
 var app = angular.module('app');
 
-app.factory('SocketService', function($rootScope) {
+app.factory('SocketService', function($localStorage) {
 
     var service = {};
-    var socket = null;
+    var socket = io();
 
-    service.connect = function(id) {
-        socket = io.connect('http://localhost:8082', {
-            query: 'id=' +  id,
+    socket.on('connect', function(msg) {
+        console.log('connected');
+        socket.emit('authenticate', {
+            token: $localStorage.jwt_token
         });
-        socket.on('notification', function(data) {
-            console.log(data);
-        });
+    })
+    .on('authenticated', function() {
+        console.log('YAYYYYYYY!');
+    });
+
+    service.connect = function(token) {
+        socket.connect('http://localhost:8081');
     };
 
     service.on = function(eventName, callback) {
