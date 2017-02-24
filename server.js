@@ -25,7 +25,14 @@ var app_api_v2 = require('./app_api_v2'),
     path = require('path'),
     sessions = require('client-sessions'),
     config = require('./config'),
-    app = express();
+    app = express(),
+    socket_serv = require('http').createServer(app),
+    io = require('socket.io').listen(socket_serv),
+    client_db = {
+        admins: {},
+        instructors: {},
+        students: {}
+    };
 
 /**
 Must have MongoDB installed and run mongod
@@ -52,6 +59,30 @@ app.use(sessions({
 
 app_client(app);
 app_api_v2(app);
+
+socket_serv.listen(8082, function() {
+    console.log("Socket.Io Server listening on port 8082");
+});
+
+io.on('connection', function(socket) {
+    console.log('SOCKET.IO CONNECTION');
+
+    socket.on('test', function(message) {
+        console.log('TEST');
+        io.emit('notification', {
+            message: message
+        });
+    });
+});
+
+io.use(function(socket, next) {
+    console.log("Query: ", socket.handshake.query);
+    // return the result of next() to accept the connection.
+    client_db[socket.handshake.query.id] = socket;
+    next();
+    // call next() with an Error if you need to reject the connection.
+    //next(new Error('Authentication error'));
+});
 
 /**
 Binds and listens for connections on the specified host and port

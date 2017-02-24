@@ -11,7 +11,9 @@
         "express": "^4.14.0",
         "jsonwebtoken": "^7.2.1",
         "mongoose": "^4.7.7",
-        "random-key": "^0.3.2"
+        "random-key": "^0.3.2",
+        "socket.io": "^1.7.3",
+        "redis": "^2.6.5"
     },
     "description": "Active Learning Application for 2110",
     "homepage": "https://github.com/omizrahi3/ActiveLearning2110#readme",
