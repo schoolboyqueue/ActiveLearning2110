@@ -16,20 +16,22 @@ var app = angular.module('app');
 app.factory('SocketService', function($localStorage) {
 
     var service = {};
-    var socket = io();
+    var socket = null;
 
-    socket.on('connect', function(msg) {
-        console.log('connected');
-        socket.emit('authenticate', {
-            token: $localStorage.jwt_token
+    service.connect = function() {
+        socket = io();
+        socket.on('connect', function() {
+            console.log('connected');
+            socket.emit('authenticate', {
+                token: $localStorage.jwt_token
+            });
+        })
+        .on('authenticated', function() {
+            console.log('YAYYYYYYY!');
+        })
+        .on('unauthorized', function() {
+            console.log('SHIIIIIIIIT');
         });
-    })
-    .on('authenticated', function() {
-        console.log('YAYYYYYYY!');
-    });
-
-    service.connect = function(token) {
-        socket.connect('http://localhost:8081');
     };
 
     service.on = function(eventName, callback) {
