@@ -39,6 +39,7 @@ mongoose.connect(config.database);
 io
 	.on('connection', socketioJwt.authorize({
 		secret: config.jwt_secret,
+    handshake: true,
 		timeout: 15000 // 15 seconds to send the authentication message
 	}))
 	.on('authenticated', function(socket){
@@ -59,13 +60,6 @@ app.use(cookieParser());
 
 app.use(bodyparser.json());
 
-app.use(sessions({
-    cookieName: 'session',
-    secret: config.session_secret,
-    duration: 30 * 60 * 1000,
-    activeDuration: 5 * 60 * 1000,
-}));
-
 app_client(app);
 app_api_v2(app);
 
@@ -75,6 +69,6 @@ Binds and listens for connections on the specified host and port
 - parameter PORT:       8081
 - parameter HANDLER:    callback
 **/
-app.listen(process.env.PORT || 8081, function() {
+http.listen(process.env.PORT || 8081, function() {
     console.log('listening on port 8081');
 });
