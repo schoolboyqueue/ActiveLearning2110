@@ -25,13 +25,29 @@ var app_api_v2 = require('./app_api_v2'),
     path = require('path'),
     sessions = require('client-sessions'),
     config = require('./config'),
-    app = express();
+    app = express(),
+    http = require('http').Server(app),
+    io = require('socket.io')(http),
+    socketioJwt = require('socketio-jwt');
 
 /**
 Must have MongoDB installed and run mongod
 */
 mongoose.Promise = global.Promise;
 mongoose.connect(config.database);
+
+io
+	.on('connection', socketioJwt.authorize({
+		secret: config.jwt_secret,
+		timeout: 15000 // 15 seconds to send the authentication message
+	}))
+	.on('authenticated', function(socket){
+		console.log('connected & authenticated: ' + JSON.stringify(socket.decoded_token));
+		socket.on('chat message', function(msg){
+			debugger;
+			io.emit('chat message', msg);
+		});
+});
 
 app.use(express.static(path.join(__dirname, '/app_client')));
 
