@@ -1,0 +1,3 @@
+https://cdn.rawgit.com/indrimuska/angular-moment-picker/master/dist/angular-moment-picker.min.css
+https://unpkg.com/ng-table@3.0.1/bundles/ng-table.min.css
+https://rawgit.com/matowens/ng-notify/master/dist/ng-notify.min.css

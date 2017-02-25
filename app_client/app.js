@@ -29,7 +29,8 @@ var app = angular
         'papa-promise',
         'angular-svg-round-progressbar',
         'ngclipboard',
-        'ui-notification'
+        'ngNotify',
+        'ngSanitize'
     ]);
 
 app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLoadProvider) {
@@ -73,6 +74,21 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
                     'app-services/user.service.js',
                     'app-services/rest.service.js',
                     'app-services/socket.service.js']
+        }, {
+            name: 'login',
+            files: ['app-components/modals/login/login.controller.js']
+        }, {
+            name: 'profile',
+            files: ['app-components/modals/profile/profile.controller.js']
+        }, {
+            name: 'create_course',
+            files: ['app-components/modals/create_course/create_course.controller.js']
+        }, {
+            name: 'join_course',
+            files: ['app-components/modals/join_course/join_course.controller.js']
+        }, {
+            name: 'create_lecture',
+            files: ['app-components/modals/create_lecture/create_lecture.controller.js']
         }]
     });
 
@@ -203,11 +219,22 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
                 }]
             }
         });
+
 });
 
-app.run(function($rootScope) {
+app.run(function($rootScope, ngNotify) {
     $rootScope.$on('$stateChangeSuccess',function(){
         $("html, body").animate({ scrollTop: 0 }, 200);
+    });
+
+    ngNotify.config({
+        theme: 'pastel',
+        position: 'bottom',
+        duration: 3000,
+        type: 'info',
+        sticky: false,
+        button: true,
+        html: false
     });
 });
 
