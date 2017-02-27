@@ -20,7 +20,10 @@ app.controller('Instructor.Question.Controller', function($scope, $state, $rootS
     $scope.state = 'edit';
     $scope.editor = null;
 
-    $scope.question;
+    $scope.question = {
+        html: {},
+        tags: []
+    };
 
     $scope.edit = function() {
         $scope.state = 'cancel';

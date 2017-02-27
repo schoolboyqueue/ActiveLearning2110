@@ -30,7 +30,8 @@ var app = angular
         'angular-svg-round-progressbar',
         'ngclipboard',
         'ngNotify',
-        'ngSanitize'
+        'ngSanitize',
+        'ui.sortable'
     ]);
 
 app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLoadProvider) {
@@ -65,6 +66,9 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
         }, {
             name: 'instructor.question',
             files: ['app-components/dashboard/instructor/question/question.controller.js']
+        }, {
+            name: 'instructor.edit.lecture',
+            files: ['app-components/dashboard/instructor/lecture/lecture.edit.controller.js']
         }, {
             name: 'student.course',
             files: ['app-components/dashboard/student/course/course.student.controller.js']
@@ -178,6 +182,16 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load('instructor.question');
+                }]
+            }
+        })
+
+        .state('main.instructor_edit_lecture', {
+            url: '/instructor/edit_lecture',
+            templateUrl: 'app-components/dashboard/instructor/lecture/lecture.edit.view.html',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load('instructor.edit.lecture');
                 }]
             }
         })

@@ -23,3 +23,4 @@ https://rawgit.com/matowens/ng-notify/master/dist/ng-notify.min.js
 https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js
 https://cdnjs.cloudflare.com/ajax/libs/ng-tags-input/3.1.1/ng-tags-input.js
 https://cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.6.2/angular-sanitize.min.js
+https://cdnjs.cloudflare.com/ajax/libs/angular-ui-sortable/0.16.1/sortable.min.js

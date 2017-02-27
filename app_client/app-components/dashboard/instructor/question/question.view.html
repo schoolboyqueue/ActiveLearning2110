@@ -8,7 +8,7 @@
                 <button type="button" class="btn btn-danger btn-sm" ng-click="cancel()" ng-show="state === 'cancel'">
                     <i class="fa fa-times fa-fw" aria-hidden="true"></i>
                 </button>
-                <button type="button" class="btn btn-success btn-sm" ng-click="save()" ng-disabled="state === 'edit'">
+                <button type="button" class="btn btn-success btn-sm" ng-click="save()" ng-disabled="state === 'edit' || question.tags.length === 0">
                     <i class="fa fa-check fa-fw" aria-hidden="true"></i>
                 </button>
             </div>
