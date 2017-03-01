@@ -21,17 +21,17 @@ app.factory('SocketService', function($localStorage) {
     service.connect = function() {
         socket = io();
         socket.on('connect', function() {
-            console.log('connected');
-            socket.emit('authenticate', {
-                token: $localStorage.jwt_token
+                console.log('connected');
+                socket.emit('authenticate', {
+                    token: $localStorage.jwt_token
+                });
+            })
+            .on('authenticated', function() {
+                console.log('YAYYYYYYY!');
+            })
+            .on('unauthorized', function() {
+                console.log('SHIIIIIIIIT');
             });
-        })
-        .on('authenticated', function() {
-            console.log('YAYYYYYYY!');
-        })
-        .on('unauthorized', function() {
-            console.log('SHIIIIIIIIT');
-        });
     };
 
     service.on = function(eventName, callback) {

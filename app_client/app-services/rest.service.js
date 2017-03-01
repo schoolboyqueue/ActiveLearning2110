@@ -22,7 +22,9 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
     service.Register = function(info, callback) {
         var signup = null;
         if (info.professor) {
-            signup = {role: 'instructor'};
+            signup = {
+                role: 'instructor'
+            };
         }
         baseREST.customPOST(info, "signup", signup).then(
             function(response) {
@@ -70,7 +72,9 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
     service.GetCourseList = function(callback) {
         baseREST.one("user", $localStorage._id).one("courses").get().then(
             function(response) {
-                UserStorage.UpdateUserInfo({courses: response.courses});
+                UserStorage.UpdateUserInfo({
+                    courses: response.courses
+                });
                 callback(genRetInfo(response));
             },
             function(response) {
@@ -82,7 +86,9 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
     service.GetAllUsers = function(callback) {
         baseREST.one("user").get().then(
             function(response) {
-                UserStorage.UpdateUserInfo({users: response.user});
+                UserStorage.UpdateUserInfo({
+                    users: response.user
+                });
                 callback(genRetInfo(response));
             },
             function(response) {
@@ -94,7 +100,9 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
     service.GetAllKeys = function(callback) {
         baseREST.one("signup").one("registration_key").get().then(
             function(response) {
-                UserStorage.UpdateUserInfo({keys: response.keys});
+                UserStorage.UpdateUserInfo({
+                    keys: response.keys
+                });
                 callback(genRetInfo(response));
             },
             function(response) {
@@ -106,7 +114,9 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
     service.GenerateInstructorKey = function(callback) {
         baseREST.one("signup").one("instructor_key").post().then(
             function(response) {
-                UserStorage.UpdateUserInfo({keys: response.keys});
+                UserStorage.UpdateUserInfo({
+                    keys: response.keys
+                });
                 var retInfo = genRetInfo(response);
                 retInfo.key = response.key.key;
                 callback(retInfo);
@@ -143,7 +153,9 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
     };
 
     service.UpdateUserRole = function(info, callback) {
-        baseREST.one("user", info.id).one("role").post("", {new_role: info.new_role}).then(
+        baseREST.one("user", info.id).one("role").post("", {
+            new_role: info.new_role
+        }).then(
             function(response) {
                 var retInfo = genRetInfo(response);
                 retInfo.key = info.key;
@@ -177,7 +189,9 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
     service.CreateCourse = function(info, callback) {
         baseREST.one("course").post("", info).then(
             function(response) {
-                UserStorage.UpdateUserInfo({courses: response.courses});
+                UserStorage.UpdateUserInfo({
+                    courses: response.courses
+                });
                 callback(genRetInfo(response));
             },
             function(response) {
@@ -189,7 +203,9 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
     service.JoinCourse = function(info, callback) {
         baseREST.one("course").one("students").post("", info).then(
             function(response) {
-                UserStorage.UpdateUserInfo({courses: response.courses});
+                UserStorage.UpdateUserInfo({
+                    courses: response.courses
+                });
                 callback(genRetInfo(response));
             },
             function(response) {
@@ -222,8 +238,8 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
         for (var key in info.data) {
             calls.push(
                 baseREST.one("course", info.course_id)
-                    .one("sections", info.section_id)
-                    .customPOST(info.data[key], "students"));
+                .one("sections", info.section_id)
+                .customPOST(info.data[key], "students"));
         }
         $q.all(calls).then(
             function(values) {
@@ -261,14 +277,14 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
         baseREST.one("course", info.course_id)
             .one("sections", info.section_id)
             .one("students", info.student_id).remove().then(
-            function(response) {
-                UserStorage.UpdateSingleCourse(response.course);
-                callback(genRetInfo(response));
-            },
-            function(response) {
-                callback(genRetInfo(response));
-            }
-        );
+                function(response) {
+                    UserStorage.UpdateSingleCourse(response.course);
+                    callback(genRetInfo(response));
+                },
+                function(response) {
+                    callback(genRetInfo(response));
+                }
+            );
     };
 
     service.Logout = function() {

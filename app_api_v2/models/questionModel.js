@@ -14,56 +14,46 @@
 //************************************************************
 "use strict";
 
-var mongoose    = require('mongoose');
-var Schema      = mongoose.Schema;
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
-var QuestionSchema  = new Schema(
-{
-    contributor:
-    {
-        contributor_id:
-        {
-            type        : String,
-            required    : true
+var QuestionSchema = new Schema({
+    contributor: {
+        contributor_id: {
+            type: String,
+            required: true
         },
-        username:
-        {
-            type        : String,
-            required    : true,
-            unique      : true,
-            lowercase   : true
+        username: {
+            type: String,
+            required: true,
+            unique: true,
+            lowercase: true
         },
-        firstname:
-        {
-            type        : String,
-            lowercase   : true
+        firstname: {
+            type: String,
+            lowercase: true
         },
-        lastname:
-        {
-            type        : String,
-            lowercase   : true
+        lastname: {
+            type: String,
+            lowercase: true
         }
     },
-    tags: 
-    {
-        type        : [String],
-        required    : true,
-        lowercase   : true
+    tags: {
+        type: [String],
+        required: true,
+        lowercase: true
     },
-    problem_statement: 
-    {
-        type        : String,
-        required    : true,
+    problem_statement: {
+        type: String,
+        required: true,
     },
-    answer_choices: 
-    {
-        type        : [String],
-        required    : true
+    answer_choices: {
+        type: [String],
+        required: true
     },
-    answer:
-    {
-        type        : Number,
-        required    : true
+    answer: {
+        type: Number,
+        required: true
     }
 });
 

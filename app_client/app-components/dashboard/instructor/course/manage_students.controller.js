@@ -23,12 +23,14 @@ app.controller('Manage.Students.Controller', function($scope, $localStorage, $ti
     var sidx = $stateParams.selectedSection.index;
     var section = $stateParams.selectedSection.section;
     var cidx = $stateParams.selectedCourse;
-    $scope.changes = { };
+    $scope.changes = {};
     $scope.loading = false;
 
     $scope.student_tableParams = new NgTableParams({
         count: 10,
-        sorting: { username: "asc" }
+        sorting: {
+            username: "asc"
+        }
     }, {
         counts: [],
         dataset: []
@@ -36,7 +38,9 @@ app.controller('Manage.Students.Controller', function($scope, $localStorage, $ti
 
     $scope.upload_tableParams = new NgTableParams({
         count: 10,
-        sorting: { username: "asc" }
+        sorting: {
+            username: "asc"
+        }
     }, {
         counts: [],
         dataset: []
@@ -49,9 +53,9 @@ app.controller('Manage.Students.Controller', function($scope, $localStorage, $ti
         students = [];
         for (var key in $scope.upload_tableParams.settings().dataset) {
             var info = {
-                    username: $scope.upload_tableParams.settings().dataset[key].username,
-                    firstname: $scope.upload_tableParams.settings().dataset[key].firstname,
-                    lastname: $scope.upload_tableParams.settings().dataset[key].lastname
+                username: $scope.upload_tableParams.settings().dataset[key].username,
+                firstname: $scope.upload_tableParams.settings().dataset[key].firstname,
+                lastname: $scope.upload_tableParams.settings().dataset[key].lastname
             };
             students.push(info);
         }
@@ -151,7 +155,10 @@ app.controller('Manage.Students.Controller', function($scope, $localStorage, $ti
 
     $scope.$watch('selectedCSV', function() {
         if ($scope.selectedCSV !== null) {
-            Papa.parse($scope.selectedCSV, {header: true, skipEmptyLines: true}).then(
+            Papa.parse($scope.selectedCSV, {
+                header: true,
+                skipEmptyLines: true
+            }).then(
                 function(result) {
                     updateUploadTable(sanitizeData(result.data));
                 }

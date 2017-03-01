@@ -59,5 +59,4 @@ app.controller('Admin.Keys.Controller', function($scope, $localStorage, $state, 
             return false;
         }
     }
-
 });

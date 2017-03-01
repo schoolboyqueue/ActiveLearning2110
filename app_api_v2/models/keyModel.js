@@ -14,68 +14,55 @@
 //************************************************************
 "use strict";
 
-var mongoose    = require('mongoose');
-var Schema      = mongoose.Schema;
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
-var admin =
-{
-    user_id:
-    {
-        type    : String,
+var admin = {
+    user_id: {
+        type: String,
         required: true
     }
 };
 
-var user =
-{
-    username:
-    {
-        type    : String,
+var user = {
+    username: {
+        type: String,
         required: true
     },
-    firstname:
-    {
-        type    : String,
+    firstname: {
+        type: String,
         required: true
     },
-    lastname:
-    {
-        type    : String,
+    lastname: {
+        type: String,
         required: true
     }
 };
 
-var RegistrationKeySchema  = new Schema(
-{
-    role:
-    {
-        type    : String,
-        enum    : ['instructor', 'admin'],
+var RegistrationKeySchema = new Schema({
+    role: {
+        type: String,
+        enum: ['instructor', 'admin'],
         required: true
     },
-    createdAt:
-    {
-        type    : Date,
-        default : Date.now
+    createdAt: {
+        type: Date,
+        default: Date.now
     },
-    admin_creator:
-    {
+    admin_creator: {
         type: admin
     },
-    user:
-    {
+    user: {
         type: user
     },
-    key:
-    {
-        type    : String,
+    key: {
+        type: String,
         required: true,
-        unique  : true
+        unique: true
     },
-    validated:
-    {
-        type    : Boolean,
-        default : false
+    validated: {
+        type: Boolean,
+        default: false
     }
 });
 

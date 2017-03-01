@@ -14,13 +14,12 @@
 //************************************************************
 "use strict";
 
-var express        = require('express');
-var api_v2_router  = express.Router();
+var express = require('express');
+var api_v2_router = express.Router();
 
-var api_v2_routes  = require('./routes');
+var api_v2_routes = require('./routes');
 
-module.exports = function(app)
-{
+module.exports = function(app) {
     app.use('/api_v2', api_v2_router);
     api_v2_routes(api_v2_router);
 };

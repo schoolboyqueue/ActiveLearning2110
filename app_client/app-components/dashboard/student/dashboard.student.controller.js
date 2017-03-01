@@ -20,5 +20,4 @@ app.controller('Student.Dashboard.Controller', function($scope, $localStorage, U
     $scope.joinCourse = function() {
         UserService.ShowJoinCourse();
     };
-
 });

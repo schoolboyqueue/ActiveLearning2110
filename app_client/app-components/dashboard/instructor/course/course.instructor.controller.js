@@ -45,7 +45,9 @@ app.controller('Instructor.Course.Controller', function($scope, $localStorage, $
 
     $scope.tableParams = new NgTableParams({
         count: 6,
-        sorting: { date: "asc" }
+        sorting: {
+            date: "asc"
+        }
     }, {
         counts: [],
         dataset: $scope.course.lectures,
@@ -125,5 +127,4 @@ app.controller('Instructor.Course.Controller', function($scope, $localStorage, $
     w.on('resize', function() {
         $scope.$apply();
     });
-
 });

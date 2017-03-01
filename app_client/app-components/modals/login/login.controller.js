@@ -55,7 +55,9 @@ app.controller('Login.Controller', function($scope, $element, $localStorage, Use
             }
             RESTService.Register(info, Login);
         } else {
-            Login({success: true});
+            Login({
+                success: true
+            });
         }
     };
 

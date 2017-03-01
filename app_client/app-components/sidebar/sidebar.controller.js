@@ -39,5 +39,4 @@ app.controller('Sidebar.Controller', function($scope, $state, $stateParams, $roo
             }
         }
     });
-
 });

@@ -14,16 +14,16 @@
 //************************************************************
 "use strict";
 
-var express           = require('express');
-var courseRouter      = express.Router();
+var express = require('express');
+var courseRouter = express.Router();
 
-var authorizeController  = require('./../controllers/authorizeController');
-var inputController      = require('./../controllers/inputController');
-var tokenController      = require('./../controllers/tokenController');
-var userController       = require('./../controllers/userController');
-var courseController     = require('./../controllers/courseController');
-var lectureController     = require('./../controllers/lectureController');
-var signupController     = require('./../controllers/signupController');
+var authorizeController = require('./../controllers/authorizeController');
+var inputController = require('./../controllers/inputController');
+var tokenController = require('./../controllers/tokenController');
+var userController = require('./../controllers/userController');
+var courseController = require('./../controllers/courseController');
+var lectureController = require('./../controllers/lectureController');
+var signupController = require('./../controllers/signupController');
 
 /**
 INSTRUCTOR CREATE COURSE
@@ -53,13 +53,13 @@ Request Body:     application/json     required
 **/
 courseRouter.route('/')
     .post(tokenController.validateToken,
-          tokenController.refreshToken,
-          authorizeController.instructor,
-          inputController.requireCourseTitle,
-          inputController.requireCourseSchedule,
-          inputController.requireSections,
-          courseController.createCourse,
-          courseController.getUserCourses);
+        tokenController.refreshToken,
+        authorizeController.instructor,
+        inputController.requireCourseTitle,
+        inputController.requireCourseSchedule,
+        inputController.requireSections,
+        courseController.createCourse,
+        courseController.getUserCourses);
 
 /**
 STUDENT JOIN COURSE
@@ -78,11 +78,11 @@ Request Body:     application/json    required
 **/
 courseRouter.route('/students')
     .post(tokenController.validateToken,
-          tokenController.refreshToken,
-          authorizeController.student,
-          userController.setUserName,
-          courseController.joinCourse,
-          courseController.getUserCourses);
+        tokenController.refreshToken,
+        authorizeController.student,
+        userController.setUserName,
+        courseController.joinCourse,
+        courseController.getUserCourses);
 
 /**
 INSTRUCTOR ADD STUDENTS
@@ -102,7 +102,7 @@ Request Body:     application/json    required
 }
 **/
 courseRouter.route('/:COURSEID/sections/:SECTIONID/students')
-   .post(tokenController.validateToken,
+    .post(tokenController.validateToken,
         tokenController.refreshToken,
         authorizeController.instructor,
         inputController.requireFirstname,
@@ -129,8 +129,8 @@ Request Body:     application/json    required
 **/
 courseRouter.route('/:COURSEID/students')
     .get(tokenController.validateToken,
-         tokenController.refreshToken,
-         courseController.getStudents);
+        tokenController.refreshToken,
+        courseController.getStudents);
 
 /**
 DELETE STUDENT FROM SECTION
@@ -146,9 +146,9 @@ Request Body:     none
 **/
 courseRouter.route('/:COURSEID/sections/:SECTIONID/students/:USERID')
     .delete(tokenController.validateToken,
-            tokenController.refreshToken,
-            authorizeController.adminOrInstructorOrSelf,
-            courseController.deleteStudentFromCourse);
+        tokenController.refreshToken,
+        authorizeController.adminOrInstructorOrSelf,
+        courseController.deleteStudentFromCourse);
 
 /**
 GET COURSE INFO
@@ -164,8 +164,8 @@ Request Body:     none
 **/
 courseRouter.route('/:COURSEID')
     .get(tokenController.validateToken,
-         tokenController.refreshToken,
-         courseController.getCourse);
+        tokenController.refreshToken,
+        courseController.getCourse);
 
 /**
 GET COURSE SECTION NAMES
@@ -180,7 +180,7 @@ Query String:     none
 Request Body:     none
 **/
 courseRouter.route('/:COURSEID/sections')
-   .get(tokenController.validateToken,
+    .get(tokenController.validateToken,
         tokenController.refreshToken,
         courseController.getSectionNames);
 
@@ -207,10 +207,10 @@ Request Body:     application/json    required
 }
 **/
 courseRouter.route('/:COURSEID/lectures')
-   .post(tokenController.validateToken,
-         tokenController.refreshToken,
-         authorizeController.instructor,
-         courseController.createLecture);
+    .post(tokenController.validateToken,
+        tokenController.refreshToken,
+        authorizeController.instructor,
+        courseController.createLecture);
 
 /**
 DELETE COURSE LECTURE
@@ -225,10 +225,10 @@ Query String:     none
 Request Body:     none
 **/
 courseRouter.route('/:COURSEID/lectures/:LECTUREID')
-  .delete(tokenController.validateToken,
-          tokenController.refreshToken,
-          authorizeController.instructor,
-          courseController.deleteLecture);
+    .delete(tokenController.validateToken,
+        tokenController.refreshToken,
+        authorizeController.instructor,
+        courseController.deleteLecture);
 
 /**
 GET COURSE LECTURES
@@ -243,9 +243,9 @@ Query String:     none
 Request Body:     none
 **/
 courseRouter.route('/:COURSEID/lectures')
-  .get(tokenController.validateToken,
-       tokenController.refreshToken,
-       authorizeController.instructor,
-       courseController.getLectures);
+    .get(tokenController.validateToken,
+        tokenController.refreshToken,
+        authorizeController.instructor,
+        courseController.getLectures);
 
 module.exports = courseRouter;

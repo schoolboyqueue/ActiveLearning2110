@@ -14,13 +14,13 @@
 //************************************************************
 "use strict";
 
-var express           = require('express');
-var authRouter        = express.Router();
+var express = require('express');
+var authRouter = express.Router();
 
-var authenticateController    = require('./../controllers/authenticateController');
-var inputController    = require('./../controllers/inputController');
-var courseController    = require('./../controllers/courseController');
-var tokenController    = require('./../controllers/tokenController');
+var authenticateController = require('./../controllers/authenticateController');
+var inputController = require('./../controllers/inputController');
+var courseController = require('./../controllers/courseController');
+var tokenController = require('./../controllers/tokenController');
 
 /**
 AUTHENTICATE USER
@@ -40,10 +40,10 @@ Request Body:     application/json     required
 **/
 authRouter.route('/')
     .post(inputController.requireUsername,
-          inputController.requirePassword,
-          authenticateController.authenticate,
-          courseController.updateStudentStatus,
-          tokenController.generateToken);
+        inputController.requirePassword,
+        authenticateController.authenticate,
+        courseController.updateStudentStatus,
+        tokenController.generateToken);
 
 /**
 LOG OUT USER
@@ -59,6 +59,6 @@ Request Body:    none
 **/
 authRouter.route('/')
     .delete(tokenController.validateToken,
-            tokenController.clearToken);
+        tokenController.clearToken);
 
 module.exports = authRouter;
