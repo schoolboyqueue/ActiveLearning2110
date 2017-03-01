@@ -226,20 +226,35 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
         );
     };
 
+    function getAddStudentPromise(info) {
+        var deferred = $q.defer();
+        baseREST.one("course", info.course_id).one("sections", info.section_id)
+        .customPOST(info.student, "students").then(
+            function(response) {
+                deferred.resolve(response);
+            },
+            function(response) {
+                deferred.resolve(response.data);
+            }
+        );
+        return deferred.promise;
+    }
+
     service.AddStudents = function(info, callback) {
-        calls = [];
-        retInfo = {
+        var calls = [];
+        var retInfo = {
             course: {
                 success: false,
                 message: null
             },
-            students: []
+            students: {}
         };
         for (var key in info.data) {
-            calls.push(
-                baseREST.one("course", info.course_id)
-                .one("sections", info.section_id)
-                .customPOST(info.data[key], "students"));
+            calls.push(getAddStudentPromise({
+                course_id: info.course_id,
+                section_id: info.section_id,
+                student: info.data[key]
+            }));
         }
         $q.all(calls).then(
             function(values) {
@@ -254,11 +269,8 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
                     retInfo.course.message = reply.message;
                     callback(retInfo);
                 });
-            },
-            function(values) {
-                console.log('ERRRRRRR');
-                console.log(values);
-            });
+            }
+        );
     };
 
     service.GetCourseInfo = function(id, callback) {

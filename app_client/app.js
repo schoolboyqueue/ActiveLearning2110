@@ -31,10 +31,18 @@ var app = angular
         'ngclipboard',
         'ngNotify',
         'ngSanitize',
-        'ui.sortable'
+        'ui.sortable',
+        '720kb.tooltips'
     ]);
 
-app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLoadProvider) {
+app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLoadProvider, tooltipsConfProvider) {
+
+    tooltipsConfProvider.configure({
+        'smart':true,
+        'size':'small',
+        'showTrigger': 'mouseenter',
+        'hideTrigger': 'mouseleave'
+    });
 
     $ocLazyLoadProvider.config({
         'debug': true,

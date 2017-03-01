@@ -51,6 +51,7 @@ app.controller('Manage.Students.Controller', function($scope, $localStorage, $ti
     $scope.submit_newStudents = function() {
         $scope.loading = true;
         students = [];
+        clearChanges();
         for (var key in $scope.upload_tableParams.settings().dataset) {
             var info = {
                 username: $scope.upload_tableParams.settings().dataset[key].username,
@@ -78,18 +79,28 @@ app.controller('Manage.Students.Controller', function($scope, $localStorage, $ti
     $scope.initUser = function(user) {
         var info = {
             commited: false,
-            error: false
+            error: false,
+            message: 'Pending'
         };
         $scope.changes[user.username] = info;
     };
 
+    function clearChanges() {
+        for (var key in $scope.changes) {
+            $scope.changes[key].error = false;
+            $scope.changes[key].commited = false;
+            $scope.changes[key].message = 'Pending';
+        }
+    }
+
     function newStudentFinish(info) {
         for (var key in info.students) {
-            if (!info.students[key].success) {
-                $scope.changes[key].error = true;
-            } else {
+            if (info.students[key].success) {
                 $scope.changes[key].commited = true;
+            } else {
+                $scope.changes[key].error = true;
             }
+            $scope.changes[key].message = info.students[key].message;
         }
         $scope.loading = false;
         updateStudentTable();
@@ -102,7 +113,7 @@ app.controller('Manage.Students.Controller', function($scope, $localStorage, $ti
                 }
             }
             updateUploadTable(new_data);
-        }, 2000);
+        }, 5000);
     }
 
     function deleteStudentFinish(info) {
