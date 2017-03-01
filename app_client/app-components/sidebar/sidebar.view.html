@@ -51,7 +51,7 @@
         <li ng-show="$storage.role === 'student' && state === '/student/course'">
             <a href=""><i class="fa fa-university pr-3" aria-hidden="true"></i>Instructors</a>
             <ul class="classList">
-                <a class="text-capitalize text-truncate" href="mailto:{{instructor.username}}?subject={{course.title}}">
+                <a class="text-capitalize text-truncate" href="mailto:{{instructor.username}}?subject={{course.title}} - {{course.section}}">
                     <i class="fa fa-envelope-o pr-2" aria-hidden="true"></i>
                     {{$storage.courses[$stateParams.selectedCourse].instructor.firstname}}
                     {{$storage.courses[$stateParams.selectedCourse].instructor.lastname}}
