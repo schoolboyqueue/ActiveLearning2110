@@ -48,9 +48,18 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
                     jwt_token: response.jwt_token,
                     LoggedIn: true
                 };
-                SocketService.connect();
-                UserStorage.UpdateUserInfo(data);
-                callback(genRetInfo(response));
+                var retInfo = genRetInfo(response);
+                SocketService.connect(response.jwt_token, function(response) {
+                    if (!response) {
+                        callback({
+                            message: "Not Authenticated",
+                            success: false
+                        });
+                    } else {
+                        UserStorage.UpdateUserInfo(data);
+                        callback(retInfo);
+                    }
+                });
             },
             function(response) {
                 callback(genRetInfo(response));

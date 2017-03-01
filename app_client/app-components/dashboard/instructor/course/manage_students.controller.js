@@ -153,11 +153,11 @@ app.controller('Manage.Students.Controller', function($scope, $localStorage, $ti
         var new_data = [];
         for (var key in data) {
             var entry = {};
-            var name = data[key]["Name"].split(',');
+            var name = data[key].Name.split(',');
             entry.lastname = name[0].trim();
             entry.firstname = name[1].trim();
             entry.username = data[key]["Email Address"];
-            entry.role = data[key]["Role"];
+            entry.role = data[key].Role;
             entry.userid = data[key]["User ID"];
             new_data.push(entry);
         }

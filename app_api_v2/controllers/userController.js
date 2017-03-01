@@ -1,4 +1,5 @@
 /* jshint node: true */
+/* jshint esversion: 6 */
 
 //************************************************************
 //  userController.js                                       //

@@ -245,7 +245,9 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
 
 app.run(function($rootScope, ngNotify) {
     $rootScope.$on('$stateChangeSuccess',function(){
-        $("html, body").animate({ scrollTop: 0 }, 200);
+        $("html, body").animate({
+            scrollTop: 0
+        }, 200);
     });
 
     ngNotify.config({
@@ -278,7 +280,6 @@ app.controller('Main.Controller', function($scope, $state, $localStorage, $injec
             UserService.ShowLogin();
         } else {
             $state.go('main.' + $localStorage.role);
-            $localStorage.selectedCourse = -1;
         }
     });
 });

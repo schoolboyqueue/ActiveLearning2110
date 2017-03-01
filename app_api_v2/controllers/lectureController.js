@@ -38,7 +38,7 @@ var initialSetup = function(req, res, next) {
             lastname: user.lastname
         };
 
-        newLecture = new Lecture({
+        var newLecture = new Lecture({
             title: req.body.title,
             instructor: course_instructor,
             schedule: req.body.course_schedule,
