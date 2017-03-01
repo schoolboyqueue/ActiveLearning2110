@@ -14,12 +14,14 @@
 //************************************************************
 "use strict";
 
-var express           = require('express');
-var signupRouter      = express.Router();
+var express = require('express');
+var signupRouter = express.Router();
 
-var signupController    = require('./../controllers/signupController');
-var inputController     = require('./../controllers/inputController');
-var tokenController     = require('./../controllers/tokenController');
+var signupController = require('./../controllers/signupController');
+var inputController = require('./../controllers/inputController');
+var tokenController = require('./../controllers/tokenController');
+var userController = require('./../controllers/userController');
+var courseController = require('./../controllers/courseController');
 var authorizeController = require('./../controllers/authorizeController');
 
 /**
@@ -45,18 +47,18 @@ Request Body application/json
 **/
 signupRouter.route('/')
     .post(inputController.requireFirstname,
-          inputController.requireLastname,
-          inputController.requireUsername,
-          inputController.requirePassword,
-          signupController.registerAdmin,
-          signupController.registerInstructor,
-          signupController.registerStudent,
-          signupController.savedUserToDB);
+        inputController.requireLastname,
+        inputController.requireUsername,
+        inputController.requirePassword,
+        signupController.registerAdmin,
+        signupController.registerInstructor,
+        signupController.registerStudent,
+        signupController.savedUserToDB);
 
 /**
 CREATE ADMIN REGISTRATION KEY
 
-GET	/api_v2/signup/admin_key
+POST	/api_v2/signup/admin_key
 
 Authentication:   user token        required
 Authorization:    admin             required
@@ -66,15 +68,16 @@ Query String:     none
 Request Body:     none
 **/
 signupRouter.route('/admin_key')
-    .get(tokenController.validateToken,
-         tokenController.refreshToken,
-         authorizeController.admin,
-         signupController.createAdminKey);
+    .post(tokenController.validateToken,
+        tokenController.refreshToken,
+        authorizeController.admin,
+        signupController.createAdminKey,
+        signupController.getRegistrationKeys);
 
 /**
 CREATE INSTRUCTOR REGISTRATION KEY
 
-GET	/api_v2/signup/instructor_key
+POST	/api_v2/signup/instructor_key
 
 Authentication:   user token        required
 Authorization:    admin             required
@@ -84,45 +87,27 @@ Query String:     none
 Request Body:     none
 **/
 signupRouter.route('/instructor_key')
-    .get(tokenController.validateToken,
-         tokenController.refreshToken,
-         authorizeController.admin,
-         signupController.createInstructorKey);
+    .post(tokenController.validateToken,
+        tokenController.refreshToken,
+        authorizeController.admin,
+        signupController.createInstructorKey);
 
 /**
-CREATE REGISTRATION KEY
+GET REGISTRATION KEYS
 
-POST	/api_v2/signup/registration_key?role={user_role}/
+GET	/api_v2/signup/registration_key
 
 Authentication:   user token        required
 Authorization:    admin             required
 
 Path Parameters:  none
-Query String:     role  Pass either 'admin' or 'instructor' required
+Query String:     none
 Request Body:     none
 **/
 signupRouter.route('/registration_key')
-    .post(tokenController.validateToken,
-          tokenController.refreshToken,
-          authorizeController.admin,
-          signupController.createRegistrationKey);
-
- /**
- GET REGISTRATION KEYS **TODO**
-
- GET	/api_v2/signup/registration_key
-
- Authentication:   user token        required
- Authorization:    admin             required
-
- Path Parameters:  none
- Query String:     none
- Request Body:     none
- **/
- signupRouter.route('/registration_key')
-     .post(tokenController.validateToken,
-           tokenController.refreshToken,
-           authorizeController.admin,
-           signupController.getRegistrationKeys);
+    .get(tokenController.validateToken,
+        tokenController.refreshToken,
+        authorizeController.admin,
+        signupController.getRegistrationKeys);
 
 module.exports = signupRouter;

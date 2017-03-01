@@ -1,7 +1,7 @@
 /* jshint node: true */
 
 //************************************************************
-//  sidebar.controller.js                                   //
+//  navbar.controller.js                                    //
 //  Active Learning 2110                                    //
 //                                                          //
 //  Created by Jeremy Carter on 01/13/17.                   //
@@ -15,14 +15,36 @@
 
 var app = angular.module('app');
 
-app.controller('Navbar.Controller', function($scope, $element, AuthenticationService, UserService) {
+app.controller('Navbar.Controller', function($scope, $localStorage, $state, $stateParams, $rootScope, RESTService, UserService) {
 
-        $scope.logout = function() {
-            AuthenticationService.Logout();
-        };
+    $scope.title = 'Active Learning 2110';
+    $rootScope.$stateParams = $stateParams;
 
-        $scope.profile = function() {
-            UserService.ShowProfile();
-        };
-    }
-);
+    $scope.logout = function() {
+        RESTService.Logout();
+    };
+
+    $scope.profile = function() {
+        UserService.ShowProfile();
+    };
+
+    $scope.$watch(function() {
+        return $state.current.url;
+    }, function(newVal, oldVal) {
+        if (newVal !== undefined) {
+            $scope.course = $localStorage.courses[$stateParams.selectedCourse];
+            if ($stateParams.selectedCourse !== undefined) {
+                if ($localStorage.role == 'student') {
+                    $scope.title = $scope.course.title + ' - ' + $scope.course.section;
+                } else {
+                    $scope.title = $scope.course.title;
+                }
+                if ($stateParams.selectedSection !== undefined) {
+                    $scope.title = $scope.title + ' - ' + $stateParams.selectedSection.section.name;
+                }
+            } else {
+                $scope.title = 'Active Learning 2110';
+            }
+        }
+    });
+});

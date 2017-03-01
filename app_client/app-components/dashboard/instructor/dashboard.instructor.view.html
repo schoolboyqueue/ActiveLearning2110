@@ -1,0 +1,85 @@
+<div class="container-fluid p-2" ng-controller="Instructor.Dashboard.Controller">
+    <div class="d-flex justify-content-end p-2">
+        <div class="mr-auto align-self-center">
+            <button
+                type="button"
+                class="btn btn-lg btn-outline-success"
+                tooltips
+                tooltip-template="Create a course"
+                ng-click="createCourse()">
+                <i class="fa fa-plus align-middle" aria-hidden="true"></i>
+            </button>
+        </div>
+        <div class="align-self-center">
+            <div class="input-group">
+                <div class="input-group-addon"><i class="fa fa-search fa-fw" aria-hidden="true"></i></div>
+                <input class="form-control" type="text" ng-model="searchCourses.title" placeholder="Search Courses">
+            </div>
+        </div>
+    </div>
+    <hr class="m-0 pb-2" style="border-top: dashed 1px; color: #D5D6D8" />
+    <!-- No courses display -->
+    <div class="text-center no-courses" ng-show="$storage.courses.length === 0">
+        <i class="fa fa-child fa-4x pb-4" aria-hidden="true"></i>
+        <p>Create some courses!</p>
+    </div>
+    <!-- Courses cards  -->
+    <div ng-show="$storage.courses.length !== 0">
+        <div class="row">
+            <div
+                class="col-12 col-xl-auto pb-2"
+                ng-repeat="course in $storage.courses | filter:searchCourses:strict">
+                <div class="card animated fadeIn card-center">
+                    <div class="card-header text-uppercase text-center p-2">
+                        <b>{{course.title}}</b>
+                    </div>
+                    <div class="card-block d-flex justify-content-between align-items-center">
+                        <div class="progress-wrapper pr-2">
+                            <round-progress
+                                max="100"
+                                current="default"
+                                color="{{default | gradecolor}}"
+                                bgcolor="#eaeaea"
+                                radius="45"
+                                stroke="10"
+                                semi="false"
+                                rounded="true"
+                                clockwise="false"
+                                responsive="false"
+                                duration="800"
+                                animation="easeInOutQuart"
+                                animation-delay="0">
+                            </round-progress>
+                            <div class="text text-muted"><b>{{default}}%</b></div>
+                        </div>
+                        <div>
+                            <h3>
+                                {{course.students.length}} students
+                            </h3>
+                        </div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <div class="card-footer text-muted d-flex justify-content-between align-items-center">
+                        <div>
+                            <span>
+                                <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+                            </span>
+                            {{course.schedule.days | days}}
+                        </div>
+                        <div>
+                            <span>
+                                <i class="fa fa-clock-o" aria-hidden="true"></i>
+                            </span>
+                            {{course.schedule.time}}
+                        </div>
+                        <div>
+                            <a ui-sref="main.instructor_course({selectedCourse: $index})">
+                                <button type="button" class="btn btn-success btn-sm">View Course</button>
+                            </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

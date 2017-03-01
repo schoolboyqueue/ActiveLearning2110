@@ -1,43 +1,68 @@
-<div class="sidebar bg-primary" id="sidebar-wrapper">
+<div class="sidebar bg-primary" id="sidebar-wrapper" ng-controller="Sidebar.Controller">
     <ul class="sidebar-nav">
         <li class="sidebar-brand">
             <div class="container-fluid p-0 m-0">
-            <a href="#">
-                <i class="fa fa-linode fa-2x align-middle pr-2" aria-hidden="true" style="color: #5DC461"></i>
-                <strong>
-                    Active Learning
-                </strong>
-            </a>
+                <a href="#">
+                    <i class="fa fa-linode fa-2x align-middle pr-2" aria-hidden="true" style="color: #5DC461"></i>
+                    <strong>
+                        Active Learning
+                    </strong>
+                </a>
             </div>
         </li>
         <li>
-            <a ui-sref=".dashboard"><i class="fa fa-tachometer pr-3" aria-hidden="true"></i>Dashboard</a>
+            <a ui-sref=".admin" ng-click="$storage.selectedCourse = 0" ng-show="$storage.role === 'admin'"><i class="fa fa-tachometer pr-3" aria-hidden="true"></i>Dashboard</a>
+            <a ui-sref=".instructor" ng-click="$storage.selectedCourse = 0" ng-show="$storage.role === 'instructor'"><i class="fa fa-tachometer pr-3" aria-hidden="true"></i>Dashboard</a>
+            <a ui-sref=".student" ng-click="$storage.selectedCourse = 0" ng-show="$storage.role === 'student'"><i class="fa fa-tachometer pr-3" aria-hidden="true"></i>Dashboard</a>
         </li>
-        <li>
+        <li ng-show="$storage.role === 'admin'">
+            <a ui-sref=".admin_keys"><i class="fa fa-key pr-3" aria-hidden="true"></i>Keys</a>
+        </li>
+        <li ng-show="$storage.role === 'instructor' && state === '/instructor/course'">
+            <a href="" ng-click="createLecture()"><i class="fa fa-plus-square pr-3" aria-hidden="true"></i>Create Lecture</a>
+        </li>
+        <li ng-show="$storage.role === 'instructor' && state === '/instructor'">
+            <a href="" ng-click="createCourse()"><i class="fa fa-plus-square pr-3" aria-hidden="true"></i>Create Course</a>
+        </li>
+        <li ng-show="$storage.role === 'instructor'">
+            <a ui-sref=".instructor_question" ng-click="$storage.hideSidebar = true"><i class="fa fa-magic pr-3" aria-hidden="true"></i></i>Create Question</a>
+        </li>
+        <li ng-hide="$storage.role === 'admin'">
             <a
-                href="#classList"
+                role="button" href="javascript:;"
                 data-toggle="collapse"
-                aria-expanded="false"
+                data-target="#classList"
+                aria-expanded="{{$storage.classExpand}}"
                 aria-controls="classList"
-                ng-click="classExpand = !classExpand">
+                ng-click="$storage.classExpand = !$storage.classExpand">
                     <i class="fa fa-book pr-3 mr-auto" aria-hidden="true"></i>
                     Courses
-                    <i class="fa fa-angle-down" aria-hidden="true" ng-hide="classExpand"></i>
-                    <i class="fa fa-angle-up" aria-hidden="true" ng-hide="!classExpand"></i>
+                    <i class="fa fa-angle-down" aria-hidden="true"></i>
             </a>
-            <div class="collapse" id="classList">
+            <div class="collapse classList" id="classList">
                 <ul>
                     <li ng-repeat="course in $storage.courses">
-                        <a ui-sref=".course" ng-click="courseClick($index)">{{course.title}}</a>
+                        <a ui-sref=".student_course({selectedCourse: $index})" ng-show="$storage.role === 'student'">{{course.title}}</a>
+                        <a ui-sref=".instructor_course({selectedCourse: $index})" ng-show="$storage.role === 'instructor'">{{course.title}}</a>
                     </li>
                 </ul>
             </div>
         </li>
-        <li>
+        <li ng-show="$storage.role === 'student' && state === '/student/course'">
+            <a href=""><i class="fa fa-university pr-3" aria-hidden="true"></i>Instructors</a>
+            <ul class="classList">
+                <a class="text-capitalize text-truncate" href="mailto:{{instructor.username}}?subject={{course.title}} - {{course.section}}">
+                    <i class="fa fa-envelope-o pr-2" aria-hidden="true"></i>
+                    {{$storage.courses[$stateParams.selectedCourse].instructor.firstname}}
+                    {{$storage.courses[$stateParams.selectedCourse].instructor.lastname}}
+                </a>
+            </ul>
+        </li>
+        <!-- <li>
             <a href=""><i class="fa fa-graduation-cap pr-3" aria-hidden="true"></i>Students</a>
         </li>
         <li>
             <a href=""><i class="fa fa-area-chart pr-3" aria-hidden="true"></i>Analytics</a>
-        </li>
+        </li> -->
     </ul>
 </div>

@@ -14,19 +14,15 @@
 //****************************************************************
 
 "use strict";
-var jwt = require('jsonwebtoken');
-var config = require('../config');
 
-module.exports = function(app)
-{
+module.exports = function(app) {
     /**
     Respond to GET request
 
     - parameter PATH:       SPA route
     - parameter HANDLER:    callback
     */
-    app.get('/', function(req, res)
-    {
-        res.render('index.html');
+    app.get('/', function(req, res) {
+        res.sendfile('index.html');
     });
 };
