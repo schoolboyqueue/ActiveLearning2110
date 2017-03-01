@@ -29,7 +29,9 @@ app.controller('Admin.Dashboard.Controller', function($scope, $localStorage, $st
 
     $scope.tableParams = new NgTableParams({
         count: 10,
-        sorting: { username: "asc" }
+        sorting: {
+            username: "asc"
+        }
     }, {
         counts: cnts,
         dataset: $localStorage.users
@@ -64,7 +66,7 @@ app.controller('Admin.Dashboard.Controller', function($scope, $localStorage, $st
         $scope.loading = true;
         var changed = false;
         for (var key in $scope.changes) {
-            var info =  {
+            var info = {
                 id: $scope.changes[key].id,
                 key: key,
                 new_role: $scope.changes[key].role

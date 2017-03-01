@@ -32,10 +32,15 @@ app.controller('Navbar.Controller', function($scope, $localStorage, $state, $sta
         return $state.current.url;
     }, function(newVal, oldVal) {
         if (newVal !== undefined) {
+            $scope.course = $localStorage.courses[$stateParams.selectedCourse];
             if ($stateParams.selectedCourse !== undefined) {
-                $scope.title = $localStorage.courses[$stateParams.selectedCourse].title;
+                if ($localStorage.role == 'student') {
+                    $scope.title = $scope.course.title + ' - ' + $scope.course.section;
+                } else {
+                    $scope.title = $scope.course.title;
+                }
                 if ($stateParams.selectedSection !== undefined) {
-                    $scope.title = $scope.title + " - " + $stateParams.selectedSection.section.name;
+                    $scope.title = $scope.title + ' - ' + $stateParams.selectedSection.section.name;
                 }
             } else {
                 $scope.title = 'Active Learning 2110';

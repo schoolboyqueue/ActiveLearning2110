@@ -15,8 +15,9 @@
 
 var app = angular.module('app');
 
-app.controller('Admin.Keys.Controller', function($scope, $localStorage, $state, RESTService, NgTableParams) {
+app.controller('Admin.Keys.Controller', function($scope, $localStorage, $state, RESTService, NgTableParams, ngNotify) {
     $scope.keyLoading = false;
+    $scope.generatedKey = null;
 
     var cnts = [];
 
@@ -34,6 +35,10 @@ app.controller('Admin.Keys.Controller', function($scope, $localStorage, $state, 
     $scope.getInstructorKey = function() {
         $scope.keyLoading = true;
         RESTService.GenerateInstructorKey(postGetKey);
+    };
+
+    $scope.copySuccess = function() {
+        ngNotify.set('Instructor key copied to clipboard', 'success');
     };
 
     function postGetKey(info) {
@@ -54,5 +59,4 @@ app.controller('Admin.Keys.Controller', function($scope, $localStorage, $state, 
             return false;
         }
     }
-
 });

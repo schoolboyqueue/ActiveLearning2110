@@ -4,11 +4,9 @@
             <button
                 type="button"
                 class="btn btn-lg btn-outline-success"
-                data-toggle="tooltip"
-                data-placement="top"
-                data-delay='{"show":"500", "hide":"50"}'
-                ng-click="createCourse()"
-                title="Create a course">
+                tooltips
+                tooltip-template="Create a course"
+                ng-click="createCourse()">
                 <i class="fa fa-plus align-middle" aria-hidden="true"></i>
             </button>
         </div>
@@ -85,9 +83,3 @@
         </div>
     </div>
 </div>
-
-<script>
-$(function () {
-    $('[data-toggle="tooltip"]').tooltip({ trigger: "hover" });
-});
-</script>

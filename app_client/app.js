@@ -29,10 +29,20 @@ var app = angular
         'papa-promise',
         'angular-svg-round-progressbar',
         'ngclipboard',
-        'ui-notification'
+        'ngNotify',
+        'ngSanitize',
+        'ui.sortable',
+        '720kb.tooltips'
     ]);
 
-app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLoadProvider) {
+app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLoadProvider, tooltipsConfProvider) {
+
+    tooltipsConfProvider.configure({
+        'smart':true,
+        'size':'small',
+        'showTrigger': 'mouseenter',
+        'hideTrigger': 'mouseleave'
+    });
 
     $ocLazyLoadProvider.config({
         'debug': true,
@@ -62,11 +72,35 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
             name: 'instructor.manage_students',
             files: ['app-components/dashboard/instructor/course/manage_students.controller.js']
         }, {
+            name: 'instructor.question',
+            files: ['app-components/dashboard/instructor/question/question.controller.js']
+        }, {
+            name: 'instructor.edit.lecture',
+            files: ['app-components/dashboard/instructor/lecture/lecture.edit.controller.js']
+        }, {
             name: 'student.course',
             files: ['app-components/dashboard/student/course/course.student.controller.js']
         }, {
             name: 'services',
-            files: ['app-services/storage.service.js', 'app-services/user.service.js', 'app-services/rest.service.js']
+            files: ['app-services/storage.service.js',
+                    'app-services/user.service.js',
+                    'app-services/rest.service.js',
+                    'app-services/socket.service.js']
+        }, {
+            name: 'login',
+            files: ['app-components/modals/login/login.controller.js']
+        }, {
+            name: 'profile',
+            files: ['app-components/modals/profile/profile.controller.js']
+        }, {
+            name: 'create_course',
+            files: ['app-components/modals/create_course/create_course.controller.js']
+        }, {
+            name: 'join_course',
+            files: ['app-components/modals/join_course/join_course.controller.js']
+        }, {
+            name: 'create_lecture',
+            files: ['app-components/modals/create_lecture/create_lecture.controller.js']
         }]
     });
 
@@ -150,6 +184,26 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
             }
         })
 
+        .state('main.instructor_question', {
+            url: '/instructor/question',
+            templateUrl: 'app-components/dashboard/instructor/question/question.view.html',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load('instructor.question');
+                }]
+            }
+        })
+
+        .state('main.instructor_edit_lecture', {
+            url: '/instructor/edit_lecture',
+            templateUrl: 'app-components/dashboard/instructor/lecture/lecture.edit.view.html',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load('instructor.edit.lecture');
+                }]
+            }
+        })
+
         .state('main.instructor_manage_students', {
             url: '/instructor/manage_students',
             templateUrl: 'app-components/dashboard/instructor/course/manage_students.view.html',
@@ -189,13 +243,25 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
         });
 });
 
-app.run(function($rootScope) {
+app.run(function($rootScope, ngNotify) {
     $rootScope.$on('$stateChangeSuccess',function(){
-        $("html, body").animate({ scrollTop: 0 }, 200);
+        $("html, body").animate({
+            scrollTop: 0
+        }, 200);
+    });
+
+    ngNotify.config({
+        theme: 'pastel',
+        position: 'bottom',
+        duration: 3000,
+        type: 'info',
+        sticky: false,
+        button: true,
+        html: false
     });
 });
 
-app.controller('Main.Controller', function($scope, $state, $localStorage, $injector, $ocLazyLoad) {
+app.controller('Main.Controller', function($scope, $state, $localStorage, $injector, $ocLazyLoad, $timeout) {
 
     $scope.$storage = $localStorage;
 
@@ -208,12 +274,12 @@ app.controller('Main.Controller', function($scope, $state, $localStorage, $injec
         var RESTService = $injector.get('RESTService');
         var UserService = $injector.get('UserService');
 
+
         if (!UserStorage.LoggedIn()) {
             RESTService.Logout();
             UserService.ShowLogin();
         } else {
             $state.go('main.' + $localStorage.role);
-            $localStorage.selectedCourse = -1;
         }
     });
 });

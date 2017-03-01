@@ -15,61 +15,71 @@
 //************************************************************
 var app = angular.module('app');
 
-app.factory('UserService', function($state, $localStorage, ModalService) {
+app.factory('UserService', function($state, $localStorage, $ocLazyLoad, ModalService) {
 
     var service = {};
 
     service.ShowLogin = function() {
-        ModalService.showModal({
-            templateUrl: '/app-components/modals/login/login.view.html',
-            controller: 'Login.Controller'
-        }).then(function(modal) {
-            modal.element.modal({
-                backdrop: 'static',
-                keyboard: false
-            });
-            modal.close.then(function(result) {
-                if (result) {
-                    $('.modal-backdrop').remove();
-                    $state.go('main.' + $localStorage.role);
-                }
+        $ocLazyLoad.load('login').then(function() {
+            ModalService.showModal({
+                templateUrl: '/app-components/modals/login/login.view.html',
+                controller: 'Login.Controller'
+            }).then(function(modal) {
+                modal.element.modal({
+                    backdrop: 'static',
+                    keyboard: false
+                });
+                modal.close.then(function(result) {
+                    if (result) {
+                        $('.modal-backdrop').remove();
+                        $state.go('main.' + $localStorage.role);
+                    }
+                });
             });
         });
     };
 
     service.ShowProfile = function() {
-        ModalService.showModal({
-            templateUrl: '/app-components/modals/profile/profile.view.html',
-            controller: 'Profile.Controller'
-        }).then(function(modal) {
-            modal.element.modal();
+        $ocLazyLoad.load('profile').then(function() {
+            ModalService.showModal({
+                templateUrl: '/app-components/modals/profile/profile.view.html',
+                controller: 'Profile.Controller'
+            }).then(function(modal) {
+                modal.element.modal();
+            });
         });
     };
 
     service.ShowJoinCourse = function() {
-        ModalService.showModal({
-            templateUrl: '/app-components/modals/join_course/join_course.view.html',
-            controller: 'Join.Course.Controller'
-        }).then(function(modal) {
-            modal.element.modal();
+        $ocLazyLoad.load('join_course').then(function() {
+            ModalService.showModal({
+                templateUrl: '/app-components/modals/join_course/join_course.view.html',
+                controller: 'Join.Course.Controller'
+            }).then(function(modal) {
+                modal.element.modal();
+            });
         });
     };
 
     service.ShowCreateCourse = function() {
-        ModalService.showModal({
-            templateUrl: '/app-components/modals/create_course/create_course.view.html',
-            controller: 'Create.Course.Controller'
-        }).then(function(modal) {
-            modal.element.modal();
+        $ocLazyLoad.load('create_course').then(function() {
+            ModalService.showModal({
+                templateUrl: '/app-components/modals/create_course/create_course.view.html',
+                controller: 'Create.Course.Controller'
+            }).then(function(modal) {
+                modal.element.modal();
+            });
         });
     };
 
     service.ShowCreateLecture = function() {
-        ModalService.showModal({
-            templateUrl: '/app-components/modals/create_lecture/create_lecture.view.html',
-            controller: 'Create.Lecture.Controller'
-        }).then(function(modal) {
-            modal.element.modal();
+        $ocLazyLoad.load('create_lecture').then(function() {
+            ModalService.showModal({
+                templateUrl: '/app-components/modals/create_lecture/create_lecture.view.html',
+                controller: 'Create.Lecture.Controller'
+            }).then(function(modal) {
+                modal.element.modal();
+            });
         });
     };
 
@@ -96,14 +106,14 @@ app.directive("picread", [function() {
     };
 }]);
 
-app.directive("fileread", [function () {
+app.directive("fileread", [function() {
     return {
         scope: {
             fileread: "="
         },
-        link: function (scope, element, attributes) {
-            element.on("change", function (changeEvent) {
-                scope.$apply(function () {
+        link: function(scope, element, attributes) {
+            element.on("change", function(changeEvent) {
+                scope.$apply(function() {
                     scope.fileread = changeEvent.target.files[0];
                     element.val(null);
                 });
@@ -112,8 +122,33 @@ app.directive("fileread", [function () {
     };
 }]);
 
-app.filter('gradecolor', function () {
-    return function (str) {
+app.directive('ngEditor', function() {
+
+    function link(scope, element, attrs) {
+        scope.editor = new ContentTools.EditorApp.get();
+        scope.editor.init('*[data-editable], *[data-fixture]', 'data-editable', null, false);
+
+        scope.editor.addEventListener('saved', function(ev) {
+            var payload = {};
+            var regions = scope.editor.regions();
+            for (var postId in regions) {
+                payload[postId] = regions[postId].html();
+            }
+            scope.value = payload;
+        });
+    }
+    return {
+        restrict: 'A',
+        scope: {
+            editor: '=editor',
+            value: '=value'
+        },
+        link: link
+    };
+});
+
+app.filter('gradecolor', function() {
+    return function(str) {
         if (str < 50) {
             return "#ff6384";
         } else if (str < 70) {
@@ -124,14 +159,14 @@ app.filter('gradecolor', function () {
     };
 });
 
-app.filter('days', function () {
-    return function (str) {
-        return str.includes("mon") ? "MWF": "TR";
+app.filter('days', function() {
+    return function(str) {
+        return str.includes("mon") ? "MWF" : "TR";
     };
 });
 
 app.filter('offset', function() {
     return function(input, start) {
-    	return input.slice(start);
- 	};
+        return input.slice(start);
+    };
 });

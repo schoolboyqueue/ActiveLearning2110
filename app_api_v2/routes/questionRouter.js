@@ -14,16 +14,16 @@
 //************************************************************
 "use strict";
 
-var express           = require('express');
-var questionRouter        = express.Router();
+var express = require('express');
+var questionRouter = express.Router();
 
-var questionController    = require('./../controllers/questionController');
-var authorizeController  = require('./../controllers/authorizeController');
-var inputController    = require('./../controllers/inputController');
-var tokenController    = require('./../controllers/tokenController');
-var userController       = require('./../controllers/userController');
-var courseController     = require('./../controllers/courseController');
-var signupController     = require('./../controllers/signupController');
+var questionController = require('./../controllers/questionController');
+var authorizeController = require('./../controllers/authorizeController');
+var inputController = require('./../controllers/inputController');
+var tokenController = require('./../controllers/tokenController');
+var userController = require('./../controllers/userController');
+var courseController = require('./../controllers/courseController');
+var signupController = require('./../controllers/signupController');
 
 /**
 GET ALL QUESTIONS
@@ -39,9 +39,9 @@ Request Body:     none
 **/
 questionRouter.route('/')
     .get(tokenController.validateToken,
-    	  tokenController.refreshToken,
-    	  authorizeController.adminOrInstructorOrSelf,
-    	  questionController.getAll);
+        tokenController.refreshToken,
+        authorizeController.adminOrInstructorOrSelf,
+        questionController.getAll);
 
 /**
 Add QUESTION
@@ -56,20 +56,20 @@ Query String:     none
 Request Body: application/json
 {
 	"tags"				: [String] Required
-	"problem_statement"	: String Required 
+	"problem_statement"	: String Required
 	"answer_choices"	: [String] Required
 	"answer"			: Number
 }
 **/
 questionRouter.route('/')
-	.post(tokenController.validateToken,
-		  tokenController.refreshToken,
-		  authorizeController.adminOrInstructorOrSelf,
-		  inputController.requireTags,
-		  inputController.requireProblemStatement,
-		  inputController.requireAnswerChoices,
-		  inputController.requireAnswer,
-		  questionController.savedQuestionToDB);
+    .post(tokenController.validateToken,
+        tokenController.refreshToken,
+        authorizeController.adminOrInstructorOrSelf,
+        inputController.requireTags,
+        inputController.requireProblemStatement,
+        inputController.requireAnswerChoices,
+        inputController.requireAnswer,
+        questionController.savedQuestionToDB);
 
 /**
 DELETE QUESTION
@@ -84,10 +84,10 @@ Query String:     none
 Request Body: 	  none
 **/
 questionRouter.route('/:QUESTIONID')
-	.delete(tokenController.validateToken,
-		    tokenController.refreshToken,
-		    authorizeController.adminOrInstructorOrSelf,
-		    questionController.deleteQuestion);
+    .delete(tokenController.validateToken,
+        tokenController.refreshToken,
+        authorizeController.adminOrInstructorOrSelf,
+        questionController.deleteQuestion);
 
 /**
 ADD TAG
@@ -105,10 +105,10 @@ Request Body: 	  application/json	required
 }
 **/
 questionRouter.route('/:QUESTIONID/tag')
-	.put(tokenController.validateToken,
-		 tokenController.refreshToken,
-		 authorizeController.adminOrInstructorOrSelf,
-		 questionController.addTag);
+    .put(tokenController.validateToken,
+        tokenController.refreshToken,
+        authorizeController.adminOrInstructorOrSelf,
+        questionController.addTag);
 
 
 /**
@@ -127,10 +127,10 @@ Request Body: 	  application/json 		required
 }
 **/
 questionRouter.route('/:QUESTIONID/tag')
-	.delete(tokenController.validateToken,
-		    tokenController.refreshToken,
-		    authorizeController.adminOrInstructorOrSelf,
-		    questionController.deleteTag);
+    .delete(tokenController.validateToken,
+        tokenController.refreshToken,
+        authorizeController.adminOrInstructorOrSelf,
+        questionController.deleteTag);
 
 /**
 EDIT PROBLEM STATEMENT QUESTION
@@ -148,10 +148,10 @@ Request Body: 	  application/json 		required
 }
 **/
 questionRouter.route('/:QUESTIONID/problem_statement')
-	.post(tokenController.validateToken,
-		  tokenController.refreshToken,
-		  authorizeController.adminOrInstructorOrSelf,
-		  questionController.editProblemStatement);
+    .post(tokenController.validateToken,
+        tokenController.refreshToken,
+        authorizeController.adminOrInstructorOrSelf,
+        questionController.editProblemStatement);
 
 
 /**
@@ -170,10 +170,10 @@ Request Body: 	  appication/json 		required
 }
 **/
 questionRouter.route('/:QUESTIONID/answer_choice')
-	.put(tokenController.validateToken,
-		  tokenController.refreshToken,
-		  authorizeController.adminOrInstructorOrSelf,
-		  questionController.addAnswerChoice);
+    .put(tokenController.validateToken,
+        tokenController.refreshToken,
+        authorizeController.adminOrInstructorOrSelf,
+        questionController.addAnswerChoice);
 
 /**
 DELETE ANSWER CHOICE
@@ -191,10 +191,10 @@ Request Body: 	  application/json 		required
 }
 **/
 questionRouter.route('/:QUESTIONID/answer_choice')
-	.delete(tokenController.validateToken,
-			tokenController.refreshToken,
-			authorizeController.adminOrInstructorOrSelf,
-			questionController.deleteAnswerChoice);
+    .delete(tokenController.validateToken,
+        tokenController.refreshToken,
+        authorizeController.adminOrInstructorOrSelf,
+        questionController.deleteAnswerChoice);
 
 /**
 EDIT ANSWER CHOICE
@@ -213,10 +213,10 @@ Request Body: 	  application/json 		required
 }
 **/
 questionRouter.route('/:QUESTIONID/answer_choice')
-	.post(tokenController.validateToken,
-		  tokenController.refreshToken,
-		  authorizeController.adminOrInstructorOrSelf,
-		  questionController.editAnswerChoice);
+    .post(tokenController.validateToken,
+        tokenController.refreshToken,
+        authorizeController.adminOrInstructorOrSelf,
+        questionController.editAnswerChoice);
 
 /**
 EDIT ANSWER
@@ -234,10 +234,10 @@ Request Body: 	  application/json		required
 }
 **/
 questionRouter.route('/:QUESTIONID/answer')
-	.post(tokenController.validateToken,
-		  tokenController.refreshToken,
-		  authorizeController.adminOrInstructorOrSelf,
-		  questionController.editAnswer);
+    .post(tokenController.validateToken,
+        tokenController.refreshToken,
+        authorizeController.adminOrInstructorOrSelf,
+        questionController.editAnswer);
 
 
 

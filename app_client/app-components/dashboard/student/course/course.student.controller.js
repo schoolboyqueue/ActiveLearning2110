@@ -22,7 +22,9 @@ app.controller('Course.Student.Controller', function($scope, $localStorage, $roo
 
     $scope.tableParams = new NgTableParams({
         count: 6,
-        sorting: { date: "asc" }
+        sorting: {
+            date: "asc"
+        }
     }, {
         counts: [],
         dataset: $scope.course.lectures,
@@ -49,6 +51,4 @@ app.controller('Course.Student.Controller', function($scope, $localStorage, $roo
             return orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
         }
     });
-
-
 });

@@ -14,60 +14,50 @@
 //************************************************************
 "use strict";
 
-var User    = require('./../models/userModel');
-var Course  = require('./../models/courseModel');
-var Lecture  = require('./../models/lectureModel');
-var rand    = require("random-key");
+var User = require('./../models/userModel');
+var Course = require('./../models/courseModel');
+var Lecture = require('./../models/lectureModel');
+var rand = require("random-key");
 
-var roles =
-{
-    ADMIN       : 'admin',
-    INSTRUCTOR  : 'instructor',
-    STUDENT     : 'student',
+var roles = {
+    ADMIN: 'admin',
+    INSTRUCTOR: 'instructor',
+    STUDENT: 'student',
 };
 
-var initialSetup = function(req, res, next)
-{
+var initialSetup = function(req, res, next) {
     console.log('lectureController initialSetup');
 
-    User.findById(req.decodedToken.sub, function(err, user)
-    {
+    User.findById(req.decodedToken.sub, function(err, user) {
         var newCourse = null;
 
-        var course_instructor =
-        {
-            instructor_id   : user._id.toString(),
-            username        : user.username,
-            firstname       : user.firstname,
-            lastname        : user.lastname
+        var course_instructor = {
+            instructor_id: user._id.toString(),
+            username: user.username,
+            firstname: user.firstname,
+            lastname: user.lastname
         };
 
-        newLecture = new Lecture(
-        {
-            title       : req.body.title,
-            instructor  : course_instructor,
-            schedule    : req.body.course_schedule,
-            sections    : req.body.sections,
-            course_key  : rand.generate()
+        var newLecture = new Lecture({
+            title: req.body.title,
+            instructor: course_instructor,
+            schedule: req.body.course_schedule,
+            sections: req.body.sections,
+            course_key: rand.generate()
         });
 
-        newCourse.save(function(err, savedCourse)
-        {
-            if (err)
-            {
-                return res.status(500).json(
-                    {
-                        success: false,
-                        message: err
-                    }
-                );
+        newCourse.save(function(err, savedCourse) {
+            if (err) {
+                return res.status(500).json({
+                    success: false,
+                    message: err
+                });
             }
             next();
         });
     });
-}
+};
 
-module.exports =
-{
-    initialSetup        :         initialSetup
+module.exports = {
+    initialSetup: initialSetup
 };

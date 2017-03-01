@@ -17,7 +17,7 @@ app.factory('UserStorage', function($localStorage, jwtHelper) {
 
     var service = {};
 
-    defVals = {
+    user = {
         _id: '',
         username: '',
         firstname: '',
@@ -36,7 +36,7 @@ app.factory('UserStorage', function($localStorage, jwtHelper) {
         }
     };
 
-    $localStorage.$default(defVals);
+    $localStorage.$default(user);
 
     service.UpdateUserInfo = function(data) {
         for (var key in data) {
@@ -95,7 +95,7 @@ app.factory('UserStorage', function($localStorage, jwtHelper) {
     };
 
     service.Clear = function() {
-        $localStorage.$reset(defVals);
+        $localStorage.$reset(user);
     };
 
     return service;
