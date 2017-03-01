@@ -19,6 +19,7 @@ app.controller('Instructor.Course.Controller', function($scope, $localStorage, $
 
     $rootScope.$stateParams = $stateParams;
     $scope.course = $localStorage.courses[$stateParams.selectedCourse];
+    $scope.course_index = $stateParams.selectedCourse;
 
     $scope.chart_options = {
         labels: ["Verified", "Pending"]
