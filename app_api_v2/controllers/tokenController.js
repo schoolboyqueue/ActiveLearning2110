@@ -127,7 +127,7 @@ var validateToken = function(req, res, next) {
 
     //var token = req.body.token || req.headers['Authorization'] || req.headers['x-access-token'] || req.cookies['jwtToken'];
     //req.token = req.body.token || req.cookies['jwtToken'];
-    var token = req.body.token || req.cookies['jwtToken'] || req.headers['Authorization'];
+    var token = req.body.token || req.cookies.jwtToken || req.headers.Authorization;
 
     if (!token) {
         return res.status(401).json({

@@ -173,49 +173,31 @@ var deleteTag = function(req, res) {
             if (req.decodedToken.sub !== question.contributor.contributor_id) {
                 return res.status(401).json({
                     success: false,
-                    message: 'Question Not Found'
-                }
-            );
-        }
-        else
-        {
-            if (req.decodedToken.sub !== question.contributor.contributor_id)
-            {
-                return res.status(401).json(
-                    {
-                        success: false,
-                        message: 'User not Authorized to delete question'
-                    }
-                );
-            }
-            else
-            {
-                if (req.body.delete_tag)
-                {
-                    Question.update(
-                        {"_id": req.params.QUESTIONID},
-                        {$pull: {"tags": req.body.delete_tag}}, function(err, data)
-                        {
-                            if (err || !data || data.nModified === 0)
-                            {
-                                return res.status(400).json(
-                                {
-                                    success: false,
-                                    message: "Cannot Delete Tag"
-                                });
-                            }
-                            else
-                            {
-                                return res.status(200).json(
-                                {
-                                    success: true,
-                                    jwt_token: req.token,
-                                    message: "Tag Deleted",
-                                    data : data
-                                });
-                            }
+                    message: 'User not Authorized to delete question'
+                });
+            } else {
+                if (req.body.delete_tag) {
+                    Question.update({
+                        "_id": req.params.QUESTIONID
+                    }, {
+                        $pull: {
+                            "tags": req.body.delete_tag
                         }
-                    );
+                    }, function(err, data) {
+                        if (err || !data || data.nModified === 0) {
+                            return res.status(400).json({
+                                success: false,
+                                message: "Cannot Delete Tag"
+                            });
+                        } else {
+                            return res.status(200).json({
+                                success: true,
+                                jwt_token: req.token,
+                                message: "Tag Deleted",
+                                data: data
+                            });
+                        }
+                    });
                 }
             }
         }
@@ -311,49 +293,31 @@ var deleteAnswerChoice = function(req, res) {
             if (req.decodedToken.sub !== question.contributor.contributor_id) {
                 return res.status(401).json({
                     success: false,
-                    message: 'Question Not Found'
-                }
-            );
-        }
-        else
-        {
-            if (req.decodedToken.sub !== question.contributor.contributor_id)
-            {
-                return res.status(401).json(
-                    {
-                        success: false,
-                        message: 'User not Authorized to delete question'
-                    }
-                );
-            }
-            else
-            {
-                if (req.body.delete_answer_choice)
-                {
-                    Question.update(
-                        {"_id": req.params.QUESTIONID},
-                        {$pull: {"answer_choices": req.body.delete_answer_choice}}, function(err, data)
-                        {
-                            if (err || !data || data.nModified === 0)
-                            {
-                                return res.status(400).json(
-                                {
-                                    success: false,
-                                    message: "Cannot Delete Answer Choice"
-                                });
-                            }
-                            else
-                            {r
-                                return res.status(200).json(
-                                {
-                                    success: true,
-                                    jwt_token: req.token,
-                                    message: "Answer Choice Deleted",
-                                    data : data
-                                });
-                            }
+                    message: 'User not Authorized to delete question'
+                });
+            } else {
+                if (req.body.delete_answer_choice) {
+                    Question.update({
+                        "_id": req.params.QUESTIONID
+                    }, {
+                        $pull: {
+                            "answer_choices": req.body.delete_answer_choice
                         }
-                    );
+                    }, function(err, data) {
+                        if (err || !data || data.nModified === 0) {
+                            return res.status(400).json({
+                                success: false,
+                                message: "Cannot Delete Answer Choice"
+                            });
+                        } else {
+                            return res.status(200).json({
+                                success: true,
+                                jwt_token: req.token,
+                                message: "Answer Choice Deleted",
+                                data: data
+                            });
+                        }
+                    });
                 }
             }
         }
@@ -373,27 +337,11 @@ var editAnswerChoice = function(req, res) {
             if (req.decodedToken.sub !== question.contributor.contributor_id) {
                 return res.status(401).json({
                     success: false,
-                    message: 'Question Not Found'
-                }
-            );
-        }
-        else
-        {
-            if (req.decodedToken.sub !== question.contributor.contributor_id)
-            {
-                return res.status(401).json(
-                    {
-                        success: false,
-                        message: 'User not Authorized to delete question'
-                    }
-                );
-            }
-            else
-            {
-                if (req.body.edit_answer_choice)
-                {
-                    if (req.body.new_answer_choice)
-                    {
+                    message: 'User not Authorized to delete question'
+                });
+            } else {
+                if (req.body.edit_answer_choice) {
+                    if (req.body.new_answer_choice) {
                         console.log(question);
                         console.log(question.answer_choices.indexOf("a"));
                         var answerChoiceIndex = question.answer_choices.indexOf("a");
@@ -401,26 +349,18 @@ var editAnswerChoice = function(req, res) {
                         question.answer_choices[answerChoiceIndex] = req.body.new_answer_choice;
 
 
-                        question.save(function(err, updated_question)
-                        {
-                            if (err)
-                            {
-                                return res.status(401).json(
-                                    {
-                                        success: false,
-                                        message: 'Unable to Edit Answer Choice'
-                                    }
-                                );
-                            }
-                            else
-                            {
-                                return res.status(200).json(
-                                    {
-                                        success : true,
-                                        message : 'Answer Choice Updated',
-                                        question: updated_question
-                                    }
-                                );
+                        question.save(function(err, updated_question) {
+                            if (err) {
+                                return res.status(401).json({
+                                    success: false,
+                                    message: 'Unable to Edit Answer Choice'
+                                });
+                            } else {
+                                return res.status(200).json({
+                                    success: true,
+                                    message: 'Answer Choice Updated',
+                                    question: updated_question
+                                });
                             }
                         });
                     }

@@ -170,10 +170,10 @@ Request Body: 	  appication/json 		required
 }
 **/
 questionRouter.route('/:QUESTIONID/answer_choice')
-	.put(tokenController.validateToken,
-		  tokenController.refreshToken,
-		  authorizeController.adminOrInstructorOrSelf,
-		  questionController.addAnswerChoice);
+    .put(tokenController.validateToken,
+        tokenController.refreshToken,
+        authorizeController.adminOrInstructorOrSelf,
+        questionController.addAnswerChoice);
 
 /**
 DELETE ANSWER CHOICE
