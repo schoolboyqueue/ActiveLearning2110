@@ -152,5 +152,8 @@ app.controller('Profile.Controller', function($scope, $element, $localStorage, U
         ctx.drawImage(this, 0, 0, this.width * ratio, this.height * ratio);
 
         $scope.croppedPhoto = canvas.toDataURL('image/jpeg', 0.7);
+        $scope.$apply(function() {
+            $scope.photo = $scope.croppedPhoto;
+        });
     }
 });
