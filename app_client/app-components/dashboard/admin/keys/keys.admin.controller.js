@@ -15,7 +15,7 @@
 
 var app = angular.module('app');
 
-app.controller('Admin.Keys.Controller', function($scope, $localStorage, $state, RESTService, NgTableParams, Notification) {
+app.controller('Admin.Keys.Controller', function($scope, $localStorage, $state, RESTService, NgTableParams, ngNotify) {
     $scope.keyLoading = false;
     $scope.generatedKey = null;
 
@@ -37,13 +37,8 @@ app.controller('Admin.Keys.Controller', function($scope, $localStorage, $state, 
         RESTService.GenerateInstructorKey(postGetKey);
     };
 
-    $scope.copySuccess = function(name) {
-        Notification.success({
-            message: "Instructor key copied to clipboard",
-            delay: 4000,
-            positionX: 'center',
-            positionY: 'top'
-        });
+    $scope.copySuccess = function() {
+        ngNotify.set('Instructor key copied to clipboard', 'success');
     };
 
     function postGetKey(info) {
@@ -64,5 +59,4 @@ app.controller('Admin.Keys.Controller', function($scope, $localStorage, $state, 
             return false;
         }
     }
-
 });

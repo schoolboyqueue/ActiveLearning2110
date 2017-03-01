@@ -71,7 +71,9 @@ app.controller('Create.Course.Controller', function($scope, $element, $state, RE
         $scope.loading = true;
         var sections = [];
         for (var item in $scope.course.sections) {
-            sections.push({name: $scope.course.sections[item].text});
+            sections.push({
+                name: $scope.course.sections[item].text
+            });
         }
         var data = {
             "title": $scope.prefixes[$scope.course.prefix].name + " " + $scope.course.number,

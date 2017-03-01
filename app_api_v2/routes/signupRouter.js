@@ -14,14 +14,14 @@
 //************************************************************
 "use strict";
 
-var express           = require('express');
-var signupRouter      = express.Router();
+var express = require('express');
+var signupRouter = express.Router();
 
-var signupController    = require('./../controllers/signupController');
-var inputController     = require('./../controllers/inputController');
-var tokenController     = require('./../controllers/tokenController');
-var userController     = require('./../controllers/userController');
-var courseController     = require('./../controllers/courseController');
+var signupController = require('./../controllers/signupController');
+var inputController = require('./../controllers/inputController');
+var tokenController = require('./../controllers/tokenController');
+var userController = require('./../controllers/userController');
+var courseController = require('./../controllers/courseController');
 var authorizeController = require('./../controllers/authorizeController');
 
 /**
@@ -47,13 +47,13 @@ Request Body application/json
 **/
 signupRouter.route('/')
     .post(inputController.requireFirstname,
-          inputController.requireLastname,
-          inputController.requireUsername,
-          inputController.requirePassword,
-          signupController.registerAdmin,
-          signupController.registerInstructor,
-          signupController.registerStudent,
-          signupController.savedUserToDB);
+        inputController.requireLastname,
+        inputController.requireUsername,
+        inputController.requirePassword,
+        signupController.registerAdmin,
+        signupController.registerInstructor,
+        signupController.registerStudent,
+        signupController.savedUserToDB);
 
 /**
 CREATE ADMIN REGISTRATION KEY
@@ -69,10 +69,10 @@ Request Body:     none
 **/
 signupRouter.route('/admin_key')
     .post(tokenController.validateToken,
-          tokenController.refreshToken,
-          authorizeController.admin,
-          signupController.createAdminKey,
-          signupController.getRegistrationKeys);
+        tokenController.refreshToken,
+        authorizeController.admin,
+        signupController.createAdminKey,
+        signupController.getRegistrationKeys);
 
 /**
 CREATE INSTRUCTOR REGISTRATION KEY
@@ -88,9 +88,9 @@ Request Body:     none
 **/
 signupRouter.route('/instructor_key')
     .post(tokenController.validateToken,
-          tokenController.refreshToken,
-          authorizeController.admin,
-          signupController.createInstructorKey);
+        tokenController.refreshToken,
+        authorizeController.admin,
+        signupController.createInstructorKey);
 
 /**
 GET REGISTRATION KEYS
@@ -105,7 +105,7 @@ Query String:     none
 Request Body:     none
 **/
 signupRouter.route('/registration_key')
-   .get(tokenController.validateToken,
+    .get(tokenController.validateToken,
         tokenController.refreshToken,
         authorizeController.admin,
         signupController.getRegistrationKeys);

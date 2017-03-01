@@ -59,7 +59,9 @@ app.controller('Profile.Controller', function($scope, $element, $localStorage, U
         if (info) {
             RESTService.UpdateUserInfo(info, infoUpdated);
         } else {
-            infoUpdated({success: true});
+            infoUpdated({
+                success: true
+            });
         }
     }
 
@@ -142,12 +144,12 @@ app.controller('Profile.Controller', function($scope, $element, $localStorage, U
         var ratio = Math.min(400 / this.width, 300 / this.height);
 
         var canvas = document.createElement('canvas'),
-        ctx = canvas.getContext('2d');
+            ctx = canvas.getContext('2d');
 
-        canvas.width = this.width*ratio;
-        canvas.height = this.height*ratio;
+        canvas.width = this.width * ratio;
+        canvas.height = this.height * ratio;
 
-        ctx.drawImage(this, 0, 0, this.width*ratio, this.height*ratio);
+        ctx.drawImage(this, 0, 0, this.width * ratio, this.height * ratio);
 
         $scope.croppedPhoto = canvas.toDataURL('image/jpeg', 0.7);
     }

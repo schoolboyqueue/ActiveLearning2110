@@ -24,7 +24,9 @@ app.controller('Join.Course.Controller', function($scope, $element, $localStorag
     $scope.join = function() {
         $scope.error = null;
         $scope.loading = true;
-        RESTService.JoinCourse({section_key: $scope.section}, finishJoinCourse);
+        RESTService.JoinCourse({
+            section_key: $scope.section
+        }, finishJoinCourse);
     };
 
     function finishJoinCourse(info) {

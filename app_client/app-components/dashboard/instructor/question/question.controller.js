@@ -18,6 +18,12 @@ var app = angular.module('app');
 app.controller('Instructor.Question.Controller', function($scope, $state, $rootScope) {
 
     $scope.state = 'edit';
+    $scope.editor = null;
+
+    $scope.question = {
+        html: {},
+        tags: []
+    };
 
     $scope.edit = function() {
         $scope.state = 'cancel';

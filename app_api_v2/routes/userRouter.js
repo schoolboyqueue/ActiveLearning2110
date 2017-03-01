@@ -14,14 +14,14 @@
 //************************************************************
 "use strict";
 
-var express           = require('express');
-var userRouter        = express.Router();
+var express = require('express');
+var userRouter = express.Router();
 
-var userController        = require('./../controllers/userController');
-var courseController      = require('./../controllers/courseController');
-var tokenController       = require('./../controllers/tokenController');
-var authorizeController   = require('./../controllers/authorizeController');
-var inputController       = require('./../controllers/inputController');
+var userController = require('./../controllers/userController');
+var courseController = require('./../controllers/courseController');
+var tokenController = require('./../controllers/tokenController');
+var authorizeController = require('./../controllers/authorizeController');
+var inputController = require('./../controllers/inputController');
 
 
 /**
@@ -38,9 +38,9 @@ Request Body:     none
 **/
 userRouter.route('/')
     .get(tokenController.validateToken,
-         tokenController.refreshToken,
-         authorizeController.admin,
-         userController.getAll);
+        tokenController.refreshToken,
+        authorizeController.admin,
+        userController.getAll);
 
 /**
 GET USER
@@ -56,9 +56,9 @@ Request Body:     none
 **/
 userRouter.route('/:USERID')
     .get(tokenController.validateToken,
-         tokenController.refreshToken,
-         authorizeController.adminOrSelf,
-         userController.getUser);
+        tokenController.refreshToken,
+        authorizeController.adminOrSelf,
+        userController.getUser);
 
 /**
 UPDATE USER
@@ -79,11 +79,11 @@ Request Body:     application/json  required
 }
 **/
 userRouter.route('/:USERID')
-   .post(tokenController.validateToken,
-         tokenController.refreshToken,
-         authorizeController.adminOrSelf,
-         authorizeController.roleUpdate,
-         userController.updateUser);
+    .post(tokenController.validateToken,
+        tokenController.refreshToken,
+        authorizeController.adminOrSelf,
+        authorizeController.roleUpdate,
+        userController.updateUser);
 
 /**
 GET USER COURSES
@@ -99,9 +99,9 @@ Request Body:     none
 **/
 userRouter.route('/:USERID/courses')
     .get(tokenController.validateToken,
-         tokenController.refreshToken,
-         authorizeController.studentOrInstructor,
-         courseController.getUserCourses);
+        tokenController.refreshToken,
+        authorizeController.studentOrInstructor,
+        courseController.getUserCourses);
 
 
 /**
@@ -121,10 +121,10 @@ Request Body:     application/json  required
 **/
 userRouter.route('/:USERID/role')
     .post(tokenController.validateToken,
-          tokenController.refreshToken,
-          authorizeController.admin,
-          inputController.requireRole,
-          userController.updateRole);
+        tokenController.refreshToken,
+        authorizeController.admin,
+        inputController.requireRole,
+        userController.updateRole);
 
 
 /**
@@ -145,11 +145,11 @@ Request Body:     application/json  required
 **/
 userRouter.route('/:USERID/password')
     .post(tokenController.validateToken,
-          tokenController.refreshToken,
-          authorizeController.self,
-          inputController.requireCurrentPassword,
-          inputController.requireNewPassword,
-          userController.updatePassword);
+        tokenController.refreshToken,
+        authorizeController.self,
+        inputController.requireCurrentPassword,
+        inputController.requireNewPassword,
+        userController.updatePassword);
 
 
 /**
@@ -166,9 +166,9 @@ Request Body:     none
 **/
 userRouter.route('/:USERID/deactivate')
     .post(tokenController.validateToken,
-          tokenController.refreshToken,
-          authorizeController.admin,
-          userController.deactivateUser);
+        tokenController.refreshToken,
+        authorizeController.admin,
+        userController.deactivateUser);
 
 
 module.exports = userRouter;

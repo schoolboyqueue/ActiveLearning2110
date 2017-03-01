@@ -8,24 +8,42 @@
                 <button type="button" class="btn btn-danger btn-sm" ng-click="cancel()" ng-show="state === 'cancel'">
                     <i class="fa fa-times fa-fw" aria-hidden="true"></i>
                 </button>
-                <button type="button" class="btn btn-success btn-sm" ng-click="save()" ng-disabled="state === 'edit'">
+                <button type="button" class="btn btn-success btn-sm" ng-click="save()" ng-disabled="state === 'edit' || question.tags.length === 0">
                     <i class="fa fa-check fa-fw" aria-hidden="true"></i>
                 </button>
             </div>
         </div>
-        <div class="d-flex justify-content-center">
-            <div ng-editor="question-container">
-                <h2 class="text-center">
-                    Question Header
-                </h2>
-                <p class="text-center">
-                    Question Body
+        <div ng-editor="question-container" value="question.html" editor="editor">
+            <div data-editable="title" class="pb-4">
+                <h2 class="text-center">Question Title</h2>
+            </div>
+            <div data-editable="body">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec cursus ac ex eget malesuada. Pellentesque tincidunt nulla dictum
+                    nibh porta molestie. Nunc rutrum ultricies venenatis. Sed vulputate placerat elementum. Vivamus commodo sit amet eros nec facilisis.
+                    Nulla neque nulla, consectetur non lobortis ut, congue vitae massa. Quisque condimentum dui massa, interdum semper urna tristique et.
+                    Vivamus mollis libero lectus, id consectetur sem semper at. Nunc viverra tellus molestie, tempus sem eget, dictum turpis.
+                    Integer et aliquet diam. Vivamus tempus magna odio, eu auctor tortor molestie sit amet. Cras luctus nec urna nec ultricies.
+                    Aenean ut elit eleifend, efficitur nisl vel, maximus sem. Morbi consectetur nunc at ligula tristique, non bibendum enim consequat.
+                    Sed mollis justo purus, in lobortis tortor dapibus ut.
                 </p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
             </div>
         </div>
+        <div class="input-group pt-2 pb-2">
+            <tags-input
+              class="text-uppercase form-control"
+              ng-model="question.tags"
+              min-length="1"
+              ng-show="state === 'cancel'"
+              placeholder="Question Tags">
+            </tags-input>
+        </div>
     </div>
-    <div class="container-fluid">
-        {{regions}}
-    </div>
+    <!-- <pre>
+        {{question | json}}
+    </pre> -->
+    <!-- <div class="container-fluid">
+        <div ng-bind-html="question.title"></div>
+        <div ng-bind-html="question.body"></div>
+    </div> -->
 </div>

@@ -1,4 +1,5 @@
 /* jshint node: true */
+/* jshint esversion: 6 */
 
 //************************************************************
 //  signupController.js                                     //
@@ -14,98 +15,84 @@
 //************************************************************
 "use strict";
 
-var User            = require('./../models/userModel');
+var User = require('./../models/userModel');
 var RegistrationKey = require('./../models/keyModel');
 
-var bcrypt  = require('bcryptjs');
-var rand    = require("random-key");
+var bcrypt = require('bcryptjs');
+var rand = require("random-key");
 
-var roles =
-{
-    ADMIN       : 'admin',
-    INSTRUCTOR  : 'instructor',
-    STUDENT     : 'student',
+var roles = {
+    ADMIN: 'admin',
+    INSTRUCTOR: 'instructor',
+    STUDENT: 'student',
 };
 
-var keys =
-{
-    ADMIN       : 'adminKey',
-    INSTRUCTOR  : 'instructorKey'
-}
+var keys = {
+    ADMIN: 'adminKey',
+    INSTRUCTOR: 'instructorKey'
+};
 
-var createAdminKey = function (req, res, next)
-{
+var createAdminKey = function(req, res, next) {
     console.log('signupController createAdminKey');
 
-    var adminCreator =
-    {
-        user_id:    req.decodedToken.sub
+    var adminCreator = {
+        user_id: req.decodedToken.sub
     };
-    var newKey = new RegistrationKey(
-    {
-        role    :     roles.ADMIN,
-        key     :     rand.generate(),
-        admin_creator   :     adminCreator
+    var newKey = new RegistrationKey({
+        role: roles.ADMIN,
+        key: rand.generate(),
+        admin_creator: adminCreator
     });
 
-    newKey.save(function(err, savedKey)
-    {
-        if (err)
-        {
-            return res.status(500).json(
-                {
-                    success: false,
-                    message: "Internal Error"
-                }
-            );
+    newKey.save(function(err, savedKey) {
+        if (err) {
+            return res.status(500).json({
+                success: false,
+                message: "Internal Error"
+            });
         }
         req.savedKey = savedKey;
         next();
     });
-}
+};
 
-var createInstructorKey = function (req, res, next)
-{
+var createInstructorKey = function(req, res, next) {
     console.log('signupController createInstructorKey');
 
-    var adminCreator =
-    {
-        user_id:    req.decodedToken.sub
+    var adminCreator = {
+        user_id: req.decodedToken.sub
     };
-    var newKey = new RegistrationKey(
-    {
-        role            :     roles.INSTRUCTOR,
-        key             :     rand.generate(),
-        admin_creator   :     adminCreator
+    var newKey = new RegistrationKey({
+        role: roles.INSTRUCTOR,
+        key: rand.generate(),
+        admin_creator: adminCreator
     });
 
     var saved_key = "";
 
     newKey.save()
-    .then(function(key){
-        saved_key = key;
-        return RegistrationKey.find({'admin_creator.user_id' : req.decodedToken.sub}).exec();
-    })
-    .then(function(keys){
-        return res.status(201).json(
-            {
-                success   :   true,
-                jwt_token :   req.token,
-                message   :   'Admin Key Creation Successsful',
-                key       :   saved_key,
-                keys      :   keys
+        .then(function(key) {
+            saved_key = key;
+            return RegistrationKey.find({
+                'admin_creator.user_id': req.decodedToken.sub
+            }).exec();
+        })
+        .then(function(keys) {
+            return res.status(201).json({
+                success: true,
+                jwt_token: req.token,
+                message: 'Admin Key Creation Successsful',
+                key: saved_key,
+                keys: keys
 
-            }
-        );
-    })
-    .catch(function(err){
-        return res.status(500).json(
-            {
+            });
+        })
+        .catch(function(err) {
+            return res.status(500).json({
                 success: false,
                 message: "Internal Error"
-            }
-        );
-    });
+            });
+        });
     /*
     newKey.save(function(err, savedKey)
     {
@@ -122,32 +109,29 @@ var createInstructorKey = function (req, res, next)
         next();
     });
     */
-}
+};
 
-var getRegistrationKeys = function (req, res)
-{
+var getRegistrationKeys = function(req, res) {
     console.log('signupController getRegistrationKeys');
 
-    RegistrationKey.find({'admin_creator.user_id' : req.decodedToken.sub})
-    .exec()
-    .then(function(keys){
-        return res.status(201).json(
-            {
-                success   : true,
-                jwt_token : req.token,
-                message   : 'Request Sucess',
-                keys      : keys
-            }
-        );
-    })
-    .catch(function(err){
-        return res.status(404).json(
-            {
+    RegistrationKey.find({
+            'admin_creator.user_id': req.decodedToken.sub
+        })
+        .exec()
+        .then(function(keys) {
+            return res.status(201).json({
+                success: true,
+                jwt_token: req.token,
+                message: 'Request Sucess',
+                keys: keys
+            });
+        })
+        .catch(function(err) {
+            return res.status(404).json({
                 success: false,
                 message: 'No keys Found'
-            }
-        );
-    });
+            });
+        });
     /*
     RegistrationKey.find({'admin_creator.user_id' : req.decodedToken.sub}, function(err, keys)
     {
@@ -173,180 +157,147 @@ var getRegistrationKeys = function (req, res)
         }
     });
     */
-}
+};
 
-var registerAdmin = function (req, res, next)
-{
+var registerAdmin = function(req, res, next) {
     console.log('signupController registerAdmin');
 
-    if (req.body.username === 'admin@gatech.edu')
-    {
-        req.addUser = new User(
-        {
-            username:   req.body.username,
-            password:   bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)),
-            firstname:  req.body.firstname,
-            lastname:   req.body.lastname,
-            role    :   roles.ADMIN
+    if (req.body.username === 'admin@gatech.edu') {
+        req.addUser = new User({
+            username: req.body.username,
+            password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)),
+            firstname: req.body.firstname,
+            lastname: req.body.lastname,
+            role: roles.ADMIN
         });
         next();
-    }
-    else if (req.query.role === roles.ADMIN)
-    {
-        var keyUser =
-        {
-            username:   req.body.username,
-            firstname:  req.body.firstname,
-            lastname:   req.body.lastname
-        }
-        RegistrationKey.findOneAndUpdate(
-        {'key': req.body.key, 'validated': false, 'role': roles.ADMIN},
-        {'validated': true, 'user': keyUser},
-        {'new': true }, function (err, key)
-        {
-            if (err || !key)
-            {
-                return res.status(400).json(
-                    {
-                        success: false,
-                        message: "Invalid Admin Registration Key"
-                    }
-                );
-            }
-            else
-            {
-                req.addUser = new User(
-                {
-                    username:   req.body.username,
-                    password:   bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)),
-                    firstname:  req.body.firstname,
-                    lastname:   req.body.lastname,
-                    role    :   roles.ADMIN
+    } else if (req.query.role === roles.ADMIN) {
+        var keyUser = {
+            username: req.body.username,
+            firstname: req.body.firstname,
+            lastname: req.body.lastname
+        };
+        RegistrationKey.findOneAndUpdate({
+            'key': req.body.key,
+            'validated': false,
+            'role': roles.ADMIN
+        }, {
+            'validated': true,
+            'user': keyUser
+        }, {
+            'new': true
+        }, function(err, key) {
+            if (err || !key) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Invalid Admin Registration Key"
+                });
+            } else {
+                req.addUser = new User({
+                    username: req.body.username,
+                    password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)),
+                    firstname: req.body.firstname,
+                    lastname: req.body.lastname,
+                    role: roles.ADMIN
                 });
                 next();
             }
         });
-      }
-      else
-      {
-          next();
-      }
+    } else {
+        next();
+    }
 };
 
-var registerInstructor = function (req, res, next)
-{
+var registerInstructor = function(req, res, next) {
     console.log('signupController registerInstructor');
 
-    if (req.query.role === roles.INSTRUCTOR)
-    {
-        var keyUser =
-        {
-            username:   req.body.username,
-            firstname:  req.body.firstname,
-            lastname:   req.body.lastname
-        }
-        RegistrationKey.findOneAndUpdate(
-        {'key': req.body.key, 'validated': false, 'role': roles.INSTRUCTOR},
-        {'validated': true, 'user': keyUser},
-        {'new': true}, function (err, key)
-        {
-            if (err || !key)
-            {
-                return res.status(400).json(
-                    {
-                        success: false,
-                        message: "Invalid Instructor Registration Key"
-                    }
-                );
-            }
-            else
-            {
-                req.addUser = new User(
-                {
-                    username:   req.body.username,
-                    password:   bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)),
-                    firstname:  req.body.firstname,
-                    lastname:   req.body.lastname,
-                    role    :   roles.INSTRUCTOR
+    if (req.query.role === roles.INSTRUCTOR) {
+        var keyUser = {
+            username: req.body.username,
+            firstname: req.body.firstname,
+            lastname: req.body.lastname
+        };
+        RegistrationKey.findOneAndUpdate({
+            'key': req.body.key,
+            'validated': false,
+            'role': roles.INSTRUCTOR
+        }, {
+            'validated': true,
+            'user': keyUser
+        }, {
+            'new': true
+        }, function(err, key) {
+            if (err || !key) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Invalid Instructor Registration Key"
+                });
+            } else {
+                req.addUser = new User({
+                    username: req.body.username,
+                    password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)),
+                    firstname: req.body.firstname,
+                    lastname: req.body.lastname,
+                    role: roles.INSTRUCTOR
                 });
                 next();
             }
         });
-    }
-    else
-    {
+    } else {
         next();
     }
 };
 
-var registerStudent = function (req, res, next)
-{
+var registerStudent = function(req, res, next) {
     console.log('signupController registerStudent');
 
-    if (!req.addUser)
-    {
-        req.addUser = new User(
-        {
-            username:   req.body.username,
-            password:   bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)),
-            firstname:  req.body.firstname,
-            lastname:   req.body.lastname,
-            role    :   roles.STUDENT
+    if (!req.addUser) {
+        req.addUser = new User({
+            username: req.body.username,
+            password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)),
+            firstname: req.body.firstname,
+            lastname: req.body.lastname,
+            role: roles.STUDENT
         });
         next();
-    }
-    else
-    {
+    } else {
         next();
     }
 };
 
-var preRegisterStudent = function (req, res, next)
-{
+var preRegisterStudent = function(req, res, next) {
     console.log('signupController preRegisterStudent');
 
-    if (!req.instructorRegisteredStudent)
-    {
+    if (!req.instructorRegisteredStudent) {
         next();
-    }
-    else
-    {
+    } else {
         var password = rand.generate();
-        var pre_registered =
-        {
-            password    :   password,
-            course_id   :   req.params.COURSEID,
-            section_id  :   req.params.SECTIONID
-        }
-        var newUser = new User(
-        {
-            username          :   req.body.username,
-            password          :   bcrypt.hashSync(password, bcrypt.genSaltSync(10)),
-            firstname         :   req.body.firstname,
-            lastname          :   req.body.lastname,
-            role              :   roles.STUDENT,
-            pre_register_key  :   password,
-            pre_registered    :   pre_registered
+        var pre_registered = {
+            password: password,
+            course_id: req.params.COURSEID,
+            section_id: req.params.SECTIONID
+        };
+        var newUser = new User({
+            username: req.body.username,
+            password: bcrypt.hashSync(password, bcrypt.genSaltSync(10)),
+            firstname: req.body.firstname,
+            lastname: req.body.lastname,
+            role: roles.STUDENT,
+            pre_register_key: password,
+            pre_registered: pre_registered
         });
 
-        newUser.save(function(err, new_student)
-        {
-            if (err)
-            {
-                var errorMessage = 'Internal Error'
-                if (err.code == '11000')
-                {
-                    errorMessage = 'Username Already Exist'
+        newUser.save(function(err, new_student) {
+            if (err) {
+                var errorMessage = 'Internal Error';
+                if (err.code == '11000') {
+                    errorMessage = 'Username Already Exist';
                 }
-                return res.status(500).json(
-                    {
-                        success: false,
-                        message: errorMessage
-                    }
-                );
-            }
-            else
-            {
+                return res.status(500).json({
+                    success: false,
+                    message: errorMessage
+                });
+            } else {
                 req.student = new_student;
                 next();
             }
@@ -354,47 +305,36 @@ var preRegisterStudent = function (req, res, next)
     }
 };
 
-var savedUserToDB = function(req, res)
-{
+var savedUserToDB = function(req, res) {
     console.log('signupController savedUserToDB');
 
-    req.addUser.save(function(err, savedUser)
-    {
-        if (err)
-        {
-            var errorMessage = 'Internal Error'
-            if (err.code == '11000')
-            {
-                errorMessage = 'Username Already Exist'
+    req.addUser.save(function(err, savedUser) {
+        if (err) {
+            var errorMessage = 'Internal Error';
+            if (err.code == '11000') {
+                errorMessage = 'Username Already Exist';
             }
-            return res.status(500).json(
-                {
-                    success: false,
-                    message: errorMessage
-                }
-            );
-        }
-        else
-        {
-            return res.status(201).json(
-                {
-                    success: true,
-                    message: 'Registration Successsful',
-                    id: savedUser._id.toString()
-                }
-            );
+            return res.status(500).json({
+                success: false,
+                message: errorMessage
+            });
+        } else {
+            return res.status(201).json({
+                success: true,
+                message: 'Registration Successsful',
+                id: savedUser._id.toString()
+            });
         }
     });
-}
+};
 
-module.exports =
-{
-    createAdminKey          :   createAdminKey,
-    createInstructorKey     :   createInstructorKey,
-    getRegistrationKeys     :   getRegistrationKeys,
-    preRegisterStudent      :   preRegisterStudent,
-    registerAdmin           :   registerAdmin,
-    registerInstructor      :   registerInstructor,
-    registerStudent         :   registerStudent,
-    savedUserToDB           :   savedUserToDB
+module.exports = {
+    createAdminKey: createAdminKey,
+    createInstructorKey: createInstructorKey,
+    getRegistrationKeys: getRegistrationKeys,
+    preRegisterStudent: preRegisterStudent,
+    registerAdmin: registerAdmin,
+    registerInstructor: registerInstructor,
+    registerStudent: registerStudent,
+    savedUserToDB: savedUserToDB
 };

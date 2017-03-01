@@ -46,18 +46,18 @@
                 <tr ng-repeat="student in $data"
                     ng-init="initUser(student)"
                     ng-class="{ 'table-success': changes[student.username].commited === true,
-                                'table-error': changes[student.username].error === true}">
-                    <td class="align-middle text-capitalize" title="'First'" sortable="'firstname'">
-                        {{student.firstname}}
-                    </td>
-                    <td class="align-middle text-capitalize" title="'Last'" sortable="'lastname'">
-                        {{student.lastname}}
+                                'table-danger': changes[student.username].error === true}">
+                    <td class="align-middle text-capitalize" title="'Name'" sortable="'name'">
+                        {{student.firstname}} {{student.lastname}}
                     </td>
                     <td title="'Username'" sortable="'username'">
                         {{student.username}}
                     </td>
                     <td title="'Role'" sortable="'role'">
                         {{student.role}}
+                    </td>
+                    <td class="align-middle text-capitalize" title="'Status'" sortable="'lastname'">
+                        {{changes[student.username].message}}
                     </td>
                 </tr>
             </table>

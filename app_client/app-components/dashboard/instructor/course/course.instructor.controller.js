@@ -15,7 +15,7 @@
 
 var app = angular.module('app');
 
-app.controller('Instructor.Course.Controller', function($scope, $localStorage, $stateParams, $rootScope, $window, UserService, NgTableParams, Notification) {
+app.controller('Instructor.Course.Controller', function($scope, $localStorage, $stateParams, $rootScope, $window, UserService, NgTableParams, ngNotify) {
 
     $rootScope.$stateParams = $stateParams;
     $scope.course = $localStorage.courses[$stateParams.selectedCourse];
@@ -25,12 +25,7 @@ app.controller('Instructor.Course.Controller', function($scope, $localStorage, $
     };
 
     $scope.copySuccess = function(name) {
-        Notification.success({
-            message: "Section " + name.toUpperCase() + "'s key copied to clipboard",
-            delay: 4000,
-            positionX: 'center',
-            positionY: 'top'
-        });
+        ngNotify.set("Section " + name.toUpperCase() + "'s key copied to clipboard", 'success');
     };
 
 
@@ -50,7 +45,9 @@ app.controller('Instructor.Course.Controller', function($scope, $localStorage, $
 
     $scope.tableParams = new NgTableParams({
         count: 6,
-        sorting: { date: "asc" }
+        sorting: {
+            date: "asc"
+        }
     }, {
         counts: [],
         dataset: $scope.course.lectures,
@@ -130,5 +127,4 @@ app.controller('Instructor.Course.Controller', function($scope, $localStorage, $
     w.on('resize', function() {
         $scope.$apply();
     });
-
 });

@@ -22,5 +22,4 @@ app.controller('Instructor.Dashboard.Controller', function($scope, $localStorage
     $scope.createCourse = function() {
         UserService.ShowCreateCourse();
     };
-
 });

@@ -23,12 +23,14 @@ app.controller('Manage.Students.Controller', function($scope, $localStorage, $ti
     var sidx = $stateParams.selectedSection.index;
     var section = $stateParams.selectedSection.section;
     var cidx = $stateParams.selectedCourse;
-    $scope.changes = { };
+    $scope.changes = {};
     $scope.loading = false;
 
     $scope.student_tableParams = new NgTableParams({
         count: 10,
-        sorting: { username: "asc" }
+        sorting: {
+            username: "asc"
+        }
     }, {
         counts: [],
         dataset: []
@@ -36,7 +38,9 @@ app.controller('Manage.Students.Controller', function($scope, $localStorage, $ti
 
     $scope.upload_tableParams = new NgTableParams({
         count: 10,
-        sorting: { username: "asc" }
+        sorting: {
+            username: "asc"
+        }
     }, {
         counts: [],
         dataset: []
@@ -47,11 +51,12 @@ app.controller('Manage.Students.Controller', function($scope, $localStorage, $ti
     $scope.submit_newStudents = function() {
         $scope.loading = true;
         students = [];
+        clearChanges();
         for (var key in $scope.upload_tableParams.settings().dataset) {
             var info = {
-                    username: $scope.upload_tableParams.settings().dataset[key].username,
-                    firstname: $scope.upload_tableParams.settings().dataset[key].firstname,
-                    lastname: $scope.upload_tableParams.settings().dataset[key].lastname
+                username: $scope.upload_tableParams.settings().dataset[key].username,
+                firstname: $scope.upload_tableParams.settings().dataset[key].firstname,
+                lastname: $scope.upload_tableParams.settings().dataset[key].lastname
             };
             students.push(info);
         }
@@ -74,18 +79,28 @@ app.controller('Manage.Students.Controller', function($scope, $localStorage, $ti
     $scope.initUser = function(user) {
         var info = {
             commited: false,
-            error: false
+            error: false,
+            message: 'Pending'
         };
         $scope.changes[user.username] = info;
     };
 
+    function clearChanges() {
+        for (var key in $scope.changes) {
+            $scope.changes[key].error = false;
+            $scope.changes[key].commited = false;
+            $scope.changes[key].message = 'Pending';
+        }
+    }
+
     function newStudentFinish(info) {
         for (var key in info.students) {
-            if (!info.students[key].success) {
-                $scope.changes[key].error = true;
-            } else {
+            if (info.students[key].success) {
                 $scope.changes[key].commited = true;
+            } else {
+                $scope.changes[key].error = true;
             }
+            $scope.changes[key].message = info.students[key].message;
         }
         $scope.loading = false;
         updateStudentTable();
@@ -98,7 +113,7 @@ app.controller('Manage.Students.Controller', function($scope, $localStorage, $ti
                 }
             }
             updateUploadTable(new_data);
-        }, 2000);
+        }, 5000);
     }
 
     function deleteStudentFinish(info) {
@@ -138,11 +153,11 @@ app.controller('Manage.Students.Controller', function($scope, $localStorage, $ti
         var new_data = [];
         for (var key in data) {
             var entry = {};
-            var name = data[key]["Name"].split(',');
+            var name = data[key].Name.split(',');
             entry.lastname = name[0].trim();
             entry.firstname = name[1].trim();
             entry.username = data[key]["Email Address"];
-            entry.role = data[key]["Role"];
+            entry.role = data[key].Role;
             entry.userid = data[key]["User ID"];
             new_data.push(entry);
         }
@@ -151,7 +166,10 @@ app.controller('Manage.Students.Controller', function($scope, $localStorage, $ti
 
     $scope.$watch('selectedCSV', function() {
         if ($scope.selectedCSV !== null) {
-            Papa.parse($scope.selectedCSV, {header: true, skipEmptyLines: true}).then(
+            Papa.parse($scope.selectedCSV, {
+                header: true,
+                skipEmptyLines: true
+            }).then(
                 function(result) {
                     updateUploadTable(sanitizeData(result.data));
                 }
