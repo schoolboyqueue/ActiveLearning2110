@@ -48,7 +48,12 @@ app.controller('Instructor.Question.Controller', function($scope, $state, $rootS
     };
 
     $scope.removeChoice = function(index) {
-        $scope.question.choices.splice(index, 1);
+        if ($scope.question.choices[index].answer === true) {
+            $scope.question.choices.splice(index, 1);
+            $scope.question.choices[0].answer = true;
+        } else {
+            $scope.question.choices.splice(index, 1);
+        }
         if ($scope.question.choices.length == 1) {
             $scope.question.choices[0].answer = true;
         }
