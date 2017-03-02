@@ -30,6 +30,10 @@ View in browser at
 ```bash
 http://localhost:8081
 ```
-
+View Documentation at
+- [Documentation Page](http://github.com/kmaclin/slate)
 
 Happy ActiveLearning!
+
+Hello AmyF
+Testing Testing!!!
