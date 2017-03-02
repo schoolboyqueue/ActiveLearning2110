@@ -8,6 +8,16 @@
                 <button type="button" class="btn btn-danger btn-sm" ng-click="cancel()" ng-show="state === 'cancel'">
                     <i class="fa fa-times fa-fw" aria-hidden="true"></i>
                 </button>
+                <button
+                    type="button"
+                    class="btn btn-secondary btn-sm active"
+                    ng-click="question.trueFalse = !question.trueFalse"
+                    data-toggle="button"
+                    ng-show="state === 'cancel'"
+                    aria-pressed="true"
+                    autocomplete="off">
+                    T/F
+                </button>
                 <button type="button" class="btn btn-success btn-sm" ng-click="save()" ng-disabled="state === 'edit' || question.tags.length === 0">
                     <i class="fa fa-check fa-fw" aria-hidden="true"></i>
                 </button>
@@ -29,14 +39,45 @@
                 </p>
             </div>
         </div>
-        <div class="input-group pt-2 pb-2">
-            <tags-input
-              class="text-uppercase form-control"
-              ng-model="question.tags"
-              min-length="1"
-              ng-show="state === 'cancel'"
-              placeholder="Question Tags">
-            </tags-input>
+        <div ng-show="state === 'cancel'">
+            <div class="row">
+                <div class="col-lg pb-2">
+                    <div class="input-group">
+                        <tags-input
+                          class="text-uppercase form-control"
+                          ng-model="question.tags"
+                          min-length="1"
+                          placeholder="Question Tags">
+                        </tags-input>
+                    </div>
+                </div>
+                <div class="col-lg" ng-show="question.trueFalse === false">
+                    <div class="input-group pb-2" ng-repeat="choice in question.choices">
+                        <span class="input-group-btn">
+                            <button
+                                class="btn btn-success"
+                                ng-class="{ 'active': choice.answer == true }"
+                                type="button"
+                                ng-click="answerSelected($index)"
+                                ng-disabled="question.choices.length === 1">
+                                    <i class="fa fa-check fa-fw" aria-hidden="true" ng-show="choice.answer == true"></i>
+                                    <i class="fa fa-ellipsis-h fa-fw" aria-hidden="true" ng-show="choice.answer == false"></i>
+                            </button>
+                        </span>
+                        <input type="text" class="form-control" placeholder="Enter Answer" ng-model="choice.text">
+                        <span class="input-group-btn">
+                            <button class="btn btn-danger" type="button" ng-click="removeChoice($index)" ng-disabled="question.choices.length === 1">
+                                <i class="fa fa-times fa-fw" aria-hidden="true"></i>
+                            </button>
+                        </span>
+                    </div>
+                    <div class="container-fluid p-0 m-0 answer text-center align-middle" ng-click="addNewChoice()">
+                        <p class="m-0">
+                            Add Answer
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <!-- <pre>

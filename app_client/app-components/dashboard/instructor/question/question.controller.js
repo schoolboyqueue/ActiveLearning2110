@@ -22,7 +22,36 @@ app.controller('Instructor.Question.Controller', function($scope, $state, $rootS
 
     $scope.question = {
         html: {},
-        tags: []
+        trueFalse: true,
+        tags: [],
+        choices: [{
+            id: 1,
+            answer: true
+        }]
+    };
+
+    $scope.addNewChoice = function() {
+        var newItemNo = $scope.question.choices.length + 1;
+        $scope.question.choices.push({
+            id: newItemNo,
+            answer: false
+        });
+    };
+
+    $scope.answerSelected = function(index) {
+        $scope.question.choices[index].answer = true;
+        for (var i in $scope.question.choices) {
+            if (i != index) {
+                $scope.question.choices[i].answer = false;
+            }
+        }
+    };
+
+    $scope.removeChoice = function(index) {
+        $scope.question.choices.splice(index, 1);
+        if ($scope.question.choices.length == 1) {
+            $scope.question.choices[0].answer = true;
+        }
     };
 
     $scope.edit = function() {
