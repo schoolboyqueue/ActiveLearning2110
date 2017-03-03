@@ -38,7 +38,6 @@ var app = angular
 app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLoadProvider, tooltipsConfProvider) {
 
     tooltipsConfProvider.configure({
-        'smart':true,
         'size':'small',
         'showTrigger': 'mouseenter',
         'hideTrigger': 'mouseleave'
