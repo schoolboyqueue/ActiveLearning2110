@@ -10,17 +10,13 @@
                 <form name="profileForm">
                     <div class="image-upload text-center">
                         <label for="file-input">
-                            <img data-ng-src="{{photo}}" ng-hide="selectedPhoto" ng-class="{ 'handCursor': edit }" class="rounded"/>
-                            <div class="cropArea" ng-hide="!selectedPhoto">
-                                <img ng-src="{{selectedPhoto}}" width="400px" height="300px" class="rounded"/>
-                            </div>
+                            <img data-ng-src="{{photo}}" ng-class="{ 'handCursor': edit }" class="rounded"/>
                         </label>
                         <input
                             type="file"
                             id="file-input"
                             picread="selectedPhoto"
                             context="context"
-                            photo="selectedPhoto"
                             ng-disabled="!edit"
                             accept="image/jpeg"
                             style="display: none;" />

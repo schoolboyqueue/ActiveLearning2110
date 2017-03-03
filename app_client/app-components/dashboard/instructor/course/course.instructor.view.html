@@ -111,7 +111,13 @@
                 {{lecture.schedule.day}}
             </td>
             <td class="align-middle" title="'Edit'">
-                <button type="button" class="btn btn-info btn-sm">Edit</button>
+                <button
+                    type="button"
+                    class="btn btn-info btn-sm"
+                    ui-sref="main.instructor_edit_lecture({
+                        selectedCourse: course_index,
+                        selectedLecture: $index
+                    })">Edit</button>
             </td>
         </tr>
     </table>

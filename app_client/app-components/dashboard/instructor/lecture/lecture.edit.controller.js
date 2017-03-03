@@ -15,6 +15,9 @@
 
 var app = angular.module('app');
 
-app.controller('Instructor.Lecture.Edit.Controller', function($scope) {
+app.controller('Instructor.Lecture.Edit.Controller', function($scope, $localStorage, $stateParams, $rootScope) {
+
+    $rootScope.$stateParams = $stateParams;
+    $scope.lecture = $localStorage.courses[$stateParams.selectedCourse].lectures[$stateParams.selectedLecture];
 
 });

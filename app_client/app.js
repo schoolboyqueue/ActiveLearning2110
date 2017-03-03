@@ -38,7 +38,6 @@ var app = angular
 app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLoadProvider, tooltipsConfProvider) {
 
     tooltipsConfProvider.configure({
-        'smart':true,
         'size':'small',
         'showTrigger': 'mouseenter',
         'hideTrigger': 'mouseleave'
@@ -197,6 +196,10 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
         .state('main.instructor_edit_lecture', {
             url: '/instructor/edit_lecture',
             templateUrl: 'app-components/dashboard/instructor/lecture/lecture.edit.view.html',
+            params: {
+                selectedCourse: null,
+                selectedLecture: null
+            },
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load('instructor.edit.lecture');

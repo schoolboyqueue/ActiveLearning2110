@@ -11,6 +11,10 @@ html, body {
     overflow-x: hidden;
 }
 
+tooltip {
+    z-index: 9999;
+}
+
 a:link,
 a:visited,
 a:hover,
@@ -324,6 +328,24 @@ button.close {
     background-color: #fff;
     border-top: 0px;
     font-size: 14px;
+}
+
+.answer {
+    border: 2px dashed rgba(0, 0, 0, 0.200);
+    color: rgba(0, 0, 0, 0.200);
+    font-size: 24px;
+    cursor: pointer;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    -webkit-transition: all 0.5s ease;
+}
+
+.answer:hover {
+    color: rgba(0, 0, 0, 0.500);
+    border: 2px dashed #45b7cd;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    -webkit-transition: all 0.5s ease;
 }
 
 .ct-inspector {
