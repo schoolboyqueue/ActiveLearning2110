@@ -11,7 +11,7 @@
                 <button
                     type="button"
                     class="btn btn-secondary btn-sm active"
-                    ng-click="question.trueFalse = !question.trueFalse"
+                    ng-click="question.trueFalse = !question.trueFalse; setChoicesTrueFalse()"
                     data-toggle="button"
                     ng-show="state === 'cancel'"
                     aria-pressed="true"
@@ -39,7 +39,7 @@
                 </p>
             </div>
         </div>
-        <div ng-show="state === 'cancel'">
+        <div class="pt-4" ng-show="state === 'cancel'">
             <div class="row">
                 <div class="col-lg pb-2">
                     <div class="input-group">
@@ -51,7 +51,7 @@
                         </tags-input>
                     </div>
                 </div>
-                <div class="col-lg" ng-show="question.trueFalse === false">
+                <div class="col-lg">
                     <div class="input-group pb-2" ng-repeat="choice in question.choices">
                         <span class="input-group-btn">
                             <button
@@ -65,13 +65,13 @@
                             </button>
                         </span>
                         <input type="text" class="form-control" placeholder="Enter Answer" ng-model="choice.text">
-                        <span class="input-group-btn">
+                        <span class="input-group-btn" ng-show="question.trueFalse == false">
                             <button class="btn btn-danger" type="button" ng-click="removeChoice($index)" ng-disabled="question.choices.length === 1">
                                 <i class="fa fa-times fa-fw" aria-hidden="true"></i>
                             </button>
                         </span>
                     </div>
-                    <div class="container-fluid p-0 m-0 answer text-center align-middle" ng-click="addNewChoice()">
+                    <div class="container-fluid p-0 m-0 answer text-center align-middle" ng-click="addNewChoice()" ng-show="question.trueFalse == false">
                         <p class="m-0">
                             Add Answer
                         </p>
