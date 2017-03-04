@@ -17,34 +17,23 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var schedule = {
-    semester: {
+var lecture_snapshot = {
+    lecture_id: {
         type: String,
         required: true
     },
-    days: {
-        type: [{
+    title: {
+        type: String,
+        required: true
+    },
+    schedule: {
+        day: {
             type: String,
             enum: ['mon', 'tue', 'wed', 'thu', 'fri']
-        }]
+        },
+        date: String
     },
-    time: {
-        type: String,
-        required: true
-    }
-};
-
-var instructor = {
-    instructor_id: String,
-    username: String,
-    firstname: String,
-    lastname: String
-};
-
-var lecture_snapshot = {
-    instructor_id: String,
-    title: String,
-    date: String
+    "_id": false
 };
 
 var StudentSchema = new Schema({
@@ -78,45 +67,6 @@ var StudentSchema = new Schema({
         default: Date.now
     },
     "_id": false
-});
-
-var QuestionSchema = new Schema({
-    question_num: Number,
-    question_body: String,
-    answer_choices: [String],
-    answer: Number
-});
-
-var LectureSchema2 = new Schema({
-    number: Number,
-    title: String,
-    schedule: {
-        days: {
-            type: String,
-            enum: ['mon', 'tue', 'wed', 'thu', 'fri']
-        },
-        time: {
-            type: Date,
-            required: true
-        }
-    }
-});
-
-var LectureSchema = new Schema({
-    title: {
-        type: String,
-        required: true
-    },
-    number: Number,
-    schedule: {
-        day: {
-            type: String,
-            enum: ['mon', 'tue', 'wed', 'thu', 'fri']
-        },
-        date: String,
-        time: String,
-        iso: Date
-    }
 });
 
 var SectionSchema = new Schema({
@@ -188,20 +138,7 @@ var CourseSchema = new Schema({
         required: true,
         unique: true
     },
-    lectures: [
-        LectureSchema
-    ]
+    lectures: [lecture_snapshot]
 });
-
-CourseSchema.methods.lectureOneQuestions = function(question_array) {
-    var question1 = {
-        question_num: 1,
-        question_body: 'this is a test question',
-        answer_choices: ['a', 'b', 'c', 'd'],
-        answer: 0
-    };
-    question_array.push(question1);
-    return question_array;
-};
 
 module.exports = mongoose.model('Course', CourseSchema);
