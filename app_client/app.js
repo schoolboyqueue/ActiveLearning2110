@@ -37,6 +37,10 @@ var app = angular
 
 app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLoadProvider, tooltipsConfProvider) {
 
+    ContentTools.StylePalette.add([
+        new ContentTools.Style('Muted', 'text-muted', ['p'])
+    ]);
+
     tooltipsConfProvider.configure({
         'size':'small',
         'showTrigger': 'mouseenter',

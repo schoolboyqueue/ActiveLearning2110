@@ -26,14 +26,50 @@ app.controller('Instructor.Question.Controller', function($scope, $state, $rootS
         tags: [],
         choices: [{
             id: 1,
+            text: "True",
             answer: true
+        }, {
+            id: 2,
+            text: "False",
+            answer: false
         }]
+    };
+
+    $scope.setChoicesTrueFalse = function() {
+        if ($scope.question.trueFalse === true) {
+            $scope.question.choices = [{
+                id: 1,
+                text: "True",
+                answer: true
+            }, {
+                id: 2,
+                text: "False",
+                answer: false
+            }];
+        } else {
+            $scope.question.choices = [{
+                id: 1,
+                text: "",
+                answer: true
+            }];
+        }
+    };
+
+    $scope.answersEmpty = function() {
+        var empty = false;
+        for (var i in $scope.question.choices) {
+            if ($scope.question.choices[i].text === '') {
+                return true;
+            }
+        }
+        return empty;
     };
 
     $scope.addNewChoice = function() {
         var newItemNo = $scope.question.choices.length + 1;
         $scope.question.choices.push({
             id: newItemNo,
+            text: "",
             answer: false
         });
     };
