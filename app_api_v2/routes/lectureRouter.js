@@ -20,53 +20,15 @@ var lectureRouter = express.Router();
 var lectureController = require('./../controllers/lectureController');
 var tokenController = require('./../controllers/tokenController');
 
-
 /**
-Create Lecture
+Add Question
 
-POST	/api_v2/lectures
-
-Authentication:   user token
-Authorization:    admin, instructor
-
-Path Parameters:  question_id String	required
-Query String:     none
-Request Body: application/json
-{
-	"title"	: String Required
-}
-**/
-lectureRouter.route('/:COURSEID')
-    .post(tokenController.validateToken,
-        tokenController.refreshToken,
-        lectureController.savedLectureToDB);
-
-/**
-Delete Lecture
-
-DELETE	/api_v2/lecture/{lecture_id}/course/{course_id}/
+POST	/api_v2/lecture/{lecture_id}/questions/{question_id}/
 
 Authentication:   user token
 Authorization:    instructor
 
-Path Parameters:  lecture_id, course_id String	required
-Query String:     none
-Request Body: 	  none
-**/
-lectureRouter.route('/:LECTUREID/course/:COURSEID')
-    .delete(tokenController.validateToken,
-        tokenController.refreshToken,
-        lectureController.deleteLecture);
-
-/**
-Add Question
-
-POST	/api_v2/lecture/{lecture_id}/questions
-
-Authentication:   user token
-Authorization:    admin, instructor
-
-Path Parameters:  lecture_id String	required
+Path Parameters:  lecture_id, question_id String	required
 Query String:     none
 Request Body: 	  none
 **/
@@ -81,7 +43,7 @@ Remove Question
 DELETE	/api_v2/lecture/{lecture_id}/questions{question_id}/
 
 Authentication:   user token
-Authorization:    admin, instructor
+Authorization:    instructor
 
 Path Parameters:  lecture_id, question_id String	required
 Query String:     none
@@ -125,7 +87,6 @@ lectureRouter.route('/:LECTUREID/questionset/:QUESTIONSETID')
     .post(tokenController.validateToken,
         tokenController.refreshToken,
         lectureController.addQuestionSet);
-
 
 
 module.exports = lectureRouter;

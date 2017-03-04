@@ -51,10 +51,7 @@ Authorization:    instructor
 
 Path Parameters:  question_id String	required
 Query String:     none
-Request Body: application/json
-{
-	"question_id"				: [String] Required
-}
+Request Body: 	  none
 **/
 questionRouter2.route('/:QUESTIONID')
     .put(tokenController.validateToken,
@@ -62,32 +59,12 @@ questionRouter2.route('/:QUESTIONID')
         questionController2.copyQuestion);
 
 /**
-Save QuestionSet
-
-POST	/api_v2/questions/questionSet/
-
-Authentication:   user token
-Authorization:    admin, instructor
-
-Path Parameters:  question_id String	required
-Query String:     none
-Request Body: application/json
-{
-	"question_ids"				: [String] Required
-}
-**/
-questionRouter2.route('/questionSet')
-    .post(tokenController.validateToken,
-        tokenController.refreshToken,
-        questionController2.savedQuestionSetToDB);
-
-/**
 Delete Question
 
 DELETE	/api_v2/questions2/{question_id}/
 
 Authentication:   user token
-Authorization:    admin, instructor
+Authorization:    instructor
 
 Path Parameters:  question_id String	required
 Query String:     none
