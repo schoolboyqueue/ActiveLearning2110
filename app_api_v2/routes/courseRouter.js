@@ -113,26 +113,6 @@ courseRouter.route('/:COURSEID/sections/:SECTIONID/students')
         courseController.instructorAddStudent);
 
 /**
-GET STUDENTS IN COURSE
-
-GET	/api_v2/course/{course_id}/students
-
-Authentication:   user token
-Authorization:    instructor
-
-Path Parameters:  course_id String    required
-Query String:     none
-Request Body:     application/json    required
-{
-  "course_key":   String              required
-}
-**/
-courseRouter.route('/:COURSEID/students')
-    .get(tokenController.validateToken,
-        tokenController.refreshToken,
-        courseController.getStudents);
-
-/**
 DELETE STUDENT FROM SECTION
 
 DELETE	/api_v2/course/{course_id}/sections/{section_id}/students/{user_id}/
@@ -168,23 +148,6 @@ courseRouter.route('/:COURSEID')
         courseController.getCourse);
 
 /**
-GET COURSE SECTION NAMES
-
-GET	/api_v2/course/{course_id}/sections
-
-Authentication:   user token
-Authorization:    instructor
-
-Path Parameters:  course_id String    required
-Query String:     none
-Request Body:     none
-**/
-courseRouter.route('/:COURSEID/sections')
-    .get(tokenController.validateToken,
-        tokenController.refreshToken,
-        courseController.getSectionNames);
-
-/**
 CREATE COURSE LECTURE
 
 POST	/api_v2/course/{course_id}/lectures
@@ -197,12 +160,10 @@ Query String:     none
 Request Body:     application/json    required
 {
     "lecture_title":        String              required
-    "lecture_number":       String              required
     "lecture_schedule":
     {
         "day":      String              required     enum ["mon", "tue", "wed", "thu", "fri"] required
         "date":     String              required     'YYYY-MM-DD'
-        "time":     String              required     'HH:MM:SS'
     }
 }
 **/
@@ -210,7 +171,25 @@ courseRouter.route('/:COURSEID/lectures')
     .post(tokenController.validateToken,
         tokenController.refreshToken,
         authorizeController.instructor,
-        courseController.createLecture);
+        lectureController.savedLectureToDB);
+
+/**
+GET COURSE LECTURES
+
+GET	/api_v2/course/{course_id}/lectures
+
+Authentication:   user token
+Authorization:    instructor
+
+Path Parameters:  course_id String    required
+Query String:     none
+Request Body:     none
+**/
+courseRouter.route('/:COURSEID/lectures')
+    .post(tokenController.validateToken,
+        tokenController.refreshToken,
+        authorizeController.instructor,
+        lectureController.getCourseLectures);
 
 /**
 DELETE COURSE LECTURE
@@ -228,24 +207,6 @@ courseRouter.route('/:COURSEID/lectures/:LECTUREID')
     .delete(tokenController.validateToken,
         tokenController.refreshToken,
         authorizeController.instructor,
-        courseController.deleteLecture);
-
-/**
-GET COURSE LECTURES
-
-GET	/api_v2/course/{course_id}/lectures
-
-Authentication:   user token
-Authorization:    instructor
-
-Path Parameters:  course_id String     required
-Query String:     none
-Request Body:     none
-**/
-courseRouter.route('/:COURSEID/lectures')
-    .get(tokenController.validateToken,
-        tokenController.refreshToken,
-        authorizeController.instructor,
-        courseController.getLectures);
+        lectureController.deleteLecture);
 
 module.exports = courseRouter;
