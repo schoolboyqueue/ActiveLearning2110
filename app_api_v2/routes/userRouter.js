@@ -22,6 +22,7 @@ var courseController = require('./../controllers/courseController');
 var tokenController = require('./../controllers/tokenController');
 var authorizeController = require('./../controllers/authorizeController');
 var inputController = require('./../controllers/inputController');
+var questionController2 = require('./../controllers/questionController2');
 
 
 /**
@@ -170,5 +171,38 @@ userRouter.route('/:USERID/deactivate')
         authorizeController.admin,
         userController.deactivateUser);
 
+/**
+Get All Instructor Questions
+
+GET	/api_v2/user/{instructor_id}/questions
+
+Authentication:   user token
+Authorization:    instructor
+
+Path Parameters:  question_id String	required
+Query String:     none
+Request Body: 	  none
+**/
+userRouter.route('/:USERID/questions')
+    .get(tokenController.validateToken,
+        tokenController.refreshToken,
+        questionController2.getAllInstructorQuestions);
+
+/**
+Get All Instructor Question Sets
+
+GET	/api_v2/user/{instructor_id}/questionset
+
+Authentication:   user token
+Authorization:    instructor
+
+Path Parameters:  question_id String	required
+Query String:     none
+Request Body: 	  none
+**/
+userRouter.route('/:USERID/questionsets')
+    .get(tokenController.validateToken,
+        tokenController.refreshToken,
+        questionController2.getAllQuestionSets);
 
 module.exports = userRouter;

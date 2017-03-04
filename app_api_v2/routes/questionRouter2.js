@@ -42,6 +42,23 @@ questionRouter2.route('/')
         questionController2.savedQuestionToDB);
 
 /**
+Get All Questions
+
+GET	/api_v2/questions2
+
+Authentication:   user token
+Authorization:    instructor
+
+Path Parameters:  question_id String	required
+Query String:     none
+Request Body: 	  none
+**/
+questionRouter2.route('/')
+    .post(tokenController.validateToken,
+        tokenController.refreshToken,
+        questionController2.getAllQuestions);
+
+/**
 Copy Question From Existing
 
 PUT	/api_v2/questions2/{question_id}/
