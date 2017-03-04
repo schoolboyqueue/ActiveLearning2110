@@ -18,7 +18,8 @@
                     autocomplete="off">
                     T/F
                 </button>
-                <button type="button" class="btn btn-success btn-sm" ng-click="save()" ng-disabled="state === 'edit' || question.tags.length === 0">
+                <button type="button" class="btn btn-success btn-sm" ng-click="save()"
+                ng-disabled="state === 'edit' || question.tags.length === 0 || question.choices.length < 2 || answersEmpty()">
                     <i class="fa fa-check fa-fw" aria-hidden="true"></i>
                 </button>
             </div>
@@ -39,6 +40,14 @@
                 </p>
             </div>
         </div>
+        <div class="pt-4" ng-show="state === 'edit'">
+            <div class="form-check radio radio-success" ng-repeat="choice in question.choices">
+                <input class="form-check-input" type="radio" name="choices" id="{{choice.id}}" value="{{choice.id}}">
+                <label for="{{choice.id}}">
+                    {{choice.text}}
+                </label>
+            </div>
+        </div>
         <div class="pt-4" ng-show="state === 'cancel'">
             <div class="row">
                 <div class="col-lg pb-2">
@@ -47,7 +56,7 @@
                           class="text-uppercase form-control"
                           ng-model="question.tags"
                           min-length="1"
-                          placeholder="Question Tags">
+                          placeholder="Question Tags (Required)">
                         </tags-input>
                     </div>
                 </div>
@@ -71,7 +80,7 @@
                             </button>
                         </span>
                     </div>
-                    <div class="container-fluid p-0 m-0 answer text-center align-middle" ng-click="addNewChoice()" ng-show="question.trueFalse == false">
+                    <div class="container-fluid p-0 m-0 answer text-center align-middle" ng-click="addNewChoice()" ng-show="question.trueFalse == false && question.choices.length <= 6">
                         <p class="m-0">
                             Add Answer
                         </p>
