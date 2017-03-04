@@ -21,6 +21,69 @@ var QuestionSet = require('./../models/questionSetModel');
 var rand = require("random-key");
 
 
+var getAllQuestions = function(req, res) {
+    console.log('questionController2 getAllQuestions');
+
+    Question2.find()
+        .exec()
+        .then(function(questions) {
+            return res.status(200).json({
+                success: true,
+                jwt_token: req.token,
+                questions: questions,
+                message: "Success on getAllQuestions"
+            });
+        })
+        .catch(function(err) {
+            return res.status(500).json({
+                success: false,
+                message: 'Internal Error'
+            });
+        });
+};
+
+var getAllInstructorQuestions = function(req, res) {
+    console.log('questionController2 getAllInstructorQuestions');
+
+    Question2.find({"instructor_id": req.params.USERID})
+        .exec()
+        .then(function(questions) {
+            return res.status(200).json({
+                success: true,
+                jwt_token: req.token,
+                questions: questions,
+                message: "Success on getAllInstructorQuestions"
+            });
+        })
+        .catch(function(err) {
+            return res.status(500).json({
+                success: false,
+                message: 'Internal Error'
+            });
+        });
+};
+
+var getAllQuestionSets = function(req, res) {
+    console.log('questionController2 getAllQuestionSets');
+
+    QuestionSet.find({"instructor_id": req.params.USERID})
+        .exec()
+        .then(function(questionsets) {
+            return res.status(200).json({
+                success: true,
+                jwt_token: req.token,
+                questionsets: questionsets,
+                message: "Success on getAllQuestionSets"
+            });
+        })
+        .catch(function(err) {
+            return res.status(500).json({
+                success: false,
+                message: 'Internal Error'
+            });
+        });
+};
+
 var savedQuestionToDB = function(req, res) {
     console.log('questionController2 savedQuestionToDB');
 
@@ -186,5 +249,8 @@ module.exports = {
     copyQuestion     : copyQuestion,
     deleteQuestion: deleteQuestion,
     editQuestion: editQuestion,
+    getAllQuestions : getAllQuestions,
+    getAllQuestionSets : getAllQuestionSets,
+    getAllInstructorQuestions: getAllInstructorQuestions,
     savedQuestionSetToDB: savedQuestionSetToDB
 };
