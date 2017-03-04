@@ -226,7 +226,7 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
     service.CreateLecture = function(info, callback) {
         baseREST.one("course", info.course_id).one("lectures").post("", info.data).then(
             function(response) {
-                UserStorage.UpdateCourseLectures(response.course_id, response.lectures);
+                UserStorage.UpdateCourseLectures(info.course_id, response.lectures);
                 callback(genRetInfo(response));
             },
             function(response) {
