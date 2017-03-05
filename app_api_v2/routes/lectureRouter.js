@@ -38,6 +38,26 @@ lectureRouter.route('/:LECTUREID/questions/:QUESTIONID')
         lectureController.addQuestionToLecture);
 
 /**
+Reorder Lecture Question
+
+POST	/api_v2/lecture/{lecture_id}/questions{question_id}/reorder
+
+Authentication:   user token
+Authorization:    instructor
+
+Path Parameters:  lecture_id String	required
+Query String:     none
+{
+	"index"				: Number Required This is the index where you want the question to go
+}
+**/
+lectureRouter.route('/:LECTUREID/questions/:QUESTIONID/reorder')
+    .post(tokenController.validateToken,
+        tokenController.refreshToken,
+        lectureController.reorderQuestion);
+
+
+/**
 Remove Question
 
 DELETE	/api_v2/lecture/{lecture_id}/questions{question_id}/
@@ -64,7 +84,9 @@ Authorization:    instructor
 
 Path Parameters:  lecture_id String	required
 Query String:     none
-Request Body: 	  none
+{
+	"title"				: String Required
+}
 **/
 lectureRouter.route('/:LECTUREID/questionset')
     .post(tokenController.validateToken,
@@ -87,6 +109,31 @@ lectureRouter.route('/:LECTUREID/questionset/:QUESTIONSETID')
     .post(tokenController.validateToken,
         tokenController.refreshToken,
         lectureController.addQuestionSet);
+
+/**
+Edit Lecture title or schedule
+
+POST	/api_v2/lecture/{lecture_id}/
+
+Authentication:   user token
+Authorization:    instructor
+
+Path Parameters:  lecture_id String	required
+Query String:     none
+Request Body:     application/json    required
+{
+    "title":        String              optional
+    "schedule":                         optional
+    {
+        "day":      String              required     enum ["mon", "tue", "wed", "thu", "fri"] required
+        "date":     String              required     'YYYY-MM-DD'
+    }
+}
+**/
+lectureRouter.route('/:LECTUREID')
+    .post(tokenController.validateToken,
+        tokenController.refreshToken,
+        lectureController.editLecture);
 
 
 module.exports = lectureRouter;

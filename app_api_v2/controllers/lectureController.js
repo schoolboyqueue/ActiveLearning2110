@@ -69,8 +69,6 @@ var addQuestionSet = function(req, res) {
 var addQuestionToLecture = function(req, res) {
     console.log('lectureController addQuestionToLecture');
 
-    console.log(req.body);
-
     Question2.findById(req.params.QUESTIONID)
         .exec()
         .then(function(question) {
@@ -78,7 +76,6 @@ var addQuestionToLecture = function(req, res) {
             return Lecture.findById(req.params.LECTUREID);
         })
         .then(function(lecture) {
-            console.log(lecture);
             var question = {
                 title: req.question.title,
                 question_id: req.params.QUESTIONID
@@ -117,7 +114,36 @@ var deleteLecture = function(req, res) {
           return res.status(200).json({
               success: true,
               jwt_token: req.token,
+              message: 'Lecture Deleted',
               lectures: req.course.lectures
+          });
+      })
+      .catch(function(err) {
+          return res.status(404).json({
+              success: false,
+              message: err.message
+          });
+      });
+};
+
+var editLecture = function(req, res) {
+    console.log('lectureController editLecture');
+
+    Lecture.findByIdAndUpdate(req.params.LECTUREID,
+      {$set: { title: req.body.title, schedule: req.body.schedule }},
+      {new: true})
+      .exec()
+      .then(function(lecture) {
+          return Course.findOneAndUpdate({"_id":lecture.course_id, "lectures.lecture_id": req.params.LECTUREID},
+                  {$set: {"lectures.$.title": req.body.title ,"lectures.$.schedule": req.body.schedule}},
+                  {new: true});
+      })
+      .then(function(course) {
+          return res.status(200).json({
+              success: true,
+              jwt_token: req.token,
+              message: 'Lecture Edited',
+              lectures: course.lectures
           });
       })
       .catch(function(err) {
@@ -173,6 +199,41 @@ var removeQuestion = function(req, res) {
       });
 };
 
+var reorderQuestion = function(req, res) {
+    console.log('lectureController reorderQuestion');
+
+    Question2.findById(req.params.QUESTIONID)
+        .exec()
+        .then(function(question) {
+            req.question = question;
+            return Lecture.findByIdAndUpdate(req.params.LECTUREID,
+              {$pull: {"questions": {"question_id": req.params.QUESTIONID}}},
+              {new: true});
+        })
+        .then(function(lecture) {
+            var question = {
+                title: req.question.title,
+                question_id: req.question._id.toString()
+            };
+            lecture.questions.splice(req.body.index, 0, question);
+            return lecture.save();
+        })
+        .then(function(lecture) {
+            return res.status(200).json({
+                success: true,
+                jwt_token: req.token,
+                message: 'Reorder Complete',
+                lecture: lecture
+            });
+        })
+        .catch(function(err) {
+            return res.status(404).json({
+                success: false,
+                message: err.message
+            });
+        });
+};
+
 var savedLectureToDB = function(req, res) {
     console.log('lectureController savedLectureToDB');
 
@@ -213,73 +274,11 @@ var savedLectureToDB = function(req, res) {
                 message: err.message
             });
         });
-    /*
-    Course.findById(req.params.COURSEID)
-        .exec()
-        .then(function(course) {
-            console.log(course);
-            req.course = course;
-            var newLecture = new Lecture({
-                title: req.body.title,
-                instructor_id: req.decodedToken.sub,
-                course_id:  req.params.COURSEID,
-                schedule: req.body.lecture_schedule
-            });
-            return newLecture.save();
-        })
-        .then(function(lecture) {
-            var new_lecture_snapshot =
-            {
-                lecture_id  :  lecture._id.toString(),
-                title       :  lecture.title
-            };
-            req.course.lectures.push(new_lecture_snapshot);
-            return req.course.save();
-        })
-        .then(function(course) {
-            return res.status(201).json({
-                success: true,
-                jwt_token: req.token,
-                message: 'Lecture Creation Successsful',
-                lectures: course.lectures
-            });
-        })
-        .catch(function(err) {
-            return res.status(404).json({
-                success: false,
-                message: err.message
-            });
-        });
-        */
-
-    /*
-    var newLecture = new Lecture({
-        title: req.body.title,
-        instructor_id: req.decodedToken.sub,
-        course_id:  req.params.COURSEID,
-        schedule: req.body.lecture_schedule
-    });
-
-    newLecture.save()
-    .then(function(lecture) {
-        return res.status(200).json({
-            success: true,
-            jwt_token: req.token,
-            message: 'Lecture Created',
-            lecture: lecture
-        });
-    })
-    .catch(function(err) {
-        return res.status(404).json({
-            success: false,
-            message: err.message
-        });
-    });
-    */
 };
 
 var saveQuestionSet = function(req, res) {
     console.log('lectureController saveQuestionSet');
+
     Lecture.findById(req.params.LECTUREID)
         .exec()
         .then(function(lecture) {
@@ -318,8 +317,10 @@ module.exports = {
     addQuestionSet      : addQuestionSet,
     addQuestionToLecture: addQuestionToLecture,
     deleteLecture       : deleteLecture,
+    editLecture         : editLecture,
     getCourseLectures   : getCourseLectures,
     removeQuestion      : removeQuestion,
+    reorderQuestion     : reorderQuestion,
     savedLectureToDB    : savedLectureToDB,
     saveQuestionSet     : saveQuestionSet
 };

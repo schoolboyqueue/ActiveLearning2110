@@ -26,7 +26,8 @@ var QuestionSchema2 = new Schema({
         type: String,
         required: true,
     },
-    copy: Boolean
+    copy: Boolean,
+    tags: [String]
 });
 
 module.exports = mongoose.model('Question2', QuestionSchema2);
