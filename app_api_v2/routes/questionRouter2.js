@@ -33,7 +33,8 @@ Path Parameters:  question_id String	required
 Query String:     none
 Request Body: application/json
 {
-	"title"				: [String] Required
+	"title"				: String Required
+  "tags"        : [String] 
 }
 **/
 questionRouter2.route('/')

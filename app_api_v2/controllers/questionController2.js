@@ -18,7 +18,6 @@
 var User = require('./../models/userModel');
 var Question2 = require('./../models/questionModel2');
 var QuestionSet = require('./../models/questionSetModel');
-var rand = require("random-key");
 
 
 var getAllQuestions = function(req, res) {
@@ -89,7 +88,8 @@ var savedQuestionToDB = function(req, res) {
 
     var newQuestion = new Question2({
         title: req.body.title,
-        instructor_id: req.decodedToken.sub
+        instructor_id: req.decodedToken.sub,
+        tags: req.body.tags
     });
 
     newQuestion.save()
