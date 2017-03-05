@@ -23,6 +23,11 @@ var tokenController = require('./../controllers/tokenController');
 /**
 Add Question
 
+IMPORTANT-Instructor ID's on both lecture and question must match. If you
+are attempting to add a question created by another instructor you must
+first call the copy question from existing API call and then add the
+copy to the lecture.
+
 POST	/api_v2/lecture/{lecture_id}/questions/{question_id}/
 
 Authentication:   user token
