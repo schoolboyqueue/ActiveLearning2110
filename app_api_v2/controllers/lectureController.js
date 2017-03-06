@@ -72,6 +72,15 @@ var addQuestionToLecture = function(req, res) {
     Question2.findById(req.params.QUESTIONID)
         .exec()
         .then(function(question) {
+            return new Promise((resolve, reject) => {
+                if (question.instructor_id !== req.decodedToken.sub) {
+                  var error_message = new Error('This Question Must Be Duplicated Before It Can Be Added To Lecture');
+                  reject(error_message);
+                }
+                resolve(question);
+            });
+        })
+        .then(function(question) {
             req.question = question;
             return Lecture.findById(req.params.LECTUREID);
         })
