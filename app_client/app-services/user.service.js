@@ -133,6 +133,9 @@ app.directive('ngEditor', function() {
             var regions = scope.editor.regions();
             for (var postId in regions) {
                 payload[postId] = regions[postId].html();
+                if (postId === 'title') {
+                    payload.titleText = regions[postId]._domElement.innerText.trim();
+                }
             }
             scope.value = payload;
         });

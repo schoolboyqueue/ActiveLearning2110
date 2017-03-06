@@ -1,6 +1,6 @@
 <div class="container-fluid p-5" ng-controller="Instructor.Question.Controller">
     <div class="container-fluid">
-        <div class="d-flex justify-content-end pb-2">
+        <div class="d-flex justify-content-between pb-2">
             <div class="btn-group" role="group">
                 <button type="button" class="btn btn-info btn-sm" ng-click="edit()" ng-show="state === 'edit'">
                     <i class="fa fa-pencil-square fa-fw" aria-hidden="true"></i>
@@ -18,10 +18,16 @@
                     autocomplete="off">
                     T/F
                 </button>
-                <button type="button" class="btn btn-success btn-sm" ng-click="save()"
-                ng-disabled="state === 'edit' || question.tags.length === 0 || question.choices.length < 2 || answersEmpty()">
-                    <i class="fa fa-check fa-fw" aria-hidden="true"></i>
+                <button
+                    type="button"
+                    class="btn btn-success btn-sm"
+                    ng-click="save()"
+                    ng-disabled="state === 'edit' || question.tags.length === 0 || question.choices.length < 2 || answersEmpty()">
+                        <i class="fa fa-check fa-fw" aria-hidden="true"></i>
                 </button>
+            </div>
+            <div>
+                <button type="button" class="btn btn-success btn-sm" ng-show="question.html.title != null" ng-click="submit()">Submit</button>
             </div>
         </div>
         <div ng-editor="question-container" value="question.html" editor="editor">
@@ -41,7 +47,7 @@
             </div>
         </div>
         <div class="d-flex justify-content-end p-0" nt-show="state === 'edit'">
-            <span class="badge badge-default mr-1" ng-repeat="tag in question.tags">{{tag.text}}</span>
+            <span class="badge badge-default mr-1 text-uppercase" ng-repeat="tag in question.tags">{{tag.text}}</span>
         </div>
         <div class="pt-4" ng-show="state === 'edit'">
             <div class="form-check radio radio-success" ng-repeat="choice in question.choices">

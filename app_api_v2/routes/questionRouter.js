@@ -55,10 +55,10 @@ Path Parameters:  question_id String    required
 Query String:     none
 Request Body: application/json
 {
-    "tags"              : [String]      Required
-    "problem_statement" : String        Required
-    "answer_choices"    : [String]      Required
-    "answer"            : Number
+    "tags":                 [String]    required
+    "problem_statement":    String      required
+    "answer_choices":       [String]    required
+    "answer":               Number
 }
 **/
 questionRouter.route('/')

@@ -5,7 +5,7 @@
 //  Active Learning 2110                                    //
 //                                                          //
 //  Created by Amy Zhuang on 2/5/17.                        //
-//  Copyright © 2017 Amy Zhuang. All rights reserved.        //
+//  Copyright © 2017 Amy Zhuang. All rights reserved.       //
 //                                                          //
 //  Date        Name        Description                     //
 //  -------     ---------   --------------                  //

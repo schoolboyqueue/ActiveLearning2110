@@ -15,13 +15,17 @@
 
 var app = angular.module('app');
 
-app.controller('Instructor.Question.Controller', function($scope, $state, $rootScope) {
+app.controller('Instructor.Question.Controller', function($scope, $state, $rootScope, $localStorage, RESTService, ngNotify) {
 
     $scope.state = 'edit';
     $scope.editor = null;
 
     $scope.question = {
-        html: {},
+        html: {
+            title: null,
+            titleText: null,
+            body: null
+        },
         trueFalse: true,
         tags: [],
         choices: [{
@@ -105,6 +109,17 @@ app.controller('Instructor.Question.Controller', function($scope, $state, $rootS
         $scope.editor.stop(true);
     };
 
+    $scope.submit = function() {
+        var tags = [];
+        for (var key in $scope.question.tags) {
+            tags.push($scope.question.tags[key].text);
+        }
+        RESTService.CreateQuestion({
+            title: $scope.question.html.titleText,
+            tags: tags
+        }, finishCreateQuestion);
+    };
+
     $scope.cancel = function() {
         $scope.state = 'edit';
         $scope.editor.stop(false);
@@ -115,4 +130,13 @@ app.controller('Instructor.Question.Controller', function($scope, $state, $rootS
             $scope.editor.stop(false);
         }
     });
+
+    function finishCreateQuestion(response) {
+        if (!response.success) {
+            ngNotify.set('Question creation failed: ' + response.message, 'error');
+            return;
+        }
+        ngNotify.set('Question created', 'success');
+        $state.go('main.' + $localStorage.role);
+    }
 });

@@ -308,6 +308,17 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
             );
     };
 
+    service.CreateQuestion = function(info, callback) {
+        baseREST.one("questions2").post("", info).then(
+            function(response) {
+                callback(genRetInfo(response));
+            },
+            function(response) {
+                callback(genRetInfo(response));
+            }
+        );
+    };
+
     service.Logout = function() {
         if (UserStorage.LoggedIn()) {
             baseREST.one("authenticate").remove();
