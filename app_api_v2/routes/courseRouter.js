@@ -28,28 +28,28 @@ var signupController = require('./../controllers/signupController');
 /**
 INSTRUCTOR CREATE COURSE
 
-POST	/api_v2/course
+POST    /api_v2/course
 
 Authentication:   user token
 Authorization:    instructor
 
 Path Parameters:  none
 Query String:     none
-Request Body:     application/json     required
+Request Body:     application/json      required
 {
-    "title":      String               required
-    "sections":   [
-                    {
-                      "name": String
-                    }
-                  ]                    required
+    "title":      String                required
+    "sections": [{
+        "name": String
+    }]                                  required
     "course_schedule":
     {
-        "semester": String             required
-        "days":     [String]           required     enum ["mon", "tue", "wed", "thu", "fri"] required
-        "time":     String             required
+        "semester": String              required
+        "days":     [String]            required
+        "time":     String              required
     }
 }
+
+days:   enum ["mon", "tue", "wed", "thu", "fri"]
 **/
 courseRouter.route('/')
     .post(tokenController.validateToken,
@@ -64,16 +64,16 @@ courseRouter.route('/')
 /**
 STUDENT JOIN COURSE
 
-POST	se
+POST    se
 
-Authentication:   user token
-Authorization:    student
+Authentication:     user token
+Authorization:      student
 
-Path Parameters:  none
-Query String:     none
-Request Body:     application/json    required
+Path Parameters:    none
+Query String:       none
+Request Body:       application/json    required
 {
-  "section_key":   String             required
+    "section_key":  String              required
 }
 **/
 courseRouter.route('/students')
@@ -92,13 +92,16 @@ POST  /api_v2/course/{course_id}/sections/{section_id}/students/
 Authentication:   user token
 Authorization:    instructor
 
-Path Parameters:  course_id, section_id String    required
-Query String:     none
-Request Body:     application/json    required
+Path Parameters:
+    course_id       String              required
+    section_id      String              required
+
+Query String:       none
+Request Body:       application/json    required
 {
- "username":     String              required
- "firstname":    String              required
- "lastname":     String              required
+    "username":     String              required
+    "firstname":    String              required
+    "lastname":     String              required
 }
 **/
 courseRouter.route('/:COURSEID/sections/:SECTIONID/students')
@@ -115,12 +118,15 @@ courseRouter.route('/:COURSEID/sections/:SECTIONID/students')
 /**
 DELETE STUDENT FROM SECTION
 
-DELETE	/api_v2/course/{course_id}/sections/{section_id}/students/{user_id}/
+DELETE    /api_v2/course/{course_id}/sections/{section_id}/students/{user_id}/
 
 Authentication:   user token
 Authorization:    admin, instructor or self student
 
-Path Parameters:  course_id, user_id String    required
+Path Parameters:
+    course_id   String  required
+    user_id     String  required
+
 Query String:     none
 Request Body:     none
 **/
@@ -133,7 +139,7 @@ courseRouter.route('/:COURSEID/sections/:SECTIONID/students/:USERID')
 /**
 GET COURSE INFO
 
-GET	/api_v2/course/{course_id}/
+GET    /api_v2/course/{course_id}/
 
 Authentication:   user token
 Authorization:    instructor
@@ -150,22 +156,24 @@ courseRouter.route('/:COURSEID')
 /**
 CREATE COURSE LECTURE
 
-POST	/api_v2/course/{course_id}/lectures
+POST    /api_v2/course/{course_id}/lectures
 
 Authentication:   user token
 Authorization:    instructor
 
-Path Parameters:  course_id String    required
+Path Parameters:  course_id String      required
 Query String:     none
-Request Body:     application/json    required
+Request Body:     application/json      required
 {
-    "lecture_title":        String              required
-    "lecture_schedule":
-    {
-        "day":      String              required     enum ["mon", "tue", "wed", "thu", "fri"] required
-        "date":     String              required     'YYYY-MM-DD'
+    "lecture_title":    String          required
+    "lecture_schedule": {
+        "day":  String                  required
+        "date": String                  required
     }
 }
+
+day:    enum ["mon", "tue", "wed", "thu", "fri"]
+date:   'YYYY-MM-DD'
 **/
 courseRouter.route('/:COURSEID/lectures')
     .post(tokenController.validateToken,
@@ -176,12 +184,12 @@ courseRouter.route('/:COURSEID/lectures')
 /**
 GET COURSE LECTURES
 
-GET	/api_v2/course/{course_id}/lectures
+GET    /api_v2/course/{course_id}/lectures
 
 Authentication:   user token
 Authorization:    instructor
 
-Path Parameters:  course_id String    required
+Path Parameters:  course_id String  required
 Query String:     none
 Request Body:     none
 **/
@@ -194,12 +202,15 @@ courseRouter.route('/:COURSEID/lectures')
 /**
 DELETE COURSE LECTURE
 
-DELETE	/api_v2/course/{course_id}/lectures/{lecture_id}/
+DELETE    /api_v2/course/{course_id}/lectures/{lecture_id}/
 
 Authentication:   user token
 Authorization:    instructor
 
-Path Parameters:  course_id String, lecture_id String     required
+Path Parameters:
+    course_id   String  required
+    lecture_id  String  required
+
 Query String:     none
 Request Body:     none
 **/

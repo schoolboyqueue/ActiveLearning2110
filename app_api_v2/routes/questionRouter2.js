@@ -4,8 +4,8 @@
 //  questionRouter.js                                       //
 //  Active Learning 2110                                    //
 //                                                          //
-//  Created by Amy Zhuang on 2/5/17.	                    //
-//  Copyright © 2017 Amy Zhuang. All rights reserved.	    //
+//  Created by Amy Zhuang on 2/5/17.                        //
+//  Copyright © 2017 Amy Zhuang. All rights reserved.        //
 //                                                          //
 //  Date        Name        Description                     //
 //  -------     ---------   --------------                  //
@@ -24,17 +24,17 @@ var tokenController = require('./../controllers/tokenController');
 /**
 Add Question
 
-POST	/api_v2/questions2
+POST    /api_v2/questions2
 
-Authentication:   user token
-Authorization:    instructor
+Authentication:     user token
+Authorization:      instructor
 
-Path Parameters:  question_id String	required
-Query String:     none
-Request Body: application/json
+Path Parameters:    question_id String    required
+Query String:       none
+Request Body:       application/json
 {
-	"title"				: String Required
-  "tags"        : [String] 
+    "title":        String                required
+    "tags":         [String]
 }
 **/
 questionRouter2.route('/')
@@ -45,14 +45,14 @@ questionRouter2.route('/')
 /**
 Get All Questions
 
-GET	/api_v2/questions2
+GET    /api_v2/questions2
 
 Authentication:   user token
 Authorization:    instructor
 
-Path Parameters:  question_id String	required
+Path Parameters:  question_id String    required
 Query String:     none
-Request Body: 	  none
+Request Body:     none
 **/
 questionRouter2.route('/')
     .post(tokenController.validateToken,
@@ -62,14 +62,14 @@ questionRouter2.route('/')
 /**
 Copy Question From Existing
 
-PUT	/api_v2/questions2/{question_id}/
+PUT    /api_v2/questions2/{question_id}/
 
 Authentication:   user token
 Authorization:    instructor
 
-Path Parameters:  question_id String	required
+Path Parameters:  question_id String    required
 Query String:     none
-Request Body: 	  none
+Request Body:     none
 **/
 questionRouter2.route('/:QUESTIONID')
     .put(tokenController.validateToken,
@@ -79,14 +79,14 @@ questionRouter2.route('/:QUESTIONID')
 /**
 Delete Question
 
-DELETE	/api_v2/questions2/{question_id}/
+DELETE    /api_v2/questions2/{question_id}/
 
 Authentication:   user token
 Authorization:    instructor
 
-Path Parameters:  question_id String	required
+Path Parameters:  question_id String    required
 Query String:     none
-Request Body: 	  none
+Request Body:     none
 **/
 questionRouter2.route('/:QUESTIONID')
     .delete(tokenController.validateToken,
@@ -96,16 +96,16 @@ questionRouter2.route('/:QUESTIONID')
 /**
 Edit Question
 
-POST	/api_v2/questions/{question_id}/
+POST    /api_v2/questions/{question_id}/
 
-Authentication:   user token
-Authorization:    instructor
+Authentication:     user token
+Authorization:      instructor
 
-Path Parameters:  question_id String	required
-Query String:     none
-Request Body: application/json
+Path Parameters:    question_id String  required
+Query String:       none
+Request Body:       application/json
 {
-	"new_title"				: [String] Required
+    "new_title":    [String]            required
 }
 **/
 questionRouter2.route('/:QUESTIONID')

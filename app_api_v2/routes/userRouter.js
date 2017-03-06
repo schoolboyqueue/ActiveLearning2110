@@ -28,7 +28,7 @@ var questionController2 = require('./../controllers/questionController2');
 /**
 GET ALL USERS
 
-GET	/api_v2/user
+GET    /api_v2/user
 
 Authentication:   user token        required
 Authorization:    admin             required
@@ -46,7 +46,7 @@ userRouter.route('/')
 /**
 GET USER
 
-GET	/api_v2/user/{user_id}/
+GET    /api_v2/user/{user_id}/
 
 Authentication:   user token        required
 Authorization:    admin or self     required
@@ -64,7 +64,7 @@ userRouter.route('/:USERID')
 /**
 UPDATE USER
 
-POST	/api_v2/user/{user_id}/
+POST    /api_v2/user/{user_id}/
 
 Authentication:   user token        required
 Authorization:    admin or self     required
@@ -73,10 +73,10 @@ Path Parameters:  user_id String    required
 Query String:     none
 Request Body:     application/json  required
 {
- "new_photo"   : String            Optional
- "new_firstname":String
- "new_lastname": String
- "new_role"    : String            Optional (admin only)
+    "new_photo":        String            Optional
+    "new_firstname":    String
+    "new_lastname":     String
+    "new_role":         String            Optional (admin only)
 }
 **/
 userRouter.route('/:USERID')
@@ -89,7 +89,7 @@ userRouter.route('/:USERID')
 /**
 GET USER COURSES
 
-GET	/api_v2/user/{user_id}/courses
+GET    /api_v2/user/{user_id}/courses
 
 Authentication:   user token                required
 Authorization:    student or instructor     required
@@ -108,16 +108,16 @@ userRouter.route('/:USERID/courses')
 /**
 UPDATE USER ROLE
 
-POST	/api_v2/user/{user_id}/role
+POST    /api_v2/user/{user_id}/role
 
-Authentication:   user token        required
-Authorization:    admin             required
+Authentication:     user token        required
+Authorization:      admin             required
 
-Path Parameters:  user_id String    required
-Query String:     none
-Request Body:     application/json  required
+Path Parameters:    user_id String    required
+Query String:       none
+Request Body:       application/json  required
 {
-  "new_role"   :  String            required
+    "new_role":     String            required
 }
 **/
 userRouter.route('/:USERID/role')
@@ -131,7 +131,7 @@ userRouter.route('/:USERID/role')
 /**
 UPDATE USER PASSWORD
 
-POST	/api_v2/user/{user_id}/password
+POST    /api_v2/user/{user_id}/password
 
 Authentication:   user token        required
 Authorization:    self              required
@@ -140,8 +140,8 @@ Path Parameters:  user_id String    required
 Query String:     none
 Request Body:     application/json  required
 {
-  "cur_password": String            required
-  "new_password": String            required
+    "cur_password": String          required
+    "new_password": String          required
 }
 **/
 userRouter.route('/:USERID/password')
@@ -156,7 +156,7 @@ userRouter.route('/:USERID/password')
 /**
 DEACTIVATE/REACTIVATE USER
 
-POST	/api_v2/user/{user_id}/deactivate
+POST    /api_v2/user/{user_id}/deactivate
 
 Authentication:   user token       required
 Authorization:    admin            required
@@ -174,14 +174,14 @@ userRouter.route('/:USERID/deactivate')
 /**
 Get All Instructor Questions
 
-GET	/api_v2/user/{instructor_id}/questions
+GET    /api_v2/user/{instructor_id}/questions
 
 Authentication:   user token
 Authorization:    instructor
 
-Path Parameters:  question_id String	required
+Path Parameters:  question_id String    required
 Query String:     none
-Request Body: 	  none
+Request Body:     none
 **/
 userRouter.route('/:USERID/questions')
     .get(tokenController.validateToken,
@@ -191,14 +191,14 @@ userRouter.route('/:USERID/questions')
 /**
 Get All Instructor Question Sets
 
-GET	/api_v2/user/{instructor_id}/questionset
+GET    /api_v2/user/{instructor_id}/questionset
 
 Authentication:   user token
 Authorization:    instructor
 
-Path Parameters:  question_id String	required
+Path Parameters:  question_id String    required
 Query String:     none
-Request Body: 	  none
+Request Body:     none
 **/
 userRouter.route('/:USERID/questionsets')
     .get(tokenController.validateToken,

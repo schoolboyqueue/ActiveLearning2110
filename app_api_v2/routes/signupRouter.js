@@ -27,7 +27,7 @@ var authorizeController = require('./../controllers/authorizeController');
 /**
 REGISTER USER
 
-POST	/api_v2/signup?role={user_role}/
+POST    /api_v2/signup?role={user_role}/
 
 Authentication: none
 Authorization:  none
@@ -38,11 +38,11 @@ Query String:    role  Pass either 'admin' or 'instructor' required for admin or
 
 Request Body application/json
 {
-  "username"  : String Required
-  "password"  : String Required
-  "firstname" : String Required
-  "lastname"  : String Required
-  "key"       : String Required for admin or instructor registration
+    "username":     String Required
+    "password":     String Required
+    "firstname":    String Required
+    "lastname":     String Required
+    "key":          String Required for admin or instructor registration
 }
 **/
 signupRouter.route('/')
@@ -58,7 +58,7 @@ signupRouter.route('/')
 /**
 CREATE ADMIN REGISTRATION KEY
 
-POST	/api_v2/signup/admin_key
+POST    /api_v2/signup/admin_key
 
 Authentication:   user token        required
 Authorization:    admin             required
@@ -77,7 +77,7 @@ signupRouter.route('/admin_key')
 /**
 CREATE INSTRUCTOR REGISTRATION KEY
 
-POST	/api_v2/signup/instructor_key
+POST    /api_v2/signup/instructor_key
 
 Authentication:   user token        required
 Authorization:    admin             required
@@ -95,7 +95,7 @@ signupRouter.route('/instructor_key')
 /**
 GET REGISTRATION KEYS
 
-GET	/api_v2/signup/registration_key
+GET    /api_v2/signup/registration_key
 
 Authentication:   user token        required
 Authorization:    admin             required

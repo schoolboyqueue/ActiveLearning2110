@@ -4,8 +4,8 @@
 //  questionRouter.js                                       //
 //  Active Learning 2110                                    //
 //                                                          //
-//  Created by Amy Zhuang on 2/5/17.	                    //
-//  Copyright © 2017 Amy Zhuang. All rights reserved.	    //
+//  Created by Amy Zhuang on 2/5/17.                        //
+//  Copyright © 2017 Amy Zhuang. All rights reserved.        //
 //                                                          //
 //  Date        Name        Description                     //
 //  -------     ---------   --------------                  //
@@ -28,7 +28,7 @@ var signupController = require('./../controllers/signupController');
 /**
 GET ALL QUESTIONS
 
-GET	/api_v2/questions
+GET    /api_v2/questions
 
 Authentication:   user token
 Authorization:    none
@@ -46,19 +46,19 @@ questionRouter.route('/')
 /**
 Add QUESTION
 
-POST	/api_v2/questions
+POST    /api_v2/questions
 
 Authentication:   user token
 Authorization:    admin, instructor
 
-Path Parameters:  question_id String	required
+Path Parameters:  question_id String    required
 Query String:     none
 Request Body: application/json
 {
-	"tags"				: [String] Required
-	"problem_statement"	: String Required
-	"answer_choices"	: [String] Required
-	"answer"			: Number
+    "tags"              : [String]      Required
+    "problem_statement" : String        Required
+    "answer_choices"    : [String]      Required
+    "answer"            : Number
 }
 **/
 questionRouter.route('/')
@@ -74,14 +74,14 @@ questionRouter.route('/')
 /**
 DELETE QUESTION
 
-DELETE	/api_v2/questions/{question_id}/
+DELETE    /api_v2/questions/{question_id}/
 
 Authentication:   user token
 Authorization:    admin, instructor
 
-Path Parameters:  question_id String	required
+Path Parameters:  question_id String    required
 Query String:     none
-Request Body: 	  none
+Request Body:     none
 **/
 questionRouter.route('/:QUESTIONID')
     .delete(tokenController.validateToken,
@@ -92,16 +92,16 @@ questionRouter.route('/:QUESTIONID')
 /**
 ADD TAG
 
-PUT	/api_v2/questions/{question_id}/tag
+PUT    /api_v2/questions/{question_id}/tag
 
 Authentication:   user token
 Authorization:    admin, instructor
 
 Path Parameters:  none
 Query String:     none
-Request Body: 	  application/json	required
+Request Body:     application/json      required
 {
-	"new_tag": 	String	required
+    "new_tag":    String                required
 }
 **/
 questionRouter.route('/:QUESTIONID/tag')
@@ -114,16 +114,16 @@ questionRouter.route('/:QUESTIONID/tag')
 /**
 DELETE TAG
 
-DELETE	/api_v2/questions/{question_id}/tag
+DELETE    /api_v2/questions/{question_id}/tag
 
 Authentication:   user token
 Authorization:    admin, instructor
 
-Path Parameters:  question_id String	required
+Path Parameters:  question_id String    required
 Query String:     none
-Request Body: 	  application/json 		required
+Request Body:     application/json      required
 {
-	"delete_tag": 	String required
+    "delete_tag":     String            required
 }
 **/
 questionRouter.route('/:QUESTIONID/tag')
@@ -135,16 +135,16 @@ questionRouter.route('/:QUESTIONID/tag')
 /**
 EDIT PROBLEM STATEMENT QUESTION
 
-POST	/api_v2/questions/{question_id}/problem_statement
+POST    /api_v2/questions/{question_id}/problem_statement
 
 Authentication:   user token
 Authorization:    admin, instructor
 
-Path Parameters:  question_id String	required
+Path Parameters:  question_id String    required
 Query String:     none
-Request Body: 	  application/json 		required
+Request Body:     application/json      required
 {
-	"new_problem_statement": 	String 	required
+    "new_problem_statement":    String  required
 }
 **/
 questionRouter.route('/:QUESTIONID/problem_statement')
@@ -157,16 +157,16 @@ questionRouter.route('/:QUESTIONID/problem_statement')
 /**
 ADD ANSWER CHOICE
 
-PUT	/api_v2/questions/{question_id}/answer_choice
+PUT    /api_v2/questions/{question_id}/answer_choice
 
 Authentication:   user token
 Authorization:    admin, instructor
 
-Path Parameters:  question_id String	required
+Path Parameters:  question_id String    required
 Query String:     none
-Request Body: 	  appication/json 		required
+Request Body:     appication/json       required
 {
-	"new_answer_choice": 	String		required
+    "new_answer_choice":     String     required
 }
 **/
 questionRouter.route('/:QUESTIONID/answer_choice')
@@ -178,16 +178,16 @@ questionRouter.route('/:QUESTIONID/answer_choice')
 /**
 DELETE ANSWER CHOICE
 
-DELETE	/api_v2/questions/{question_id}/answer_choice
+DELETE    /api_v2/questions/{question_id}/answer_choice
 
 Authentication:   user token
 Authorization:    admin, instructor
 
-Path Parameters:  question_id String	required
+Path Parameters:  question_id String    required
 Query String:     none
-Request Body: 	  application/json 		required
+Request Body:     application/json      required
 {
-	"delete_answer_choice": 	String	required
+    "delete_answer_choice":     String  required
 }
 **/
 questionRouter.route('/:QUESTIONID/answer_choice')
@@ -199,17 +199,17 @@ questionRouter.route('/:QUESTIONID/answer_choice')
 /**
 EDIT ANSWER CHOICE
 
-POST	/api_v2/questions/{question_id}/answer_choice
+POST    /api_v2/questions/{question_id}/answer_choice
 
 Authentication:   user token
 Authorization:    admin, instructor
 
-Path Parameters:  question_id String	required
+Path Parameters:  question_id String    required
 Query String:     none
-Request Body: 	  application/json 		required
+Request Body:     application/json      required
 {
-	"edit_answer_choice": 	String		required
-	"new_answer_choice": 	String		required
+    "edit_answer_choice":    String     required
+    "new_answer_choice":     String     required
 }
 **/
 questionRouter.route('/:QUESTIONID/answer_choice')
@@ -221,16 +221,16 @@ questionRouter.route('/:QUESTIONID/answer_choice')
 /**
 EDIT ANSWER
 
-POST	/api_v2/questions/{question_id}/answer
+POST    /api_v2/questions/{question_id}/answer
 
 Authentication:   user token
 Authorization:    admin, instructor
 
-Path Parameters:  question_id String	required
+Path Parameters:  question_id String    required
 Query String:     none
-Request Body: 	  application/json		required
+Request Body:     application/json      required
 {
-	"new_answer": 	Number				required
+    "new_answer":     Number            required
 }
 **/
 questionRouter.route('/:QUESTIONID/answer')
