@@ -1,0 +1,203 @@
+Q: All Computers are capable of computing exactly the same things if they are given enough time and memory?
+A: ([True, False], 0)
+Tags: CS 2110, memory, computer capacity
+
+Q: All computation boils down to the addition of positive whole numbers?
+A: ([True, False], 0)
+Tags: CS 2110, binary, positive numbers
+
+Q: Programmable computers can compute anything that CAN be computed?
+A: ([True, False], 0)
+Tags: CS 2110, programs, computation
+
+Q: The ISA (instruction set architecture) contains:
+A: ([Set of instructions, acceptable representations for operands, address space, addressability, addressing modes, all of the above], 5)
+Tags: CS 2110, ISA, addressing, representation
+
+Q: Can a higher-level programming language instruct a computer to compute more than a lower-level programming language?
+A: ([Yes, No, Java > C], 1)
+Tags: CS 2110, high-level, low-level, programming languages
+
+Q: What is an algorithm?
+A: ([any set of detailed instructions which results in a predictable end-state from a known beginning, a famous dance named after Al Gore, I have no idea], 0)
+Tags: CS 2110, algorithm, definition
+
+Q: Can there exist multiple architectures for a single ISA?
+A: ([Yes, No, Sometimes], 0)
+Tags: CS 2110, ISA, architectures
+
+Q: What is the difference between the microarchitecture and the ISA?
+A: ([The microarchitecture is the details of how the ISA is implemented, The ISA tell the microarchitecture how to implement the instructions, The microarchitecture is a simplified version of the ISA], 0)
+Tags: CS 2110, microarchitectures, ISA
+
+Q: Why is an ISA unlikely to change between successive generations of micro architectures that implement it?
+A: ([Backwards compatibility, ISA's are created with the utmost perfection, Change is bad mmmkay], 0)
+Tags: CS 2110, ISA, microarchitecture, generations
+
+Q: What does a computer use to compute?
+A: ([Electrons, Protons, Anti-matter, Magic], 0)
+Tags: CS 2110, computation, electrons
+
+Q: What is used to symbolically represent the presence of a voltage inside a computer?
+A: ([Thermometers, Voltage meters, Binary Digits, Bijectional Tristates], 2)
+Tags: CS 2110, Binary, Voltage, representation
+
+Q: Given 8 bits how many different value representations do we have?
+A: ([8, 9, 128, 512, 256, 2^8], (4,5))
+Tags: CS 2110, 8 bits, value, representation, bits
+
+Q: In general, given k bits how many values can be represented?
+A: ([4*k, 2*k, 2^k, 4^k], 2)
+Tags: CS 2110, k bits, bits, value
+
+Q: If we use the 8 bit binary vector: 00000100 to represent the number 4, how would we represent its negative value, that is, how would we represent the negation of 4?
+A: ([11111100, 10101010, 00111111, wtf], 0)
+Tags: CS 2110, binary vector, negative, bits, negation
+
+Q: Why did computer scientists go with 2's complement over signed magnitude and 1's complement?
+A: ([2 is bigger therefore better, simpler circuit design, Intel liked 2's complement], 1)
+Tags: CS 2110, 2’s complement, binary, signed, 1’s complement
+
+Q: What is the smallest number of bits we would need to designate 5 different items?
+A: ([5, 4, 3, 2], 2)
+Tags: CS 2110, bits, 5 bits, value, representation
+
+Q: How many different numbers can be represented by 7 bits?
+A: ([64, 128, 32, 256], 1)
+Tags: CS 2110, bits, 7 bits, value
+
+Q: Which method is used in almost all computers manufactured today?
+A: ([2’s Comp. 1’s Comp, Unsigned, Signed], 0)
+Tags: CS 2110, binary, 2’s Complement, 1’s Complement, Unsigned, Signed
+
+Q: Represent the binary number 1001 in all methods (Unsigned, Signed, 1’s, 2’s).
+A: ([[9, -1, -6, -7], [-9, 0, -8, -6], [-7, -1, -6, -8], [9, -1, 6, -7]], 0)
+Tags: CS 2110, binary, 2’s Complement, 1’s Complement, Unsigned, Signed
+
+Q: Convert 1010 from 2’s complement to its decimal representation?
+A: ([ -7, -6, 6, 10], 1)
+Tags: CS 2110, 2’s complement, decimal
+
+Q: Add 1100 and 1011 (2’s comp).
+A: ([01111, 10011, 10111, 11011], 2)
+Tags: CS 2110, 2’s complement, binary, addition
+
+Q: When is sign extension necessary?
+A: ([When you are adding two binary numbers of the same length, When you are subtracting two binary numbers and have a carry in, When your carry in and carry out are both equal to 1, When you are adding two binary numbers that are of different lengths], 3)
+Tags: CS 2110, sign extension
+
+Q: To negate a binary number, you flip the bits and add 1.
+A: ([True, False], 0)
+Tags: CS 2110, negation, binary, 2’s complement
+
+Q: x << -2 is legal.
+A: ([True, False], 1)
+Tags: CS 2110, bit shift, bits, binary, legality
+
+****
+
+
+
+
+Picture:
+
+Q: This is an N-Type MOS.
+A: ([True, False], 0]
+Tags: CS 2110, N-Type, MOS
+
+Picture:
+
+Q: This is a P-Type MOS.
+A; ([True, False], 0)
+Tags: CS 2110, P-Type, MOS
+
+
+
+
+
+
+
+
+Picture:
+
+Q: This image shows DeMorgan’s law.
+A: ([True, False], 1)
+Tags: CS 2110, DeMorgan’s law, DeMorgan, gate
+
+Picture
+
+Q: This image shows DeMorgan’s law.
+A: ([True, False], 0)
+Tags: CS 2110, DeMorgan’s law, DeMorgan, gate
+
+Q: The basic multiplexer has…
+A: ([[n outputs, n control lines, 2^n inputs], [1 output, 2n control lines, n inputs], [1 output, n control lines, 2^n inputs], [2^n outputs, 2 control lines, n inputs]], 2)
+Tags: CS 2110, multiplexer
+
+Q: What is address space?
+A: ([The address where your house is, the definition of addressability, the amount of memory allocated for all possible addresses, all of the above], 2)
+Tags: CS 2110, address space, memory
+
+Q: Making decisions, inputs always producing the same outputs, and time-independent logic are characteristics of combinational logic circuits.
+A: ([True, False], 0)
+Tags: CS 2110, combinational logic circuits, time-independent logic
+
+Q: Making decisions, inputs always producing the same outputs, and time-independent logic are characteristics of sequential logic circuits.
+A: ([True, False], 1)
+Tags: CS 2110, sequential logic circuits, time-independent logic
+
+Q: Making decisions and storing information, outputs depending on inputs and state, and depending on input history are characteristics of sequential logic circuits.
+A: ([True, False], 0)
+Tags: CS 2110, sequential logic circuits, input history
+
+Q: Making decisions and storing information, outputs depending on inputs and state, and depending on input history are characteristics of combinational logic circuits.
+A: ([True, False], 1)
+Tags: CS 2110, sequential logic circuits, input history
+
+Q: A multiplexer is…
+A: ([ is a device capable of converting audio or video signals into a different form, is a device that selects one of several analog or digital input signals and forwards the selected input into a single line, is the part of a CPU's control unit that holds the instruction currently being executed or decoded, all of the above], 1)
+Tags: CS 2110, multiplexer, definition
+
+Picture:
+
+Q: What does the IR component do in the LC-3 Datapath?
+A: ([handles basic math operations, converts signals into a different form, holds the instruction currently being executed, adds several input signals into the same line], 2)
+Tags: LC-3, datapath, IR, instruction register, definition
+
+Picture:
+
+Q: What architecture does this depict?
+A: ([Von Neumann architecture, Turing architecture, DeMorgan architecture, None of these], 0)
+Tags: Von Neumann, architecture, PC, IR,  LC-3
+
+Q: What does the PC (Program Counter) have in it?
+A: ([the amount of instructions ever executed, the current instruction being executed, the address of the current instruction being executed, the address of the next instruction to be executed], 3)
+Tags: Von Neumann, PC, IR, architecture, Program Counter,  LC-3
+
+Q: The (Instruction Register) IR has the instruction currently being executed.
+A: ([True, False], 0)
+Tags: Von Neumann, IR, Instruction Register, instructions,  LC-3
+
+Picture:
+
+Q: What LC-3 process does this image depict?
+A: ([AND, JSR, JMP, JSRR], 2)
+Tags: LC-3, JMP, AND, JSR, JSRR, Von Neumann
+
+Q: By combining ADD, AND, and NOT, which operations can you perform?
+A: ([Addition, Or, Clear register, Subtract, And, All of the above, [Just addition, subtraction, and clear]], 5)
+Tags: operations, ADD, AND, NOT, LC-3, instructions
+
+
+
+
+
+
+
+Q: LC-3 has at least 3 different instructions for both load and add.
+A: ([True, False], 1)
+Tags: LC-3, instructions, Load, store, add
+
+Q: what does the instruction LEA and ST do?
+A: ([LEA puts the address represented by some label into memory and ST puts the contents of a memory location whose address is stored in memory at some label into a register, LEA puts the address represented by some label into memory and ST puts the contents of a register into an address specified by a label (address), LEA puts the contents of some label (address) into a register and ST puts the contents a register into an address specified by a label (address), LEA puts the contents of some label (address) into a register and ST puts the contents of a memory location whose address is stored in memory at some label into a register], 1)
+Tags: LC-3, instructions, Load, store, LEA, ST
