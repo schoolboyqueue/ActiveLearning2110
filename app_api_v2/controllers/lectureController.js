@@ -307,11 +307,14 @@ var saveQuestionSet = function(req, res) {
             return newQuestionSet.save();
         })
         .then(function(questionSet) {
+            return QuestionSet.find({"instructor_id": req.decodedToken.sub});
+        })
+        .then(function(questionSets) {
             return res.status(200).json({
                 success: true,
                 jwt_token: req.token,
                 message: 'Question Set Saved',
-                questionSet: questionSet
+                questionSets: questionSets
             });
         })
         .catch(function(err) {
