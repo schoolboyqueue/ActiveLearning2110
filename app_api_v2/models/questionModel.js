@@ -17,26 +17,30 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+
+var answer_choice = {
+    text: {
+        type: String,
+        required: true
+    },
+    answer: {
+        type: Boolean,
+        required: true
+    }
+};
+
 var QuestionSchema = new Schema({
-    contributor: {
-        contributor_id: {
-            type: String,
-            required: true
-        },
-        username: {
-            type: String,
-            required: true,
-            unique: true,
-            lowercase: true
-        },
-        firstname: {
-            type: String,
-            lowercase: true
-        },
-        lastname: {
-            type: String,
-            lowercase: true
-        }
+    plain_title: {
+        type: String,
+        required: true
+    },
+    contributor_id: {
+        type: String,
+        required: true
+    },
+    title: {
+        type: String,
+        required: true
     },
     tags: {
         type: [String],
@@ -47,14 +51,9 @@ var QuestionSchema = new Schema({
         type: String,
         required: true,
     },
-    answer_choices: {
-        type: [String],
-        required: true
-    },
-    answer: {
-        type: Number,
-        required: true
-    }
+    answer_choices:[answer_choice],
+    copied: Boolean
 });
+
 
 module.exports = mongoose.model('Question', QuestionSchema);
