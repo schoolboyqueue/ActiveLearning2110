@@ -2,7 +2,7 @@
     <div ng-show="!loaded">
         LOADING
     </div>
-    <pre ng-show="loaded">
-        {{lecture | json}}
-    </pre>
+    <div ng-show="loaded" style="overflow:visible;">
+        <input class="form-control" type="text" sf-typeahead datasets="questionsDataset" ng-model="selectedQuestion">
+    </div>
 </div>

@@ -23,7 +23,7 @@ h1, h2, h3, h4, h5 {
 }
 
 tooltip {
-    z-index: 9999;
+    z-index: 1035;
 }
 
 a:link, a:visited, a:hover, a:active {
@@ -628,4 +628,56 @@ button.close {
 
 .radio-success input[type="radio"]:checked+label::after {
     background-color: #5cb85c;
+}
+
+
+.tt-dropdown-menu, .gist {
+    text-align: left;
+}
+
+.tt-hint {
+    color: #999
+}
+
+.typeahead {
+    position: inherit;
+    display: inherit;
+}
+
+.tt-menu {
+    width: auto;
+    margin: 12px 0;
+    padding: 8px 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+    -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+    -webkit-font-smoothing: antialiased;
+    font-family: 'Roboto', sans-serif;
+    text-rendering: optimizeLegibility;
+}
+
+.tt-suggestion {
+    padding: 3px 20px;
+    line-height: 24px;
+}
+
+.tt-suggestion:hover {
+    cursor: pointer;
+    color: #fff;
+    background-color: #0097cf;
+}
+
+.tt-suggestion.tt-cursor {
+    color: #fff;
+    background-color: #0097cf;
+}
+
+.tt-suggestion p {
+    margin: 0;
 }

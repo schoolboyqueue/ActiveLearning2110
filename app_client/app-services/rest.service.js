@@ -19,6 +19,14 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
 
     var baseREST = Restangular.all("api_v2");
 
+    Restangular.setErrorInterceptor(function(response, deferred, responseHandler) {
+        if (response.status === 404) {
+            service.Logout();
+            return false; // error handled
+        }
+        return true; // error not handled
+    });
+
     service.Register = function(info, callback) {
         var signup = null;
         if (info.professor) {

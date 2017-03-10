@@ -34,7 +34,8 @@ var app = angular
         'ngSanitize',
         'ui.sortable',
         '720kb.tooltips',
-        'angular-loading-bar'
+        'angular-loading-bar',
+        'siyfion.sfTypeahead'
     ]);
 
 app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLoadProvider, tooltipsConfProvider, cfpLoadingBarProvider) {

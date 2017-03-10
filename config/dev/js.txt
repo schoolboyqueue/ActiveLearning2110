@@ -23,8 +23,9 @@ https://rawgit.com/sachinchoolur/ngclipboard/master/dist/ngclipboard.min.js
 https://rawgit.com/matowens/ng-notify/master/dist/ng-notify.min.js
 https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js
 https://cdnjs.cloudflare.com/ajax/libs/ng-tags-input/3.1.1/ng-tags-input.js
-https://cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.6.2/angular-sanitize.min.js
+https://cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.6.3/angular-sanitize.min.js
 https://cdnjs.cloudflare.com/ajax/libs/angular-ui-sortable/0.16.1/sortable.min.js
 https://rawgit.com/720kb/angular-tooltips/master/dist/angular-tooltips.min.js
-https://rawgit.com/twitter/typeahead.js/master/dist/typeahead.bundle.min.js
+https://rawgit.com/corejavascript/typeahead.js/master/dist/typeahead.bundle.min.js
 https://rawgit.com/chieffancypants/angular-loading-bar/master/build/loading-bar.min.js
+https://rawgit.com/Siyfion/angular-typeahead/master/dist/angular-typeahead.min.js
