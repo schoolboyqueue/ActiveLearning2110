@@ -15,12 +15,16 @@
 
 var app = angular.module('app');
 
-app.controller('Instructor.Lecture.Edit.Controller', function($scope, $localStorage, $stateParams, $rootScope, RESTService) {
+app.controller('Instructor.Lecture.Edit.Controller', function($scope, $localStorage, $stateParams, $rootScope, $timeout, RESTService, cfpLoadingBar) {
 
+    $scope.loaded = false;
+    
     $rootScope.$stateParams = $stateParams;
     $scope.lecture = $localStorage.courses[$stateParams.selectedCourse].lectures[$stateParams.selectedLecture];
 
+    cfpLoadingBar.start();
     RESTService.GetAllQuestions(function(info) {
+        $scope.loaded = true;
         $scope.questions = info.questions;
     });
 

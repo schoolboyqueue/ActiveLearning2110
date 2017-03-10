@@ -17,6 +17,11 @@ h1, h2, h3, h4, h5 {
     font-weight: 300;
 }
 
+#loading-bar .bar {
+    background: #33ba3a;
+    height: 6px;
+}
+
 tooltip {
     z-index: 9999;
 }

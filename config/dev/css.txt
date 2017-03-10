@@ -2,3 +2,4 @@ https://cdn.rawgit.com/indrimuska/angular-moment-picker/master/dist/angular-mome
 https://unpkg.com/ng-table@3.0.1/bundles/ng-table.min.css
 https://rawgit.com/matowens/ng-notify/master/dist/ng-notify.min.css
 https://rawgit.com/720kb/angular-tooltips/master/dist/angular-tooltips.min.css
+https://rawgit.com/chieffancypants/angular-loading-bar/master/build/loading-bar.min.css

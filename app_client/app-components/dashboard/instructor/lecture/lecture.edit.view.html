@@ -1,5 +1,8 @@
 <div class="animated fadeIn container-fluid p-2" ng-controller="Instructor.Lecture.Edit.Controller">
-    <pre>
+    <div ng-show="!loaded">
+        LOADING
+    </div>
+    <pre ng-show="loaded">
         {{lecture | json}}
     </pre>
 </div>

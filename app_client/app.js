@@ -18,6 +18,7 @@ var app = angular
     .module('app', [
         'ui.router',
         'ngStorage',
+        'ngAnimate',
         'angularModalService',
         'angular-jwt',
         'oc.lazyLoad',
@@ -32,10 +33,13 @@ var app = angular
         'ngNotify',
         'ngSanitize',
         'ui.sortable',
-        '720kb.tooltips'
+        '720kb.tooltips',
+        'angular-loading-bar'
     ]);
 
-app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLoadProvider, tooltipsConfProvider) {
+app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLoadProvider, tooltipsConfProvider, cfpLoadingBarProvider) {
+
+    cfpLoadingBarProvider.includeSpinner = false;
 
     tooltipsConfProvider.configure({
         'size':'small',
