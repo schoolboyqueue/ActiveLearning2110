@@ -43,24 +43,7 @@ var getAll = function(req, res) {
                     message: 'Internal Error'
                 });
             });
-            /*
-    Question.find(function(err, questions) {
-        if (err) {
-            return res.status(500).json({
-                success: false,
-                message: 'Internal Error'
-            });
-        } else {
-            return res.status(200).json({
-                success: true,
-                questions: questions,
-                message: "Success on getAll"
-            });
-        }
-    });
-    */
 };
-
 
 var savedQuestionToDB = function(req, res) {
     console.log('questionController savedQuestionToDB');

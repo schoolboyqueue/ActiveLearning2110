@@ -40,7 +40,7 @@ Request Body:     none
 questionRouter.route('/')
     .get(tokenController.validateToken,
         tokenController.refreshToken,
-        authorizeController.adminOrInstructorOrSelf,
+        authorizeController.instructor,
         questionController.getAll);
 
 /**
