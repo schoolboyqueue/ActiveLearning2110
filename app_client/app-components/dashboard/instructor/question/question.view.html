@@ -27,7 +27,12 @@
                 </button>
             </div>
             <div>
-                <button type="button" class="btn btn-success btn-sm" ng-show="question.html.title != null" ng-click="submit()">Submit</button>
+                <button
+                    type="button"
+                    class="btn btn-success btn-sm"
+                    ng-show="question.html.title != null"
+                    ng-click="submit()">Submit
+                </button>
             </div>
         </div>
         <div ng-editor="question-container" value="question.html" editor="editor">

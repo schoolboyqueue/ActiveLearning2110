@@ -238,14 +238,14 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
     function getAddStudentPromise(info) {
         var deferred = $q.defer();
         baseREST.one("course", info.course_id).one("sections", info.section_id)
-        .customPOST(info.student, "students").then(
-            function(response) {
-                deferred.resolve(response);
-            },
-            function(response) {
-                deferred.resolve(response.data);
-            }
-        );
+            .customPOST(info.student, "students").then(
+                function(response) {
+                    deferred.resolve(response);
+                },
+                function(response) {
+                    deferred.resolve(response.data);
+                }
+            );
         return deferred.promise;
     }
 
@@ -315,6 +315,19 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
             },
             function(response) {
                 callback(genRetInfo(response));
+            }
+        );
+    };
+
+    service.GetAllQuestions = function(callback) {
+        baseREST.one("questions2").get().then(
+            function(response) {
+                callback({
+                    questions: response.questions
+                });
+            },
+            function(response) {
+                console.log(response);
             }
         );
     };

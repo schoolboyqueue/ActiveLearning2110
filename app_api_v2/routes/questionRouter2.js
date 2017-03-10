@@ -55,7 +55,7 @@ Query String:     none
 Request Body:     none
 **/
 questionRouter2.route('/')
-    .post(tokenController.validateToken,
+    .get(tokenController.validateToken,
         tokenController.refreshToken,
         questionController2.getAllQuestions);
 
