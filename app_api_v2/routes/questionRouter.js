@@ -40,7 +40,7 @@ Request Body:     none
 questionRouter.route('/')
     .get(tokenController.validateToken,
         tokenController.refreshToken,
-        authorizeController.adminOrInstructorOrSelf,
+        authorizeController.instructor,
         questionController.getAll);
 
 /**
@@ -49,27 +49,70 @@ Add QUESTION
 POST	/api_v2/questions
 
 Authentication:   user token
-Authorization:    admin, instructor
+Authorization:    instructor
 
 Path Parameters:  question_id String	required
 Query String:     none
 Request Body: application/json
 {
+	"plain_title": 	String	required
+	"title": 	String	required
 	"tags"				: [String] Required
 	"problem_statement"	: String Required
-	"answer_choices"	: [String] Required
-	"answer"			: Number
+	"answer_choices"	: [answer_choice] Required
 }
 **/
 questionRouter.route('/')
     .post(tokenController.validateToken,
         tokenController.refreshToken,
-        authorizeController.adminOrInstructorOrSelf,
+        authorizeController.instructor,
         inputController.requireTags,
         inputController.requireProblemStatement,
         inputController.requireAnswerChoices,
-        inputController.requireAnswer,
         questionController.savedQuestionToDB);
+
+/**
+Edit QUESTION
+
+POST /api_v2/questions/{question_id}/
+
+Authentication: user token
+Authorization: instructor
+
+Path Parameters: question_id String	required
+Query String: none
+Request Body: 	  application/.json 		required
+{
+	"new_plain_title": String required
+	"new_title": String required
+	"new_tags": [String] required
+	"new_problem_statement": 	String 	required
+	"new_answer_choices": [answer_choice] required
+}
+**/
+questionRouter.route('/:QUESTIONID')
+	.post(tokenController.validateToken,
+		tokenController.refreshToken,
+		authorizeController.instructor,
+		questionController.editQuestion);
+
+/**
+Copy QUESTION
+
+PUT /api_v2/questions/{question_id}/
+
+Authentication: user 	token
+Authorization: 	instructor
+
+Path Parameters: 	question_id	String	required
+Query String: none
+Request Body: none
+**/
+questionRouter.route('/:QUESTIONID')
+	.put(tokenController.validateToken,
+		tokenController.refreshToken,
+		authorizeController.instructor,
+		questionController.copyQuestion);
 
 /**
 DELETE QUESTION
@@ -86,159 +129,8 @@ Request Body: 	  none
 questionRouter.route('/:QUESTIONID')
     .delete(tokenController.validateToken,
         tokenController.refreshToken,
-        authorizeController.adminOrInstructorOrSelf,
+        authorizeController.instructor,
         questionController.deleteQuestion);
-
-/**
-ADD TAG
-
-PUT	/api_v2/questions/{question_id}/tag
-
-Authentication:   user token
-Authorization:    admin, instructor
-
-Path Parameters:  none
-Query String:     none
-Request Body: 	  application/json	required
-{
-	"new_tag": 	String	required
-}
-**/
-questionRouter.route('/:QUESTIONID/tag')
-    .put(tokenController.validateToken,
-        tokenController.refreshToken,
-        authorizeController.adminOrInstructorOrSelf,
-        questionController.addTag);
-
-
-/**
-DELETE TAG
-
-DELETE	/api_v2/questions/{question_id}/tag
-
-Authentication:   user token
-Authorization:    admin, instructor
-
-Path Parameters:  question_id String	required
-Query String:     none
-Request Body: 	  application/json 		required
-{
-	"delete_tag": 	String required
-}
-**/
-questionRouter.route('/:QUESTIONID/tag')
-    .delete(tokenController.validateToken,
-        tokenController.refreshToken,
-        authorizeController.adminOrInstructorOrSelf,
-        questionController.deleteTag);
-
-/**
-EDIT PROBLEM STATEMENT QUESTION
-
-POST	/api_v2/questions/{question_id}/problem_statement
-
-Authentication:   user token
-Authorization:    admin, instructor
-
-Path Parameters:  question_id String	required
-Query String:     none
-Request Body: 	  application/json 		required
-{
-	"new_problem_statement": 	String 	required
-}
-**/
-questionRouter.route('/:QUESTIONID/problem_statement')
-    .post(tokenController.validateToken,
-        tokenController.refreshToken,
-        authorizeController.adminOrInstructorOrSelf,
-        questionController.editProblemStatement);
-
-
-/**
-ADD ANSWER CHOICE
-
-PUT	/api_v2/questions/{question_id}/answer_choice
-
-Authentication:   user token
-Authorization:    admin, instructor
-
-Path Parameters:  question_id String	required
-Query String:     none
-Request Body: 	  appication/json 		required
-{
-	"new_answer_choice": 	String		required
-}
-**/
-questionRouter.route('/:QUESTIONID/answer_choice')
-    .put(tokenController.validateToken,
-        tokenController.refreshToken,
-        authorizeController.adminOrInstructorOrSelf,
-        questionController.addAnswerChoice);
-
-/**
-DELETE ANSWER CHOICE
-
-DELETE	/api_v2/questions/{question_id}/answer_choice
-
-Authentication:   user token
-Authorization:    admin, instructor
-
-Path Parameters:  question_id String	required
-Query String:     none
-Request Body: 	  application/json 		required
-{
-	"delete_answer_choice": 	String	required
-}
-**/
-questionRouter.route('/:QUESTIONID/answer_choice')
-    .delete(tokenController.validateToken,
-        tokenController.refreshToken,
-        authorizeController.adminOrInstructorOrSelf,
-        questionController.deleteAnswerChoice);
-
-/**
-EDIT ANSWER CHOICE
-
-POST	/api_v2/questions/{question_id}/answer_choice
-
-Authentication:   user token
-Authorization:    admin, instructor
-
-Path Parameters:  question_id String	required
-Query String:     none
-Request Body: 	  application/json 		required
-{
-	"edit_answer_choice": 	String		required
-	"new_answer_choice": 	String		required
-}
-**/
-questionRouter.route('/:QUESTIONID/answer_choice')
-    .post(tokenController.validateToken,
-        tokenController.refreshToken,
-        authorizeController.adminOrInstructorOrSelf,
-        questionController.editAnswerChoice);
-
-/**
-EDIT ANSWER
-
-POST	/api_v2/questions/{question_id}/answer
-
-Authentication:   user token
-Authorization:    admin, instructor
-
-Path Parameters:  question_id String	required
-Query String:     none
-Request Body: 	  application/json		required
-{
-	"new_answer": 	Number				required
-}
-**/
-questionRouter.route('/:QUESTIONID/answer')
-    .post(tokenController.validateToken,
-        tokenController.refreshToken,
-        authorizeController.adminOrInstructorOrSelf,
-        questionController.editAnswer);
-
 
 
 module.exports = questionRouter;
