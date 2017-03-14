@@ -43,7 +43,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
     cfpLoadingBarProvider.includeSpinner = false;
 
     tooltipsConfProvider.configure({
-        'size':'small',
+        'size': 'small',
         'showTrigger': 'mouseenter',
         'hideTrigger': 'mouseleave'
     });
@@ -86,10 +86,12 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
             files: ['app-components/dashboard/student/course/course.student.controller.js']
         }, {
             name: 'services',
-            files: ['app-services/storage.service.js',
-                    'app-services/user.service.js',
-                    'app-services/rest.service.js',
-                    'app-services/socket.service.js']
+            files: [
+                'app-services/storage.service.js',
+                'app-services/user.service.js',
+                'app-services/rest.service.js',
+                'app-services/socket.service.js'
+            ]
         }, {
             name: 'login',
             files: ['app-components/modals/login/login.controller.js']
@@ -252,7 +254,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
 });
 
 app.run(function($rootScope, ngNotify) {
-    $rootScope.$on('$stateChangeSuccess',function(){
+    $rootScope.$on('$stateChangeSuccess', function() {
         $("html, body").animate({
             scrollTop: 0
         }, 200);
