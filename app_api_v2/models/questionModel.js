@@ -1,4 +1,5 @@
 /* jshint node: true */
+/* jshint esversion: 6 */
 
 //************************************************************
 //  questionModel.js                                        //
@@ -26,15 +27,12 @@ var answer_choice = {
     answer: {
         type: Boolean,
         required: true
-    }
+    },
+    "_id": false
 };
 
 var QuestionSchema = new Schema({
-    plain_title: {
-        type: String,
-        required: true
-    },
-    contributor_id: {
+    instructor_id: {
         type: String,
         required: true
     },
@@ -47,7 +45,11 @@ var QuestionSchema = new Schema({
         required: true,
         lowercase: true
     },
-    problem_statement: {
+    html_title: {
+        type: String,
+        required: true
+    },
+    html_body: {
         type: String,
         required: true,
     },

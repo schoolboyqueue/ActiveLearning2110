@@ -1,4 +1,5 @@
 /* jshint node: true */
+/* jshint esversion: 6 */
 
 //************************************************************
 //  questionRouter.js                                       //
@@ -21,32 +22,11 @@ var questionController = require('./../controllers/questionController');
 var authorizeController = require('./../controllers/authorizeController');
 var inputController = require('./../controllers/inputController');
 var tokenController = require('./../controllers/tokenController');
-var userController = require('./../controllers/userController');
-var courseController = require('./../controllers/courseController');
-var signupController = require('./../controllers/signupController');
 
 /**
-GET ALL QUESTIONS
+Add Question
 
-GET	/api_v2/questions
-
-Authentication:   user token
-Authorization:    none
-
-Path Parameters:  none
-Query String:     none
-Request Body:     none
-**/
-questionRouter.route('/')
-    .get(tokenController.validateToken,
-        tokenController.refreshToken,
-        authorizeController.instructor,
-        questionController.getAll);
-
-/**
-Add QUESTION
-
-POST	/api_v2/questions
+POST	/api_v2/question
 
 Authentication:   user token
 Authorization:    instructor
@@ -55,10 +35,10 @@ Path Parameters:  question_id String	required
 Query String:     none
 Request Body: application/json
 {
-	"plain_title": 	String	required
 	"title": 	String	required
-	"tags"				: [String] Required
-	"problem_statement"	: String Required
+  "tags": [String] Required
+	"html_title": 	String	required
+	"html_body"	: String Required
 	"answer_choices"	: [answer_choice] Required
 }
 **/
@@ -67,60 +47,74 @@ questionRouter.route('/')
         tokenController.refreshToken,
         authorizeController.instructor,
         inputController.requireTags,
-        inputController.requireProblemStatement,
+        inputController.requireQuestionBody,
         inputController.requireAnswerChoices,
         questionController.savedQuestionToDB);
 
 /**
-Edit QUESTION
+Get All Questions
+*Does not return copied questions and only returns Question snapshot.
+*Call /question/{question_id}/ for full details
 
-POST /api_v2/questions/{question_id}/
+GET	/api_v2/question?tag={query_string}/
 
-Authentication: user token
-Authorization: instructor
+Authentication:   user token
+Authorization:    none
 
-Path Parameters: question_id String	required
-Query String: none
-Request Body: 	  application/.json 		required
-{
-	"new_plain_title": String required
-	"new_title": String required
-	"new_tags": [String] required
-	"new_problem_statement": 	String 	required
-	"new_answer_choices": [answer_choice] required
-}
+Path Parameters:  none
+Query String:     query_string String optional
+Example:          /question?tag=cs%202110&tag=chapter%205&tag=c%20language searches for tags ["cs 2110", "chapter 5", "c language"]
+Request Body:     none
 **/
-questionRouter.route('/:QUESTIONID')
-	.post(tokenController.validateToken,
-		tokenController.refreshToken,
-		authorizeController.instructor,
-		questionController.editQuestion);
+questionRouter.route('/')
+    .get(tokenController.validateToken,
+        tokenController.refreshToken,
+        authorizeController.instructor,
+        questionController.getAllQuestions);
 
 /**
-Copy QUESTION
+Get Question Full Details
 
-PUT /api_v2/questions/{question_id}/
+GET	/api_v2/question/{question_id}/
 
-Authentication: user 	token
-Authorization: 	instructor
+Authentication:   user token
+Authorization:    instructor
+
+Path Parameters:  question_id String	required
+Query String:     none
+Request Body: 	  none
+**/
+questionRouter.route('/:QUESTIONID')
+    .get(tokenController.validateToken,
+        tokenController.refreshToken,
+        questionController.getQuestion);
+
+/**
+Copy Question From Existing
+*Does not allow instructor to copy their own Question.
+
+PUT /api_v2/question/{question_id}/copy
+
+Authentication:   user 	token
+Authorization: 	  instructor
 
 Path Parameters: 	question_id	String	required
-Query String: none
-Request Body: none
+Query String:     none
+Request Body:     none
 **/
-questionRouter.route('/:QUESTIONID')
-	.put(tokenController.validateToken,
-		tokenController.refreshToken,
-		authorizeController.instructor,
-		questionController.copyQuestion);
+questionRouter.route('/:QUESTIONID/copy')
+    .put(tokenController.validateToken,
+        tokenController.refreshToken,
+        authorizeController.instructor,
+        questionController.copyQuestion);
 
 /**
-DELETE QUESTION
+Delete Question
 
 DELETE	/api_v2/questions/{question_id}/
 
 Authentication:   user token
-Authorization:    admin, instructor
+Authorization:    instructor
 
 Path Parameters:  question_id String	required
 Query String:     none
@@ -131,6 +125,31 @@ questionRouter.route('/:QUESTIONID')
         tokenController.refreshToken,
         authorizeController.instructor,
         questionController.deleteQuestion);
+
+/**
+Edit Question
+
+POST /api_v2/questions/{question_id}/
+
+Authentication:   user token
+Authorization:    instructor
+
+Path Parameters:  question_id String	    required
+Query String:     none
+Request Body: 	  application/.json 		required
+{
+  "title": 	String	required
+  "tags": [String] Required
+  "html_title": 	String	required
+  "html_body"	: String Required
+  "answer_choices"	: [answer_choice] Required
+}
+**/
+questionRouter.route('/:QUESTIONID')
+	 .post(tokenController.validateToken,
+        tokenController.refreshToken,
+		    authorizeController.instructor,
+		    questionController.editQuestion);
 
 
 module.exports = questionRouter;
