@@ -1,15 +1,15 @@
-#Documentation
+# Documentation
 
 This is the Active Learning 2110 app API documentation. Our application uses Node, AngularJS, Node Express, HTML, and CSS to build a web application that stores information in a MongoDB database. This overviews routes and function calls that interact with our database. This documentation will cover authentication, user services, courses, lectures and questions which are all aspects within our web app.
 
-##General Information
+## General Information
 
 
 
-##Authentication
+## Authentication
 
-##User Services
+## User Services
 
-##Courses
+## Courses
 
-##Lectures and Questions
+## Lectures and Questions
