@@ -254,5 +254,4 @@ module.exports = {
     requireTags: requireTags,
     requireProblemStatement: requireProblemStatement,
     requireAnswerChoices: requireAnswerChoices,
-    requireAnswer: requireAnswer,
 };
