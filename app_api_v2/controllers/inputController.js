@@ -197,13 +197,13 @@ var requireTags = function(req, res, next) {
     }
 };
 
-var requireProblemStatement = function(req, res, next) {
-    console.log('inputController requireProblemStatement');
+var requireQuestionBody = function(req, res, next) {
+    console.log('inputController requireQuestionBody');
 
-    if (!req.body.problem_statement) {
+    if (!req.body.html_body) {
         return res.status(400).json({
             success: false,
-            message: 'Please enter problem statement'
+            message: 'Please enter html body'
         });
     } else {
         next();
@@ -252,7 +252,6 @@ module.exports = {
     requireRole: requireRole,
     requireSections: requireSections,
     requireTags: requireTags,
-    requireProblemStatement: requireProblemStatement,
+    requireQuestionBody: requireQuestionBody,
     requireAnswerChoices: requireAnswerChoices,
-    requireAnswer: requireAnswer,
 };

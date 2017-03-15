@@ -18,106 +18,228 @@
 var User = require('./../models/userModel');
 var Question = require('./../models/questionModel');
 
-var roles = {
-    ADMIN: 'admin',
-    INSTRUCTOR: 'instructor',
-    STUDENT: 'student',
+var checkForNull = function(data) {
+   var promise = new Promise(function(resolve, reject){
+       if (!data) {
+         var error_message = new Error('Does Not Exist');
+          reject(error_message);
+       }
+       else {
+          resolve(data);
+       }
+   });
+   return promise;
 };
 
-var getAll = function(req, res) {
-    console.log('questionController getAll');
-    Question.find(function(err, questions) {
-        if (err) {
+var editQuestion = function(req, res) {
+    console.log('questionController editQuestion');
+
+    Question.findOneAndUpdate({_id: req.params.QUESTIONID, instructor_id: req.decodedToken.sub, copied: undefined},
+      {
+        title: req.body.title,
+        tags: req.body.tags,
+        instructor_id: req.decodedToken.sub,
+        html_title: req.body.html_title,
+        html_body: req.body.html_body,
+        answer_choices: req.body.answer_choices
+      },
+      {new: true})
+    .exec()
+    .then(checkForNull)
+    .then(function(question) {
+        return res.status(200).json({
+            success: true,
+            jwt_token: req.token,
+            message: 'Question Updated',
+            question: question
+        });
+    })
+    .catch(function(err) {
+        return res.status(404).json({
+            success: false,
+            message: "Cannot Edit Question"
+        });
+    });
+};
+
+var copyQuestion = function(req, res) {
+    console.log('questionController copyQuestion');
+
+    Question.findById(req.params.QUESTIONID)
+    .exec()
+    .then(checkForNull)
+    .then(function(question) {
+        return new Promise((resolve, reject) => {
+            if (question.instructor_id === req.decodedToken.sub) {
+                var error_message = new Error('Cannot Copy Own Question');
+                reject(error_message);
+            }
+            resolve(question);
+        });
+    })
+    .then(function(question) {
+        var newQuestion = new Question({
+            title: question.title,
+            tags: question.tags,
+            instructor_id: req.decodedToken.sub,
+            html_title: question.html_title,
+            html_body: question.html_body,
+            answer_choices: question.answer_choices,
+            copied: true
+        });
+        return newQuestion.save();
+    })
+    .then(function(question) {
+        return res.status(200).json({
+            success: true,
+            jwt_token: req.token,
+            message: 'Question Copied',
+            question: question
+        });
+    })
+    .catch(function(err) {
+        return res.status(404).json({
+            success: false,
+            message: err.message
+        });
+    });
+};
+
+var deleteQuestion = function(req, res) {
+    console.log('questionController deleteQuestion');
+
+    Question.remove({_id: req.params.QUESTIONID, instructor_id: req.decodedToken.sub})
+    .exec()
+    .then(function(data) {
+        return new Promise((resolve, reject) => {
+            console.log(data.result);
+            if (data.result.n === 0) {
+                var error_message = new Error('Cannot Delete Question');
+                reject(error_message);
+            }
+            resolve(data);
+        });
+    })
+    .then(function(data) {
+        return res.status(200).json({
+            success: true,
+            jwt_token: req.token,
+            message: 'Question Deleted'
+        });
+    })
+    .catch(function(err) {
+        return res.status(404).json({
+            success: false,
+            message: err.message
+        });
+    });
+};
+
+var getAllQuestions = function(req, res) {
+    console.log('questionController getAllQuestions');
+
+    Question.find({ tags: { $all: req.query.tag}, copied: null }, { "html_title": 0, "html_body": 0, "__v": 0, "answer_choices": 0 })
+    .exec()
+    .then(function(questions) {
+        return res.status(200).json({
+            success: true,
+            jwt_token: req.token,
+            questions: questions,
+            message: "Success on getAllQuestions"
+        });
+    })
+    .catch(function(err) {
+        return res.status(500).json({
+            success: false,
+            message: 'Internal Error'
+        });
+    });
+};
+
+var getAllInstructorQuestions = function(req, res) {
+    console.log('questionController getAllInstructorQuestions');
+
+    if (req.decodedToken.sub !== req.params.USERID) {
+        return res.status(404).json({
+            success: false,
+            message: 'Not Authorized'
+        });
+    }
+    else {
+        Question.find({"instructor_id": req.params.USERID},
+        {"html_title": 0, "html_body": 0, "__v": 0, "answer_choices": 0})
+        .exec()
+        .then(checkForNull)
+        .then(function(questions) {
+            return res.status(200).json({
+                success: true,
+                jwt_token: req.token,
+                questions: questions,
+                message: "Success on getAllInstructorQuestions"
+            });
+        })
+        .catch(function(err) {
             return res.status(500).json({
                 success: false,
                 message: 'Internal Error'
             });
-        } else {
-            return res.status(200).json({
-                success: true,
-                questions: questions,
-                message: "Success on getAll"
-            });
-        }
+        });
+    }
+};
+
+var getQuestion = function(req, res) {
+    console.log('questionController getQuestion');
+
+    Question.findById(req.params.QUESTIONID, {"__v": 0})
+    .exec()
+    .then(checkForNull)
+    .then(function(question) {
+        return res.status(200).json({
+            success: true,
+            jwt_token: req.token,
+            message: 'Request Success',
+            question: question
+        });
+    })
+    .catch(function(err) {
+        return res.status(404).json({
+            success: false,
+            message: err.message
+        });
     });
 };
 
 var savedQuestionToDB = function(req, res) {
     console.log('questionController savedQuestionToDB');
 
-    User.findById(req.decodedToken.sub, function(err, user) {
-        var contributor = {
-            contributor_id: user._id.toString(),
-            username: user.username,
-            firstname: user.firstname,
-            lastname: user.lastname
-        };
+    var answer_choices = [];
+    for(var i=0; i<req.body.answer_choices.length; i++) {
+        answer_choices.push(req.body.answer_choices[i]);
+    }
 
-        var newQuestion = new Question({
-            contributor: contributor,
-            tags: req.body.tags,
-            problem_statement: req.body.problem_statement,
-            answer_choices: req.body.answer_choices,
-            answer: req.body.answer
-        });
-
-        newQuestion.save(function(err, savedQuestion) {
-            if (err) {
-                var errorMessage = 'Internal Error';
-                if (err.code == '11000') {
-                    errorMessage = 'Question failed to save';
-                }
-                return res.status(500).json({
-                    success: false,
-                    message: errorMessage
-                });
-            } else {
-                return res.status(201).json({
-                    success: true,
-                    message: 'Question successfully added',
-                    jwt_token: req.token,
-                    question: savedQuestion
-
-                });
-            }
-        });
+    var newQuestion = new Question({
+        title: req.body.title,
+        tags: req.body.tags,
+        instructor_id: req.decodedToken.sub,
+        html_title: req.body.html_title,
+        html_body: req.body.html_body,
+        answer_choices: req.body.answer_choices
     });
-};
 
-
-var deleteQuestion = function(req, res) {
-    console.log('questionController deleteQuestion');
-
-    Question.findById(req.params.QUESTIONID, function(err, question) {
-        if (err || !question) {
-            return res.status(404).json({
-                success: false,
-                message: 'Question Not Found'
-            });
-        } else {
-
-            if (req.decodedToken.sub !== question.contributor.contributor_id) {
-                return res.status(401).json({
-                    success: false,
-                    message: 'User not Authorized to delete question'
-                });
-            } else {
-                question.remove(function(err) {
-                    if (err) {
-                        return res.status(401).json({
-                            success: false,
-                            message: 'Questions Failed to Deleted'
-                        });
-                    } else {
-                        return res.status(200).json({
-                            success: true,
-                            jwt_token: req.token,
-                            message: 'Question Deleted'
-                        });
-                    }
-                });
-            }
-        }
+    newQuestion.save()
+    .then(function(question) {
+        return res.status(200).json({
+            success: true,
+            jwt_token: req.token,
+            message: 'Question Created',
+            question: question
+        });
+    })
+    .catch(function(err) {
+        return res.status(404).json({
+            success: false,
+            message: err.message
+        });
     });
 };
 
@@ -207,6 +329,27 @@ var deleteTag = function(req, res) {
 
 var editProblemStatement = function(req, res) {
     console.log('questionController editProblemStatement');
+
+    Question.findById(req.params.USERID)
+        .exec()
+        .then(function(user) {
+            user.role = req.body.new_role;
+            return user.save();
+        })
+        .then(function(user) {
+            return res.status(200).json({
+                success: true,
+                jwt_token: req.token,
+                message: 'User Role Updated',
+                user: user
+            });
+        })
+        .catch(function(err) {
+            return res.status(404).json({
+                success: false,
+                message: 'Unable to Update User Role'
+            });
+        });
 
     Question.findById(req.params.QUESTIONID, function(err, question) {
         if (err || !question) {
@@ -410,8 +553,12 @@ var editAnswer = function(req, res) {
 };
 
 module.exports = {
-    getAll: getAll,
+    getAllQuestions: getAllQuestions,
+    getAllInstructorQuestions: getAllInstructorQuestions,
+    getQuestion : getQuestion,
     savedQuestionToDB: savedQuestionToDB,
+    editQuestion: editQuestion,
+    copyQuestion: copyQuestion,
     deleteQuestion: deleteQuestion,
     addTag: addTag,
     deleteTag: deleteTag,

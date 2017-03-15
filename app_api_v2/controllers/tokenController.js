@@ -95,13 +95,12 @@ var refreshToken = function(req, res, next) {
 
     var timeInS = Math.floor(Date.now() / 1000);
     var secondsTilExp = req.decodedToken.exp - timeInS;
-    //console.log('exp - current: '+ secondsTilExp)
 
     if (secondsTilExp < TEN_MINUTES) {
         console.log("REFRESHING TOKEN");
 
         var claims = {
-            exp: Math.floor(Date.now() / 1000) + (60 * 5),
+            exp: Math.floor(Date.now() / 1000) + (60 * SIXTY_MINUTES),
             iss: req.decodedToken.iss,
             sub: req.decodedToken.sub,
             role: req.decodedToken.role
@@ -128,7 +127,8 @@ var validateToken = function(req, res, next) {
 
     //var token = req.body.token || req.headers['Authorization'] || req.headers['x-access-token'] || req.cookies['jwtToken'];
     //req.token = req.body.token || req.cookies['jwtToken'];
-    var token = req.body.token || req.cookies.jwtToken || req.headers.Authorization;
+    var token = req.cookies.jwtToken || req.headers.Authorization;
+    //var token = req.cookies.jwtToken;
 
     if (!token) {
         return res.status(401).json({

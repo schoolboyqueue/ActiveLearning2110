@@ -1,4 +1,5 @@
 /* jshint node: true */
+/* jshint esversion: 6 */
 
 //************************************************************
 //  questionModel.js                                        //
@@ -17,44 +18,44 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+
+var answer_choice = {
+    text: {
+        type: String,
+        required: true
+    },
+    answer: {
+        type: Boolean,
+        required: true
+    },
+    "_id": false
+};
+
 var QuestionSchema = new Schema({
-    contributor: {
-        contributor_id: {
-            type: String,
-            required: true
-        },
-        username: {
-            type: String,
-            required: true,
-            unique: true,
-            lowercase: true
-        },
-        firstname: {
-            type: String,
-            lowercase: true
-        },
-        lastname: {
-            type: String,
-            lowercase: true
-        }
+    instructor_id: {
+        type: String,
+        required: true
+    },
+    title: {
+        type: String,
+        required: true
     },
     tags: {
         type: [String],
         required: true,
         lowercase: true
     },
-    problem_statement: {
+    html_title: {
+        type: String,
+        required: true
+    },
+    html_body: {
         type: String,
         required: true,
     },
-    answer_choices: {
-        type: [String],
-        required: true
-    },
-    answer: {
-        type: Number,
-        required: true
-    }
+    answer_choices:[answer_choice],
+    copied: Boolean
 });
+
 
 module.exports = mongoose.model('Question', QuestionSchema);

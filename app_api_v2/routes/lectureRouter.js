@@ -1,4 +1,5 @@
 /* jshint node: true */
+/* jshint esversion: 6 */
 
 //************************************************************
 //  lectureRouter.js                                        //
@@ -55,6 +56,7 @@ Authorization:    instructor
 
 Path Parameters:  lecture_id String    required
 Query String:     none
+Request Body: application/json
 {
     "index":    Number  required
 }
@@ -84,8 +86,8 @@ Request Body:   none
 **/
 lectureRouter.route('/:LECTUREID/questions/:QUESTIONID')
     .delete(tokenController.validateToken,
-        tokenController.refreshToken,
-        lectureController.removeQuestion);
+          tokenController.refreshToken,
+          lectureController.removeQuestion);
 
 /**
 Save Question Set
@@ -97,6 +99,7 @@ Authorization:    instructor
 
 Path Parameters:  lecture_id String    required
 Query String:     none
+Request Body: application/json
 {
     "title":    String  required
 }
