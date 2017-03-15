@@ -1,4 +1,5 @@
 /* jshint node: true */
+/* jshint esversion: 6 */
 
 //************************************************************
 //  authRouter.js                                           //
@@ -22,7 +23,8 @@ var courseController = require('./../controllers/courseController');
 var tokenController = require('./../controllers/tokenController');
 var authorizeController = require('./../controllers/authorizeController');
 var inputController = require('./../controllers/inputController');
-var questionController2 = require('./../controllers/questionController2');
+var questionController = require('./../controllers/questionController');
+var lectureController = require('./../controllers/lectureController');
 
 
 /**
@@ -173,6 +175,8 @@ userRouter.route('/:USERID/deactivate')
 
 /**
 Get All Instructor Questions
+*Only returns snapshot of questions.
+*Call /question/{question_id}/ for full question details
 
 GET	/api_v2/user/{instructor_id}/questions
 
@@ -186,7 +190,7 @@ Request Body: 	  none
 userRouter.route('/:USERID/questions')
     .get(tokenController.validateToken,
         tokenController.refreshToken,
-        questionController2.getAllInstructorQuestions);
+        questionController.getAllInstructorQuestions);
 
 /**
 Get All Instructor Question Sets
@@ -203,6 +207,7 @@ Request Body: 	  none
 userRouter.route('/:USERID/questionsets')
     .get(tokenController.validateToken,
         tokenController.refreshToken,
-        questionController2.getAllQuestionSets);
+        lectureController.getAllQuestionSets);
+
 
 module.exports = userRouter;

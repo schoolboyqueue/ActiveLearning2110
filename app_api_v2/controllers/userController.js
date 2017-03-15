@@ -101,7 +101,6 @@ var getUser = function(req, res) {
     User.findById(req.params.USERID)
         .exec()
         .then(function(user) {
-            console.log('testing');
             user.password = undefined;
             user.__v = undefined;
             return res.status(200).json({
