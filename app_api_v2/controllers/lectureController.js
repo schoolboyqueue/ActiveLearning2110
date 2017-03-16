@@ -51,11 +51,14 @@ var addQuestionSet = function(req, res) {
         return lecture.save();
     })
     .then(function(lecture) {
+        var updatedLecture = lecture.toObject();
+        delete updatedLecture._id;
+        updatedLecture.lecture_id = lecture._id.toString();
         return res.status(200).json({
             success: true,
             jwt_token: req.token,
             message: 'Question Set Added To Lecture',
-            lecture: lecture
+            lecture: updatedLecture
         });
     })
     .catch(function(err) {
@@ -95,11 +98,14 @@ var addQuestionToLecture = function(req, res) {
         return lecture.save();
     })
     .then(function(lecture) {
+        var updatedLecture = lecture.toObject();
+        delete updatedLecture._id;
+        updatedLecture.lecture_id = lecture._id.toString();
         return res.status(200).json({
             success: true,
             jwt_token: req.token,
             message: 'Question Added to Lecture',
-            lecture: lecture
+            lecture: updatedLecture
         });
     })
     .catch(function(err) {
@@ -172,9 +178,9 @@ var getLecture = function(req, res) {
     .exec()
     .then(checkForNull)
     .then(function(lecture) {
-      var updatedLecture = lecture.toObject();
-      delete updatedLecture._id;
-      updatedLecture.lecture_id = lecture._id.toString();
+        var updatedLecture = lecture.toObject();
+        delete updatedLecture._id;
+        updatedLecture.lecture_id = lecture._id.toString();
         return res.status(200).json({
             success: true,
             jwt_token: req.token,
@@ -241,11 +247,14 @@ var removeQuestion = function(req, res) {
       {new: true})
     .exec()
     .then(function(lecture) {
+        var updatedLecture = lecture.toObject();
+        updatedLecture.lecture_id = updatedLecture.lecture_id.toString();
+        delete updatedLecture._id;
         return res.status(200).json({
             success: true,
             jwt_token: req.token,
             message: 'Question Removed',
-            lecture: lecture
+            lecture: updatedLecture
         });
     })
     .catch(function(err) {
@@ -277,11 +286,14 @@ var reorderQuestion = function(req, res) {
         return lecture.save();
     })
     .then(function(lecture) {
+        var updatedLecture = lecture.toObject();
+        updatedLecture.lecture_id = updatedLecture.lecture_id.toString();
+        delete updatedLecture._id;
         return res.status(200).json({
             success: true,
             jwt_token: req.token,
             message: 'Reorder Complete',
-            lecture: lecture
+            lecture: updatedLecture
         });
     })
     .catch(function(err) {
