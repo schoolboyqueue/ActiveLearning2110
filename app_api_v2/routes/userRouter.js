@@ -195,7 +195,7 @@ userRouter.route('/:USERID/questions')
 /**
 Get All Instructor Question Sets
 
-GET	/api_v2/user/{instructor_id}/questionset
+GET	/api_v2/user/{instructor_id}/questionsets
 
 Authentication:   user token
 Authorization:    instructor
