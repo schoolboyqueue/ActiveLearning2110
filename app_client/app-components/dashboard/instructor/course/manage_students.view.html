@@ -28,11 +28,16 @@
                         {{student.status}}
                     </td>
                     <td class="align-middle">
-                        <button type="button" class="btn btn-danger btn-sm" ng-click="deleteStudent(student)" ng-disabled="loading">
-                            <span ng-show="loading">
-                                <i class="fa fa-circle-o-notch fa-spin"></i>
-                            </span>
-                            Delete
+                        <button
+                            type="button"
+                            class="btn btn-danger btn-sm"
+                            ng-disabled="loading"
+                            confirmed-click="deleteStudent($index)"
+                            ng-confirm-click="Are you sure you want to remove {{student.username}}?">
+                                <span ng-show="loading">
+                                    <i class="fa fa-circle-o-notch fa-spin"></i>
+                                </span>
+                                Delete
                         </button>
                     </td>
                 </tr>

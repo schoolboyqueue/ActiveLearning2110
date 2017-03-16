@@ -18,6 +18,7 @@ var app = angular
     .module('app', [
         'ui.router',
         'ngStorage',
+        'ngAnimate',
         'angularModalService',
         'angular-jwt',
         'oc.lazyLoad',
@@ -32,17 +33,17 @@ var app = angular
         'ngNotify',
         'ngSanitize',
         'ui.sortable',
-        '720kb.tooltips'
+        '720kb.tooltips',
+        'angular-loading-bar',
+        'siyfion.sfTypeahead'
     ]);
 
-app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLoadProvider, tooltipsConfProvider) {
+app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLoadProvider, tooltipsConfProvider, cfpLoadingBarProvider) {
 
-    ContentTools.StylePalette.add([
-        new ContentTools.Style('Muted', 'text-muted', ['p'])
-    ]);
+    cfpLoadingBarProvider.includeSpinner = false;
 
     tooltipsConfProvider.configure({
-        'size':'small',
+        'size': 'small',
         'showTrigger': 'mouseenter',
         'hideTrigger': 'mouseleave'
     });
@@ -85,10 +86,12 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
             files: ['app-components/dashboard/student/course/course.student.controller.js']
         }, {
             name: 'services',
-            files: ['app-services/storage.service.js',
-                    'app-services/user.service.js',
-                    'app-services/rest.service.js',
-                    'app-services/socket.service.js']
+            files: [
+                'app-services/storage.service.js',
+                'app-services/user.service.js',
+                'app-services/rest.service.js',
+                'app-services/socket.service.js'
+            ]
         }, {
             name: 'login',
             files: ['app-components/modals/login/login.controller.js']
@@ -251,7 +254,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
 });
 
 app.run(function($rootScope, ngNotify) {
-    $rootScope.$on('$stateChangeSuccess',function(){
+    $rootScope.$on('$stateChangeSuccess', function() {
         $("html, body").animate({
             scrollTop: 0
         }, 200);
