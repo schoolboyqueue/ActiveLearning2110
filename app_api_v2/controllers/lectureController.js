@@ -88,7 +88,8 @@ var addQuestionToLecture = function(req, res) {
     .then(function(lecture) {
         var question = {
             title: req.question.title,
-            question_id: req.params.QUESTIONID
+            question_id: req.params.QUESTIONID,
+            tags: req.question.tags
         };
         lecture.questions.push(question);
         return lecture.save();
@@ -154,6 +155,28 @@ var editLecture = function(req, res) {
             jwt_token: req.token,
             message: 'Lecture Edited',
             lectures: course.lectures
+        });
+    })
+    .catch(function(err) {
+        return res.status(404).json({
+            success: false,
+            message: err.message
+        });
+    });
+};
+
+var getLecture = function(req, res) {
+    console.log('questionController getLecture');
+
+    Lecture.findById(req.params.LECTUREID, {"__v": 0})
+    .exec()
+    .then(checkForNull)
+    .then(function(lecture) {
+        return res.status(200).json({
+            success: true,
+            jwt_token: req.token,
+            message: 'Request Success',
+            lecture: lecture
         });
     })
     .catch(function(err) {
@@ -352,6 +375,7 @@ module.exports = {
     addQuestionToLecture: addQuestionToLecture,
     deleteLecture       : deleteLecture,
     editLecture         : editLecture,
+    getLecture          : getLecture,
     getCourseLectures   : getCourseLectures,
     getAllQuestionSets  : getAllQuestionSets,
     removeQuestion      : removeQuestion,

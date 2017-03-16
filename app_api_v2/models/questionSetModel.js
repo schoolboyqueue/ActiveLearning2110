@@ -27,6 +27,11 @@ var question_snapshot = {
         type: String,
         required: true
     },
+    tags: {
+        type: [String],
+        required: true,
+        lowercase: true
+    },
     "_id": false
 };
 

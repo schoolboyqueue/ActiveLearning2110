@@ -22,6 +22,23 @@ var lectureController = require('./../controllers/lectureController');
 var tokenController = require('./../controllers/tokenController');
 
 /**
+Get Lecture Details
+
+GET	/api_v2/lecture/{lecture_id}/
+
+Authentication:   user token
+Authorization:    instructor
+
+Path Parameters:  lecture_id String	required
+Query String:     none
+Request Body: 	  none
+**/
+lectureRouter.route('/:LECTUREID')
+    .get(tokenController.validateToken,
+        tokenController.refreshToken,
+        lectureController.getLecture);
+
+/**
 Add Question
 
 IMPORTANT-Instructor ID's on both lecture and question must match. If you
