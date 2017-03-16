@@ -172,11 +172,14 @@ var getLecture = function(req, res) {
     .exec()
     .then(checkForNull)
     .then(function(lecture) {
+      var updatedLecture = lecture.toObject();
+      delete updatedLecture._id;
+      updatedLecture.lecture_id = lecture._id.toString();
         return res.status(200).json({
             success: true,
             jwt_token: req.token,
             message: 'Request Success',
-            lecture: lecture
+            lecture: updatedLecture
         });
     })
     .catch(function(err) {
