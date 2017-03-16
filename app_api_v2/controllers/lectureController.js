@@ -239,6 +239,7 @@ var getAllQuestionSets = function(req, res) {
     });
 };
 
+
 var removeQuestion = function(req, res) {
     console.log('lectureController removeQuestion');
 
