@@ -100,12 +100,10 @@ app.controller('Instructor.Question.Controller', function($scope, $state, $rootS
     };
 
     $scope.edit = function() {
-        $scope.state = 'cancel';
         $scope.editor.start();
     };
 
     $scope.save = function() {
-        $scope.state = 'edit';
         $scope.editor.stop(true);
     };
 
@@ -114,14 +112,23 @@ app.controller('Instructor.Question.Controller', function($scope, $state, $rootS
         for (var key in $scope.question.tags) {
             tags.push($scope.question.tags[key].text);
         }
+        var choices = [];
+        for (key in $scope.question.choices) {
+            choices.push({
+                text: $scope.question.choices[key].text,
+                answer: $scope.question.choices[key].answer
+            });
+        }
         RESTService.CreateQuestion({
             title: $scope.question.html.titleText,
-            tags: tags
+            tags: tags,
+            html_title: $scope.question.html.title,
+            html_body: $scope.question.html.body,
+            answer_choices: $scope.question.choices
         }, finishCreateQuestion);
     };
 
     $scope.cancel = function() {
-        $scope.state = 'edit';
         $scope.editor.stop(false);
     };
 

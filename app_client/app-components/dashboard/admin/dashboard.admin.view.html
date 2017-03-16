@@ -5,7 +5,7 @@
           <input class="form-control" type="text" placeholder="Search Users" ng-model="searchUsers">
       </div>
     </div>
-    <table ng-table="tableParams" class="table table-bordered table-sm text-center mb-2">
+    <table ng-table="tableParams" class="table table-bordered table-hover table-sm text-center mb-2">
         <tr
         ng-repeat="user in $data | filter:searchUsers"
         ng-init="initUser(user, $index)"

@@ -317,25 +317,12 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
     };
 
     service.CreateQuestion = function(info, callback) {
-        baseREST.one("questions2").post("", info).then(
+        baseREST.one("question").post("", info).then(
             function(response) {
                 callback(genRetInfo(response));
             },
             function(response) {
                 callback(genRetInfo(response));
-            }
-        );
-    };
-
-    service.GetAllQuestions = function(callback) {
-        baseREST.one("questions2").get().then(
-            function(response) {
-                callback({
-                    questions: response.questions
-                });
-            },
-            function(response) {
-                console.log(response);
             }
         );
     };

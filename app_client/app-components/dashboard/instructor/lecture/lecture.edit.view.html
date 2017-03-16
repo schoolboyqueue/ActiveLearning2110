@@ -1,8 +1,35 @@
 <div class="animated fadeIn container-fluid p-2" ng-controller="Instructor.Lecture.Edit.Controller">
-    <div ng-show="!loaded">
-        LOADING
+    <div class="container-fluid p-0 pb-2">
+        <div class="input-group">
+            <input class="form-control" type="text" sf-typeahead datasets="questionsDataset" ng-model="selectedQuestion" />
+            <span class="input-group-btn">
+                <button class="btn btn-info" type="button" ng-click="addQuestion()" ng-disabled="checkSelectedQuestion()">
+                    Add Question
+                </button>
+            </span>
+        </div>
+        <ul class="list-group pt-2" ui-sortable ng-model="lectureQuestions">
+            <li
+                class="list-group-item list-group-item-action justify-content-between p-1"
+                ng-repeat="question in lectureQuestions">
+                    <div>
+                        <i class="fa fa-bars fa-fw" aria-hidden="true"></i>
+                        {{question.title}}
+                    </div>
+                    <div>
+                        <span class="badge badge-default badge-pill mr-1 text-uppercase" ng-repeat="tag in question.tags | limitTo:4">{{tag}}</span>
+                        <button
+                            class="btn btn-danger"
+                            type="button"
+                            confirmed-click="removeQuestion($index)"
+                            ng-confirm-click="Are you sure you want to remove this question?">
+                                <i class="fa fa-times" aria-hidden="true"></i>
+                        </button>
+                    </div>
+            </li>
+        </ul>
     </div>
-    <div ng-show="loaded" style="overflow:visible;">
-        <input class="form-control" type="text" sf-typeahead datasets="questionsDataset" ng-model="selectedQuestion">
-    </div>
+    <pre>
+        {{lectureQuestions | json}}
+    </pre>
 </div>

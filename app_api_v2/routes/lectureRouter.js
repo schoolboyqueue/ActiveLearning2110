@@ -29,17 +29,14 @@ are attempting to add a question created by another instructor you must
 first call the copy question from existing API call and then add the
 copy to the lecture.
 
-POST    /api_v2/lecture/{lecture_id}/questions/{question_id}/
+POST	/api_v2/lecture/{lecture_id}/questions/{question_id}/
 
 Authentication:   user token
 Authorization:    instructor
 
-Path Parameters:
-    lecture_id  String  required
-    question_id String  required
-
+Path Parameters:  lecture_id, question_id String	required
 Query String:     none
-Request Body:     none
+Request Body: 	  none
 **/
 lectureRouter.route('/:LECTUREID/questions/:QUESTIONID')
     .post(tokenController.validateToken,
@@ -49,19 +46,17 @@ lectureRouter.route('/:LECTUREID/questions/:QUESTIONID')
 /**
 Reorder Lecture Question
 
-POST    /api_v2/lecture/{lecture_id}/questions{question_id}/reorder
+POST	/api_v2/lecture/{lecture_id}/questions{question_id}/reorder
 
 Authentication:   user token
 Authorization:    instructor
 
-Path Parameters:  lecture_id String    required
+Path Parameters:  lecture_id String	required
 Query String:     none
 Request Body: application/json
 {
-    "index":    Number  required
+	"index"				: Number Required This is the index where you want the question to go
 }
-
-index: This is the index where you want the question to go
 **/
 lectureRouter.route('/:LECTUREID/questions/:QUESTIONID/reorder')
     .post(tokenController.validateToken,
@@ -72,17 +67,14 @@ lectureRouter.route('/:LECTUREID/questions/:QUESTIONID/reorder')
 /**
 Remove Question
 
-DELETE    /api_v2/lecture/{lecture_id}/questions{question_id}/
+DELETE	/api_v2/lecture/{lecture_id}/questions{question_id}/
 
 Authentication:   user token
 Authorization:    instructor
 
-Path Parameters:
-    lecture_id  String  required
-    question_id String  required
-
-Query String:   none
-Request Body:   none
+Path Parameters:  lecture_id, question_id String	required
+Query String:     none
+Request Body: 	  none
 **/
 lectureRouter.route('/:LECTUREID/questions/:QUESTIONID')
     .delete(tokenController.validateToken,
@@ -92,16 +84,16 @@ lectureRouter.route('/:LECTUREID/questions/:QUESTIONID')
 /**
 Save Question Set
 
-POST    /api_v2/lecture/{lecture_id}/questionset
+POST	/api_v2/lecture/{lecture_id}/questionset
 
 Authentication:   user token
 Authorization:    instructor
 
-Path Parameters:  lecture_id String    required
+Path Parameters:  lecture_id String	required
 Query String:     none
 Request Body: application/json
 {
-    "title":    String  required
+	"title"				: String Required
 }
 **/
 lectureRouter.route('/:LECTUREID/questionset')
@@ -112,17 +104,14 @@ lectureRouter.route('/:LECTUREID/questionset')
 /**
 Add Question Set to Lecture
 
-POST    /api_v2/lecture/{lecture_id}/questionset/{questionSet_id}/
+POST	/api_v2/lecture/{lecture_id}/questionset/{questionSet_id}/
 
 Authentication:   user token
 Authorization:    instructor
 
-Path Parameters:
-    lecture_id      String  required
-    questionSet_id  String  required
-
+Path Parameters:  lecture_id, questionSet_id String	required
 Query String:     none
-Request Body:     none
+Request Body: 	  none
 **/
 lectureRouter.route('/:LECTUREID/questionset/:QUESTIONSETID')
     .post(tokenController.validateToken,
@@ -132,25 +121,22 @@ lectureRouter.route('/:LECTUREID/questionset/:QUESTIONSETID')
 /**
 Edit Lecture title or schedule
 
-POST    /api_v2/lecture/{lecture_id}/
+POST	/api_v2/lecture/{lecture_id}/
 
 Authentication:   user token
 Authorization:    instructor
 
-Path Parameters:  lecture_id String required
+Path Parameters:  lecture_id String	required
 Query String:     none
-Request Body:     application/json  required
+Request Body:     application/json    required
 {
-    "title":        String          optional
-    "schedule":                     optional
+    "title":        String              optional
+    "schedule":                         optional
     {
-        "day":      String          required
-        "date":     String          required
+        "day":      String              required     enum ["mon", "tue", "wed", "thu", "fri"] required
+        "date":     String              required     'YYYY-MM-DD'
     }
 }
-
-day:    enum ["mon", "tue", "wed", "thu", "fri"]
-date:   'YYYY-MM-DD'
 **/
 lectureRouter.route('/:LECTUREID')
     .post(tokenController.validateToken,
