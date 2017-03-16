@@ -248,8 +248,8 @@ var removeQuestion = function(req, res) {
     .exec()
     .then(function(lecture) {
         var updatedLecture = lecture.toObject();
-        updatedLecture.lecture_id = updatedLecture.lecture_id.toString();
         delete updatedLecture._id;
+        updatedLecture.lecture_id = lecture._id.toString();
         return res.status(200).json({
             success: true,
             jwt_token: req.token,
@@ -287,8 +287,8 @@ var reorderQuestion = function(req, res) {
     })
     .then(function(lecture) {
         var updatedLecture = lecture.toObject();
-        updatedLecture.lecture_id = updatedLecture.lecture_id.toString();
         delete updatedLecture._id;
+        updatedLecture.lecture_id = lecture._id.toString();
         return res.status(200).json({
             success: true,
             jwt_token: req.token,
