@@ -1,11 +1,11 @@
 <div class="container-fluid p-5" ng-controller="Instructor.Question.Controller">
     <div class="container-fluid">
-        <div class="d-flex justify-content-end pb-2">
+        <div class="d-flex justify-content-between pb-2">
             <div class="btn-group" role="group">
-                <button type="button" class="btn btn-info btn-sm" ng-click="edit()" ng-show="state === 'edit'">
+                <button type="button" class="btn btn-info btn-sm" ng-click="state = 'cancel'; edit()" ng-show="state === 'edit'">
                     <i class="fa fa-pencil-square fa-fw" aria-hidden="true"></i>
                 </button>
-                <button type="button" class="btn btn-danger btn-sm" ng-click="cancel()" ng-show="state === 'cancel'">
+                <button type="button" class="btn btn-danger btn-sm" ng-click="state = 'edit'; cancel()" ng-show="state === 'cancel'">
                     <i class="fa fa-times fa-fw" aria-hidden="true"></i>
                 </button>
                 <button
@@ -18,9 +18,20 @@
                     autocomplete="off">
                     T/F
                 </button>
-                <button type="button" class="btn btn-success btn-sm" ng-click="save()"
-                ng-disabled="state === 'edit' || question.tags.length === 0 || question.choices.length < 2 || answersEmpty()">
-                    <i class="fa fa-check fa-fw" aria-hidden="true"></i>
+                <button
+                    type="button"
+                    class="btn btn-success btn-sm"
+                    ng-click="state = 'edit'; save()"
+                    ng-disabled="state === 'edit' || question.tags.length === 0 || question.choices.length < 2 || answersEmpty()">
+                        <i class="fa fa-check fa-fw" aria-hidden="true"></i>
+                </button>
+            </div>
+            <div>
+                <button
+                    type="button"
+                    class="btn btn-success btn-sm"
+                    ng-show="question.html.title != null"
+                    ng-click="submit()">Submit
                 </button>
             </div>
         </div>
@@ -40,6 +51,9 @@
                 </p>
             </div>
         </div>
+        <div class="d-flex justify-content-end p-0" nt-show="state === 'edit'">
+            <span class="badge badge-default mr-1 text-uppercase" ng-repeat="tag in question.tags">{{tag.text}}</span>
+        </div>
         <div class="pt-4" ng-show="state === 'edit'">
             <div class="form-check radio radio-success" ng-repeat="choice in question.choices">
                 <input class="form-check-input" type="radio" name="choices" id="{{choice.id}}" value="{{choice.id}}">
@@ -53,10 +67,10 @@
                 <div class="col-lg pb-2">
                     <div class="input-group">
                         <tags-input
-                          class="text-uppercase form-control"
-                          ng-model="question.tags"
-                          min-length="1"
-                          placeholder="Question Tags (Required)">
+                            class="text-uppercase form-control"
+                            ng-model="question.tags"
+                            min-length="1"
+                            placeholder="Question Tags (Required)">
                         </tags-input>
                     </div>
                 </div>

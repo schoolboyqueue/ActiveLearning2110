@@ -19,6 +19,14 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
 
     var baseREST = Restangular.all("api_v2");
 
+    Restangular.setErrorInterceptor(function(response, deferred, responseHandler) {
+        if (response.status === 404) {
+            service.Logout();
+            return false; // error handled
+        }
+        return true; // error not handled
+    });
+
     service.Register = function(info, callback) {
         var signup = null;
         if (info.professor) {
@@ -238,14 +246,14 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
     function getAddStudentPromise(info) {
         var deferred = $q.defer();
         baseREST.one("course", info.course_id).one("sections", info.section_id)
-        .customPOST(info.student, "students").then(
-            function(response) {
-                deferred.resolve(response);
-            },
-            function(response) {
-                deferred.resolve(response.data);
-            }
-        );
+            .customPOST(info.student, "students").then(
+                function(response) {
+                    deferred.resolve(response);
+                },
+                function(response) {
+                    deferred.resolve(response.data);
+                }
+            );
         return deferred.promise;
     }
 
@@ -306,6 +314,17 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
                     callback(genRetInfo(response));
                 }
             );
+    };
+
+    service.CreateQuestion = function(info, callback) {
+        baseREST.one("question").post("", info).then(
+            function(response) {
+                callback(genRetInfo(response));
+            },
+            function(response) {
+                callback(genRetInfo(response));
+            }
+        );
     };
 
     service.Logout = function() {
