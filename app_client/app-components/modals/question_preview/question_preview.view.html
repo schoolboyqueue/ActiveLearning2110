@@ -1,0 +1,24 @@
+<div class="login modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <button type="btn float-right" class="close" data-dismiss="modal">&times;</button>
+                    <div ng-bind-html="title"></div>
+                    <div ng-bind-html="body"></div>
+                    <div class="d-flex justify-content-end p-0">
+                        <span class="badge badge-default mr-1 text-uppercase" ng-repeat="tag in tags">{{tag}}</span>
+                    </div>
+                    <div class="pt-4">
+                        <div class="form-check radio radio-success" ng-repeat="choice in choices">
+                            <input class="form-check-input" type="radio" name="choices" id="{{$index}}" value="{{$index}}">
+                            <label for="{{$index}}">
+                                {{choice.text}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -32,7 +32,7 @@
                 <div>
                     <span class="badge badge-default badge-pill mr-1 text-uppercase" ng-repeat="tag in question.tags | limitTo:4">{{tag}}</span>
                     <div class="btn-group btn-group-sm" role="group">
-                        <button class="btn btn-sm btn-secondary" type="button">
+                        <button class="btn btn-sm btn-secondary" type="button" ng-click="viewQuestion($index)">
                             View
                         </button>
                         <button class="btn btn-sm btn-danger" ng-disabled="removeLoading || addLoading" type="button" confirmed-click="removeQuestion($index)" ng-confirm-click="Are you sure you want to remove this question?">

@@ -51,7 +51,7 @@
                 </p>
             </div>
         </div>
-        <div class="d-flex justify-content-end p-0" nt-show="state === 'edit'">
+        <div class="d-flex justify-content-end p-0" ng-show="state === 'edit'">
             <span class="badge badge-default mr-1 text-uppercase" ng-repeat="tag in question.tags">{{tag.text}}</span>
         </div>
         <div class="pt-4" ng-show="state === 'edit'">

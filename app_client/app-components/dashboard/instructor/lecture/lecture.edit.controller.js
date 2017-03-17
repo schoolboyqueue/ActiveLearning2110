@@ -15,7 +15,7 @@
 
 var app = angular.module('app');
 
-app.controller('Instructor.Lecture.Edit.Controller', function($scope, $localStorage, $stateParams, $rootScope, RESTService, ngNotify) {
+app.controller('Instructor.Lecture.Edit.Controller', function($scope, $localStorage, $stateParams, $rootScope, RESTService, UserService, ngNotify) {
 
     $scope.addLoading = false;
     $scope.removeLoading = false;
@@ -126,6 +126,16 @@ app.controller('Instructor.Lecture.Edit.Controller', function($scope, $localStor
             lecture_id: $scope.lecture.lecture_id,
             course_id: $scope.course._id
         }, finishRemoveQuestionFromLecture);
+    };
+
+    $scope.viewQuestion = function(index) {
+        RESTService.GetQuestionDetails($scope.lecture.questions[index].question_id, function(info) {
+            if (!info.success) {
+                ngNotify.set('Could not fetch question details', 'error');
+                return;
+            }
+            UserService.ShowQuestionPreview(info);
+        });
     };
 
     $scope.createQuestionSet = function() {

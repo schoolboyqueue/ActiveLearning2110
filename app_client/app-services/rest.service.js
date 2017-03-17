@@ -403,13 +403,18 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
         );
     };
 
-    service.GetQuestionDetails = function(info, callback) {
-        baseREST.one("question", info.question_id).get().then(
+    service.GetQuestionDetails = function(question_id, callback) {
+        baseREST.one("question", question_id).get().then(
             function(response) {
-                console.log(response);
+                var retInfo = genRetInfo(response);
+                retInfo.title = response.question.html_title;
+                retInfo.body = response.question.html_body;
+                retInfo.tags = response.question.tags;
+                retInfo.choices = response.question.answer_choices;
+                callback(retInfo);
             },
             function(response) {
-                console.log(response);
+                callback(genRetInfo(response));
             }
         );
     };
