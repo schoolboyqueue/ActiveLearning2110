@@ -110,7 +110,7 @@ app.controller('Instructor.Question.Controller', function($scope, $state, $rootS
     $scope.submit = function() {
         var tags = [];
         for (var key in $scope.question.tags) {
-            tags.push($scope.question.tags[key].text);
+            tags.push($scope.question.tags[key].text.toLowerCase());
         }
         var choices = [];
         for (key in $scope.question.choices) {
@@ -140,7 +140,7 @@ app.controller('Instructor.Question.Controller', function($scope, $state, $rootS
 
     function finishCreateQuestion(response) {
         if (!response.success) {
-            ngNotify.set('Question creation failed: ' + response.message, 'error');
+            ngNotify.set('Question creation failed:' + response.message, 'error');
             return;
         }
         ngNotify.set('Question created', 'success');

@@ -19,13 +19,13 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
 
     var baseREST = Restangular.all("api_v2");
 
-    Restangular.setErrorInterceptor(function(response, deferred, responseHandler) {
-        if (response.status === 404) {
-            service.Logout();
-            return false; // error handled
-        }
-        return true; // error not handled
-    });
+    // Restangular.setErrorInterceptor(function(response, deferred, responseHandler) {
+    //     if (response.status === 404) {
+    //         service.Logout();
+    //         return false; // error handled
+    //     }
+    //     return true; // error not handled
+    // });
 
     service.Register = function(info, callback) {
         var signup = null;
@@ -322,6 +322,82 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
                 callback(genRetInfo(response));
             },
             function(response) {
+                callback(genRetInfo(response));
+            }
+        );
+    };
+
+    service.AddQuestionToLecture = function(info, callback) {
+        baseREST.one("lecture", info.lecture_id).one("questions", info.question_id).post().then(
+            function(response) {
+                UserStorage.UpdateSingleLecture(info.course_id, response.lecture);
+                callback(genRetInfo(response));
+            },
+            function(response) {
+                callback(genRetInfo(response));
+            }
+        );
+    };
+
+    service.RemoveQuestionFromLecture = function(info, callback) {
+        baseREST.one("lecture", info.lecture_id).one("questions", info.question_id).remove().then(
+            function(response) {
+                UserStorage.UpdateSingleLecture(info.course_id, response.lecture);
+                callback(genRetInfo(response));
+            },
+            function(response) {
+                callback(genRetInfo(response));
+            }
+        );
+    };
+
+    service.CreateQuestionSet = function(info, callback) {
+        baseREST.one("lecture", info.lecture_id).one("questionset").post("", {
+            title: info.title
+        }).then(
+            function(response) {
+                callback(genRetInfo(response));
+            },
+            function(response) {
+                callback(genRetInfo(response));
+            }
+        );
+    };
+
+
+    service.AddQuestionSetToLecture = function(info, callback) {
+        baseREST.one("lecture", info.lecture_id).one("questionset", info.questionset_id).post().then(
+            function(response) {
+                UserStorage.UpdateSingleLecture(info.course_id, response.lecture);
+                callback(genRetInfo(response));
+            },
+            function(response) {
+                callback(genRetInfo(response));
+            }
+        );
+    };
+
+    service.GetLectureInfo = function(info, callback) {
+        baseREST.one("lecture", info.lecture_id).get().then(
+            function(response) {
+                UserStorage.UpdateSingleLecture(info.course_id, response.lecture);
+                callback(genRetInfo(response));
+            },
+            function(response) {
+                callback(genRetInfo(response));
+            }
+        );
+    };
+
+    service.MoveLectureQuestion = function(info, callback) {
+        baseREST.one("lecture", info.lecture_id).one("questions", info.question_id).one("reorder").post("", {
+            index: info.index
+        }).then(
+            function(response) {
+                callback(genRetInfo(response));
+            },
+            function(response) {
+                console.log(response);
                 callback(genRetInfo(response));
             }
         );

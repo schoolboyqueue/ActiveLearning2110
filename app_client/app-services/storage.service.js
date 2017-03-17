@@ -68,6 +68,22 @@ app.factory('UserStorage', function($localStorage, jwtHelper) {
         }
     };
 
+    service.UpdateSingleLecture = function(course_id, lecture) {
+        var course_key = null;
+        for (var key in $localStorage.courses) {
+            if ($localStorage.courses[key]._id === course_id) {
+                course_key = key;
+                break;
+            }
+        }
+        for (key in $localStorage.courses[course_key].lectures) {
+            var curr = $localStorage.courses[course_key].lectures[key];
+            if (curr.lecture_id === lecture.lecture_id) {
+                $localStorage.courses[course_key].lectures[key] = lecture;
+            }
+        }
+    };
+
     service.UpdateCourseLectures = function(course_id, lectures) {
         for (var key in $localStorage.courses) {
             if ($localStorage.courses[key]._id === course_id) {

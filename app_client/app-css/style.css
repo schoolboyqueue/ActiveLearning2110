@@ -649,13 +649,26 @@ button.close {
 .twitter-typeahead {
     float: left;
     width: 100%;
+    position: relative;
 }
 
 .twitter-typeahead>.form-control {
     width: inherit !important;
-    -webkit-border-radius: 3px !important;
-    -moz-border-radius: 3px !important;
-    border-radius: 3px !important;
+    height: 37px;
+}
+
+.twitter-typeahead .tt-query, .twitter-typeahead .tt-hint {
+    margin-bottom: 0;
+}
+
+.select-inline {
+    -webkit-border-top-right-radius: 0px;
+    -moz-border-top-right-radius: 0px;
+    border-top-right-radius: 0px;
+    -webkit-border-bottom-right-radius: 0px;
+    -moz-border-bottom-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border-right: 0;
 }
 
 .tt-menu {

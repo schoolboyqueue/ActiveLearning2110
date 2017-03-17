@@ -43,6 +43,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
     cfpLoadingBarProvider.includeSpinner = false;
 
     tooltipsConfProvider.configure({
+        'side': 'right',
         'size': 'small',
         'showTrigger': 'mouseenter',
         'hideTrigger': 'mouseleave'
