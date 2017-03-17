@@ -1,35 +1,57 @@
 <div class="animated fadeIn container-fluid p-2" ng-controller="Instructor.Lecture.Edit.Controller">
     <div class="container-fluid p-0 pb-2">
-        <div class="input-group">
+        <div class="input-group" ng-show="searchType.type =='all'">
+            <select class="custom-select select-inline" ng-options="item.title for item in options" ng-model="searchType"></select>
             <input class="form-control" type="text" sf-typeahead datasets="questionsDataset" ng-model="selectedQuestion" />
             <span class="input-group-btn">
                 <button class="btn btn-info" type="button" ng-click="addQuestion()" ng-disabled="checkSelectedQuestion()">
+                    <span ng-show="addLoading">
+                        <i class="fa fa-circle-o-notch fa-spin"></i>
+                    </span>
                     Add Question
                 </button>
             </span>
         </div>
-        <ul class="list-group pt-2" ui-sortable ng-model="lectureQuestions">
-            <li
-                class="list-group-item list-group-item-action justify-content-between p-1"
-                ng-repeat="question in lectureQuestions">
-                    <div>
-                        <i class="fa fa-bars fa-fw" aria-hidden="true"></i>
-                        {{question.title}}
-                    </div>
-                    <div>
-                        <span class="badge badge-default badge-pill mr-1 text-uppercase" ng-repeat="tag in question.tags | limitTo:4">{{tag}}</span>
-                        <button
-                            class="btn btn-danger"
-                            type="button"
-                            confirmed-click="removeQuestion($index)"
-                            ng-confirm-click="Are you sure you want to remove this question?">
-                                <i class="fa fa-times" aria-hidden="true"></i>
+        <div class="input-group" ng-show="searchType.type == 'sets'">
+            <select class="custom-select select-inline" ng-options="item.title for item in options" ng-model="searchType"></select>
+            <input class="form-control" type="text" sf-typeahead datasets="questionSetsDataset" ng-model="selectedQuestionSet" />
+            <span class="input-group-btn">
+                <button class="btn btn-info" type="button" ng-click="addQuestionSet()" ng-disabled="checkSelectedQuestionSet()">
+                    <span ng-show="addLoading">
+                        <i class="fa fa-circle-o-notch fa-spin"></i>
+                    </span>
+                    Add Question Set
+                </button>
+            </span>
+        </div>
+        <ul class="list-group pt-2" ui-sortable="sortableOptions" ng-model="lecture.questions">
+            <li class="list-group-item list-group-item-action justify-content-between p-1" ng-repeat="question in lecture.questions">
+                <div>
+                    <i class="fa fa-bars fa-fw" aria-hidden="true"></i> {{question.title}}
+                </div>
+                <div>
+                    <span class="badge badge-default badge-pill mr-1 text-uppercase" ng-repeat="tag in question.tags | limitTo:4">{{tag}}</span>
+                    <div class="btn-group btn-group-sm" role="group">
+                        <button class="btn btn-sm btn-secondary" type="button">
+                            View
+                        </button>
+                        <button class="btn btn-sm btn-danger" ng-disabled="removeLoading || addLoading" type="button" confirmed-click="removeQuestion($index)" ng-confirm-click="Are you sure you want to remove this question?">
+                            <i class="fa fa-times" aria-hidden="true"></i>
                         </button>
                     </div>
+                </div>
             </li>
         </ul>
+        <div class="d-flex justify-content-between pt-2">
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <input type="checkbox" ng-model="saveSet" aria-label="Question Set" tooltips tooltip-template="Save as question set">
+                </span>
+                <input type="text" ng-disabled="!saveSet" class="form-control" placeholder="Enter set name..." ng-model="setName">
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-primary" ng-disabled="!saveSet" ng-click="createQuestionSet()">Save Question Set</button>
+                </span>
+            </div>
+        </div>
     </div>
-    <pre>
-        {{lectureQuestions | json}}
-    </pre>
 </div>
