@@ -403,6 +403,17 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
         );
     };
 
+    service.GetQuestionDetails = function(info, callback) {
+        baseREST.one("question", info.question_id).get().then(
+            function(response) {
+                console.log(response);
+            },
+            function(response) {
+                console.log(response);
+            }
+        );
+    };
+
     service.Logout = function() {
         if (UserStorage.LoggedIn()) {
             baseREST.one("authenticate").remove();
@@ -426,6 +437,9 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
                 success: response.data.success
             };
         }
+        Restangular.setDefaultHeaders({
+            token: response.jwt_token
+        });
     }
 
     return service;

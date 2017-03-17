@@ -10,7 +10,7 @@
                 <form name="createCourseForm">
                     <div class="d-flex justify-content-between mb-2">
                       <select
-                          class="form-control text-capitalize mr-sm-2"
+                          class="form-control custom-select text-capitalize mr-sm-2"
                           ng-model="course.prefix"
                           ng-options="prefix.id as prefix.name for prefix in prefixes" required>
                       </select>
@@ -21,7 +21,7 @@
                           class="form-control mr-sm-2"
                           ng-model="course.number" autofocus required numbers-only/>
                       <select
-                          class="form-control text-capitalize"
+                          class="form-control custom-select text-capitalize"
                           ng-model="course.days"
                           ng-options="day.id as day.name for day in days">
                       </select>
@@ -41,16 +41,17 @@
                           ng-model-options="{ updateOn: 'blur' }" required>
                     </div>
                     <select
-                        class="form-control text-capitalize"
+                        class="form-control custom-select text-capitalize"
                         ng-model="course.semester_pre"
                         ng-options="semeseter_prefixes.id as semeseter_prefixes.name for semeseter_prefixes in semeseter_pre" required>
                     </select>
                     <div class="input-group pt-2 pb-2">
                         <tags-input
-                          class="text-uppercase form-control"
+                          class="text-uppercase"
                           ng-model="course.sections"
                           min-length="1"
-                          placeholder="Add a section">
+                          placeholder="Add a section"
+                          style="width: 100%;">
                         </tags-input>
                     </div>
                     <!-- Error Message -->
