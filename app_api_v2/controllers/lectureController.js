@@ -281,7 +281,8 @@ var reorderQuestion = function(req, res) {
     .then(function(lecture) {
         var question = {
             title: req.question.title,
-            question_id: req.question._id.toString()
+            question_id: req.question._id.toString(),
+            tags: req.question.tags
         };
         lecture.questions.splice(req.body.index, 0, question);
         return lecture.save();

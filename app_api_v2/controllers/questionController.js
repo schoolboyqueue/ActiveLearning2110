@@ -175,22 +175,6 @@ var getAllQuestions = function(req, res) {
         });
     }
 
-    Question.find({ tags: { $all: req.query.tag}, copied: null }, { "html_title": 0, "html_body": 0, "__v": 0, "answer_choices": 0 })
-    .exec()
-    .then(function(questions) {
-        return res.status(200).json({
-            success: true,
-            jwt_token: req.token,
-            questions: questions,
-            message: "Success on getAllQuestions"
-        });
-    })
-    .catch(function(err) {
-        return res.status(500).json({
-            success: false,
-            message: 'Internal Error'
-        });
-    });
 };
 
 var getAllInstructorQuestions = function(req, res) {
