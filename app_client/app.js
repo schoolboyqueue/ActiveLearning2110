@@ -108,6 +108,9 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
         }, {
             name: 'create_lecture',
             files: ['app-components/modals/create_lecture/create_lecture.controller.js']
+        }, {
+            name: 'question_preview',
+            files: ['app-components/modals/question_preview/question_preview.controller.js']
         }]
     });
 

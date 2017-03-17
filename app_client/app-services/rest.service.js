@@ -403,6 +403,22 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
         );
     };
 
+    service.GetQuestionDetails = function(question_id, callback) {
+        baseREST.one("question", question_id).get().then(
+            function(response) {
+                var retInfo = genRetInfo(response);
+                retInfo.title = response.question.html_title;
+                retInfo.body = response.question.html_body;
+                retInfo.tags = response.question.tags;
+                retInfo.choices = response.question.answer_choices;
+                callback(retInfo);
+            },
+            function(response) {
+                callback(genRetInfo(response));
+            }
+        );
+    };
+
     service.Logout = function() {
         if (UserStorage.LoggedIn()) {
             baseREST.one("authenticate").remove();
@@ -426,6 +442,9 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
                 success: response.data.success
             };
         }
+        Restangular.setDefaultHeaders({
+            token: response.jwt_token
+        });
     }
 
     return service;

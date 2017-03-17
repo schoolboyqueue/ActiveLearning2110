@@ -83,6 +83,23 @@ app.factory('UserService', function($state, $localStorage, $ocLazyLoad, ModalSer
         });
     };
 
+    service.ShowQuestionPreview = function(info) {
+        $ocLazyLoad.load('question_preview').then(function() {
+            ModalService.showModal({
+                templateUrl: '/app-components/modals/question_preview/question_preview.view.html',
+                controller: 'Question.Preview.Controller',
+                inputs: {
+                    title: info.title,
+                    body: info.body,
+                    tags: info.tags,
+                    choices: info.choices
+                }
+            }).then(function(modal) {
+                modal.element.modal();
+            });
+        });
+    };
+
     return service;
 });
 
