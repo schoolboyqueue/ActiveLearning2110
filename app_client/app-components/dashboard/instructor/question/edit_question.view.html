@@ -5,7 +5,7 @@
                 {{question.title}}
             </td>
             <td class="align-middle" title="'Copied'" sortable="'copied'">
-                {{question.copied}}
+                <span class="badge" ng-class="{ 'badge-success': !data.copied, 'badge-warning': data.copied }">Owner</span>
             </td>
             <td class="align-middle text-capitalize" title="'Tags'">
                 <span class="badge badge-default mr-1 text-uppercase" ng-repeat="tag in question.tags">{{tag}}</span>

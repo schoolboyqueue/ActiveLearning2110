@@ -60,8 +60,8 @@
                     <i class="fa fa-bars fa-fw" aria-hidden="true"></i> {{question.title}}
                 </div>
                 <div>
-                    <span class="badge mr-4" ng-class="{ 'badge-success': !question.copied, 'badge-warning': question.copied }">Owner</span>
                     <span class="badge badge-default badge-pill mr-1 text-uppercase" ng-repeat="tag in question.tags | limitTo:4">{{tag}}</span>
+                    <span class="badge ml-2 mr-2" ng-class="{ 'badge-success': !question.copied, 'badge-warning': question.copied }">Owner</span>
                     <div class="btn-group btn-group-sm" role="group">
                         <button class="btn btn-sm btn-primary" type="button" ng-click="viewQuestion($index)">
                             <i class="fa fa-eye fa-fw" aria-hidden="true"></i>
@@ -96,8 +96,8 @@
                 {{data.title}}
             </div>
             <div>
-                <span class="badge mr-4" ng-class="{ 'badge-success': !data.copied, 'badge-warning': data.copied }">Owner</span>
                 <span class="badge badge-default mr-1 text-uppercase" ng-repeat="tag in data.tags">{{tag}}</span>
+                <span class="badge ml-2" ng-class="{ 'badge-success': !data.copied, 'badge-warning': data.copied }">Owner</span>
             </div>
         </div>
     </script>
