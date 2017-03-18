@@ -54,7 +54,10 @@ var QuestionSchema = new Schema({
         required: true,
     },
     answer_choices:[answer_choice],
-    copied: Boolean
+    copied: {
+        type: Boolean,
+        required: true,
+    }
 });
 
 
