@@ -13,19 +13,33 @@
 //************************************************************
 var app = angular.module('app');
 
-app.factory('RESTService', function($http, $localStorage, $state, $q, Restangular, UserStorage, UserService, SocketService) {
+app.factory('RESTService', function($http, $localStorage, $state, $q, Restangular, UserStorage, UserService, SocketService, jwtHelper) {
 
     var service = {};
 
     var baseREST = Restangular.all("api_v2");
 
-    // Restangular.setErrorInterceptor(function(response, deferred, responseHandler) {
-    //     if (response.status === 404) {
-    //         service.Logout();
-    //         return false; // error handled
-    //     }
-    //     return true; // error not handled
-    // });
+    Restangular.setErrorInterceptor(function(response, deferred, responseHandler) {
+        console.log(response);
+        if (response.status === 401) {
+            service.Logout();
+            return false; // error handled
+        }
+        return true; // error not handled
+    });
+
+    service.LoggedIn = function() {
+        if ($localStorage.jwt_token && !jwtHelper.isTokenExpired($localStorage.jwt_token) && $localStorage.LoggedIn) {
+            $localStorage.LoggedIn = true;
+            Restangular.setDefaultHeaders({
+                token: $localStorage.jwt_token
+            });
+            return true;
+        } else {
+            $localStorage.LoggedIn = false;
+            return false;
+        }
+    };
 
     service.Register = function(info, callback) {
         var signup = null;
@@ -420,7 +434,7 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
     };
 
     service.Logout = function() {
-        if (UserStorage.LoggedIn()) {
+        if (service.LoggedIn()) {
             baseREST.one("authenticate").remove();
             UserService.ShowLogin();
         }
@@ -444,6 +458,9 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
         }
         Restangular.setDefaultHeaders({
             token: response.jwt_token
+        });
+        UserStorage.UpdateUserInfo({
+            jwt_token: response.jwt_token
         });
     }
 

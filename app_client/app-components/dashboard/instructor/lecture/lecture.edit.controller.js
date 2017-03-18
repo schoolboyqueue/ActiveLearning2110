@@ -102,7 +102,7 @@ app.controller('Instructor.Lecture.Edit.Controller', function($scope, $localStor
                 '</div>'
             ].join('\n'),
             suggestion: function(data) {
-                return '<p class="m-0">' + data.title + '<br><span class="badge badge-default mr-1 text-uppercase">' + data.tags + '</span></br></p>';
+                return '<p class="m-0 mr-auto">' + data.title + '<br><span class="badge badge-default mr-1 text-uppercase">' + data.tags + '</span></br></p>';
             }
         }
     };

@@ -289,7 +289,7 @@ app.controller('Main.Controller', function($scope, $state, $localStorage, $injec
         var UserService = $injector.get('UserService');
 
 
-        if (!UserStorage.LoggedIn()) {
+        if (!RESTService.LoggedIn()) {
             RESTService.Logout();
             UserService.ShowLogin();
         } else {
