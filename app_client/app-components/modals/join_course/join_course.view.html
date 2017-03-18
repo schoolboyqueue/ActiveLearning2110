@@ -11,7 +11,13 @@
                         <div class="input-group-addon"><i class="fa fa-book fa-fw" aria-hidden="true"></i></div>
                         <input name="section" class="form-control" type="text" ng-model="section" placeholder="Section Key" required />
                     </div>
-                    <div ng-if="error" class="alert alert-danger">{{error}}</div>
+                    <!-- Error Message -->
+                    <div ng-if="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{error}}
+                    </div>
                     <button class="btn btn-outline-success" ng-click="join()" ng-disabled="joinCourseForm.$invalid">
                         <span ng-show="loading">
                             <i class="fa fa-circle-o-notch fa-spin"></i>

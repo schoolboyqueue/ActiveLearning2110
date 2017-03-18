@@ -53,7 +53,12 @@
                       style="width: 100%;">
                     </tags-input>
                     <!-- Error Message -->
-                    <div ng-if="error" class="alert alert-danger text-center animated fadeIn">{{error}}</div>
+                    <div ng-if="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{error}}
+                    </div>
                     <div class="container-fluid text-center">
                         <button class="btn btn-outline-success" ng-click="create()" ng-disabled="createCourseForm.$invalid || course.sections.length == 0">
                             <span ng-show="loading">

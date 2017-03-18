@@ -17,7 +17,7 @@ var app = angular.module('app');
 
 app.controller('Navbar.Controller', function($scope, $localStorage, $state, $stateParams, $rootScope, RESTService, UserService) {
 
-    $scope.title = 'Active Learning 2110';
+    $scope.title = 'Active Learning';
     $rootScope.$stateParams = $stateParams;
 
     $scope.logout = function() {
@@ -47,7 +47,7 @@ app.controller('Navbar.Controller', function($scope, $localStorage, $state, $sta
                     $scope.title = $scope.title + ' - ' + $scope.lecture.title;
                 }
             } else {
-                $scope.title = 'Active Learning 2110';
+                $scope.title = 'Active Learning';
             }
         }
     });

@@ -1,7 +1,7 @@
 /* jshint node: true */
 
 //************************************************************
-//  lecture.controller.js                                   //
+//  edit_lecture.controller.js                              //
 //  Active Learning 2110                                    //
 //                                                          //
 //  Created by Jeremy Carter on 02/27/17.                   //
@@ -15,7 +15,7 @@
 
 var app = angular.module('app');
 
-app.controller('Instructor.Lecture.Edit.Controller', function($scope, $localStorage, $stateParams, $rootScope, $http, RESTService, UserService, ngNotify) {
+app.controller('Instructor.Edit.Lecture.Controller', function($scope, $localStorage, $stateParams, $rootScope, $http, RESTService, UserService, ngNotify) {
 
     $scope.addLoading = false;
     $scope.removeLoading = false;
@@ -54,8 +54,10 @@ app.controller('Instructor.Lecture.Edit.Controller', function($scope, $localStor
                 cache: true
             }).then(
                 function(response) {
+                    console.log(response);
                     var questions = response.data.questions;
                     return questions.filter(function(question) {
+                        console.log(question);
                         return question.tags.toString().toLowerCase().indexOf(query.toLowerCase()) != -1;
                     });
                 },

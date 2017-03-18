@@ -1,17 +1,16 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i');
-
-html, body {
-    -webkit-font-smoothing: antialiased;
-    font-family: 'Roboto', sans-serif;
-    text-rendering: optimizeLegibility;
+@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700,700i');
+html, body, input, button, select, ul, li, auto-complete {
+    -webkit-font-smoothing: antialiased !important;
+    font-family: 'Roboto Condensed', sans-serif !important;
+    text-rendering: optimizeLegibility !important;
 }
 
 html, body {
     background-color: #F8F9FA;
-    height: 100%;
-    overflow-x: hidden;
     font-weight: 400;
+    height: 100%;
     line-height: 1.6;
+    overflow-x: hidden;
 }
 
 h1, h2, h3, h4, h5 {
@@ -32,7 +31,7 @@ h1, h2, h3, h4, h5 {
 }
 
 tooltip {
-    z-index: 1035;
+    z-index: 1000;
 }
 
 a:link, a:visited, a:hover, a:active {
@@ -113,6 +112,7 @@ a:link, a:visited, a:hover, a:active {
     position: absolute;
 }
 
+
 /* Sidebar Styles */
 
 .sidebar-nav {
@@ -125,21 +125,26 @@ a:link, a:visited, a:hover, a:active {
 }
 
 .sidebar-nav li {
-    list-style-type: none;
     line-height: 40px;
+    list-style-type: none;
     text-indent: 10px;
 }
 
 .sidebar-nav li a {
-    color: #9EACD0;
+    color: #A0ABBF;
     display: block;
+    font-weight: 700;
+    text-transform: uppercase;
     text-decoration: none;
+    border-left: 5px solid transparent;
 }
 
 .sidebar-nav li a:hover {
     background: #354A60;
-    color: #59BC61;
+    color: white;
     text-decoration: none;
+    border-left: 5px solid #14A4FA;
+    transition: border-color .5s ease-in-out;
 }
 
 .sidebar-nav li a:active, .sidebar-nav li a:focus {
@@ -154,17 +159,21 @@ a:link, a:visited, a:hover, a:active {
 }
 
 .sidebar-nav>.sidebar-brand a {
-    background: #354A60;
     color: white;
+    text-transform: none;
+    font-size: 18px;
+    font-weight: 700;
+    background: #354A60;
 }
 
 .sidebar-nav>.sidebar-brand a:hover {
     color: white;
+    border-left: 5px solid transparent;
 }
 
 .sidebar-nav li>.classList {
-    text-decoration: none;
     background: #243342;
+    text-decoration: none;
 }
 
 @media(min-width:768px) {
@@ -244,54 +253,63 @@ button.close {
 }
 
 .card-header {
-    padding: 0.75rem 1.25rem;
-    margin: 0;
     background-color: #ECF0F1;
     border-bottom: 0px;
     font-size: 18px;
+    margin: 0;
+    padding: 0.75rem 1.25rem;
 }
 
 .card-footer {
-    padding: 0.75rem 1.25rem;
     background-color: #fff;
     border-top: 0px;
     font-size: 14px;
+    padding: 0.75rem 1.25rem;
 }
 
 .card-block {
-    padding: 0.50rem 1.25rem;
     font-size: 14px;
+    padding: 0.50rem 1.25rem;
 }
 
 .border-right {
-    height: 120px;
     border-right: 1px solid #ddd;
+    height: 120px;
+}
+
+.sidebar-divider {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 3px solid #2D3646;
+    margin: 1em 0;
+    padding: 0;
 }
 
 .divide-header {
     display: block;
-    text-align: center;
     overflow: hidden;
+    text-align: center;
     white-space: nowrap;
 }
 
 .divide-header>span {
-    position: relative;
     display: inline-block;
+    position: relative;
 }
 
 .divide-header>span:before, .divide-header>span:after {
+    background: #ddd;
     content: "";
+    height: 1px;
     position: absolute;
     top: 50%;
     width: 9999px;
-    height: 1px;
-    background: #ddd;
 }
 
 .divide-header>span:before {
-    right: 100%;
     margin-right: 15px;
+    right: 100%;
 }
 
 .divide-header>span:after {
@@ -304,15 +322,15 @@ button.close {
 }
 
 .progress-wrapper .text {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    transform: translateY(-55%);
     -webkit-transform: translateY(-55%);
+    font-size: 24px;
+    left: 0;
+    position: absolute;
     text-align: center;
+    top: 50%;
+    transform: translateY(-55%);
     width: 100%;
     z-index: 1;
-    font-size: 24px;
 }
 
 .card-add {
@@ -330,36 +348,36 @@ button.close {
 }
 
 .card-header {
-    padding: 0.75rem 1.25rem;
-    margin: 0;
     background-color: #ECF0F1;
     border-bottom: 0px;
     font-size: 18px;
+    margin: 0;
+    padding: 0.75rem 1.25rem;
 }
 
 .card-footer {
-    padding: 0.75rem 1.25rem;
     background-color: #fff;
     border-top: 0px;
     font-size: 14px;
+    padding: 0.75rem 1.25rem;
 }
 
 .answer {
-    border: 2px dashed rgba(0, 0, 0, 0.200);
-    color: rgba(0, 0, 0, 0.200);
-    font-size: 24px;
-    cursor: pointer;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
     -webkit-transition: all 0.5s ease;
+    border: 2px dashed rgba(0, 0, 0, 0.200);
+    color: rgba(0, 0, 0, 0.200);
+    cursor: pointer;
+    font-size: 24px;
 }
 
 .answer:hover {
-    color: rgba(0, 0, 0, 0.500);
-    border: 2px dashed #45b7cd;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
     -webkit-transition: all 0.5s ease;
+    border: 2px dashed #45b7cd;
+    color: rgba(0, 0, 0, 0.500);
 }
 
 .ct-inspector {
@@ -390,38 +408,38 @@ button.close {
 
 .checkbox label {
     display: inline-block;
-    position: relative;
     padding-left: 5px;
+    position: relative;
 }
 
 .checkbox label::before {
+    -o-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+    -webkit-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+    background-color: #fff;
+    border: 1px solid #cccccc;
+    border-radius: 3px;
     content: "";
     display: inline-block;
-    position: absolute;
-    width: 17px;
     height: 17px;
     left: 0;
     margin-left: -20px;
-    border: 1px solid #cccccc;
-    border-radius: 3px;
-    background-color: #fff;
-    -webkit-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
-    -o-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+    position: absolute;
     transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+    width: 17px;
 }
 
 .checkbox label::after {
+    color: #555555;
     display: inline-block;
-    position: absolute;
-    width: 16px;
+    font-size: 11px;
     height: 16px;
     left: 0;
-    top: 0;
     margin-left: -20px;
     padding-left: 3px;
     padding-top: 1px;
-    font-size: 11px;
-    color: #555555;
+    position: absolute;
+    top: 0;
+    width: 16px;
 }
 
 .checkbox input[type="checkbox"] {
@@ -435,8 +453,8 @@ button.close {
 }
 
 .checkbox input[type="checkbox"]:checked+label::after {
-    font-family: 'FontAwesome';
     content: "\f00c";
+    font-family: 'FontAwesome';
 }
 
 .checkbox input[type="checkbox"]:disabled+label {
@@ -507,46 +525,46 @@ button.close {
 
 .radio label {
     display: inline-block;
-    position: relative;
     padding-left: 5px;
+    position: relative;
 }
 
 .radio label::before {
-    content: "";
-    display: inline-block;
-    position: absolute;
-    width: 17px;
-    height: 17px;
-    left: 0;
-    top: 3px;
-    margin-left: -20px;
+    -o-transition: border 0.15s ease-in-out;
+    -webkit-transition: border 0.15s ease-in-out;
+    background-color: #fff;
     border: 1px solid #cccccc;
     border-radius: 50%;
-    background-color: #fff;
-    -webkit-transition: border 0.15s ease-in-out;
-    -o-transition: border 0.15s ease-in-out;
+    content: "";
+    display: inline-block;
+    height: 17px;
+    left: 0;
+    margin-left: -20px;
+    position: absolute;
+    top: 3px;
     transition: border 0.15s ease-in-out;
+    width: 17px;
 }
 
 .radio label::after {
-    display: inline-block;
-    position: absolute;
-    content: " ";
-    width: 11px;
-    height: 11px;
-    left: 3px;
-    top: 6px;
-    margin-left: -20px;
-    border-radius: 50%;
-    background-color: #555555;
-    -webkit-transform: scale(0, 0);
+    -moz-transition: -moz-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
     -ms-transform: scale(0, 0);
     -o-transform: scale(0, 0);
-    transform: scale(0, 0);
-    -webkit-transition: -webkit-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
-    -moz-transition: -moz-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
     -o-transition: -o-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+    -webkit-transform: scale(0, 0);
+    -webkit-transition: -webkit-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+    background-color: #555555;
+    border-radius: 50%;
+    content: " ";
+    display: inline-block;
+    height: 11px;
+    left: 3px;
+    margin-left: -20px;
+    position: absolute;
+    top: 6px;
+    transform: scale(0, 0);
     transition: transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+    width: 11px;
 }
 
 .radio input[type="radio"] {
@@ -560,9 +578,9 @@ button.close {
 }
 
 .radio input[type="radio"]:checked+label::after {
-    -webkit-transform: scale(1, 1);
     -ms-transform: scale(1, 1);
     -o-transform: scale(1, 1);
+    -webkit-transform: scale(1, 1);
     transform: scale(1, 1);
 }
 
@@ -648,13 +666,13 @@ button.close {
 
 .twitter-typeahead {
     float: left;
-    width: 100%;
     position: relative;
+    width: 100%;
 }
 
 .twitter-typeahead>.form-control {
-    width: inherit !important;
     height: 37px;
+    width: inherit !important;
 }
 
 .twitter-typeahead .tt-query, .twitter-typeahead .tt-hint {
@@ -662,47 +680,47 @@ button.close {
 }
 
 .select-inline {
-    -webkit-border-top-right-radius: 0px;
-    -moz-border-top-right-radius: 0px;
-    border-top-right-radius: 0px;
-    -webkit-border-bottom-right-radius: 0px;
     -moz-border-bottom-right-radius: 0px;
+    -moz-border-top-right-radius: 0px;
+    -webkit-border-bottom-right-radius: 0px;
+    -webkit-border-top-right-radius: 0px;
     border-bottom-right-radius: 0px;
     border-right: 0;
+    border-top-right-radius: 0px;
 }
 
 .tt-menu {
-    width: auto;
-    margin: 5px 0;
-    padding: 8px 0;
+    -moz-border-radius: 3px;
+    -moz-box-shadow: 0 3px 6px rgba(0, 0, 0, .2);
+    -webkit-border-radius: 3px;
+    -webkit-box-shadow: 0 3px 6px rgba(0, 0, 0, .2);
+    -webkit-font-smoothing: antialiased;
     background-color: #fff;
     border: 1px solid #ccc;
     border: 1px solid rgba(0, 0, 0, 0.2);
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
     border-radius: 3px;
-    -webkit-box-shadow: 0 3px 6px rgba(0, 0, 0, .2);
-    -moz-box-shadow: 0 3px 6px rgba(0, 0, 0, .2);
     box-shadow: 0 3px 6px rgba(0, 0, 0, .2);
-    -webkit-font-smoothing: antialiased;
     font-family: 'Roboto', sans-serif;
+    margin: 5px 0;
+    padding: 8px 0;
     text-rendering: optimizeLegibility;
+    width: auto;
 }
 
 .tt-suggestion {
-    padding: 3px 20px;
     line-height: 24px;
+    padding: 3px 20px;
 }
 
 .tt-suggestion:hover {
-    cursor: pointer;
-    color: #fff;
     background-color: #2C3D50;
+    color: #fff;
+    cursor: pointer;
 }
 
 .tt-suggestion.tt-cursor {
-    color: #fff;
     background-color: #2C3D50;
+    color: #fff;
 }
 
 .tt-suggestion p {

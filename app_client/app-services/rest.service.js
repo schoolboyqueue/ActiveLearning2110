@@ -432,6 +432,19 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
         );
     };
 
+    service.GetAllQuestions = function(callback) {
+        baseREST.one("user", $localStorage._id).one("questions").get().then(
+            function(response) {
+                var retInfo = genRetInfo(response);
+                retInfo.questions = response.questions;
+                callback(retInfo);
+            },
+            function(response) {
+                callback(genRetInfo(response));
+            }
+        );
+    };
+
     service.Logout = function() {
         if (service.LoggedIn()) {
             baseREST.one("authenticate").remove();

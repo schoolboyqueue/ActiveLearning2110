@@ -1,13 +1,13 @@
 <nav class="navbar fixed-top navbar-inverse bg-primary pb-2 pt-2" ng-controller="Navbar.Controller" ng-show="$storage.LoggedIn">
     <div class="d-flex justify-content-between align-items-center">
-        <button
-            class="navbar-toggler"
+        <a
+            class="navbar-toggler align-self-center"
+            href=""
             id="menu-toggle"
-            type="button"
             aria-label="Toggle navigation"
             ng-click="$storage.hideSidebar = !$storage.hideSidebar">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+            <i class="fa fa-bars fa-fw pt-2 pb-2" aria-hidden="true"></i>
+        </a>
         <a class="navbar-brand align-self-center m-0 text-uppercase" href="">{{title}}</a>
         <div class="dropdown align-self-center">
             <div class="btn-group" role="group">

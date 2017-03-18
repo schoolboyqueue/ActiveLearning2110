@@ -1,8 +1,7 @@
-<div class="animated fadeIn container-fluid p-2" ng-controller="Instructor.Lecture.Edit.Controller">
+<div class="animated fadeIn container-fluid p-2" ng-controller="Instructor.Edit.Lecture.Controller">
     <div class="container-fluid p-0 pb-2">
         <div class="input-group" ng-show="searchType.type =='all'">
             <select class="custom-select select-inline" ng-options="item.title for item in options" ng-model="searchType"></select>
-            <!-- <input class="form-control" type="text" sf-typeahead datasets="questionsDataset" ng-model="selectedQuestion" /> -->
             <tags-input
                 ng-model="selectedQuestion"
                 display-property="title"
@@ -30,7 +29,6 @@
         </div>
         <div class="input-group" ng-show="searchType.type == 'sets'">
             <select class="custom-select select-inline" ng-options="item.title for item in options" ng-model="searchType"></select>
-            <!-- <input class="form-control" type="text" sf-typeahead datasets="questionSetsDataset" ng-model="selectedQuestionSet" /> -->
             <tags-input
                 ng-model="selectedQuestionSet"
                 display-property="title"
