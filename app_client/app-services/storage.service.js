@@ -13,7 +13,7 @@
 //************************************************************
 var app = angular.module('app');
 
-app.factory('UserStorage', function($localStorage, jwtHelper) {
+app.factory('UserStorage', function($localStorage) {
 
     var service = {};
 
@@ -89,16 +89,6 @@ app.factory('UserStorage', function($localStorage, jwtHelper) {
             if ($localStorage.courses[key]._id === course_id) {
                 $localStorage.courses[key].lectures = lectures;
             }
-        }
-    };
-
-    service.LoggedIn = function() {
-        if ($localStorage.jwt_token && !jwtHelper.isTokenExpired($localStorage.jwt_token) && $localStorage.LoggedIn) {
-            $localStorage.LoggedIn = true;
-            return true;
-        } else {
-            $localStorage.LoggedIn = false;
-            return false;
         }
     };
 

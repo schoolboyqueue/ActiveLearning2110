@@ -51,7 +51,7 @@ app.factory('UserService', function($state, $localStorage, $ocLazyLoad, ModalSer
     };
 
     service.ShowJoinCourse = function() {
-        $ocLazyLoad.load('join_course').then(function() {
+        $ocLazyLoad.load('student.join_course').then(function() {
             ModalService.showModal({
                 templateUrl: '/app-components/modals/join_course/join_course.view.html',
                 controller: 'Join.Course.Controller'
@@ -62,7 +62,7 @@ app.factory('UserService', function($state, $localStorage, $ocLazyLoad, ModalSer
     };
 
     service.ShowCreateCourse = function() {
-        $ocLazyLoad.load('create_course').then(function() {
+        $ocLazyLoad.load('instructor.create_course').then(function() {
             ModalService.showModal({
                 templateUrl: '/app-components/modals/create_course/create_course.view.html',
                 controller: 'Create.Course.Controller'
@@ -73,7 +73,7 @@ app.factory('UserService', function($state, $localStorage, $ocLazyLoad, ModalSer
     };
 
     service.ShowCreateLecture = function() {
-        $ocLazyLoad.load('create_lecture').then(function() {
+        $ocLazyLoad.load('instructor.create_lecture').then(function() {
             ModalService.showModal({
                 templateUrl: '/app-components/modals/create_lecture/create_lecture.view.html',
                 controller: 'Create.Lecture.Controller'
@@ -84,7 +84,7 @@ app.factory('UserService', function($state, $localStorage, $ocLazyLoad, ModalSer
     };
 
     service.ShowQuestionPreview = function(info) {
-        $ocLazyLoad.load('question_preview').then(function() {
+        $ocLazyLoad.load('instructor.question_preview').then(function() {
             ModalService.showModal({
                 templateUrl: '/app-components/modals/question_preview/question_preview.view.html',
                 controller: 'Question.Preview.Controller',

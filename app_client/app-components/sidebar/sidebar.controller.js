@@ -28,6 +28,10 @@ app.controller('Sidebar.Controller', function($scope, $state, $stateParams, $roo
         UserService.ShowCreateLecture();
     };
 
+    $scope.joinCourse = function() {
+        UserService.ShowJoinCourse();
+    };
+
     $scope.$watch(function() {
         return $state.current.url;
     }, function(newVal, oldVal) {

@@ -29,6 +29,8 @@ app.controller('Create.Course.Controller', function($scope, $element, $state, RE
         semester_pre: 0
     };
 
+    $scope.preSections = [];
+
     $scope.semeseter_pre = [{
         id: 0,
         name: "SPR"

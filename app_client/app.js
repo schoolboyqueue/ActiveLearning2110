@@ -34,8 +34,7 @@ var app = angular
         'ngSanitize',
         'ui.sortable',
         '720kb.tooltips',
-        'angular-loading-bar',
-        'siyfion.sfTypeahead'
+        'angular-loading-bar'
     ]);
 
 app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLoadProvider, tooltipsConfProvider, cfpLoadingBarProvider) {
@@ -80,8 +79,8 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
             name: 'instructor.question',
             files: ['app-components/dashboard/instructor/question/question.controller.js']
         }, {
-            name: 'instructor.edit.lecture',
-            files: ['app-components/dashboard/instructor/lecture/lecture.edit.controller.js']
+            name: 'instructor.edit_lecture',
+            files: ['app-components/dashboard/instructor/lecture/edit_lecture.controller.js']
         }, {
             name: 'student.course',
             files: ['app-components/dashboard/student/course/course.student.controller.js']
@@ -100,17 +99,20 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
             name: 'profile',
             files: ['app-components/modals/profile/profile.controller.js']
         }, {
-            name: 'create_course',
+            name: 'instructor.create_course',
             files: ['app-components/modals/create_course/create_course.controller.js']
         }, {
-            name: 'join_course',
+            name: 'student.join_course',
             files: ['app-components/modals/join_course/join_course.controller.js']
         }, {
-            name: 'create_lecture',
+            name: 'instructor.create_lecture',
             files: ['app-components/modals/create_lecture/create_lecture.controller.js']
         }, {
-            name: 'question_preview',
+            name: 'instructor.question_preview',
             files: ['app-components/modals/question_preview/question_preview.controller.js']
+        }, {
+            name: 'instructor.edit_question',
+            files: ['app-components/dashboard/instructor/question/edit_question.controller.js']
         }]
     });
 
@@ -204,16 +206,26 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
             }
         })
 
+        .state('main.instructor_edit_question', {
+            url: '/instructor/edit_question',
+            templateUrl: 'app-components/dashboard/instructor/question/edit_question.view.html',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load('instructor.edit_question');
+                }]
+            }
+        })
+
         .state('main.instructor_edit_lecture', {
             url: '/instructor/edit_lecture',
-            templateUrl: 'app-components/dashboard/instructor/lecture/lecture.edit.view.html',
+            templateUrl: 'app-components/dashboard/instructor/lecture/edit_lecture.view.html',
             params: {
                 selectedCourse: null,
                 selectedLecture: null
             },
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
-                    return $ocLazyLoad.load('instructor.edit.lecture');
+                    return $ocLazyLoad.load('instructor.edit_lecture');
                 }]
             }
         })
@@ -289,7 +301,7 @@ app.controller('Main.Controller', function($scope, $state, $localStorage, $injec
         var UserService = $injector.get('UserService');
 
 
-        if (!UserStorage.LoggedIn()) {
+        if (!RESTService.LoggedIn()) {
             RESTService.Logout();
             UserService.ShowLogin();
         } else {
