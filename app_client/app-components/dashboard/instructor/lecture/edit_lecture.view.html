@@ -1,4 +1,4 @@
-<div class="animated fadeIn container-fluid p-2" ng-controller="Instructor.Edit.Lecture.Controller">
+<div class="animated fadeIn container-fluid p-3" ng-controller="Instructor.Edit.Lecture.Controller">
     <div class="container-fluid p-0 pb-2">
         <div class="input-group" ng-show="searchType.type =='all'">
             <select class="custom-select select-inline" ng-options="item.title for item in options" ng-model="searchType"></select>
@@ -60,10 +60,11 @@
                     <i class="fa fa-bars fa-fw" aria-hidden="true"></i> {{question.title}}
                 </div>
                 <div>
+                    <span class="badge mr-4" ng-class="{ 'badge-success': !question.copied, 'badge-warning': question.copied }">Owner</span>
                     <span class="badge badge-default badge-pill mr-1 text-uppercase" ng-repeat="tag in question.tags | limitTo:4">{{tag}}</span>
                     <div class="btn-group btn-group-sm" role="group">
-                        <button class="btn btn-sm btn-secondary" type="button" ng-click="viewQuestion($index)">
-                            View
+                        <button class="btn btn-sm btn-primary" type="button" ng-click="viewQuestion($index)">
+                            <i class="fa fa-eye fa-fw" aria-hidden="true"></i>
                         </button>
                         <button class="btn btn-sm btn-danger" ng-disabled="removeLoading || addLoading" type="button" confirmed-click="removeQuestion($index)" ng-confirm-click="Are you sure you want to remove this question?">
                             <i class="fa fa-times" aria-hidden="true"></i>
@@ -74,12 +75,9 @@
         </ul>
         <div class="d-flex justify-content-between pt-2">
             <div class="input-group">
-                <span class="input-group-addon">
-                    <input type="checkbox" ng-model="saveSet" aria-label="Question Set" tooltips tooltip-template="Save as question set">
-                </span>
-                <input type="text" ng-disabled="!saveSet" class="form-control" placeholder="Enter set name..." ng-model="setName">
+                <input type="text" class="form-control" placeholder="Enter set name..." ng-model="setName" ng-init="setName = ''">
                 <span class="input-group-btn">
-                    <button type="button" class="btn btn-primary" ng-disabled="!saveSet" ng-click="createQuestionSet()">Save Question Set</button>
+                    <button type="button" class="btn btn-primary" ng-disabled="setName.length === 0" ng-click="createQuestionSet()">Save Question Set</button>
                 </span>
             </div>
         </div>
@@ -95,6 +93,7 @@
                 {{data.title}}
             </div>
             <div>
+                <span class="badge mr-4" ng-class="{ 'badge-success': !data.copied, 'badge-warning': data.copied }">Owner</span>
                 <span class="badge badge-default mr-1 text-uppercase" ng-repeat="tag in data.tags">{{tag}}</span>
             </div>
         </div>

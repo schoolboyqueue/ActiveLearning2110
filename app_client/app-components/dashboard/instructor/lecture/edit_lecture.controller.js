@@ -54,10 +54,8 @@ app.controller('Instructor.Edit.Lecture.Controller', function($scope, $localStor
                 cache: true
             }).then(
                 function(response) {
-                    console.log(response);
                     var questions = response.data.questions;
                     return questions.filter(function(question) {
-                        console.log(question);
                         return question.tags.toString().toLowerCase().indexOf(query.toLowerCase()) != -1;
                     });
                 },
