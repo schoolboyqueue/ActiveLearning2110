@@ -378,7 +378,6 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
         );
     };
 
-
     service.AddQuestionSetToLecture = function(info, callback) {
         baseREST.one("lecture", info.lecture_id).one("questionset", info.questionset_id).post().then(
             function(response) {

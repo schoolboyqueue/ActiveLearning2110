@@ -15,13 +15,13 @@
 
 var app = angular.module('app');
 
-app.controller('Instructor.Lecture.Edit.Controller', function($scope, $localStorage, $stateParams, $rootScope, RESTService, UserService, ngNotify) {
+app.controller('Instructor.Lecture.Edit.Controller', function($scope, $localStorage, $stateParams, $rootScope, $http, RESTService, UserService, ngNotify) {
 
     $scope.addLoading = false;
     $scope.removeLoading = false;
     $scope.questions = null;
-    $scope.selectedQuestion = {};
-    $scope.selectedQuestionSet = {};
+    $scope.selectedQuestion = [];
+    $scope.selectedQuestionSet = [];
 
     $rootScope.$stateParams = $stateParams;
     $scope.course = $localStorage.courses[$stateParams.selectedCourse];
@@ -48,72 +48,46 @@ app.controller('Instructor.Lecture.Edit.Controller', function($scope, $localStor
 
     $scope.searchType = $scope.options[0];
 
-    $scope.questions = new Bloodhound({
-        datumTokenizer: Bloodhound.tokenizers.nonword(
-            "tags", "title"
-        ),
-        queryTokenizer: Bloodhound.tokenizers.nonword,
-        remote: {
-            wildcard: '%QUERY',
-            url: 'api_v2/question?tag=%QUERY',
-            filter: function(response) {
-                return response.questions;
-            }
-        }
-    });
-
-    $scope.sets = new Bloodhound({
-        datumTokenizer: Bloodhound.tokenizers.whitespace(
-            "title"
-        ),
-        queryTokenizer: Bloodhound.tokenizers.whitespace,
-        remote: {
-            cache: false,
-            url: 'api_v2/user/' + $localStorage._id + '/questionsets',
-            filter: function(response) {
-                return response.questionsets;
-            }
-        }
-
-    });
-
-    $scope.questionSetsDataset = {
-        displayKey: 'title',
-        source: $scope.sets.ttAdapter(),
-        templates: {
-            empty: [
-                '<div class="tt-suggestion tt-empty-message">',
-                'No results were found',
-                '</div>'
-            ].join('\n'),
-            suggestion: function(data) {
-                return '<p class="m-0">' + data.title + '</p>';
-            }
+    $scope.loadQuestions = function(query) {
+        if (query !== '') {
+            return $http.get('/api_v2/question?tag=' + query.toLowerCase(), {
+                cache: true
+            }).then(
+                function(response) {
+                    var questions = response.data.questions;
+                    return questions.filter(function(question) {
+                        return question.tags.toString().toLowerCase().indexOf(query.toLowerCase()) != -1;
+                    });
+                },
+                function(response) {
+                    ngNotify.set('Unable to Search', 'error');
+                }
+            );
         }
     };
 
-    $scope.questionsDataset = {
-        displayKey: 'title',
-        source: $scope.questions.ttAdapter(),
-        templates: {
-            empty: [
-                '<div class="tt-suggestion tt-empty-message">',
-                'No results were found',
-                '</div>'
-            ].join('\n'),
-            suggestion: function(data) {
-                return '<p class="m-0 mr-auto">' + data.title + '<br><span class="badge badge-default mr-1 text-uppercase">' + data.tags + '</span></br></p>';
-            }
+    $scope.loadQuestionSets = function(query) {
+        if (query !== '') {
+            return $http.get('/api_v2/user/' + $localStorage._id + '/questionsets', {
+                cache: true
+            }).then(
+                function(response) {
+                    var sets = response.data.questionsets;
+                    return sets.filter(function(set) {
+                        return set.title.toLowerCase().indexOf(query.toLowerCase()) != -1;
+                    });
+                },
+                function(response) {
+                    ngNotify.set('Unable to Search', 'error');
+                }
+            );
         }
     };
-
-    $scope.questions.initialize();
-    $scope.sets.initialize();
 
     $scope.addQuestion = function() {
         $scope.addLoading = true;
         RESTService.AddQuestionToLecture({
-            question_id: $scope.selectedQuestion._id,
+            question_id: $scope.selectedQuestion[0]._id,
             lecture_id: $scope.lecture.lecture_id,
             course_id: $scope.course._id
         }, finishAddQuestionToLecture);
@@ -146,19 +120,24 @@ app.controller('Instructor.Lecture.Edit.Controller', function($scope, $localStor
     };
 
     $scope.checkSelectedQuestion = function() {
-        if (!$scope.selectedQuestion.hasOwnProperty('_id') || $scope.addLoading || $scope.removeLoading) {
+        if ($scope.selectedQuestion.length > 1 || $scope.selectedQuestion[0] === undefined) {
             return true;
-        }
-        for (var key in $scope.lecture.questions) {
-            if ($scope.lecture.questions[key].question_id === $scope.selectedQuestion._id) {
-                return true;
+        } else if (!$scope.selectedQuestion[0].hasOwnProperty('_id') || $scope.addLoading || $scope.removeLoading) {
+            return true;
+        } else {
+            for (var key in $scope.lecture.questions) {
+                if ($scope.lecture.questions[key].question_id === $scope.selectedQuestion[0]._id) {
+                    return true;
+                }
             }
+            return false;
         }
-        return false;
     };
 
     $scope.checkSelectedQuestionSet = function() {
-        if (!$scope.selectedQuestionSet.hasOwnProperty('_id') || $scope.addLoading || $scope.removeLoading) {
+        if ($scope.selectedQuestionSet.length > 1 || $scope.selectedQuestionSet[0] === undefined) {
+            return true;
+        } else if (!$scope.selectedQuestionSet[0].hasOwnProperty('_id') || $scope.addLoading || $scope.removeLoading) {
             return true;
         }
         return false;
@@ -169,7 +148,7 @@ app.controller('Instructor.Lecture.Edit.Controller', function($scope, $localStor
         RESTService.AddQuestionSetToLecture({
             lecture_id: $scope.lecture.lecture_id,
             course_id: $scope.course._id,
-            questionset_id: $scope.selectedQuestionSet._id
+            questionset_id: $scope.selectedQuestionSet[0]._id
         }, finishAddQuestionToLecture);
     };
 
@@ -199,32 +178,32 @@ app.controller('Instructor.Lecture.Edit.Controller', function($scope, $localStor
     }
 
     function finishCreateQuestionSet(info) {
+        $scope.saveSet = false;
         if (!info.success) {
             ngNotify.set('Error creating question set', 'error');
             return;
         }
         ngNotify.set('Question set created', 'success');
         $scope.setName = null;
-        $scope.saveSet = false;
     }
 
     function finishAddQuestionToLecture(info) {
+        $scope.addLoading = false;
         if (!info.success) {
             ngNotify.set('Error adding question to lecture', 'error');
             return;
         }
         updateLectureInfo();
-        $scope.selectedQuestion = {};
-        $scope.selectedQuestionSet = {};
-        $scope.addLoading = false;
+        $scope.selectedQuestion = [];
+        $scope.selectedQuestionSet = [];
     }
 
     function finishRemoveQuestionFromLecture(info) {
+        $scope.removeLoading = false;
         if (!info.success) {
             ngNotify.set('Error removing question from lecture', 'error');
             return;
         }
         updateLectureInfo();
-        $scope.removeLoading = false;
     }
 });

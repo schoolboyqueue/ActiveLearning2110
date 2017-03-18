@@ -2,7 +2,23 @@
     <div class="container-fluid p-0 pb-2">
         <div class="input-group" ng-show="searchType.type =='all'">
             <select class="custom-select select-inline" ng-options="item.title for item in options" ng-model="searchType"></select>
-            <input class="form-control" type="text" sf-typeahead datasets="questionsDataset" ng-model="selectedQuestion" />
+            <!-- <input class="form-control" type="text" sf-typeahead datasets="questionsDataset" ng-model="selectedQuestion" /> -->
+            <tags-input
+                ng-model="selectedQuestion"
+                display-property="title"
+                style="width: 100%; height: 37px;"
+                placeholder=" "
+                max-tags="1"
+                add-from-autocomplete-only="true"
+                replace-spaces-with-dashes="false">
+                    <auto-complete
+                        source="loadQuestions($query)"
+                        min-length="1"
+                        debounce-delay="1000"
+                        max-results-to-show="15"
+                        template="questions-template">
+                    </auto-complete>
+            </tags-input>
             <span class="input-group-btn">
                 <button class="btn btn-info" type="button" ng-click="addQuestion()" ng-disabled="checkSelectedQuestion()">
                     <span ng-show="addLoading">
@@ -14,7 +30,23 @@
         </div>
         <div class="input-group" ng-show="searchType.type == 'sets'">
             <select class="custom-select select-inline" ng-options="item.title for item in options" ng-model="searchType"></select>
-            <input class="form-control" type="text" sf-typeahead datasets="questionSetsDataset" ng-model="selectedQuestionSet" />
+            <!-- <input class="form-control" type="text" sf-typeahead datasets="questionSetsDataset" ng-model="selectedQuestionSet" /> -->
+            <tags-input
+                ng-model="selectedQuestionSet"
+                display-property="title"
+                style="width: 100%; height: 37px;"
+                placeholder=" "
+                max-tags="1"
+                add-from-autocomplete-only="true"
+                replace-spaces-with-dashes="false">
+                    <auto-complete
+                        source="loadQuestionSets($query)"
+                        min-length="1"
+                        debounce-delay="1000"
+                        max-results-to-show="15"
+                        template="sets-template">
+                    </auto-complete>
+            </tags-input>
             <span class="input-group-btn">
                 <button class="btn btn-info" type="button" ng-click="addQuestionSet()" ng-disabled="checkSelectedQuestionSet()">
                     <span ng-show="addLoading">
@@ -54,4 +86,19 @@
             </div>
         </div>
     </div>
+    <script type="text/ng-template" id="sets-template">
+        <div>
+            {{data.title}}
+        </div>
+    </script>
+    <script type="text/ng-template" id="questions-template">
+        <div class="d-flex justify-content-between">
+            <div>
+                {{data.title}}
+            </div>
+            <div>
+                <span class="badge badge-default mr-1 text-uppercase" ng-repeat="tag in data.tags">{{tag}}</span>
+            </div>
+        </div>
+    </script>
 </div>
