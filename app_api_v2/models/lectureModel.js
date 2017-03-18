@@ -36,6 +36,10 @@ var question_snapshot = {
         required: true,
         lowercase: true
     },
+    copied: {
+        type: Boolean,
+        required: true
+    },
     "_id": false
 };
 

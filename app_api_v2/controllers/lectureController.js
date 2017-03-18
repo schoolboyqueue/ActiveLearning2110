@@ -36,19 +36,13 @@ var checkForNull = function(data) {
 
 var addQuestionSet = function(req, res) {
     console.log('lectureController addQuestionSet');
-
     QuestionSet.findById(req.params.QUESTIONSETID)
     .exec()
     .then(function(questionSet) {
-        req.questionSet = questionSet;
-        return Lecture.findById(req.params.LECTUREID);
-    })
-    .then(function(lecture) {
-        for (var i = 0; i < req.questionSet.questions.length; i++)
-        {
-            lecture.questions.push(req.questionSet.questions[i]);
-        }
-        return lecture.save();
+        return Lecture.findOneAndUpdate(
+          { _id: req.params.LECTUREID },
+          { $addToSet: { questions: { $each: questionSet.questions } } },
+          { new: true });
     })
     .then(function(lecture) {
         var updatedLecture = lecture.toObject();
@@ -62,6 +56,7 @@ var addQuestionSet = function(req, res) {
         });
     })
     .catch(function(err) {
+        console.log("test");
         return res.status(404).json({
             success: false,
             message: err.message
@@ -76,13 +71,19 @@ var addQuestionToLecture = function(req, res) {
     .exec()
     .then(checkForNull)
     .then(function(question) {
-        return new Promise((resolve, reject) => {
-            if (question.instructor_id !== req.decodedToken.sub) {
-              var error_message = new Error('This Question Must Be Copied Before It Can Be Added To Lecture');
-              reject(error_message);
-            }
-            resolve(question);
-        });
+        if (question.instructor_id !== req.decodedToken.sub) {
+          var newQuestion = new Question({
+              title: question.title,
+              tags: question.tags,
+              instructor_id: req.decodedToken.sub,
+              html_title: question.html_title,
+              html_body: question.html_body,
+              answer_choices: question.answer_choices,
+              copied: true
+          });
+          return newQuestion.save();
+        }
+        else return question;
     })
     .then(function(question) {
         req.question = question;
@@ -91,8 +92,9 @@ var addQuestionToLecture = function(req, res) {
     .then(function(lecture) {
         var question = {
             title: req.question.title,
-            question_id: req.params.QUESTIONID,
-            tags: req.question.tags
+            question_id: req.question._id.toString(),
+            tags: req.question.tags,
+            copied: req.question.copied
         };
         lecture.questions.push(question);
         return lecture.save();
@@ -282,7 +284,8 @@ var reorderQuestion = function(req, res) {
         var question = {
             title: req.question.title,
             question_id: req.question._id.toString(),
-            tags: req.question.tags
+            tags: req.question.tags,
+            copied: req.question.copied
         };
         lecture.questions.splice(req.body.index, 0, question);
         return lecture.save();
