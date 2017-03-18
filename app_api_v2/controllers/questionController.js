@@ -34,14 +34,15 @@ var checkForNull = function(data) {
 var editQuestion = function(req, res) {
     console.log('questionController editQuestion');
 
-    Question.findOneAndUpdate({_id: req.params.QUESTIONID, instructor_id: req.decodedToken.sub, copied: undefined},
+    Question.findOneAndUpdate({_id: req.params.QUESTIONID, instructor_id: req.decodedToken.sub, copied: false},
       {
         title: req.body.title,
         tags: req.body.tags,
         instructor_id: req.decodedToken.sub,
         html_title: req.body.html_title,
         html_body: req.body.html_body,
-        answer_choices: req.body.answer_choices
+        answer_choices: req.body.answer_choices,
+        copied: false
       },
       {new: true})
     .exec()
@@ -139,7 +140,7 @@ var getAllQuestions = function(req, res) {
     console.log('questionController getAllQuestions');
 
     if (req.query.tag !== undefined) {
-        Question.find({ tags: { $all: req.query.tag}, copied: null }, { "html_title": 0, "html_body": 0, "__v": 0, "answer_choices": 0 })
+        Question.find({ tags: { $all: req.query.tag}, copied: false }, { "html_title": 0, "html_body": 0, "__v": 0, "answer_choices": 0 })
         .exec()
         .then(function(questions) {
             return res.status(200).json({
@@ -157,7 +158,7 @@ var getAllQuestions = function(req, res) {
         });
     }
     else {
-        Question.find( {copied: null }, { "html_title": 0, "html_body": 0, "__v": 0, "answer_choices": 0 })
+        Question.find( {copied: false }, { "html_title": 0, "html_body": 0, "__v": 0, "answer_choices": 0 })
         .exec()
         .then(function(questions) {
             return res.status(200).json({
@@ -174,20 +175,61 @@ var getAllQuestions = function(req, res) {
             });
         });
     }
-
 };
 
 var getAllInstructorQuestions = function(req, res) {
     console.log('questionController getAllInstructorQuestions');
-
+    
     if (req.decodedToken.sub !== req.params.USERID) {
         return res.status(404).json({
             success: false,
             message: 'Not Authorized'
         });
     }
-    else {
-        Question.find({"instructor_id": req.params.USERID},
+    else
+    {
+        if (req.query.tag !== undefined) {
+            Question.find(
+              {"instructor_id": req.params.USERID, copied: false, tags: { $all: req.query.tag} },
+              { "html_title": 0, "html_body": 0, "__v": 0, "answer_choices": 0 })
+            .exec()
+            .then(function(questions) {
+                return res.status(200).json({
+                    success: true,
+                    jwt_token: req.token,
+                    questions: questions,
+                    message: "Success on getAllInstructorQuestions"
+                });
+            })
+            .catch(function(err) {
+                return res.status(500).json({
+                    success: false,
+                    message: 'Internal Error'
+                });
+            });
+        }
+        else {
+            Question.find(
+              {"instructor_id": req.params.USERID, copied: false },
+              { "html_title": 0, "html_body": 0, "__v": 0, "answer_choices": 0 })
+            .exec()
+            .then(function(questions) {
+                return res.status(200).json({
+                    success: true,
+                    jwt_token: req.token,
+                    questions: questions,
+                    message: "Success on getAllInstructorQuestions"
+                });
+            })
+            .catch(function(err) {
+                return res.status(500).json({
+                    success: false,
+                    message: 'Internal Error'
+                });
+            });
+        }
+        /*
+        Question.find({"instructor_id": req.params.USERID, copied: false},
         {"html_title": 0, "html_body": 0, "__v": 0, "answer_choices": 0})
         .exec()
         .then(checkForNull)
@@ -205,6 +247,7 @@ var getAllInstructorQuestions = function(req, res) {
                 message: 'Internal Error'
             });
         });
+        */
     }
 };
 
@@ -244,7 +287,8 @@ var savedQuestionToDB = function(req, res) {
         instructor_id: req.decodedToken.sub,
         html_title: req.body.html_title,
         html_body: req.body.html_body,
-        answer_choices: req.body.answer_choices
+        answer_choices: req.body.answer_choices,
+        copied: false
     });
 
     newQuestion.save()
