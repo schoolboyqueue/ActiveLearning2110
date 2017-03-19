@@ -12,7 +12,7 @@
         </span>
     </div>
     <div class="tab-content">
-        <div class="tab-pane active" id="current">
+        <div class="tab-pane fade show active" id="current">
             <table ng-table="student_tableParams" class="table table-bordered table-hover table-sm text-center">
                 <tr ng-repeat="student in $data">
                     <td class="align-middle text-capitalize" title="'First'" sortable="'firstname'">
@@ -43,7 +43,7 @@
                 </tr>
             </table>
         </div>
-        <div class="tab-pane" id="add_students">
+        <div class="tab-pane fade" id="add_students">
             <label class="btn btn-info btn-sm">
                 Choose CSV <input type="file" ng-click="selectedCSV = null" fileread="selectedCSV" accept="text/comma-separated-values" class="form-control-file pb-2" id="studentCSVInput" style="display: none;">
             </label>

@@ -25,15 +25,12 @@ app.factory('UserService', function($state, $localStorage, $ocLazyLoad, ModalSer
                 templateUrl: '/app-components/modals/login/login.view.html',
                 controller: 'Login.Controller'
             }).then(function(modal) {
-                modal.element.modal({
-                    backdrop: 'static',
-                    keyboard: false
-                });
+                modal.element.modal();
                 modal.close.then(function(result) {
                     if (result) {
-                        $('.modal-backdrop').remove();
                         $state.go('main.' + $localStorage.role);
                     }
+                    $('.modal-backdrop').remove();
                 });
             });
         });
