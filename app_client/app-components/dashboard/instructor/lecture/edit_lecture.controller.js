@@ -50,13 +50,14 @@ app.controller('Instructor.Edit.Lecture.Controller', function($scope, $localStor
 
     $scope.loadQuestions = function(query) {
         if (query !== '') {
-            return $http.get('/api_v2/question?tag=' + query.toLowerCase(), {
+            var tags = getTags(query);
+            return $http.get('/api_v2/question?tag=' + tags.join('&tag='), {
                 cache: true
             }).then(
                 function(response) {
                     var questions = response.data.questions;
                     return questions.filter(function(question) {
-                        return question.tags.toString().toLowerCase().indexOf(query.toLowerCase()) != -1;
+                        return new RegExp(tags.join("|")).test(question.tags.toString());
                     });
                 },
                 function(response) {
@@ -83,6 +84,31 @@ app.controller('Instructor.Edit.Lecture.Controller', function($scope, $localStor
             );
         }
     };
+
+    function getTags(query) {
+        var newQuery = query.toLowerCase();
+        if (newQuery.indexOf(',') == -1 && newQuery.indexOf('|') == -1) {
+            return [newQuery.trim()];
+        }
+        if (newQuery.indexOf(',') != -1 && newQuery.indexOf('|') != -1) {
+            return [''];
+        }
+        if (newQuery.indexOf(',') != -1) {
+            return sanitize(newQuery.split(','));
+        }
+        if (newQuery.indexOf('|') != -1) {
+            return sanitize(newQuery.split('|'));
+        }
+    }
+
+    function sanitize(array) {
+        for (var i in array) {
+            if (array[i].trim() !== '') {
+                array[i] = encodeURIComponent(array[i].trim());
+            }
+        }
+        return array;
+    }
 
     $scope.addQuestion = function() {
         $scope.addLoading = true;

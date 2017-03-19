@@ -17,6 +17,19 @@ h1, h2, h3, h4, h5 {
     font-weight: 300;
 }
 
+.hamburger-inner, .hamburger-inner::before, .hamburger-inner::after {
+    width: 30px;
+    background-color: white;
+}
+
+.hamburger:hover {
+    opacity: 100;
+}
+
+.hamburger-inner:hover {
+    background-color: white;
+}
+
 .ng-hide.ng-hide-animate {
     display: none !important;
 }
