@@ -4,3 +4,5 @@ https://rawgit.com/matowens/ng-notify/master/dist/ng-notify.min.css
 https://rawgit.com/720kb/angular-tooltips/master/dist/angular-tooltips.min.css
 https://rawgit.com/chieffancypants/angular-loading-bar/master/build/loading-bar.min.css
 https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css
+https://rawgit.com/jonsuh/hamburgers/master/dist/hamburgers.min.css
+https://rawgit.com/daneden/animate.css/master/animate.min.css

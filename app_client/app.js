@@ -113,6 +113,9 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
         }, {
             name: 'instructor.edit_question',
             files: ['app-components/dashboard/instructor/question/edit_question.controller.js']
+        }, {
+            name: 'splash',
+            files: ['app-components/splash/splash.controller.js']
         }]
     });
 
@@ -126,6 +129,15 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
                 }]
             },
             views: {
+                'splash': {
+                    templateUrl: 'app-components/splash/splash.view.html',
+                    controller: 'Splash.Controller',
+                    resolve: {
+                        loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                            return $ocLazyLoad.load('splash'); // Resolve promise and load before view
+                        }]
+                    }
+                },
                 'navbar': {
                     templateUrl: 'app-components/navbar/navbar.view.html',
                     controller: 'Navbar.Controller',
@@ -267,7 +279,8 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
                 }]
             }
         });
-});
+    }
+);
 
 app.run(function($rootScope, ngNotify) {
     $rootScope.$on('$stateChangeSuccess', function() {
@@ -303,7 +316,7 @@ app.controller('Main.Controller', function($scope, $state, $localStorage, $injec
 
         if (!RESTService.LoggedIn()) {
             RESTService.Logout();
-            UserService.ShowLogin();
+            $state.go('main');
         } else {
             $state.go('main.' + $localStorage.role);
         }

@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="app-scripts/content-tools/content-tools.min.css" />
     <link rel="stylesheet" href="app-css/default.css" />
     <link rel="stylesheet" href="app-css/style.css" />
+    <link rel="stylesheet" href="app-css/stars.css" />
     <!-- Get rid of annoying favico error -->
     <link rel="shortcut icon" href=" " />
 
@@ -32,9 +33,9 @@
 <body>
     <!-- Views -->
     <div class="super-container" ng-controller="Main.Controller">
-        <div class="container-fluid login-back" ng-hide="$storage.LoggedIn"></div>
+        <div class="container-fluid login-back p-0" ng-hide="$storage.LoggedIn" ui-view="splash"></div>
         <div ui-view="navbar"></div>
-        <div id="wrapper" ng-class="{'toggled' : $storage.hideSidebar }">
+        <div id="wrapper" ng-class="{'toggled' : $storage.hideSidebar }" ng-show="$storage.LoggedIn">
             <div ui-view="sidebar"></div>
             <div ui-view="dashboard" style="height: 100%;"></div>
         </div>
