@@ -20,16 +20,16 @@ h1, h2, h3, h4, h5 {
 
 .footer {
     z-index: 1000;
-    font-size: 16px;
+    font-size: 1rem;
     position: absolute;
     color: #2A2C3A;
     bottom: 0;
     width: 100%;
-    height: 55px;
+    height: 3.4375rem;
 }
 
 .hamburger-inner, .hamburger-inner::before, .hamburger-inner::after {
-    width: 30px;
+    width: 1.875rem;
     background-color: white;
 }
 
@@ -51,7 +51,7 @@ h1, h2, h3, h4, h5 {
 
 #loading-bar .bar {
     background: #90E1B1;
-    height: 6px;
+    height: 0.375rem;
 }
 
 tooltip {
@@ -63,27 +63,27 @@ a:link, a:visited, a:hover, a:active {
 }
 
 .add-card {
-    font-size: 42px;
-    height: 80px;
-    width: 80px;
+    font-size: 2.625rem;
+    height: 5rem;
+    width: 5rem;
 }
 
 .card-center {
     float: none;
-    margin: 0px auto;
+    margin: 0rem auto;
 }
 
 #page-content-wrapper {
     height: 100%;
-    padding: 5px;
+    padding: 0.3125rem;
     position: absolute;
     width: 100%;
 }
 
-@media(min-width:768px) {
+@media(min-width:48rem) {
     #page-content-wrapper {
         height: 100%;
-        padding: 5px;
+        padding: 0.3125rem;
         position: relative;
     }
 }
@@ -111,7 +111,7 @@ a:link, a:visited, a:hover, a:active {
 }
 
 #wrapper.toggled {
-    padding-left: 250px;
+    padding-left: 15.625rem;
 }
 
 #sidebar-wrapper {
@@ -119,8 +119,8 @@ a:link, a:visited, a:hover, a:active {
     -o-transition: all 0.5s ease;
     -webkit-transition: all 0.5s ease;
     height: 100%;
-    left: 250px;
-    margin-left: -250px;
+    left: 15.625rem;
+    margin-left: -15.625rem;
     overflow-y: auto;
     position: fixed;
     transition: all 0.5s ease;
@@ -129,11 +129,11 @@ a:link, a:visited, a:hover, a:active {
 }
 
 #wrapper.toggled #sidebar-wrapper {
-    width: 250px;
+    width: 15.625rem;
 }
 
 #wrapper.toggled #page-content-wrapper {
-    margin-right: -250px;
+    margin-right: -15.625rem;
     position: absolute;
 }
 
@@ -146,13 +146,13 @@ a:link, a:visited, a:hover, a:active {
     padding: 0;
     position: absolute;
     top: 0;
-    width: 250px;
+    width: 15.625rem;
 }
 
 .sidebar-nav li {
-    line-height: 40px;
+    line-height: 2.5rem;
     list-style-type: none;
-    text-indent: 10px;
+    text-indent: 0.625rem;
 }
 
 .sidebar-nav li a {
@@ -161,14 +161,14 @@ a:link, a:visited, a:hover, a:active {
     font-weight: 700;
     text-transform: uppercase;
     text-decoration: none;
-    border-left: 5px solid transparent;
+    border-left: 0.3125rem solid transparent;
 }
 
 .sidebar-nav li a:hover {
     background: #354A60;
     color: white;
     text-decoration: none;
-    border-left: 5px solid #14A4FA;
+    border-left: 0.3125rem solid #14A4FA;
     transition: border-color .5s ease-in-out;
 }
 
@@ -177,23 +177,23 @@ a:link, a:visited, a:hover, a:active {
 }
 
 .sidebar-nav>.sidebar-brand {
-    font-size: 18px;
-    height: 65px;
-    line-height: 60px;
-    text-indent: 10px;
+    font-size: 1.125rem;
+    height: 4.0625rem;
+    line-height: 3.75rem;
+    text-indent: 0.625rem;
 }
 
 .sidebar-nav>.sidebar-brand a {
     color: white;
     text-transform: none;
-    font-size: 18px;
+    font-size: 1.125rem;
     font-weight: 700;
     background: #354A60;
 }
 
 .sidebar-nav>.sidebar-brand a:hover {
     color: white;
-    border-left: 5px solid transparent;
+    border-left: 0.3125rem solid transparent;
 }
 
 .sidebar-nav li>.classList {
@@ -201,15 +201,15 @@ a:link, a:visited, a:hover, a:active {
     text-decoration: none;
 }
 
-@media(min-width:768px) {
+@media(min-width:48rem) {
     #wrapper {
-        padding-left: 250px;
+        padding-left: 15.625rem;
     }
     #wrapper.toggled {
         padding-left: 0;
     }
     #sidebar-wrapper {
-        width: 250px;
+        width: 15.625rem;
     }
     #wrapper.toggled #sidebar-wrapper {
         width: 0;
@@ -220,15 +220,15 @@ a:link, a:visited, a:hover, a:active {
     }
 }
 
-@media(max-width: 576px) {
+@media(max-width: 36rem) {
     .card {
         float: none;
-        margin: 0px auto;
+        margin: 0rem auto;
     }
 }
 
 .no-courses {
-    font-size: 48px;
+    font-size: 3rem;
     height: 100%;
 }
 
@@ -248,11 +248,11 @@ a:link, a:visited, a:hover, a:active {
 }
 
 .splash-header>h1 {
-    font-size: 68px;
+    font-size: 4.25rem;
 }
 
 .splash-body {
-    font-size: 22px;
+    font-size: 1.375rem;
     text-align: justify;
 }
 
@@ -277,10 +277,10 @@ a:link, a:visited, a:hover, a:active {
 
 .cropArea {
     background: #E4E4E4;
-    height: 300px;
+    height: 18.75rem;
     margin: auto;
     overflow: hidden;
-    width: 400px;
+    width: 25rem;
 }
 
 button.close {
@@ -296,41 +296,41 @@ button.close {
 
 .card {
     background-color: #fff;
-    border: 1px solid rgba(0, 0, 0, 0.075);
+    border: 0.0625rem solid rgba(0, 0, 0, 0.075);
     border-radius: 0.25rem;
-    width: 400px;
+    width: 25rem;
 }
 
 .card-header {
     background-color: #ECF0F1;
-    border-bottom: 0px;
-    font-size: 18px;
+    border-bottom: 0rem;
+    font-size: 1.125rem;
     margin: 0;
     padding: 0.75rem 1.25rem;
 }
 
 .card-footer {
     background-color: #fff;
-    border-top: 0px;
-    font-size: 14px;
+    border-top: 0rem;
+    font-size: 0.875rem;
     padding: 0.75rem 1.25rem;
 }
 
 .card-block {
-    font-size: 14px;
+    font-size: 0.875rem;
     padding: 0.50rem 1.25rem;
 }
 
 .border-right {
-    border-right: 1px solid #ddd;
-    height: 120px;
+    border-right: 0.0625rem solid #ddd;
+    height: 7.5rem;
 }
 
 .sidebar-divider {
     display: block;
-    height: 1px;
+    height: 0.0625rem;
     border: 0;
-    border-top: 3px solid #2D3646;
+    border-top: 0.1875rem solid #2D3646;
     margin: 1em 0;
     padding: 0;
 }
@@ -350,20 +350,20 @@ button.close {
 .divide-header>span:before, .divide-header>span:after {
     background: #ddd;
     content: "";
-    height: 1px;
+    height: 0.0625rem;
     position: absolute;
     top: 50%;
-    width: 9999px;
+    width: 624.9375rem;
 }
 
 .divide-header>span:before {
-    margin-right: 15px;
+    margin-right: 0.9375rem;
     right: 100%;
 }
 
 .divide-header>span:after {
     left: 100%;
-    margin-left: 15px;
+    margin-left: 0.9375rem;
 }
 
 .progress-wrapper {
@@ -372,7 +372,7 @@ button.close {
 
 .progress-wrapper .text {
     -webkit-transform: translateY(-55%);
-    font-size: 24px;
+    font-size: 1.5rem;
     left: 0;
     position: absolute;
     text-align: center;
@@ -384,30 +384,30 @@ button.close {
 
 .card-add {
     background-color: transparent !important;
-    border: 2px dashed #45b7cd !important;
-    height: 200px;
-    width: 200px !important;
+    border: 0.125rem dashed #45b7cd !important;
+    height: 12.5rem;
+    width: 12.5rem !important;
 }
 
 .card {
     background-color: #fff;
-    border: 1px solid rgba(0, 0, 0, 0.075);
+    border: 0.0625rem solid rgba(0, 0, 0, 0.075);
     border-radius: 0.25rem;
-    width: 400px;
+    width: 25rem;
 }
 
 .card-header {
     background-color: #ECF0F1;
-    border-bottom: 0px;
-    font-size: 18px;
+    border-bottom: 0rem;
+    font-size: 1.125rem;
     margin: 0;
     padding: 0.75rem 1.25rem;
 }
 
 .card-footer {
     background-color: #fff;
-    border-top: 0px;
-    font-size: 14px;
+    border-top: 0rem;
+    font-size: 0.875rem;
     padding: 0.75rem 1.25rem;
 }
 
@@ -415,23 +415,23 @@ button.close {
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
     -webkit-transition: all 0.5s ease;
-    border: 2px dashed rgba(0, 0, 0, 0.200);
+    border: 0.125rem dashed rgba(0, 0, 0, 0.200);
     color: rgba(0, 0, 0, 0.200);
     cursor: pointer;
-    font-size: 24px;
+    font-size: 1.5rem;
 }
 
 .answer:hover {
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
     -webkit-transition: all 0.5s ease;
-    border: 2px dashed #45b7cd;
+    border: 0.125rem dashed #45b7cd;
     color: rgba(0, 0, 0, 0.500);
 }
 
 .ct-inspector {
     background-color: #fff !important;
-    border-top: 1px solid #ddd !important;
+    border-top: 0.0625rem solid #ddd !important;
 }
 
 [data-editable] iframe, [data-editable] image, [data-editable] [data-ce-tag=img], [data-editable] img, [data-editable] video {
@@ -443,21 +443,21 @@ button.close {
 }
 
 .table-bordered {
-    border: 1px solid rgba(0, 0, 0, 0.100) !important;
-    border-radius: 25px;
+    border: 0.0625rem solid rgba(0, 0, 0, 0.100) !important;
+    border-radius: 1.5625rem;
 }
 
 .table-bordered th, .table-bordered td {
-    border: 1px solid rgba(0, 0, 0, 0.100) !important;
+    border: 0.0625rem solid rgba(0, 0, 0, 0.100) !important;
 }
 
 .checkbox {
-    padding-left: 20px;
+    padding-left: 1.25rem;
 }
 
 .checkbox label {
     display: inline-block;
-    padding-left: 5px;
+    padding-left: 0.3125rem;
     position: relative;
 }
 
@@ -465,30 +465,30 @@ button.close {
     -o-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
     -webkit-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
     background-color: #fff;
-    border: 1px solid #cccccc;
-    border-radius: 3px;
+    border: 0.0625rem solid #cccccc;
+    border-radius: 0.1875rem;
     content: "";
     display: inline-block;
-    height: 17px;
+    height: 1.0625rem;
     left: 0;
-    margin-left: -20px;
+    margin-left: -1.25rem;
     position: absolute;
     transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
-    width: 17px;
+    width: 1.0625rem;
 }
 
 .checkbox label::after {
     color: #555555;
     display: inline-block;
-    font-size: 11px;
-    height: 16px;
+    font-size: 0.6875rem;
+    height: 1rem;
     left: 0;
-    margin-left: -20px;
-    padding-left: 3px;
-    padding-top: 1px;
+    margin-left: -1.25rem;
+    padding-left: 0.1875rem;
+    padding-top: 0.0625rem;
     position: absolute;
     top: 0;
-    width: 16px;
+    width: 1rem;
 }
 
 .checkbox input[type="checkbox"] {
@@ -497,8 +497,8 @@ button.close {
 
 .checkbox input[type="checkbox"]:focus+label::before {
     outline: thin dotted;
-    outline: 5px auto -webkit-focus-ring-color;
-    outline-offset: -2px;
+    outline: 0.3125rem auto -webkit-focus-ring-color;
+    outline-offset: -0.125rem;
 }
 
 .checkbox input[type="checkbox"]:checked+label::after {
@@ -569,12 +569,12 @@ button.close {
 }
 
 .radio {
-    padding-left: 20px;
+    padding-left: 1.25rem;
 }
 
 .radio label {
     display: inline-block;
-    padding-left: 5px;
+    padding-left: 0.3125rem;
     position: relative;
 }
 
@@ -582,17 +582,17 @@ button.close {
     -o-transition: border 0.15s ease-in-out;
     -webkit-transition: border 0.15s ease-in-out;
     background-color: #fff;
-    border: 1px solid #cccccc;
+    border: 0.0625rem solid #cccccc;
     border-radius: 50%;
     content: "";
     display: inline-block;
-    height: 17px;
+    height: 1.0625rem;
     left: 0;
-    margin-left: -20px;
+    margin-left: -1.25rem;
     position: absolute;
-    top: 3px;
+    top: 0.1875rem;
     transition: border 0.15s ease-in-out;
-    width: 17px;
+    width: 1.0625rem;
 }
 
 .radio label::after {
@@ -606,14 +606,14 @@ button.close {
     border-radius: 50%;
     content: " ";
     display: inline-block;
-    height: 11px;
-    left: 3px;
-    margin-left: -20px;
+    height: 0.6875rem;
+    left: 0.1875rem;
+    margin-left: -1.25rem;
     position: absolute;
-    top: 6px;
+    top: 0.375rem;
     transform: scale(0, 0);
     transition: transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
-    width: 11px;
+    width: 0.6875rem;
 }
 
 .radio input[type="radio"] {
@@ -622,8 +622,8 @@ button.close {
 
 .radio input[type="radio"]:focus+label::before {
     outline: thin dotted;
-    outline: 5px auto -webkit-focus-ring-color;
-    outline-offset: -2px;
+    outline: 0.3125rem auto -webkit-focus-ring-color;
+    outline-offset: -0.125rem;
 }
 
 .radio input[type="radio"]:checked+label::after {
@@ -720,7 +720,7 @@ button.close {
 }
 
 .twitter-typeahead>.form-control {
-    height: 37px;
+    height: 2.3125rem;
     width: inherit !important;
 }
 
@@ -729,36 +729,36 @@ button.close {
 }
 
 .select-inline {
-    -moz-border-bottom-right-radius: 0px;
-    -moz-border-top-right-radius: 0px;
-    -webkit-border-bottom-right-radius: 0px;
-    -webkit-border-top-right-radius: 0px;
-    border-bottom-right-radius: 0px;
+    -moz-border-bottom-right-radius: 0rem;
+    -moz-border-top-right-radius: 0rem;
+    -webkit-border-bottom-right-radius: 0rem;
+    -webkit-border-top-right-radius: 0rem;
+    border-bottom-right-radius: 0rem;
     border-right: 0;
-    border-top-right-radius: 0px;
+    border-top-right-radius: 0rem;
 }
 
 .tt-menu {
-    -moz-border-radius: 3px;
-    -moz-box-shadow: 0 3px 6px rgba(0, 0, 0, .2);
-    -webkit-border-radius: 3px;
-    -webkit-box-shadow: 0 3px 6px rgba(0, 0, 0, .2);
+    -moz-border-radius: 0.1875rem;
+    -moz-box-shadow: 0 0.1875rem 0.375rem rgba(0, 0, 0, .2);
+    -webkit-border-radius: 0.1875rem;
+    -webkit-box-shadow: 0 0.1875rem 0.375rem rgba(0, 0, 0, .2);
     -webkit-font-smoothing: antialiased;
     background-color: #fff;
-    border: 1px solid #ccc;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    border-radius: 3px;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, .2);
+    border: 0.0625rem solid #ccc;
+    border: 0.0625rem solid rgba(0, 0, 0, 0.2);
+    border-radius: 0.1875rem;
+    box-shadow: 0 0.1875rem 0.375rem rgba(0, 0, 0, .2);
     font-family: 'Roboto', sans-serif;
-    margin: 5px 0;
-    padding: 8px 0;
+    margin: 0.3125rem 0;
+    padding: 0.5rem 0;
     text-rendering: optimizeLegibility;
     width: auto;
 }
 
 .tt-suggestion {
-    line-height: 24px;
-    padding: 3px 20px;
+    line-height: 1.5rem;
+    padding: 0.1875rem 1.25rem;
 }
 
 .tt-suggestion:hover {

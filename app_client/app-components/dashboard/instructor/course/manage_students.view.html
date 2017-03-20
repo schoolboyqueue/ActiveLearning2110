@@ -1,4 +1,4 @@
-<div class="container-fluid p-2 animated fadeIn" ng-controller="Manage.Students.Controller">
+<div class="container-fluid p-2 animated fadeIn animated fadeIn" ng-controller="Manage.Students.Controller">
     <div class="divide-header pt-3 pb-3 text-uppercase">
         <span>
             <ul class="nav nav-pills">
@@ -32,7 +32,7 @@
                             type="button"
                             class="btn btn-danger btn-sm"
                             ng-disabled="loading"
-                            confirmed-click="deleteStudent($index)"
+                            confirmed-click="deleteStudent(student)"
                             ng-confirm-click="Are you sure you want to remove {{student.username}}?">
                                 <span ng-show="loading">
                                     <i class="fa fa-circle-o-notch fa-spin"></i>

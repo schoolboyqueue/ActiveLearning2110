@@ -448,7 +448,6 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
     service.Logout = function() {
         if (service.LoggedIn()) {
             baseREST.one("authenticate").remove();
-            UserService.ShowLogin();
         }
         UserStorage.Clear();
         Restangular.setDefaultHeaders({
