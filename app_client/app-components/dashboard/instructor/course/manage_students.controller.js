@@ -15,7 +15,7 @@
 
 var app = angular.module('app');
 
-app.controller('Manage.Students.Controller', function($scope, $localStorage, $timeout, $stateParams, $rootScope, RESTService, NgTableParams, Papa) {
+app.controller('Manage.Students.Controller', function($scope, $localStorage, $timeout, $stateParams, $rootScope, RESTService, NgTableParams, Papa, ngNotify) {
 
     $rootScope.$stateParams = $stateParams;
     $scope.selectedCSV = null;
@@ -117,11 +117,11 @@ app.controller('Manage.Students.Controller', function($scope, $localStorage, $ti
     }
 
     function deleteStudentFinish(info) {
+        $scope.loading = false;
         if (!info.success) {
-            $scope.error = info.message;
+            ngNotify.set('Failed to remove student', 'error');
             return;
         }
-        $scope.loading = false;
         updateStudentTable();
     }
 
