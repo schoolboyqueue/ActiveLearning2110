@@ -155,7 +155,7 @@ app.controller('Instructor.Question.Controller', function($scope, $state, $state
             html_title: $scope.question.html.title,
             html_body: $scope.question.html.body,
             answer_choices: $scope.question.choices
-        }
+        };
     }
 
     function finishUpdateQuestion(response) {

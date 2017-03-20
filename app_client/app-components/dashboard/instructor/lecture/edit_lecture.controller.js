@@ -119,17 +119,17 @@ app.controller('Instructor.Edit.Lecture.Controller', function($scope, $localStor
         }, finishAddQuestionToLecture);
     };
 
-    $scope.removeQuestion = function(index) {
+    $scope.removeQuestion = function(selected_question) {
         $scope.removeLoading = true;
         RESTService.RemoveQuestionFromLecture({
-            question_id: $scope.lecture.questions[index].question_id,
+            question_id: selected_question.question_id,
             lecture_id: $scope.lecture.lecture_id,
             course_id: $scope.course._id
         }, finishRemoveQuestionFromLecture);
     };
 
-    $scope.viewQuestion = function(index) {
-        RESTService.GetQuestionDetails($scope.lecture.questions[index].question_id, function(info) {
+    $scope.viewQuestion = function(selected_question) {
+        RESTService.GetQuestionDetails(selected_question.question_id, function(info) {
             if (!info.success) {
                 ngNotify.set('Could not fetch question details', 'error');
                 return;
