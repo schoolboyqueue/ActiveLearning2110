@@ -49,6 +49,16 @@ app.controller('Instructor.Edit.Question.Controller', function($scope, $state, $
         });
     };
 
+    $scope.deleteQuestion = function(selected_question) {
+        RESTService.DeleteQuestion(selected_question._id, function(info) {
+            if (!info.success) {
+                ngNotify.set('Failed to delete question from database', 'error');
+                return;
+            }
+
+        });
+    };
+
     $scope.editQuestion = function(selected_question) {
         RESTService.GetQuestionDetails(selected_question._id, function(info) {
             if (!info.success) {

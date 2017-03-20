@@ -19,7 +19,7 @@
                     </auto-complete>
             </tags-input>
             <span class="input-group-btn">
-                <button class="btn btn-info" type="button" ng-click="addQuestion()" ng-disabled="checkSelectedQuestion()">
+                <button class="btn btn-outline-success" type="button" ng-click="addQuestion()" ng-disabled="checkSelectedQuestion()">
                     <span ng-show="addLoading">
                         <i class="fa fa-circle-o-notch fa-spin"></i>
                     </span>
@@ -46,7 +46,7 @@
                     </auto-complete>
             </tags-input>
             <span class="input-group-btn">
-                <button class="btn btn-info" type="button" ng-click="addQuestionSet()" ng-disabled="checkSelectedQuestionSet()">
+                <button class="btn btn-outline-success" type="button" ng-click="addQuestionSet()" ng-disabled="checkSelectedQuestionSet()">
                     <span ng-show="addLoading">
                         <i class="fa fa-circle-o-notch fa-spin"></i>
                     </span>
@@ -63,13 +63,13 @@
                     <span class="badge badge-default badge-pill mr-1 text-uppercase" ng-repeat="tag in question.tags | limitTo:4">{{tag}}</span>
                     <span class="badge ml-2 mr-2" ng-class="{ 'badge-success': !question.copied, 'badge-warning': question.copied }">Owner</span>
                     <div class="btn-group btn-group-sm" role="group">
-                        <button class="btn btn-sm btn-primary" type="button" ng-click="viewQuestion(question)">
+                        <button class="btn btn-sm btn-secondary" type="button" ng-click="viewQuestion(question)">
                             <i class="fa fa-eye fa-fw" aria-hidden="true"></i>
                         </button>
                         <button ng-disabled="question.copied" class="btn btn-sm btn-secondary" type="button" ng-click="editQuestion(question)">
                             <i class="fa fa-pencil fa-fw" aria-hidden="true"></i>
                         </button>
-                        <button class="btn btn-sm btn-danger" ng-disabled="removeLoading || addLoading" type="button" confirmed-click="removeQuestion(question)" ng-confirm-click="Are you sure you want to remove this question?">
+                        <button class="btn btn-sm btn-secondary" ng-disabled="removeLoading || addLoading" type="button" confirmed-click="removeQuestion(question)" ng-confirm-click="Are you sure you want to remove this question?">
                             <i class="fa fa-times" aria-hidden="true"></i>
                         </button>
                     </div>
@@ -80,7 +80,7 @@
             <div class="input-group">
                 <input type="text" class="form-control" placeholder="Enter set name..." ng-model="setName" ng-init="setName = ''">
                 <span class="input-group-btn">
-                    <button type="button" class="btn btn-primary" ng-disabled="setName.length === 0" ng-click="createQuestionSet()">Save Question Set</button>
+                    <button type="button" class="btn btn-outline-success" ng-disabled="setName.length === 0" ng-click="createQuestionSet()">Save Question Set</button>
                 </span>
             </div>
         </div>

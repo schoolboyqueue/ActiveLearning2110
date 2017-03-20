@@ -7,7 +7,7 @@ html, body, input, button, select, ul, li, auto-complete {
 }
 
 html, body {
-    background-color: #F8F9FA;
+    background-color: white;
     font-weight: 400;
     height: 100%;
     line-height: 1.6;
@@ -26,6 +26,15 @@ h1, h2, h3, h4, h5 {
     bottom: 0;
     width: 100%;
     height: 3.4375rem;
+}
+
+.btn-navbar {
+    color: white;
+    background-color: #4464DD;
+}
+
+.btn-navbar:hover {
+    background-color: #4160D4;
 }
 
 .hamburger-inner, .hamburger-inner::before, .hamburger-inner::after {
@@ -50,7 +59,7 @@ h1, h2, h3, h4, h5 {
 }
 
 #loading-bar .bar {
-    background: #90E1B1;
+    background: black;
     height: 0.375rem;
 }
 
@@ -114,6 +123,26 @@ a:link, a:visited, a:hover, a:active {
     padding-left: 15.625rem;
 }
 
+.sidebar {
+    background-color: white;
+    border-right: 1px solid #DDDEDE;
+}
+
+.navbar {
+    background-color: #476DEB;
+}
+
+.btn-default {
+    background-color: transparent;
+    border: 1px solid #ddd;
+    border-radius: 0.3rem;
+    cursor: pointer;
+}
+
+.btn-default:hover {
+    background-color: #EDEDED;
+}
+
 #sidebar-wrapper {
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
@@ -156,7 +185,7 @@ a:link, a:visited, a:hover, a:active {
 }
 
 .sidebar-nav li a {
-    color: #A0ABBF;
+    color: #596069;
     display: block;
     font-weight: 700;
     text-transform: uppercase;
@@ -165,10 +194,9 @@ a:link, a:visited, a:hover, a:active {
 }
 
 .sidebar-nav li a:hover {
-    background: #354A60;
-    color: white;
+    background: #ECF0FD;
     text-decoration: none;
-    border-left: 0.3125rem solid #14A4FA;
+    border-left: 0.3125rem solid #476DEB;
     transition: border-color .5s ease-in-out;
 }
 
@@ -184,20 +212,19 @@ a:link, a:visited, a:hover, a:active {
 }
 
 .sidebar-nav>.sidebar-brand a {
-    color: white;
+    color: #596069;
     text-transform: none;
     font-size: 1.125rem;
     font-weight: 700;
-    background: #354A60;
+    background: #EEF1FB;
 }
 
 .sidebar-nav>.sidebar-brand a:hover {
-    color: white;
     border-left: 0.3125rem solid transparent;
 }
 
 .sidebar-nav li>.classList {
-    background: #243342;
+    background: #EEF1FB;
     text-decoration: none;
 }
 
