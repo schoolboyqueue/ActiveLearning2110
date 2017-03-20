@@ -66,7 +66,7 @@
                         <button class="btn btn-sm btn-primary" type="button" ng-click="viewQuestion($index)">
                             <i class="fa fa-eye fa-fw" aria-hidden="true"></i>
                         </button>
-                        <button ng-disabled="question.copied" class="btn btn-sm btn-secondary" type="button" ng-click="viewQuestion($index)">
+                        <button ng-disabled="question.copied" class="btn btn-sm btn-secondary" type="button" ng-click="editQuestion(question)">
                             <i class="fa fa-pencil fa-fw" aria-hidden="true"></i>
                         </button>
                         <button class="btn btn-sm btn-danger" ng-disabled="removeLoading || addLoading" type="button" confirmed-click="removeQuestion($index)" ng-confirm-click="Are you sure you want to remove this question?">

@@ -30,16 +30,18 @@
                 <button
                     type="button"
                     class="btn btn-success btn-sm"
-                    ng-show="question.html.title != null"
+                    ng-hide="question.html.title === null || state === 'cancel' || question.tags.length === 0 || question.choices.length < 2 || answersEmpty()"
                     ng-click="submit()">Submit
                 </button>
             </div>
         </div>
         <div ng-editor="question-container" value="question.html" editor="editor">
-            <div data-editable="title" class="pb-4">
+            <div data-editable="title" ng-if="question.html.title !== null" ng-bind-html="question.html.title"></div>
+            <div data-editable="title" ng-if="question.html.title === null" class="pb-4">
                 <h2 class="text-center">Question Title</h2>
             </div>
-            <div data-editable="body">
+            <div data-editable="body" ng-if="question.html.body !== null" ng-bind-html="question.html.body"></div>
+            <div data-editable="body" ng-if="question.html.body === null">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec cursus ac ex eget malesuada. Pellentesque tincidunt nulla dictum
                     nibh porta molestie. Nunc rutrum ultricies venenatis. Sed vulputate placerat elementum. Vivamus commodo sit amet eros nec facilisis.
@@ -105,7 +107,7 @@
         </div>
     </div>
     <!-- <pre>
-        {{question | json}}
+        {{selected_question | json}}
     </pre> -->
     <!-- <div class="container-fluid">
         <div ng-bind-html="question.title"></div>
