@@ -23,6 +23,7 @@ app.controller('Manage.Students.Controller', function($scope, $localStorage, $ti
     var sidx = $stateParams.selectedSection.index;
     var section = $stateParams.selectedSection.section;
     var cidx = $stateParams.selectedCourse;
+    var keyArray = ['Name', 'User ID', 'Email Address', 'Role'];
     $scope.changes = {};
     $scope.loading = false;
 
@@ -126,6 +127,10 @@ app.controller('Manage.Students.Controller', function($scope, $localStorage, $ti
     }
 
     function updateUploadTable(data) {
+        if (data === null) {
+            ngNotify.set('Invalid CSV File', 'error');
+            return;
+        }
         var students = data;
         if (students.length > 5) {
             student_cnts = [5, 10, 15];
@@ -149,11 +154,18 @@ app.controller('Manage.Students.Controller', function($scope, $localStorage, $ti
         $scope.student_tableParams.reload();
     }
 
+    function sameArray(arr1, arr2) {
+        return $(arr1).not(arr2).length === 0 && $(arr2).not(arr1).length === 0;
+    }
+
     function sanitizeData(data) {
         var new_data = [];
         for (var key in data) {
             var entry = {};
             var name = data[key].Name.split(',');
+            if (data[key].hasOwnProperty('__parsed_extra') || !sameArray(keyArray, Object.keys(data[key]))) {
+                return null;
+            }
             entry.lastname = name[0].trim();
             entry.firstname = name[1].trim();
             entry.username = data[key]["Email Address"];
@@ -164,11 +176,16 @@ app.controller('Manage.Students.Controller', function($scope, $localStorage, $ti
         return new_data;
     }
 
+    function parseError(error, file) {
+        ngNotify.set(error.message, 'error');
+    }
+
     $scope.$watch('selectedCSV', function() {
         if ($scope.selectedCSV !== null) {
             Papa.parse($scope.selectedCSV, {
                 header: true,
-                skipEmptyLines: true
+                skipEmptyLines: true,
+                error: parseError
             }).then(
                 function(result) {
                     updateUploadTable(sanitizeData(result.data));
