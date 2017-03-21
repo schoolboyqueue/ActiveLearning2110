@@ -179,7 +179,7 @@ var getAllQuestions = function(req, res) {
 
 var getAllInstructorQuestions = function(req, res) {
     console.log('questionController getAllInstructorQuestions');
-    
+
     if (req.decodedToken.sub !== req.params.USERID) {
         return res.status(404).json({
             success: false,
