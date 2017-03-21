@@ -52,6 +52,11 @@ var UserSchema = new Schema({
         type: Boolean,
         default: false
     },
+    register_status: {
+        type: String,
+        enum: ['pending', 'complete'],
+        default: 'complete'
+    },
     pre_register_key: {
         type: String
     },
