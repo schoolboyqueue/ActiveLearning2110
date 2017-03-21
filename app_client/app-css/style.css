@@ -146,7 +146,7 @@ a:hover {
 
 .sidebar {
     background-color: white;
-    border-right: 1px solid #DDDEDE;
+    border-right: 0.0625rem solid #DDDEDE;
 }
 
 .navbar {
@@ -155,7 +155,7 @@ a:hover {
 
 .btn-default {
     background-color: transparent;
-    border: 1px solid #ddd;
+    border: 0.0625rem solid #ddd;
     border-radius: 0.3rem;
     cursor: pointer;
 }
