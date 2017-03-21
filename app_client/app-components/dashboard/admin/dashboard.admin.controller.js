@@ -51,13 +51,13 @@ app.controller('Admin.Dashboard.Controller', function($scope, $localStorage, $st
     $scope.initUser = function(user, index) {
         var info = {
             role: user.role,
-            deactivated: user.deactivated,
+            active: !user.deactivated,
             id: user._id,
             commited: false,
             error: false,
             index: index,
             changed_role: false,
-            changed_deactivated: false
+            changed_active: false
         };
         $scope.changes[user.username] = info;
     };
@@ -75,7 +75,7 @@ app.controller('Admin.Dashboard.Controller', function($scope, $localStorage, $st
                 RESTService.UpdateUserRole(info, finishChange);
                 changed = true;
             }
-            if ($scope.changes[key].changed_deactivated === true) {
+            if ($scope.changes[key].changed_active === true) {
                 RESTService.UpdateUserDeactivation(info, finishChange);
                 changed = true;
             }
@@ -93,7 +93,7 @@ app.controller('Admin.Dashboard.Controller', function($scope, $localStorage, $st
         $scope.changes[info.key].changed = false;
         $scope.changes[info.key].commited = true;
         $scope.changes[info.key].changed_role = false;
-        $scope.changes[info.key].changed_deactivated = false;
+        $scope.changes[info.key].changed_active = false;
         $scope.tableParams.settings().dataset = $localStorage.users;
         $scope.tableParams.reload();
         $timeout(function() {
@@ -102,14 +102,4 @@ app.controller('Admin.Dashboard.Controller', function($scope, $localStorage, $st
         $scope.loading = false;
     }
 
-});
-
-app.filter('activation', function() {
-    return function(deactivated) {
-        if (!deactivated) {
-            return 'Deactivate';
-        } else {
-            return 'Activate';
-        }
-    };
 });

@@ -19,14 +19,14 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
 
     var baseREST = Restangular.all("api_v2");
 
-    Restangular.setErrorInterceptor(function(response, deferred, responseHandler) {
-        console.log(response);
-        if (response.status === 401) {
-            service.Logout();
-            return false; // error handled
-        }
-        return true; // error not handled
-    });
+    // Restangular.setErrorInterceptor(function(response, deferred, responseHandler) {
+    //     console.log(response);
+    //     if (response.status === 401) {
+    //         service.Logout();
+    //         return false; // error handled
+    //     }
+    //     return true; // error not handled
+    // });
 
     service.LoggedIn = function() {
         if ($localStorage.jwt_token && !jwtHelper.isTokenExpired($localStorage.jwt_token) && $localStorage.LoggedIn) {

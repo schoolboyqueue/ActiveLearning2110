@@ -7,3 +7,4 @@ https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css
 https://rawgit.com/jonsuh/hamburgers/master/dist/hamburgers.min.css
 https://rawgit.com/daneden/animate.css/master/animate.min.css
 https://cdn.jsdelivr.net/intro.js/2.4.0/introjs.min.css
+https://rawgit.com/lokesh-coder/pretty-checkbox/master/src/pretty.min.css

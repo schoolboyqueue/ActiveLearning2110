@@ -293,7 +293,7 @@ app.run(function($rootScope, ngNotify) {
     });
 
     ngNotify.config({
-        theme: 'pastel',
+        theme: 'pure',
         position: 'bottom',
         duration: 3000,
         type: 'info',
