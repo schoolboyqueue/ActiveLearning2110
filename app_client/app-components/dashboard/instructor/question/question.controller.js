@@ -15,7 +15,10 @@
 
 var app = angular.module('app');
 
-app.controller('Instructor.Question.Controller', function($scope, $state, $rootScope, $localStorage, RESTService, ngNotify) {
+app.controller('Instructor.Question.Controller', function($scope, $state, $stateParams, $rootScope, $localStorage, RESTService, ngNotify) {
+
+    $rootScope.$stateParams = $stateParams;
+    $scope.selected_question = $stateParams.question;
 
     $scope.state = 'edit';
     $scope.editor = null;
@@ -58,6 +61,19 @@ app.controller('Instructor.Question.Controller', function($scope, $state, $rootS
             }];
         }
     };
+
+    if ($scope.selected_question !== null) {
+        $scope.question = {
+            html: {
+                titleText: $scope.selected_question.titleText,
+                title: $scope.selected_question.title,
+                body: $scope.selected_question.body
+            },
+            tags: $scope.selected_question.tags,
+            choices: $scope.selected_question.choices,
+            _id: $scope.selected_question._id,
+        };
+    }
 
     $scope.answersEmpty = function() {
         var empty = false;
@@ -108,24 +124,14 @@ app.controller('Instructor.Question.Controller', function($scope, $state, $rootS
     };
 
     $scope.submit = function() {
-        var tags = [];
-        for (var key in $scope.question.tags) {
-            tags.push($scope.question.tags[key].text.toLowerCase());
+        if ($scope.selected_question !== null) {
+            RESTService.UpdateQuestion({
+                question_id: $scope.selected_question._id,
+                question: aggregateQuestion()
+            }, finishUpdateQuestion);
+        } else {
+            RESTService.CreateQuestion(aggregateQuestion(), finishUpdateQuestion);
         }
-        var choices = [];
-        for (key in $scope.question.choices) {
-            choices.push({
-                text: $scope.question.choices[key].text,
-                answer: $scope.question.choices[key].answer
-            });
-        }
-        RESTService.CreateQuestion({
-            title: $scope.question.html.titleText,
-            tags: tags,
-            html_title: $scope.question.html.title,
-            html_body: $scope.question.html.body,
-            answer_choices: $scope.question.choices
-        }, finishCreateQuestion);
     };
 
     $scope.cancel = function() {
@@ -138,12 +144,30 @@ app.controller('Instructor.Question.Controller', function($scope, $state, $rootS
         }
     });
 
-    function finishCreateQuestion(response) {
+    function aggregateQuestion() {
+        var tags = [];
+        for (var key in $scope.question.tags) {
+            tags.push($scope.question.tags[key].text.toLowerCase());
+        }
+        return {
+            title: $scope.question.html.titleText,
+            tags: tags,
+            html_title: $scope.question.html.title,
+            html_body: $scope.question.html.body,
+            answer_choices: $scope.question.choices
+        };
+    }
+
+    function finishUpdateQuestion(response) {
         if (!response.success) {
             ngNotify.set('Question creation failed:' + response.message, 'error');
             return;
         }
-        ngNotify.set('Question created', 'success');
+        if ($scope.selected_question !== null) {
+            ngNotify.set('Question updated', 'success');
+        } else {
+            ngNotify.set('Question created', 'success');
+        }
         $state.go('main.' + $localStorage.role);
     }
 });

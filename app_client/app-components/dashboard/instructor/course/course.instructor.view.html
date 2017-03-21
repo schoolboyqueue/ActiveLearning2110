@@ -71,7 +71,7 @@
                                         section: section
                                     }
                                 })">
-                            <button type="button" class="btn btn-primary btn-sm">Manage Students</button>
+                            <button type="button" class="btn btn-secondary btn-sm">Manage Students</button>
                         </a>
                     </div>
                 </div>
@@ -99,7 +99,7 @@
     <div class="divide-header pt-2 pb-2 text-uppercase">
         <span>lectures</span>
     </div>
-    <table ng-table="tableParams" class="table table-sm table-bordered table-hover text-center">
+    <table ng-table="tableParams" class="table table-sm table-hover text-center">
         <tr ng-repeat="lecture in $data">
             <td class="align-middle text-capitalize" title="'Title'" sortable="'title'">
                 {{lecture.title}}
@@ -113,7 +113,7 @@
             <td class="align-middle" title="'Edit'">
                 <button
                     type="button"
-                    class="btn btn-info btn-sm"
+                    class="btn btn-secondary btn-sm"
                     ui-sref="main.instructor_edit_lecture({
                         selectedCourse: course_index,
                         selectedLecture: $index

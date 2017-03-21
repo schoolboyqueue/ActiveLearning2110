@@ -2,10 +2,10 @@
     <div class="container-fluid">
         <div class="d-flex justify-content-between pb-2">
             <div class="btn-group" role="group">
-                <button type="button" class="btn btn-info btn-sm" ng-click="state = 'cancel'; edit()" ng-show="state === 'edit'">
+                <button type="button" class="btn btn-secondary btn-sm" ng-click="state = 'cancel'; edit()" ng-show="state === 'edit'">
                     <i class="fa fa-pencil-square fa-fw" aria-hidden="true"></i>
                 </button>
-                <button type="button" class="btn btn-danger btn-sm" ng-click="state = 'edit'; cancel()" ng-show="state === 'cancel'">
+                <button type="button" class="btn btn-secondary btn-sm" ng-click="state = 'edit'; cancel()" ng-show="state === 'cancel'">
                     <i class="fa fa-times fa-fw" aria-hidden="true"></i>
                 </button>
                 <button
@@ -20,7 +20,7 @@
                 </button>
                 <button
                     type="button"
-                    class="btn btn-success btn-sm"
+                    class="btn btn-secondary btn-sm"
                     ng-click="state = 'edit'; save()"
                     ng-disabled="state === 'edit' || question.tags.length === 0 || question.choices.length < 2 || answersEmpty()">
                         <i class="fa fa-check fa-fw" aria-hidden="true"></i>
@@ -30,16 +30,18 @@
                 <button
                     type="button"
                     class="btn btn-success btn-sm"
-                    ng-show="question.html.title != null"
+                    ng-hide="question.html.title === null || state === 'cancel' || question.tags.length === 0 || question.choices.length < 2 || answersEmpty()"
                     ng-click="submit()">Submit
                 </button>
             </div>
         </div>
         <div ng-editor="question-container" value="question.html" editor="editor">
-            <div data-editable="title" class="pb-4">
+            <div data-editable="title" ng-if="question.html.title !== null" ng-bind-html="question.html.title"></div>
+            <div data-editable="title" ng-if="question.html.title === null" class="pb-4">
                 <h2 class="text-center">Question Title</h2>
             </div>
-            <div data-editable="body">
+            <div data-editable="body" ng-if="question.html.body !== null" ng-bind-html="question.html.body"></div>
+            <div data-editable="body" ng-if="question.html.body === null">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec cursus ac ex eget malesuada. Pellentesque tincidunt nulla dictum
                     nibh porta molestie. Nunc rutrum ultricies venenatis. Sed vulputate placerat elementum. Vivamus commodo sit amet eros nec facilisis.
@@ -55,11 +57,11 @@
             <span class="badge badge-default mr-1 text-uppercase" ng-repeat="tag in question.tags">{{tag.text}}</span>
         </div>
         <div class="pt-4" ng-show="state === 'edit'">
-            <div class="form-check radio radio-success" ng-repeat="choice in question.choices">
-                <input class="form-check-input" type="radio" name="choices" id="{{choice.id}}" value="{{choice.id}}">
-                <label for="{{choice.id}}">
-                    {{choice.text}}
-                </label>
+            <div ng-repeat="choice in question.choices">
+                <div class="pretty smooth circle success">
+                    <input type="radio" name="answers">
+                    <label class="pt-2"><i class="fa fa-check"></i> {{choice.text}}</label>
+                </div>
             </div>
         </div>
         <div class="pt-4" ng-show="state === 'cancel'">
@@ -105,7 +107,7 @@
         </div>
     </div>
     <!-- <pre>
-        {{question | json}}
+        {{selected_question | json}}
     </pre> -->
     <!-- <div class="container-fluid">
         <div ng-bind-html="question.title"></div>

@@ -5,13 +5,13 @@
           <input class="form-control" type="text" placeholder="Search Users" ng-model="searchUsers">
       </div>
     </div>
-    <table ng-table="tableParams" class="table table-bordered table-hover table-sm text-center mb-2">
+    <table ng-table="tableParams" class="table table-hover table-sm text-center mb-2">
         <tr
         ng-repeat="user in $data | filter:searchUsers"
         ng-init="initUser(user, $index)"
         ng-if="user.username != $storage.username"
         ng-class="{ 'table-active': changes[user.username].changed_role ||
-                    changes[user.username].changed_deactivated,
+                    changes[user.username].changed_active,
                     'table-success': changes[user.username].commited === true,
                     'table-error': changes[user.username].error === true}">
             <td title="'Firstname'" sortable="'firstname'" class="align-middle text-capitalize">
@@ -23,7 +23,17 @@
             <td title="'Username'" sortable="'username'" class="align-middle">
                 {{user.username}}
             </td>
-            <td title="'Role'">
+            <td title="'Active'" class="align-items-center">
+                <div class="pretty success smooth m-0">
+                    <input
+                        type="checkbox"
+                        ng-model="changes[user.username].active"
+                        ng-click="changes[user.username].changed_active = !changes[user.username].changed_active;
+                                  changes[user.username].commited = false">
+                        <label class="m-0"><i class="fa fa-check"></i></label>
+                </div>
+            </td>
+            <td title="'Role'" sortable="'role'" class="align-middle">
                 <select
                     class="custom-select form-control form-control-sm text-capitalize"
                     ng-model="changes[user.username].role"
@@ -31,18 +41,6 @@
                               changes[user.username].commited = false"
                     ng-options="role.name as role.name for role in roles">
                 </select>
-            </td>
-            <td class="align-middle">
-                <button
-                    type="button"
-                    class="btn btn-sm"
-                    ng-class="{ 'btn-warning': changes[user.username].deactivated === false,
-                                'btn-success': changes[user.username].deactivated === true }"
-                    ng-click="changes[user.username].deactivated = !changes[user.username].deactivated;
-                              changes[user.username].changed_deactivated = !changes[user.username].changed_deactivated;
-                              changes[user.username].commited = false">
-                    {{changes[user.username].deactivated | activation}}
-                </button>
             </td>
         </tr>
     </table>
@@ -56,9 +54,3 @@
         </button>
     </div>
 </div>
-
-<script>
-$(function () {
-    $('[data-toggle="tooltip"]').tooltip();
-});
-</script>

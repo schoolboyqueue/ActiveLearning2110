@@ -19,14 +19,14 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
 
     var baseREST = Restangular.all("api_v2");
 
-    Restangular.setErrorInterceptor(function(response, deferred, responseHandler) {
-        console.log(response);
-        if (response.status === 401) {
-            service.Logout();
-            return false; // error handled
-        }
-        return true; // error not handled
-    });
+    // Restangular.setErrorInterceptor(function(response, deferred, responseHandler) {
+    //     console.log(response);
+    //     if (response.status === 401) {
+    //         service.Logout();
+    //         return false; // error handled
+    //     }
+    //     return true; // error not handled
+    // });
 
     service.LoggedIn = function() {
         if ($localStorage.jwt_token && !jwtHelper.isTokenExpired($localStorage.jwt_token) && $localStorage.LoggedIn) {
@@ -438,6 +438,29 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
                 var retInfo = genRetInfo(response);
                 retInfo.questions = response.questions;
                 callback(retInfo);
+            },
+            function(response) {
+                callback(genRetInfo(response));
+            }
+        );
+    };
+
+    service.UpdateQuestion = function(info, callback) {
+        baseREST.one("question", info.question_id).post("", info.question).then(
+            function(response) {
+                callback(genRetInfo(response));
+            },
+            function(response) {
+                callback(genRetInfo(response));
+            }
+        );
+    };
+
+    service.DeleteQuestion = function(question_id, callback) {
+        baseREST.one("question", question_id).remove().then(
+            function(response) {
+                console.log(response);
+                callback(genRetInfo(response));
             },
             function(response) {
                 callback(genRetInfo(response));

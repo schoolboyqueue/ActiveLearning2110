@@ -211,6 +211,9 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
         .state('main.instructor_question', {
             url: '/instructor/question',
             templateUrl: 'app-components/dashboard/instructor/question/question.view.html',
+            params: {
+                question: null
+            },
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load('instructor.question');
@@ -290,7 +293,7 @@ app.run(function($rootScope, ngNotify) {
     });
 
     ngNotify.config({
-        theme: 'pastel',
+        theme: 'pure',
         position: 'bottom',
         duration: 3000,
         type: 'info',
