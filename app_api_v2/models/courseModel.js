@@ -36,7 +36,7 @@ var lecture_snapshot = {
     "_id": false
 };
 
-var StudentSchema = new Schema({
+var student_snapshot = {
     student_id: {
         type: String,
         required: true
@@ -62,26 +62,24 @@ var StudentSchema = new Schema({
         type: Number,
         default: 0
     },
-    join_date: {
-        type: Date,
-        default: Date.now
-    },
     "_id": false
-});
+};
 
-var SectionSchema = new Schema({
+var section_snapshot = {
     name: {
         type: String
+    },
+    _id: {
+        type: String,
+        required: true
     },
     section_key: {
         type: String,
         required: true,
         unique: true
     },
-    students: [
-        StudentSchema
-    ]
-});
+    students: [student_snapshot]
+};
 
 var CourseSchema = new Schema({
     title: {
@@ -126,9 +124,6 @@ var CourseSchema = new Schema({
             required: true
         }
     },
-    sections: [
-        SectionSchema
-    ],
     createdAt: {
         type: Date,
         default: Date.now
@@ -138,6 +133,7 @@ var CourseSchema = new Schema({
         required: true,
         unique: true
     },
+    sections: [section_snapshot],
     lectures: [lecture_snapshot]
 });
 
