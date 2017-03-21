@@ -23,17 +23,17 @@
             <td title="'Username'" sortable="'username'" class="align-middle">
                 {{user.username}}
             </td>
-            <td title="'Active'" sortable="'active'" class="align-middle">
-                <div class="pretty success smooth pt-2">
+            <td title="'Active'" class="align-items-center">
+                <div class="pretty success smooth m-0">
                     <input
                         type="checkbox"
                         ng-model="changes[user.username].active"
                         ng-click="changes[user.username].changed_active = !changes[user.username].changed_active;
                                   changes[user.username].commited = false">
-                        <label><i class="fa fa-check"></i></label>
+                        <label class="m-0"><i class="fa fa-check"></i></label>
                 </div>
             </td>
-            <td title="'Role'" class="align-middle">
+            <td title="'Role'" sortable="'role'" class="align-middle">
                 <select
                     class="custom-select form-control form-control-sm text-capitalize"
                     ng-model="changes[user.username].role"
