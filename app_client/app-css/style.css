@@ -88,7 +88,7 @@ a:hover {
 
 .table-hover tbody tr:hover {
     background-color: rgba(71, 109, 235, 0.05);
-    border-left: 3px solid #476DEB;
+    border-left: 0.1875rem solid #476DEB;
 }
 
 .table-hover .table-active:hover {
@@ -100,11 +100,11 @@ a:hover {
 }
 
 .table-hover .table-success:hover {
-    border-left: 3px solid #5cb85c;
+    border-left: 0.1875rem solid #5cb85c;
 }
 
 .table-hover .table-danger:hover {
-    border-left: 3px solid #d9534f;
+    border-left: 0.1875rem solid #d9534f;
 }
 
 .add-card {
@@ -161,7 +161,7 @@ a:hover {
 
 .sidebar {
     background-color: #F7F8FA;
-    border-right: 1px solid #DDDEDE;
+    border-right: 0.125rem solid #DDDEDE;
 }
 
 .navbar {
@@ -359,14 +359,14 @@ button.close {
 
 .card {
     background-color: #fff;
-    border: 2px solid rgba(0, 0, 0, 0.075);
+    border: 0.125rem solid rgba(0, 0, 0, 0.075);
     border-radius: 0.25rem;
     width: 25rem;
     transition: border-color .3s ease-in-out;
 }
 
 .card:hover {
-    border: 2px solid rgba(71, 109, 235, 0.4);
+    border: 0.125rem solid rgba(71, 109, 235, 0.4);
 }
 
 .btn-card {
