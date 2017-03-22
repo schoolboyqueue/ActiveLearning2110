@@ -133,7 +133,6 @@ var CourseSchema = new Schema({
         required: true,
         unique: true
     },
-    sections: [section_snapshot],
     lectures: [lecture_snapshot]
 });
 
