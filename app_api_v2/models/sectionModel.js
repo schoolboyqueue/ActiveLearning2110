@@ -52,7 +52,7 @@ var SectionSchema = new Schema({
         required: true,
     },
     course_id: {
-        type: String,
+        type: Schema.Types.ObjectId,
         required: true
     },
     section_key: {
