@@ -183,11 +183,11 @@ app.directive('ngConfirmClick', [
 app.filter('gradecolor', function() {
     return function(str) {
         if (str < 50) {
-            return "#ff6384";
+            return "#EF4723";
         } else if (str < 70) {
-            return "#FFFFBA";
+            return "#FF851B";
         } else {
-            return "#45b7cd";
+            return "#3083FF";
         }
     };
 });
