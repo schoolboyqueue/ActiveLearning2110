@@ -80,17 +80,31 @@ a:hover {
     color: black;
 }
 
+.table-active,
+.table-active > th,
+.table-active > td {
+  background-color: rgba(71, 109, 235, 0.1);
+}
+
 .table-hover tbody tr:hover {
-  background-color: rgba(0, 0, 0, 0.035);
+    background-color: rgba(71, 109, 235, 0.05);
+    border-left: 3px solid #476DEB;
 }
 
 .table-hover .table-active:hover {
-  background-color: rgba(0, 0, 0, 0.035);
+    background-color: rgba(71, 109, 235, 0.1);
 }
 
-.table-hover .table-active:hover > td,
-.table-hover .table-active:hover > th {
-  background-color: rgba(0, 0, 0, 0.035);
+.table-hover .table-active:hover>td, .table-hover .table-active:hover>th {
+    background-color: rgba(71, 109, 235, 0.1);
+}
+
+.table-hover .table-success:hover {
+    border-left: 3px solid #5cb85c;
+}
+
+.table-hover .table-danger:hover {
+    border-left: 3px solid #d9534f;
 }
 
 .add-card {
@@ -216,9 +230,9 @@ a:hover {
 }
 
 .sidebar-nav li a:hover {
-    background: #EFEFEF;
+    background: #DDE6EF;
     text-decoration: none;
-    border-left: 0.3125rem solid #333333;
+    border-left: 0.3125rem solid #476DEB;
     transition: border-color .5s ease-in-out;
 }
 
@@ -238,7 +252,7 @@ a:hover {
     text-transform: none;
     font-size: 1.125rem;
     font-weight: 700;
-    background: #EFEFEF;
+    background: #DDE6EF;
 }
 
 .sidebar-nav>.sidebar-brand a:hover {
@@ -246,7 +260,7 @@ a:hover {
 }
 
 .sidebar-nav li>.classList {
-    background: #EFEFEF;
+    background: #DDE6EF;
     text-decoration: none;
 }
 
@@ -345,19 +359,32 @@ button.close {
 
 .card {
     background-color: #fff;
-    border: 0.0625rem solid rgba(0, 0, 0, 0.075);
+    border: 2px solid rgba(0, 0, 0, 0.075);
     border-radius: 0.25rem;
     width: 25rem;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    transition: border-color .3s ease-in-out;
 }
 
 .card:hover {
-    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+    border: 2px solid rgba(71, 109, 235, 0.4);
+}
+
+.btn-card {
+    color: white;
+    border-radius: 0;
+    border: 0;
+    background-color: rgba(71, 109, 235, 0.4);
+    transition: background-color .2s ease-in-out;
+
+}
+
+.btn-card:hover {
+    color: white;
+    background-color: rgba(71, 109, 235, 0.7);
 }
 
 .card-header {
-    background-color: #ECF0F1;
+    background-color: white;
     border-bottom: 0rem;
     font-size: 1.125rem;
     margin: 0;
@@ -365,7 +392,7 @@ button.close {
 }
 
 .card-footer {
-    background-color: #fff;
+    background-color: #DDE6EF;
     border-top: 0rem;
     font-size: 0.875rem;
     padding: 0.75rem 1.25rem;
@@ -379,15 +406,6 @@ button.close {
 .border-right {
     border-right: 0.0625rem solid #ddd;
     height: 7.5rem;
-}
-
-.sidebar-divider {
-    display: block;
-    height: 0.0625rem;
-    border: 0;
-    border-top: 0.1875rem solid #2D3646;
-    margin: 1em 0;
-    padding: 0;
 }
 
 .divide-header {
@@ -444,28 +462,6 @@ button.close {
     width: 12.5rem !important;
 }
 
-.card {
-    background-color: #fff;
-    border: 0.0625rem solid rgba(0, 0, 0, 0.075);
-    border-radius: 0.25rem;
-    width: 25rem;
-}
-
-.card-header {
-    background-color: #ECF0F1;
-    border-bottom: 0rem;
-    font-size: 1.125rem;
-    margin: 0;
-    padding: 0.75rem 1.25rem;
-}
-
-.card-footer {
-    background-color: #fff;
-    border-top: 0rem;
-    font-size: 0.875rem;
-    padding: 0.75rem 1.25rem;
-}
-
 .answer {
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
@@ -477,9 +473,6 @@ button.close {
 }
 
 .answer:hover {
-    -moz-transition: all 0.5s ease;
-    -o-transition: all 0.5s ease;
-    -webkit-transition: all 0.5s ease;
     border: 0.125rem dashed #45b7cd;
     color: rgba(0, 0, 0, 0.500);
 }
@@ -495,15 +488,6 @@ button.close {
     margin-left: auto;
     margin-right: auto;
     max-width: 100%;
-}
-
-.table-bordered {
-    border: 0.0625rem solid rgba(0, 0, 0, 0.100) !important;
-    border-radius: 1.5625rem;
-}
-
-.table-bordered th, .table-bordered td {
-    border: 0.0625rem solid rgba(0, 0, 0, 0.100) !important;
 }
 
 .select-inline {
