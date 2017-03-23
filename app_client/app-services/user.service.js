@@ -187,7 +187,7 @@ app.filter('gradecolor', function() {
         } else if (str < 70) {
             return "#FF851B";
         } else {
-            return "#3083FF";
+            return "#2D76E8";
         }
     };
 });
