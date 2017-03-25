@@ -195,11 +195,11 @@ app.directive('ngEditor', function() {
         });
 
 
-        dialog.addEventListener('imageuploader.rotateCCW', function() {
+        dialog.addEventListener('imageuploader.rotateccw', function() {
             rotateImage(-1);
         });
 
-        dialog.addEventListener('imageuploader.rotateCW', function() {
+        dialog.addEventListener('imageuploader.rotatecw', function() {
             rotateImage(1);
         });
 
