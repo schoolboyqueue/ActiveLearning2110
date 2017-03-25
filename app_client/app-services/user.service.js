@@ -139,14 +139,14 @@ app.directive("fileread", [function() {
 app.directive('ngEditor', function() {
 
     function base64ImageUploader(dialog) {
-        var reader, image_url, img;
+        var reader, image_url, img, width, height;
         var canvas = document.createElement("canvas");
         var canvas_context = canvas.getContext('2d');
 
 
         function rotateImage(direction) {
-            canvas.width = img.height;
-            canvas.height = img.width;
+            canvas.width = height;
+            canvas.height = width;
             canvas_context.rotate(direction * Math.PI / 2);
             if (direction > 0) {
                 canvas_context.translate(0, -canvas.height);
@@ -161,14 +161,18 @@ app.directive('ngEditor', function() {
             image_url = data_url;
             img = new Image();
             img.src = image_url;
-            img.alt = file_name;
-            dialog.populate(image_url, [img.width, img.height]);
+            img.onload = function() {
+                img.alt = file_name;
+                width = this.width;
+                height = this.height;
+                dialog.populate(image_url, [width, height]);
+            };
         }
 
         function cropImage(crop_region) {
-            canvas.width = img.width * crop_region[2];
-            canvas.height = img.height * crop_region[3];
-            canvas_context.translate(-img.width * crop_region[0], -img.height * crop_region[1]);
+            canvas.width = width * crop_region[2];
+            canvas.height = height * crop_region[3];
+            canvas_context.translate(-width * crop_region[0], -height * crop_region[1]);
             canvas_context.drawImage(img, 0, 0);
             setImageFromDataURL(canvas.toDataURL("image/png"), img.alt);
         }
@@ -178,7 +182,6 @@ app.directive('ngEditor', function() {
         });
 
         dialog.addEventListener('imageuploader.clear', function() {
-            // Clear the current image
             dialog.clear();
             img = null;
         });
@@ -208,9 +211,9 @@ app.directive('ngEditor', function() {
                 cropImage(dialog.cropRegion());
             }
             dialog.save(
-                image_url, [img.width, img.height], {
+                image_url, [width, height], {
                     'alt': img.alt,
-                    'data-ce-max-width': img.width
+                    'data-ce-max-width': width
                 }
             );
         });

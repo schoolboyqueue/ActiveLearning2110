@@ -39,6 +39,17 @@ var app = angular
 
 app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLoadProvider, tooltipsConfProvider, cfpLoadingBarProvider) {
 
+    ContentTools.StylePalette.add([
+        new ContentTools.Style('Muted', 'text-muted', ['p', 'h1', 'h2']),
+        new ContentTools.Style('Lead', 'lead', ['p']),
+        new ContentTools.Style('Fluid', 'img-fluid', ['img']),
+        new ContentTools.Style('Thumbnail', 'img-thumbnail', ['img']),
+        new ContentTools.Style('Rounded', 'rounded', ['img']),
+        new ContentTools.Style('Left', 'float-left', ['img']),
+        new ContentTools.Style('Right', 'float-right', ['img']),
+        new ContentTools.Style('Center', 'mx-auto d-block', ['img'])
+    ]);
+
     cfpLoadingBarProvider.includeSpinner = false;
 
     tooltipsConfProvider.configure({
