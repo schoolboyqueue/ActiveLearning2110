@@ -26,7 +26,7 @@ var lectureController = require('./../controllers/lectureController');
 var signupController = require('./../controllers/signupController');
 
 /**
-INSTRUCTOR CREATE COURSE
+Create Course
 
 POST	/api_v2/course
 
@@ -58,13 +58,12 @@ courseRouter.route('/')
         inputController.requireCourseTitle,
         inputController.requireCourseSchedule,
         inputController.requireSections,
-        courseController.createCourse,
-        courseController.getUserCourses);
+        courseController.savedCourseToDB);
 
 /**
-STUDENT JOIN COURSE
+Student join course
 
-POST	se
+POST	/api_v2/course/students
 
 Authentication:   user token
 Authorization:    student
@@ -80,12 +79,11 @@ courseRouter.route('/students')
     .post(tokenController.validateToken,
         tokenController.refreshToken,
         authorizeController.student,
-        userController.setUserName,
         courseController.joinCourse,
         courseController.getUserCourses);
 
 /**
-INSTRUCTOR ADD STUDENTS
+Add student to course
 
 POST  /api_v2/course/{course_id}/sections/{section_id}/students/
 
@@ -108,12 +106,10 @@ courseRouter.route('/:COURSEID/sections/:SECTIONID/students')
         inputController.requireFirstname,
         inputController.requireLastname,
         inputController.requireUsername,
-        userController.isValidStudent,
-        signupController.preRegisterStudent,
         courseController.instructorAddStudent);
 
 /**
-DELETE STUDENT FROM SECTION
+Remove student from course
 
 DELETE	/api_v2/course/{course_id}/sections/{section_id}/students/{user_id}/
 
@@ -131,7 +127,7 @@ courseRouter.route('/:COURSEID/sections/:SECTIONID/students/:USERID')
         courseController.deleteStudentFromCourse);
 
 /**
-GET COURSE INFO
+Course info
 
 GET	/api_v2/course/{course_id}/
 
@@ -148,7 +144,7 @@ courseRouter.route('/:COURSEID')
         courseController.getCourse);
 
 /**
-CREATE COURSE LECTURE
+Add course lecture
 
 POST	/api_v2/course/{course_id}/lectures
 
@@ -174,7 +170,7 @@ courseRouter.route('/:COURSEID/lectures')
         lectureController.savedLectureToDB);
 
 /**
-GET COURSE LECTURES
+Get course lectures
 
 GET	/api_v2/course/{course_id}/lectures
 
@@ -192,7 +188,7 @@ courseRouter.route('/:COURSEID/lectures')
         lectureController.getCourseLectures);
 
 /**
-DELETE COURSE LECTURE
+Delete course lecture
 
 DELETE	/api_v2/course/{course_id}/lectures/{lecture_id}/
 

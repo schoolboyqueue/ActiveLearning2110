@@ -9,17 +9,18 @@
     <title>Active Learning 2110</title>
 
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="https://bootswatch.com/4-alpha/flatly/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" />
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
-    <!-- Animate -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css" />
     <!-- Custom CSS -->
     <link rel="stylesheet" href="app-css/ng-tags-input.min.css" />
     <link rel="stylesheet" href="app-css/ng-tags-input.bootstrap.min.css" />
     <link rel="stylesheet" href="app-scripts/content-tools/content-tools.min.css" />
     <link rel="stylesheet" href="app-css/default.css" />
     <link rel="stylesheet" href="app-css/style.css" />
+    <link rel="stylesheet" href="app-css/stars.css" />
+    <!-- Get rid of annoying favico error -->
+    <link rel="shortcut icon" href=" " />
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -32,9 +33,9 @@
 <body>
     <!-- Views -->
     <div class="super-container" ng-controller="Main.Controller">
-        <div class="container-fluid login-back" ng-hide="$storage.LoggedIn"></div>
+        <div class="container-fluid login-back p-0" ng-hide="$storage.LoggedIn" ui-view="splash"></div>
         <div ui-view="navbar"></div>
-        <div id="wrapper" ng-class="{'toggled' : $storage.hideSidebar }">
+        <div id="wrapper" ng-class="{'toggled' : $storage.hideSidebar }" ng-show="$storage.LoggedIn">
             <div ui-view="sidebar"></div>
             <div ui-view="dashboard" style="height: 100%;"></div>
         </div>

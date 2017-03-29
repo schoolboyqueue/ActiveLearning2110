@@ -1,4 +1,4 @@
-<div class="animated fadeIn container-fluid p-2" ng-controller="Instructor.Course.Controller">
+<div class="animated fadeIn container-fluid p-2 animated fadeIn" ng-controller="Instructor.Course.Controller">
     <div class="divide-header pt-3 pb-3 text-uppercase">
         <span>sections</span>
     </div>
@@ -29,7 +29,7 @@
                             <i
                                 class="fa fa-exclamation-circle"
                                 aria-hidden="true"
-                                style="font-size:120px; color: #ff6384;">
+                                style="font-size:120px; color: #FF0D61;">
                             </i>
                         </div>
                         <div ng-show="section.students.length !== 0">
@@ -39,8 +39,10 @@
                                 chart-data="status_data[section.name]"
                                 chart-options="status_options"
                                 chart-labels="chart_options.labels"
+                                chart-colors="chart_options.colors"
                                 height="120"
-                                width="120"></canvas>
+                                width="120">
+                            </canvas>
                         </div>
                         <div class="border-right"></div>
                         <div class="text-center pr-3">
@@ -71,7 +73,7 @@
                                         section: section
                                     }
                                 })">
-                            <button type="button" class="btn btn-primary btn-sm">Manage Students</button>
+                            <button type="button" class="btn btn-card btn-sm">Manage Students</button>
                         </a>
                     </div>
                 </div>
@@ -99,7 +101,7 @@
     <div class="divide-header pt-2 pb-2 text-uppercase">
         <span>lectures</span>
     </div>
-    <table ng-table="tableParams" class="table table-sm table-bordered table-hover text-center">
+    <table ng-table="tableParams" class="table table-sm table-hover text-center">
         <tr ng-repeat="lecture in $data">
             <td class="align-middle text-capitalize" title="'Title'" sortable="'title'">
                 {{lecture.title}}
@@ -113,11 +115,11 @@
             <td class="align-middle" title="'Edit'">
                 <button
                     type="button"
-                    class="btn btn-info btn-sm"
+                    class="btn btn-secondary btn-sm"
                     ui-sref="main.instructor_edit_lecture({
                         selectedCourse: course_index,
                         selectedLecture: $index
-                    })">Edit</button>
+                    })"><i class="fa fa-pencil fa-fw" aria-hidden="true"></i></button>
             </td>
         </tr>
     </table>

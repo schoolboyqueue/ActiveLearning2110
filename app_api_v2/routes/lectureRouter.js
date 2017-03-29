@@ -1,4 +1,5 @@
 /* jshint node: true */
+/* jshint esversion: 6 */
 
 //************************************************************
 //  lectureRouter.js                                        //
@@ -19,6 +20,23 @@ var lectureRouter = express.Router();
 
 var lectureController = require('./../controllers/lectureController');
 var tokenController = require('./../controllers/tokenController');
+
+/**
+Get Lecture Details
+
+GET	/api_v2/lecture/{lecture_id}/
+
+Authentication:   user token
+Authorization:    instructor
+
+Path Parameters:  lecture_id String	required
+Query String:     none
+Request Body: 	  none
+**/
+lectureRouter.route('/:LECTUREID')
+    .get(tokenController.validateToken,
+        tokenController.refreshToken,
+        lectureController.getLecture);
 
 /**
 Add Question
@@ -52,6 +70,7 @@ Authorization:    instructor
 
 Path Parameters:  lecture_id String	required
 Query String:     none
+Request Body: application/json
 {
 	"index"				: Number Required This is the index where you want the question to go
 }
@@ -76,8 +95,8 @@ Request Body: 	  none
 **/
 lectureRouter.route('/:LECTUREID/questions/:QUESTIONID')
     .delete(tokenController.validateToken,
-        tokenController.refreshToken,
-        lectureController.removeQuestion);
+          tokenController.refreshToken,
+          lectureController.removeQuestion);
 
 /**
 Save Question Set
@@ -89,6 +108,7 @@ Authorization:    instructor
 
 Path Parameters:  lecture_id String	required
 Query String:     none
+Request Body: application/json
 {
 	"title"				: String Required
 }

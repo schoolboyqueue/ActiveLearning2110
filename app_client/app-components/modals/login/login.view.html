@@ -4,6 +4,7 @@
             <div class="modal-body">
                 <h2 class="text-center pb-4">
                     <span>{{title}}</span>
+                    <button type="btn float-right" class="close" data-dismiss="modal" ng-show="!register"><i class="fa fa-times" aria-hidden="true"></i></button>
                     <button
                         type="btn float-right"
                         ng-click="toggleRegister()"
@@ -114,7 +115,12 @@
                             ng-required="professor"/>
                     </div>
                     <!-- Error Message -->
-                    <div ng-if="error" class="alert alert-danger text-center animated fadeIn">{{error}}</div>
+                    <div ng-if="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{error}}
+                    </div>
                     <!-- Login/Register Buttons -->
                     <div class="form-group pt-1">
                         <div ng-class="{ 'btn-toolbar justify-content-between': !register,
@@ -131,9 +137,8 @@
                                 </button>
                             </div>
                             <button
-                                class="btn btn-outline-info"
+                                class="btn btn-outline-primary"
                                 ng-hide="register"
-                                class="ng-hide"
                                 ng-click="toggleRegister()">Register
                             </button>
                         </div>

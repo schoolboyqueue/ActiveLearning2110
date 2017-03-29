@@ -1,9 +1,9 @@
-<div class="container-fluid p-2" ng-controller="Student.Dashboard.Controller">
+<div class="container-fluid p-2 animated fadeIn" ng-controller="Student.Dashboard.Controller">
     <div class="d-flex justify-content-end p-2">
         <div class="mr-auto align-self-center">
             <button
                 type="button"
-                class="btn btn-lg btn-outline-success"
+                class="btn btn-lg btn-secondary"
                 tooltips
                 tooltip-template="Join a course"
                 ng-click="joinCourse()">
@@ -28,7 +28,7 @@
         <div class="row">
             <div class="col-12 col-xl-auto pb-2"
                 ng-repeat="course in $storage.courses | filter:searchCourses:strict">
-                <div class="card animated fadeIn">
+                <div class="card animated fadeIn hvr-shadow">
                     <div class="card-header text-uppercase text-center p-2">
                         <b>{{course.title}} - {{course.section}}</b>
                     </div>
@@ -71,8 +71,9 @@
                         </div>
                         <div>
                             <a ui-sref="main.student_course({selectedCourse: $index})">
-                                <button type="button" class="btn btn-success btn-sm">View Course</button>
+                                <button type="button" class="btn btn-card btn-sm">View Course</button>
                             </a>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -19,7 +19,6 @@ var signupRouter = require('./signupRouter');
 var userRouter = require('./userRouter');
 var courseRouter = require('./courseRouter');
 var questionRouter = require('./questionRouter');
-var questionRouter2 = require('./questionRouter2');
 var lectureRouter = require('./lectureRouter');
 
 module.exports = function(api_v2_router) {
@@ -27,7 +26,6 @@ module.exports = function(api_v2_router) {
     api_v2_router.use('/user', userRouter);
     api_v2_router.use('/signup', signupRouter);
     api_v2_router.use('/course', courseRouter);
-    api_v2_router.use('/questions', questionRouter);
-    api_v2_router.use('/questions2', questionRouter2);
+    api_v2_router.use('/question', questionRouter);
     api_v2_router.use('/lecture', lectureRouter);
 };

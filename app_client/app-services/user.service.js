@@ -25,15 +25,12 @@ app.factory('UserService', function($state, $localStorage, $ocLazyLoad, ModalSer
                 templateUrl: '/app-components/modals/login/login.view.html',
                 controller: 'Login.Controller'
             }).then(function(modal) {
-                modal.element.modal({
-                    backdrop: 'static',
-                    keyboard: false
-                });
+                modal.element.modal();
                 modal.close.then(function(result) {
                     if (result) {
-                        $('.modal-backdrop').remove();
                         $state.go('main.' + $localStorage.role);
                     }
+                    $('.modal-backdrop').remove();
                 });
             });
         });
@@ -51,7 +48,7 @@ app.factory('UserService', function($state, $localStorage, $ocLazyLoad, ModalSer
     };
 
     service.ShowJoinCourse = function() {
-        $ocLazyLoad.load('join_course').then(function() {
+        $ocLazyLoad.load('student.join_course').then(function() {
             ModalService.showModal({
                 templateUrl: '/app-components/modals/join_course/join_course.view.html',
                 controller: 'Join.Course.Controller'
@@ -62,7 +59,7 @@ app.factory('UserService', function($state, $localStorage, $ocLazyLoad, ModalSer
     };
 
     service.ShowCreateCourse = function() {
-        $ocLazyLoad.load('create_course').then(function() {
+        $ocLazyLoad.load('instructor.create_course').then(function() {
             ModalService.showModal({
                 templateUrl: '/app-components/modals/create_course/create_course.view.html',
                 controller: 'Create.Course.Controller'
@@ -73,10 +70,27 @@ app.factory('UserService', function($state, $localStorage, $ocLazyLoad, ModalSer
     };
 
     service.ShowCreateLecture = function() {
-        $ocLazyLoad.load('create_lecture').then(function() {
+        $ocLazyLoad.load('instructor.create_lecture').then(function() {
             ModalService.showModal({
                 templateUrl: '/app-components/modals/create_lecture/create_lecture.view.html',
                 controller: 'Create.Lecture.Controller'
+            }).then(function(modal) {
+                modal.element.modal();
+            });
+        });
+    };
+
+    service.ShowQuestionPreview = function(info) {
+        $ocLazyLoad.load('instructor.question_preview').then(function() {
+            ModalService.showModal({
+                templateUrl: '/app-components/modals/question_preview/question_preview.view.html',
+                controller: 'Question.Preview.Controller',
+                inputs: {
+                    title: info.title,
+                    body: info.body,
+                    tags: info.tags,
+                    choices: info.choices
+                }
             }).then(function(modal) {
                 modal.element.modal();
             });
@@ -124,7 +138,89 @@ app.directive("fileread", [function() {
 
 app.directive('ngEditor', function() {
 
+    function base64ImageUploader(dialog) {
+        var reader, image_url, img, width, height;
+        var canvas = document.createElement("canvas");
+        var canvas_context = canvas.getContext('2d');
+
+
+        function rotateImage(direction) {
+            canvas.width = height;
+            canvas.height = width;
+            canvas_context.rotate(direction * Math.PI / 2);
+            if (direction > 0) {
+                canvas_context.translate(0, -canvas.height);
+            } else {
+                canvas_context.translate(-canvas.width, 0);
+            }
+            canvas_context.drawImage(img, 0, 0);
+            setImageFromDataURL(canvas.toDataURL("image/png"), img.alt);
+        }
+
+        function setImageFromDataURL(data_url, file_name) {
+            image_url = data_url;
+            img = new Image();
+            img.src = image_url;
+            img.onload = function() {
+                img.alt = file_name;
+                width = this.width;
+                height = this.height;
+                dialog.populate(image_url, [width, height]);
+            };
+        }
+
+        function cropImage(crop_region) {
+            canvas.width = width * crop_region[2];
+            canvas.height = height * crop_region[3];
+            canvas_context.translate(-width * crop_region[0], -height * crop_region[1]);
+            canvas_context.drawImage(img, 0, 0);
+            setImageFromDataURL(canvas.toDataURL("image/png"), img.alt);
+        }
+
+        dialog.addEventListener('imageuploader.cancelUpload', function() {
+
+        });
+
+        dialog.addEventListener('imageuploader.clear', function() {
+            dialog.clear();
+            img = null;
+        });
+
+        dialog.addEventListener('imageuploader.fileready', function(ev) {
+            var reader = new FileReader();
+            if (ev) {
+                var file = ev.detail().file;
+                reader.readAsDataURL(file);
+                reader.addEventListener('load', function() {
+                    setImageFromDataURL(reader.result, file.name);
+                });
+            }
+        });
+
+
+        dialog.addEventListener('imageuploader.rotateccw', function() {
+            rotateImage(-1);
+        });
+
+        dialog.addEventListener('imageuploader.rotatecw', function() {
+            rotateImage(1);
+        });
+
+        dialog.addEventListener('imageuploader.save', function() {
+            if (dialog.cropRegion()) {
+                cropImage(dialog.cropRegion());
+            }
+            dialog.save(
+                image_url, [width, height], {
+                    'alt': img.alt,
+                    'data-ce-max-width': width
+                }
+            );
+        });
+    }
+
     function link(scope, element, attrs) {
+        ContentTools.IMAGE_UPLOADER = base64ImageUploader;
         scope.editor = new ContentTools.EditorApp.get();
         scope.editor.init('*[data-editable], *[data-fixture]', 'data-editable', null, false);
 
@@ -133,6 +229,9 @@ app.directive('ngEditor', function() {
             var regions = scope.editor.regions();
             for (var postId in regions) {
                 payload[postId] = regions[postId].html();
+                if (postId === 'title') {
+                    payload.titleText = regions[postId]._domElement.innerText.trim();
+                }
             }
             scope.value = payload;
         });
@@ -147,14 +246,29 @@ app.directive('ngEditor', function() {
     };
 });
 
+app.directive('ngConfirmClick', [
+        function() {
+        return {
+            link: function(scope, element, attr) {
+                var msg = attr.ngConfirmClick || "Are you sure?";
+                var clickAction = attr.confirmedClick;
+                element.bind('click', function(event) {
+                    if (window.confirm(msg)) {
+                        scope.$apply(clickAction);
+                    }
+                });
+            }
+        };
+    }]);
+
 app.filter('gradecolor', function() {
     return function(str) {
         if (str < 50) {
-            return "#ff6384";
+            return "#EF4723";
         } else if (str < 70) {
-            return "#FFFFBA";
+            return "#FF851B";
         } else {
-            return "#45b7cd";
+            return "#2D76E8";
         }
     };
 });

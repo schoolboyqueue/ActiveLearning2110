@@ -18,6 +18,7 @@ var app = angular
     .module('app', [
         'ui.router',
         'ngStorage',
+        'ngAnimate',
         'angularModalService',
         'angular-jwt',
         'oc.lazyLoad',
@@ -32,17 +33,47 @@ var app = angular
         'ngNotify',
         'ngSanitize',
         'ui.sortable',
-        '720kb.tooltips'
+        '720kb.tooltips',
+        'angular-loading-bar'
     ]);
 
-app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLoadProvider, tooltipsConfProvider) {
+app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLoadProvider, tooltipsConfProvider, cfpLoadingBarProvider) {
 
     ContentTools.StylePalette.add([
-        new ContentTools.Style('Muted', 'text-muted', ['p'])
+        new ContentTools.Style('Muted', 'text-muted', ['p', 'h1', 'h2']),
+        new ContentTools.Style('Lead', 'lead', ['p']),
+        new ContentTools.Style('Fluid', 'img-fluid', ['img']),
+        new ContentTools.Style('Thumbnail', 'img-thumbnail', ['img']),
+        new ContentTools.Style('Rounded', 'rounded', ['img']),
+        new ContentTools.Style('Left', 'float-left', ['img']),
+        new ContentTools.Style('Right', 'float-right', ['img']),
+        new ContentTools.Style('Center', 'mx-auto d-block', ['img']),
+        new ContentTools.Style('Small', 'table-sm', ['table']),
+        new ContentTools.Style('Striped', 'table-striped', ['table']),
+        new ContentTools.Style('Wide', 'table', ['table']),
+        new ContentTools.Style('Bordered', 'table-bordered', ['table']),
+        new ContentTools.Style('Hover', 'table-hover', ['table']),
+        new ContentTools.Style('Center', 'text-center', ['table']),
+        new ContentTools.Style('Success', 'table-success', ['tr']),
+        new ContentTools.Style('Info', 'table-info', ['tr']),
+        new ContentTools.Style('Danger', 'table-danger', ['tr']),
+        new ContentTools.Style('Warning', 'table-warning', ['tr']),
+        new ContentTools.Style('Group', 'list-group', ['ul']),
+        new ContentTools.Style('Group Item', 'list-group-item list-group-item-action', ['li']),
+        new ContentTools.Style('Group Item Success', 'list-group-item-success', ['li']),
+        new ContentTools.Style('Group Item Info', 'list-group-item-info', ['li']),
+        new ContentTools.Style('Group Item Danger', 'list-group-item-danger', ['li']),
+        new ContentTools.Style('Group Item Warning', 'list-group-item-warning', ['li']),
+        new ContentTools.Style('No Padding', 'p-0', ['li', 'table', 'img', 'p', 'h1', 'h2']),
+        new ContentTools.Style('1-Padding', 'p-1', ['li', 'table', 'img', 'p', 'h1', 'h2']),
+        new ContentTools.Style('2-Padding', 'p-2', ['li', 'table', 'img', 'p', 'h1', 'h2']),
     ]);
 
+    cfpLoadingBarProvider.includeSpinner = false;
+
     tooltipsConfProvider.configure({
-        'size':'small',
+        'side': 'right',
+        'size': 'small',
         'showTrigger': 'mouseenter',
         'hideTrigger': 'mouseleave'
     });
@@ -78,17 +109,19 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
             name: 'instructor.question',
             files: ['app-components/dashboard/instructor/question/question.controller.js']
         }, {
-            name: 'instructor.edit.lecture',
-            files: ['app-components/dashboard/instructor/lecture/lecture.edit.controller.js']
+            name: 'instructor.edit_lecture',
+            files: ['app-components/dashboard/instructor/lecture/edit_lecture.controller.js']
         }, {
             name: 'student.course',
             files: ['app-components/dashboard/student/course/course.student.controller.js']
         }, {
             name: 'services',
-            files: ['app-services/storage.service.js',
-                    'app-services/user.service.js',
-                    'app-services/rest.service.js',
-                    'app-services/socket.service.js']
+            files: [
+                'app-services/storage.service.js',
+                'app-services/user.service.js',
+                'app-services/rest.service.js',
+                'app-services/socket.service.js'
+            ]
         }, {
             name: 'login',
             files: ['app-components/modals/login/login.controller.js']
@@ -96,14 +129,23 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
             name: 'profile',
             files: ['app-components/modals/profile/profile.controller.js']
         }, {
-            name: 'create_course',
+            name: 'instructor.create_course',
             files: ['app-components/modals/create_course/create_course.controller.js']
         }, {
-            name: 'join_course',
+            name: 'student.join_course',
             files: ['app-components/modals/join_course/join_course.controller.js']
         }, {
-            name: 'create_lecture',
+            name: 'instructor.create_lecture',
             files: ['app-components/modals/create_lecture/create_lecture.controller.js']
+        }, {
+            name: 'instructor.question_preview',
+            files: ['app-components/modals/question_preview/question_preview.controller.js']
+        }, {
+            name: 'instructor.edit_question',
+            files: ['app-components/dashboard/instructor/question/edit_question.controller.js']
+        }, {
+            name: 'splash',
+            files: ['app-components/splash/splash.controller.js']
         }]
     });
 
@@ -117,6 +159,15 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
                 }]
             },
             views: {
+                'splash': {
+                    templateUrl: 'app-components/splash/splash.view.html',
+                    controller: 'Splash.Controller',
+                    resolve: {
+                        loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                            return $ocLazyLoad.load('splash'); // Resolve promise and load before view
+                        }]
+                    }
+                },
                 'navbar': {
                     templateUrl: 'app-components/navbar/navbar.view.html',
                     controller: 'Navbar.Controller',
@@ -190,6 +241,9 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
         .state('main.instructor_question', {
             url: '/instructor/question',
             templateUrl: 'app-components/dashboard/instructor/question/question.view.html',
+            params: {
+                question: null
+            },
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load('instructor.question');
@@ -197,16 +251,26 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
             }
         })
 
+        .state('main.instructor_edit_question', {
+            url: '/instructor/edit_question',
+            templateUrl: 'app-components/dashboard/instructor/question/edit_question.view.html',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load('instructor.edit_question');
+                }]
+            }
+        })
+
         .state('main.instructor_edit_lecture', {
             url: '/instructor/edit_lecture',
-            templateUrl: 'app-components/dashboard/instructor/lecture/lecture.edit.view.html',
+            templateUrl: 'app-components/dashboard/instructor/lecture/edit_lecture.view.html',
             params: {
                 selectedCourse: null,
                 selectedLecture: null
             },
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
-                    return $ocLazyLoad.load('instructor.edit.lecture');
+                    return $ocLazyLoad.load('instructor.edit_lecture');
                 }]
             }
         })
@@ -251,14 +315,14 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
 });
 
 app.run(function($rootScope, ngNotify) {
-    $rootScope.$on('$stateChangeSuccess',function(){
+    $rootScope.$on('$stateChangeSuccess', function() {
         $("html, body").animate({
             scrollTop: 0
         }, 200);
     });
 
     ngNotify.config({
-        theme: 'pastel',
+        theme: 'pure',
         position: 'bottom',
         duration: 3000,
         type: 'info',
@@ -282,9 +346,9 @@ app.controller('Main.Controller', function($scope, $state, $localStorage, $injec
         var UserService = $injector.get('UserService');
 
 
-        if (!UserStorage.LoggedIn()) {
+        if (!RESTService.LoggedIn()) {
             RESTService.Logout();
-            UserService.ShowLogin();
+            $state.go('main');
         } else {
             $state.go('main.' + $localStorage.role);
         }

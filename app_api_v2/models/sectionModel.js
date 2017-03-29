@@ -1,15 +1,15 @@
 /* jshint node: true */
 
 //************************************************************
-//  userModel.js                                            //
+//  sectionModel.js                                         //
 //  Active Learning 2110                                    //
 //                                                          //
-//  Created by Odell Mizrahi on 9/18/16.                    //
-//  Copyright © 2016 Odell Mizrahi. All rights reserved.    //
+//  Created by Odell Mizrahi on 03/18/2017.                 //
+//  Copyright © 2017 Odell Mizrahi. All rights reserved.    //
 //                                                          //
 //  Date        Name        Description                     //
 //  -------     ---------   --------------                  //
-//  18Sep16     O. Mizrahi  Initial Design                  //
+//  03/18/17    O. Miz      Initial Design                  //
 //                                                          //
 //************************************************************
 "use strict";
@@ -17,14 +17,11 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var admin = {
-    user_id: {
+var student_snapshot = {
+    student_id: {
         type: String,
         required: true
-    }
-};
-
-var user = {
+    },
     username: {
         type: String,
         required: true
@@ -36,34 +33,34 @@ var user = {
     lastname: {
         type: String,
         required: true
-    }
+    },
+    status: {
+        type: String,
+        enum: ['pending', 'complete'],
+        default: 'pending'
+    },
+    average: {
+        type: Number,
+        default: 0
+    },
+    "_id": false
 };
 
-var RegistrationKeySchema = new Schema({
-    role: {
+var SectionSchema = new Schema({
+    name: {
         type: String,
-        enum: ['instructor', 'admin'],
+        required: true,
+    },
+    course_id: {
+        type: Schema.Types.ObjectId,
         required: true
     },
-    createdAt: {
-        type: Date,
-        default: Date.now
-    },
-    admin_creator: {
-        type: admin
-    },
-    user: {
-        type: user
-    },
-    key: {
+    section_key: {
         type: String,
         required: true,
         unique: true
     },
-    validated: {
-        type: Boolean,
-        default: false
-    }
+    students: [student_snapshot]
 });
 
-module.exports = mongoose.model('RegisterKey', RegistrationKeySchema);
+module.exports = mongoose.model('Section', SectionSchema);

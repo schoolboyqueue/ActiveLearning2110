@@ -27,6 +27,15 @@ var question_snapshot = {
         type: String,
         required: true
     },
+    tags: {
+        type: [String],
+        required: true,
+        lowercase: true
+    },
+    copied: {
+        type: Boolean,
+        required: true
+    },
     "_id": false
 };
 

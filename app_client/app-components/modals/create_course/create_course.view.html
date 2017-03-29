@@ -4,13 +4,13 @@
             <div class="modal-body">
                 <h2 class="text-center pb-4">
                     <span>Create a Course</span>
-                    <button type="btn float-right" class="close" data-dismiss="modal">&times;</button>
+                    <button type="btn float-right" class="close" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i></button>
                 </h2>
                 <!-- Create Course Form -->
                 <form name="createCourseForm">
                     <div class="d-flex justify-content-between mb-2">
                       <select
-                          class="form-control text-capitalize mr-sm-2"
+                          class="form-control custom-select text-capitalize mr-sm-2"
                           ng-model="course.prefix"
                           ng-options="prefix.id as prefix.name for prefix in prefixes" required>
                       </select>
@@ -21,7 +21,7 @@
                           class="form-control mr-sm-2"
                           ng-model="course.number" autofocus required numbers-only/>
                       <select
-                          class="form-control text-capitalize"
+                          class="form-control custom-select text-capitalize"
                           ng-model="course.days"
                           ng-options="day.id as day.name for day in days">
                       </select>
@@ -41,20 +41,24 @@
                           ng-model-options="{ updateOn: 'blur' }" required>
                     </div>
                     <select
-                        class="form-control text-capitalize"
+                        class="form-control custom-select text-capitalize"
                         ng-model="course.semester_pre"
                         ng-options="semeseter_prefixes.id as semeseter_prefixes.name for semeseter_prefixes in semeseter_pre" required>
                     </select>
-                    <div class="input-group pt-2 pb-2">
-                        <tags-input
-                          class="text-uppercase form-control"
-                          ng-model="course.sections"
-                          min-length="1"
-                          placeholder="Add a section">
-                        </tags-input>
-                    </div>
+                    <tags-input
+                      class="text-uppercase pt-2 pb-2"
+                      ng-model="course.sections"
+                      min-length="1"
+                      placeholder="Add a section"
+                      style="width: 100%;">
+                    </tags-input>
                     <!-- Error Message -->
-                    <div ng-if="error" class="alert alert-danger text-center animated fadeIn">{{error}}</div>
+                    <div ng-if="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{error}}
+                    </div>
                     <div class="container-fluid text-center">
                         <button class="btn btn-outline-success" ng-click="create()" ng-disabled="createCourseForm.$invalid || course.sections.length == 0">
                             <span ng-show="loading">

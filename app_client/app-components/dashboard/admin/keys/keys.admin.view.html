@@ -1,11 +1,11 @@
-<div class="container-fluid p-2" ng-controller="Admin.Keys.Controller">
+<div class="container-fluid p-2 animated fadeIn" ng-controller="Admin.Keys.Controller">
     <div class="container-fluid p-0 pb-2">
         <div class="input-group">
             <span class="input-group-btn">
                 <button
                     class="btn btn-secondary"
                     type="button"
-                    ng-click="copySuccess(section.name)"
+                    ng-click="copySuccess()"
                     ngclipboard
                     ng-disabled="generatedKey === null"
                     data-clipboard-text="{{generatedKey}}">
@@ -30,7 +30,7 @@
         </div>
     </div>
 
-    <table ng-table="tableParams" class="table table-bordered table-sm text-center">
+    <table ng-table="tableParams" class="table table-hover table-sm text-center">
         <tr ng-repeat="key in $data">
             <td class="align-middle text-capitalize" title="'First'" sortable="'firstname'">
                 {{key.user.firstname}}
@@ -43,6 +43,9 @@
             </td>
             <td title="'Key'">
                 {{key.key}}
+            </td>
+            <td>
+                <a href="" ngclipboard data-clipboard-text="{{key.key}}" ng-click="copySuccess()"><i class="fa fa-clipboard fa-fw" aria-hidden="true"></i></a>
             </td>
         </tr>
     </table>

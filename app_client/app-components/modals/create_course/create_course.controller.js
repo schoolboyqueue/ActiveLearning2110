@@ -29,6 +29,8 @@ app.controller('Create.Course.Controller', function($scope, $element, $state, RE
         semester_pre: 0
     };
 
+    $scope.preSections = [];
+
     $scope.semeseter_pre = [{
         id: 0,
         name: "SPR"
@@ -76,7 +78,7 @@ app.controller('Create.Course.Controller', function($scope, $element, $state, RE
             });
         }
         var data = {
-            "title": $scope.prefixes[$scope.course.prefix].name + " " + $scope.course.number,
+            "title": $scope.prefixes[$scope.course.prefix].name + "-" + $scope.course.number,
             "sections": sections,
             "course_schedule": {
                 "semester": $scope.semeseter_pre[$scope.course.semester_pre].name,

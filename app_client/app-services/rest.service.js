@@ -13,11 +13,33 @@
 //************************************************************
 var app = angular.module('app');
 
-app.factory('RESTService', function($http, $localStorage, $state, $q, Restangular, UserStorage, UserService, SocketService) {
+app.factory('RESTService', function($http, $localStorage, $state, $q, Restangular, UserStorage, UserService, SocketService, jwtHelper) {
 
     var service = {};
 
     var baseREST = Restangular.all("api_v2");
+
+    // Restangular.setErrorInterceptor(function(response, deferred, responseHandler) {
+    //     console.log(response);
+    //     if (response.status === 401) {
+    //         service.Logout();
+    //         return false; // error handled
+    //     }
+    //     return true; // error not handled
+    // });
+
+    service.LoggedIn = function() {
+        if ($localStorage.jwt_token && !jwtHelper.isTokenExpired($localStorage.jwt_token) && $localStorage.LoggedIn) {
+            $localStorage.LoggedIn = true;
+            Restangular.setDefaultHeaders({
+                token: $localStorage.jwt_token
+            });
+            return true;
+        } else {
+            $localStorage.LoggedIn = false;
+            return false;
+        }
+    };
 
     service.Register = function(info, callback) {
         var signup = null;
@@ -238,14 +260,14 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
     function getAddStudentPromise(info) {
         var deferred = $q.defer();
         baseREST.one("course", info.course_id).one("sections", info.section_id)
-        .customPOST(info.student, "students").then(
-            function(response) {
-                deferred.resolve(response);
-            },
-            function(response) {
-                deferred.resolve(response.data);
-            }
-        );
+            .customPOST(info.student, "students").then(
+                function(response) {
+                    deferred.resolve(response);
+                },
+                function(response) {
+                    deferred.resolve(response.data);
+                }
+            );
         return deferred.promise;
     }
 
@@ -308,10 +330,147 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
             );
     };
 
+    service.CreateQuestion = function(info, callback) {
+        baseREST.one("question").post("", info).then(
+            function(response) {
+                callback(genRetInfo(response));
+            },
+            function(response) {
+                callback(genRetInfo(response));
+            }
+        );
+    };
+
+    service.AddQuestionToLecture = function(info, callback) {
+        baseREST.one("lecture", info.lecture_id).one("questions", info.question_id).post().then(
+            function(response) {
+                UserStorage.UpdateSingleLecture(info.course_id, response.lecture);
+                callback(genRetInfo(response));
+            },
+            function(response) {
+                callback(genRetInfo(response));
+            }
+        );
+    };
+
+    service.RemoveQuestionFromLecture = function(info, callback) {
+        baseREST.one("lecture", info.lecture_id).one("questions", info.question_id).remove().then(
+            function(response) {
+                UserStorage.UpdateSingleLecture(info.course_id, response.lecture);
+                callback(genRetInfo(response));
+            },
+            function(response) {
+                callback(genRetInfo(response));
+            }
+        );
+    };
+
+    service.CreateQuestionSet = function(info, callback) {
+        baseREST.one("lecture", info.lecture_id).one("questionset").post("", {
+            title: info.title
+        }).then(
+            function(response) {
+                callback(genRetInfo(response));
+            },
+            function(response) {
+                callback(genRetInfo(response));
+            }
+        );
+    };
+
+    service.AddQuestionSetToLecture = function(info, callback) {
+        baseREST.one("lecture", info.lecture_id).one("questionset", info.questionset_id).post().then(
+            function(response) {
+                UserStorage.UpdateSingleLecture(info.course_id, response.lecture);
+                callback(genRetInfo(response));
+            },
+            function(response) {
+                callback(genRetInfo(response));
+            }
+        );
+    };
+
+    service.GetLectureInfo = function(info, callback) {
+        baseREST.one("lecture", info.lecture_id).get().then(
+            function(response) {
+                UserStorage.UpdateSingleLecture(info.course_id, response.lecture);
+                callback(genRetInfo(response));
+            },
+            function(response) {
+                callback(genRetInfo(response));
+            }
+        );
+    };
+
+    service.MoveLectureQuestion = function(info, callback) {
+        baseREST.one("lecture", info.lecture_id).one("questions", info.question_id).one("reorder").post("", {
+            index: info.index
+        }).then(
+            function(response) {
+                callback(genRetInfo(response));
+            },
+            function(response) {
+                console.log(response);
+                callback(genRetInfo(response));
+            }
+        );
+    };
+
+    service.GetQuestionDetails = function(question_id, callback) {
+        baseREST.one("question", question_id).get().then(
+            function(response) {
+                var retInfo = genRetInfo(response);
+                retInfo.title = response.question.html_title;
+                retInfo.body = response.question.html_body;
+                retInfo.tags = response.question.tags;
+                retInfo.choices = response.question.answer_choices;
+                callback(retInfo);
+            },
+            function(response) {
+                callback(genRetInfo(response));
+            }
+        );
+    };
+
+    service.GetAllQuestions = function(callback) {
+        baseREST.one("user", $localStorage._id).one("questions").get().then(
+            function(response) {
+                var retInfo = genRetInfo(response);
+                retInfo.questions = response.questions;
+                callback(retInfo);
+            },
+            function(response) {
+                callback(genRetInfo(response));
+            }
+        );
+    };
+
+    service.UpdateQuestion = function(info, callback) {
+        baseREST.one("question", info.question_id).post("", info.question).then(
+            function(response) {
+                callback(genRetInfo(response));
+            },
+            function(response) {
+                callback(genRetInfo(response));
+            }
+        );
+    };
+
+    service.DeleteQuestion = function(question_id, callback) {
+        baseREST.one("question", question_id).remove().then(
+            function(response) {
+                console.log(response);
+                callback(genRetInfo(response));
+            },
+            function(response) {
+                callback(genRetInfo(response));
+            }
+        );
+    };
+
     service.Logout = function() {
-        if (UserStorage.LoggedIn()) {
+        if (service.LoggedIn()) {
             baseREST.one("authenticate").remove();
-            UserService.ShowLogin();
         }
         UserStorage.Clear();
         Restangular.setDefaultHeaders({
@@ -331,6 +490,12 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
                 success: response.data.success
             };
         }
+        Restangular.setDefaultHeaders({
+            token: response.jwt_token
+        });
+        UserStorage.UpdateUserInfo({
+            jwt_token: response.jwt_token
+        });
     }
 
     return service;

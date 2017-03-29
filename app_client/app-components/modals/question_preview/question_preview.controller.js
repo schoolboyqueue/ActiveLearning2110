@@ -1,23 +1,25 @@
 /* jshint node: true */
 
 //************************************************************
-//  lecture.controller.js                                   //
+//  question_preview.controller.js                          //
 //  Active Learning 2110                                    //
 //                                                          //
-//  Created by Jeremy Carter on 02/27/17.                   //
+//  Created by Jeremy Carter on 03/17/17.                   //
 //  Copyright © 2016 Jeremy Carter. All rights reserved.    //
 //                                                          //
 //  Date        Name        Description                     //
 //  -------     ---------   --------------                  //
-//  27Feb17     J. Carter  Initial Design                   //
+//  17Mar17     J. Carter  Initial Design                   //
 //                                                          //
 //************************************************************
 
 var app = angular.module('app');
 
-app.controller('Instructor.Lecture.Edit.Controller', function($scope, $localStorage, $stateParams, $rootScope) {
+app.controller('Question.Preview.Controller', function($scope, $element, title, body, tags, choices) {
 
-    $rootScope.$stateParams = $stateParams;
-    $scope.lecture = $localStorage.courses[$stateParams.selectedCourse].lectures[$stateParams.selectedLecture];
+    $scope.title = title;
+    $scope.body = body;
+    $scope.choices = choices;
+    $scope.tags = tags;
 
 });
