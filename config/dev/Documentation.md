@@ -5,7 +5,7 @@ This is the Active Learning 2110 app API documentation. Our application uses a M
 ## General Information
 Our path always follows
 
-**</api_v2/...>**
+**/api_v2/...**
 
 ## Authentication
 
