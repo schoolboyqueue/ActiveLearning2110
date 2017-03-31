@@ -19,6 +19,7 @@
 
 var app_api_v2 = require('./app_api_v2'),
     app_client = require('./app_client'),
+    app_support = require('./app_support'),
     bodyparser = require('body-parser'),
     cookieParser = require('cookie-parser'),
     express = require('express'),
@@ -58,6 +59,7 @@ app.use(bodyparser.json());
 
 app_client(app);
 app_api_v2(app);
+app_support(app);
 
 /**
 Binds and listens for connections on the specified host and port
