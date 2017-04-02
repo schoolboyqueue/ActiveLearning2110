@@ -47,6 +47,9 @@ io.sockets
         console.log('hello! ' + JSON.stringify(socket.decoded_token));
     });
 
+io.on('test', function(socket) {
+    
+});
 app.use(express.static(path.join(__dirname, '/app_client')));
 
 app.use(bodyparser.urlencoded({

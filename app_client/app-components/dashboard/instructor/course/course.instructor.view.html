@@ -114,12 +114,18 @@
             </td>
             <td class="align-middle" title="'Edit'">
                 <button
+                    ng-show="!joinAvail('{{lecture.schedule.date | date:'MM/dd/yy'}}')"
                     type="button"
                     class="btn btn-secondary btn-sm"
                     ui-sref="main.instructor_edit_lecture({
                         selectedCourse: course_index,
                         selectedLecture: $index
                     })"><i class="fa fa-pencil fa-fw" aria-hidden="true"></i></button>
+                <button
+                    ng-show="joinAvail('{{lecture.schedule.date | date:'MM/dd/yy'}}')"
+                    type="button"
+                    class="btn btn-success btn-sm">
+                        <i class="fa fa-sign-in fa-fw" aria-hidden="true"></i></button>
             </td>
         </tr>
     </table>

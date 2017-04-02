@@ -108,6 +108,12 @@ app.controller('Instructor.Course.Controller', function($scope, $localStorage, $
         $scope.status_data[section.name] = [verified, pending];
     };
 
+    $scope.joinAvail = function(date) {
+        console.log(date);
+        console.log(moment().format("MM/DD/YY"));
+        return date === moment().format("MM/DD/YY") ? true : false;
+    };
+
     var w = angular.element($window);
     $scope.$watch(
         function() {

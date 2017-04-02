@@ -19,6 +19,7 @@ app.factory('SocketService', function() {
     var socket = null;
 
     service.connect = function(token, callback) {
+        console.log(token);
         socket = io();
         socket.on('connect', function() {
                 socket.emit('authenticate', {

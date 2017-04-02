@@ -45,9 +45,9 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
         new ContentTools.Style('Fluid', 'img-fluid', ['img']),
         new ContentTools.Style('Thumbnail', 'img-thumbnail', ['img']),
         new ContentTools.Style('Rounded', 'rounded', ['img']),
-        new ContentTools.Style('Left', 'float-left', ['img']),
-        new ContentTools.Style('Right', 'float-right', ['img']),
-        new ContentTools.Style('Center', 'mx-auto d-block', ['img']),
+        new ContentTools.Style('Left', 'float-left', ['img', 'iframe']),
+        new ContentTools.Style('Right', 'float-right', ['img', 'iframe']),
+        new ContentTools.Style('Center', 'mx-auto d-block', ['img', 'iframe']),
         new ContentTools.Style('Small', 'table-sm', ['table']),
         new ContentTools.Style('Striped', 'table-striped', ['table']),
         new ContentTools.Style('Wide', 'table', ['table']),
@@ -311,7 +311,8 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
                     return $ocLazyLoad.load('admin.keys'); // Resolve promise and load before view
                 }]
             }
-        });
+        }
+    );
 });
 
 app.run(function($rootScope, ngNotify) {
