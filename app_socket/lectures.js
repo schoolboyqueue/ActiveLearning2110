@@ -49,7 +49,7 @@ exports = module.exports = function (io, lectures_list) {
             socket.user_id = data.user_id;
             socket.role = data.user_role;
             socket.join(data.lecture_id);
-            updateUserList(data.lecture_id);
+            updateUserList(data.lecture_id, true);
         });
 
         socket.on('newQuestion', function(data){
