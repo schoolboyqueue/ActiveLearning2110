@@ -58,7 +58,11 @@ exports = module.exports = function (io, lectures_list) {
 
         function updateUserList(lecture_id){
             var getUsers = io.of('/live_lecture').clients(lecture_id);
-            socket.to(lecture_id).emit('updatedUsersList', JSON.stringify(getUsers));
+            var users = [];
+            for (var i = 0; i < getUsers.length; i++) {
+                users.push({user: getUsers[i].username, user_id: getUsers[i].user_id, role: getUsers[i].role});
+            }
+            socket.to(lecture_id).emit('updatedUsersList', JSON.stringify(users));
         }
     });
 };
