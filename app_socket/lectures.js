@@ -22,7 +22,7 @@ var socketioJwt = require('socketio-jwt'),
 exports = module.exports = function (io, lectures_list) {
     var lectures = io.of('/lectures_list').on('connection', function(socket){
         console.log('socketio lectures');
-        socket.emit('updated_lectures', JSON.stringify(lectures_list));
+        socket.emit('lectures_update', JSON.stringify(lectures_list));
 
         socket.on('start_lecture', function(data){
             lectures_list.push(data);
@@ -31,6 +31,11 @@ exports = module.exports = function (io, lectures_list) {
         });
 
         socket.on('end_lecture', function(data){
+            for (var i = 0; i < lectures_list.length; i++) {
+                if (lectures_list[i].lecture_id === data.lecture_id) {
+                    lectures_list.splice(i, 1);
+                }
+            }
             socket.broadcast.emit('lectures_update', JSON.stringify(lectures_list));
             socket.emit('lectures_update', JSON.stringify(lectures_list));
         });
