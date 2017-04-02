@@ -44,6 +44,15 @@ exports = module.exports = function (io, lectures_list) {
     var live_lecture = io.of('/live_lecture').on('connection', function(socket){
         console.log('socketio live_lecture');
 
+        function updateUserList(lecture_id){
+            var getUsers = io.of('/live_lecture').clients(lecture_id);
+            var users = [];
+            for (var i = 0; i < getUsers.length; i++) {
+                users.push({user: getUsers[i].username, user_id: getUsers[i].user_id, role: getUsers[i].role});
+            }
+            socket.to(lecture_id).emit('updatedUsersList', JSON.stringify(users));
+        }
+
         socket.on('join_lecture', function(data){
             socket.username = data.username;
             socket.user_id = data.user_id;
@@ -56,13 +65,8 @@ exports = module.exports = function (io, lectures_list) {
             socket.broadcast.to(data.lecture_id).emit('questionFeed', JSON.stringify(data));
         });
 
-        function updateUserList(lecture_id){
-            var getUsers = io.of('/live_lecture').clients(lecture_id);
-            var users = [];
-            for (var i = 0; i < getUsers.length; i++) {
-                users.push({user: getUsers[i].username, user_id: getUsers[i].user_id, role: getUsers[i].role});
-            }
-            socket.to(lecture_id).emit('updatedUsersList', JSON.stringify(users));
-        }
+        socket.on('updateUserList', function(data){
+            updateUserList(data.lecture_id);
+        });
     });
 };
