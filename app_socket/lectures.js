@@ -49,10 +49,16 @@ exports = module.exports = function (io, lectures_list) {
             socket.user_id = data.user_id;
             socket.role = data.user_role;
             socket.join(data.lecture_id);
+            updateUserList(data.lecture_id);
         });
 
         socket.on('newQuestion', function(data){
             socket.broadcast.to(data.lecture_id).emit('questionFeed', JSON.stringify(data));
         });
+
+        function updateUserList(lecture_id){
+            var getUsers = io.of('/live_lecture').clients(lecture_id);
+            socket.to(lecture_id).emit('updatedUsersList', JSON.stringify(getUsers));
+        }
     });
 };
