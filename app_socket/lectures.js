@@ -22,23 +22,23 @@ var socketioJwt = require('socketio-jwt'),
 
 exports = module.exports = function (io, lectures_list) {
     var lectures = io.of('/lectures_list').on('connection', function(socket){
-        console.log('socketio lectures');
+        console.log('/lectures_list');
         socket.emit('lectures_update', JSON.stringify(lectures_list));
 
-        socket.on('start_lecture', function(data){
-            Lecture.update(data.lecture_id, {$set: { live: true }})
+        socket.on('start_lecture', function(lecture_id){
+            Lecture.update(lecture_id, {$set: { live: true }})
             .then(function(r){
-                lectures_list.push(data);
+                lectures_list.push(lecture_id);
                 socket.broadcast.emit('lectures_update', JSON.stringify(lectures_list));
                 socket.emit('lectures_update', JSON.stringify(lectures_list));
             });
         });
 
-        socket.on('end_lecture', function(data){
-            Lecture.update(data.lecture_id, {$set: { live: false }})
+        socket.on('end_lecture', function(lecture_id){
+            Lecture.update(lecture_id, {$set: { live: false }})
             .then(function(r){
                 for (var i = 0; i < lectures_list.length; i++) {
-                    if (lectures_list[i].lecture_id === data.lecture_id) {
+                    if (lectures_list[i] === lecture_id) {
                         lectures_list.splice(i, 1);
                     }
                 }
@@ -49,7 +49,7 @@ exports = module.exports = function (io, lectures_list) {
     });
 
     var live_lecture = io.of('/live_lecture').on('connection', function(socket){
-        console.log('socketio live_lecture');
+        console.log('/live_lecture');
 
         socket.on('join_lecture', function(data){
             socket.username = data.username;
