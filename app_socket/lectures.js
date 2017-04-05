@@ -49,16 +49,28 @@ exports = module.exports = function (io, lectures_list) {
             socket.user_id = data.user_id;
             socket.role = data.user_role;
             socket.join(data.lecture_id);
-            updateUserList(data.lecture_id);
+            updateUserList(data.lecture_id, true);
         });
 
         socket.on('newQuestion', function(data){
             socket.broadcast.to(data.lecture_id).emit('questionFeed', JSON.stringify(data));
         });
 
-        function updateUserList(lecture_id){
+        function updateUserList(lecture_id, broadcastToAll){
             var getUsers = io.of('/live_lecture').clients(lecture_id);
-            socket.to(lecture_id).emit('updatedUsersList', JSON.stringify(getUsers));
+            var users = [];
+            for (var i = 0; i < getUsers.length; i++) {
+                users.push({user: getUsers[i].username, user_id: getUsers[i].user_id, role: getUsers[i].role});
+            }
+            socket.to(lecture_id).emit('updatedUsersList', JSON.stringify(users));
+
+            if (broadcastToAll) {
+                socket.broadcast.to(lecture_id).emit('updatedUsersList', JSON.stringify(users));
+            }
         }
+
+        socket.on('updateUserList', function(data){
+            updateUserList(data.lecture_id);
+        });
     });
 };
