@@ -16,7 +16,8 @@
 "use strict";
 
 var socketioJwt = require('socketio-jwt'),
-    config = require('./../config');
+    config = require('./../config'),
+    Lecture = require('./../app_api_v2/models/lectureModel');
 
 
 exports = module.exports = function (io, lectures_list) {
@@ -25,19 +26,25 @@ exports = module.exports = function (io, lectures_list) {
         socket.emit('lectures_update', JSON.stringify(lectures_list));
 
         socket.on('start_lecture', function(data){
-            lectures_list.push(data);
-            socket.broadcast.emit('lectures_update', JSON.stringify(lectures_list));
-            socket.emit('lectures_update', JSON.stringify(lectures_list));
+            Lecture.update(data.lecture_id, {$set: { live: true }})
+            .then(function(r){
+                lectures_list.push(data);
+                socket.broadcast.emit('lectures_update', JSON.stringify(lectures_list));
+                socket.emit('lectures_update', JSON.stringify(lectures_list));
+            });
         });
 
         socket.on('end_lecture', function(data){
-            for (var i = 0; i < lectures_list.length; i++) {
-                if (lectures_list[i].lecture_id === data.lecture_id) {
-                    lectures_list.splice(i, 1);
+            Lecture.update(data.lecture_id, {$set: { live: false }})
+            .then(function(r){
+                for (var i = 0; i < lectures_list.length; i++) {
+                    if (lectures_list[i].lecture_id === data.lecture_id) {
+                        lectures_list.splice(i, 1);
+                    }
                 }
-            }
-            socket.broadcast.emit('lectures_update', JSON.stringify(lectures_list));
-            socket.emit('lectures_update', JSON.stringify(lectures_list));
+                socket.broadcast.emit('lectures_update', JSON.stringify(lectures_list));
+                socket.emit('lectures_update', JSON.stringify(lectures_list));
+            });
         });
     });
 
