@@ -19,7 +19,6 @@ app.factory('SocketService', function(UserStorage) {
     var lectureList_Socket = null;
 
     service.connectLectures = function() {
-        localStorage.debug = 'socket.io-client:socket';
         lectureList_Socket = io('http://localhost:8081/lectures_list');
         lectureList_Socket.on('connect', function() {
             console.log('lecture socket connected');
