@@ -21,10 +21,21 @@ app.controller('Course.Student.Controller', function($scope, $localStorage, $roo
     $scope.course = $localStorage.courses[$stateParams.selectedCourse];
 
     $rootScope.$on('coursesUpdated', function() {
-        $scope.course = $localStorage.courses[$stateParams.selectedCourse];
-        $scope.tableParams.settings().dataset = $scope.course.lectures;
-        $scope.tableParams.reload();
+        if ($stateParams.selectedCourse !== null) {
+            $scope.course = $localStorage.courses[$stateParams.selectedCourse];
+            $scope.tableParams.settings().dataset = $scope.course.lectures;
+            $scope.tableParams.reload();
+        }
     });
+
+    $scope.joinLiveLecture = function(lecture) {
+        SocketService.JoinLiveLecture({
+            username: $localStorage.username,
+            user_id: $localStorage._id,
+            user_role: $localStorage.role,
+            lecture_id: lecture.lecture_id
+        });
+    };
 
     $scope.tableParams = new NgTableParams({
         count: 6,

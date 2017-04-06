@@ -58,36 +58,27 @@ exports = module.exports = function (io, lectures_list) {
         });
     });
 
-    var live_lecture = io.of('/live_lecture').on('connection', function(socket){
+    var live_lecture = io.of('/live_lecture').on('connection', function(socket) {
         console.log('Connection made to /live_lecture');
 
         socket.on('join_lecture', function(data){
+            console.log('join_lecture: ' +  JSON.stringify(data));
             socket.username = data.username;
             socket.user_id = data.user_id;
             socket.role = data.user_role;
+            socket.lecture_id = data.lecture_id;
             socket.join(data.lecture_id);
-            updateUserList(data.lecture_id, true);
+            emitUserNumer(data.lecture_id);
         });
 
         socket.on('newQuestion', function(data){
             socket.broadcast.to(data.lecture_id).emit('questionFeed', JSON.stringify(data));
         });
 
-        function updateUserList(lecture_id, broadcastToAll){
-            var getUsers = io.of('/live_lecture').clients(lecture_id);
-            var users = [];
-            for (var i = 0; i < getUsers.length; i++) {
-                users.push({user: getUsers[i].username, user_id: getUsers[i].user_id, role: getUsers[i].role});
-            }
-            socket.to(lecture_id).emit('updatedUsersList', JSON.stringify(users));
-
-            if (broadcastToAll) {
-                socket.broadcast.to(lecture_id).emit('updatedUsersList', JSON.stringify(users));
-            }
+        function emitUserNumer(lecture_id){
+            var total = io.nsps['/live_lecture'].adapter.rooms[lecture_id].sockets;
+            socket.to(lecture_id).emit('updatedUserTotal', JSON.stringify(total));
         }
 
-        socket.on('updateUserList', function(data){
-            updateUserList(data.lecture_id);
-        });
     });
 };

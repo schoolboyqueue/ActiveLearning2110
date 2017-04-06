@@ -78,7 +78,7 @@ app.controller('Instructor.Course.Controller', function($scope, $state, $localSt
     });
 
     $rootScope.$on('coursesUpdated', function() {
-        if ($stateParams.selectedCourse) {
+        if ($stateParams.selectedCourse !== null) {
             $scope.tableParams.settings().dataset = $localStorage.courses[$stateParams.selectedCourse].lectures;
             $scope.tableParams.reload();
         }
@@ -111,7 +111,12 @@ app.controller('Instructor.Course.Controller', function($scope, $state, $localSt
     };
 
     $scope.startLecture = function(lecture, index) {
-        SocketService.StartLecture(lecture.lecture_id);
+        SocketService.StartLecture({
+            username: $localStorage.username,
+            user_id: $localStorage._id,
+            user_role: $localStorage.role,
+            lecture_id: lecture.lecture_id
+        });
         $state.go('main.instructor_live_lecture', {
             selectedCourse: $scope.course_index,
             selectedLecture: index
