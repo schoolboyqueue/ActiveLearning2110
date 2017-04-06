@@ -29,7 +29,7 @@ exports = module.exports = function (io, lectures_list) {
             Lecture.update(lecture_id, {$set: { live: true }})
             .then(function(r){
                 lectures_list.push(lecture_id);
-                socket.broadcast.emit('lectures_update', JSON.stringify(lectures_list));
+                io.of('/lectures_list').emit('lectures_update', JSON.stringify(lectures_list));
                 socket.emit('lectures_update', JSON.stringify(lectures_list));
             });
         });

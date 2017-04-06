@@ -16,30 +16,11 @@ var app = angular.module('app');
 app.factory('SocketService', function(UserStorage) {
 
     var service = {};
-    var socket = null;
     var lectureList_Socket = null;
 
-    service.connect = function(token, callback) {
-        socket = io();
-        socket.on('connect', function() {
-                console.log('main socket connected');
-                socket.emit('authenticate', {
-                    token: token
-                });
-            })
-            .on('authenticated', function() {
-                callback(true);
-            })
-            .on('unauthorized', function() {
-                callback(false);
-            });
-        socket.on('disconnect', function() {
-            console.log('main socket disconnect');
-        });
-    };
-
     service.connectLectures = function() {
-        lectureList_Socket = io.connect('/lectures_list');
+        localStorage.debug = 'socket.io-client:socket';
+        lectureList_Socket = io('http://localhost:8081/lectures_list');
         lectureList_Socket.on('connect', function() {
             console.log('lecture socket connected');
         });
@@ -47,21 +28,13 @@ app.factory('SocketService', function(UserStorage) {
             console.log(lecture_ids);
             UserStorage.LectureLiveUpdate(lecture_ids);
         });
-        lectureList_Socket.on('disconnect', function() {
-            console.log('lecture socket disconnected');
+        lectureList_Socket.on('disconnect', function(reason) {
+            console.log('lecture socket disconnected ' + reason);
         });
     };
 
     service.startLecture = function(id) {
         lectureList_Socket.emit('start_lecture', id);
-    };
-
-    service.on = function(eventName, callback) {
-        socket.on(eventName, callback);
-    };
-
-    service.emit = function(eventName, data) {
-        socket.emit(eventName, data);
     };
 
     return service;
