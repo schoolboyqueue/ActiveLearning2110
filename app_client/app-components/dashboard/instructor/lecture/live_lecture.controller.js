@@ -125,7 +125,7 @@ app.controller('Instructor.Live.Lecture.Controller', function($scope, $localStor
             $scope.choices = info.choices;
             console.log(info);
             for (var i in info.choices) {
-                var correct = info.choices[i].answer ? " ✓" : " ✘"
+                var correct = info.choices[i].answer ? " ✓" : " ✘";
                 $scope.labels.push((parseInt(i) + 1).toString() + correct);
                 newData.push(0);
             }
