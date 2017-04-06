@@ -24,15 +24,9 @@ app.controller('Instructor.Live.Lecture.Controller', function($scope, $localStor
     $scope.course = $localStorage.courses[$stateParams.selectedCourse];
     updateLectureInfo();
 
-    $scope.$watch(function() {
-        return $state.current.url;
-    }, function(newVal, oldVal) {
-        if (newVal !== undefined) {
-            if ($state.current.url !== '/instructor/live_lecture') {
-                console.log('killing live lecture');
-                SocketService.StopLecture($scope.lecture.lecture_id);
-            }
-        }
+    $scope.$on("$destroy", function() {
+        console.log('killing live lecture');
+        SocketService.StopLecture($scope.lecture.lecture_id);
     });
 
     RESTService.GetLectureInfo({
@@ -99,16 +93,16 @@ app.controller('Instructor.Live.Lecture.Controller', function($scope, $localStor
                 }
             }],
             yAxes: [{
-                id: 'y-axis-1',
-                type: 'linear',
-                display: true,
-                position: 'left',
-                ticks: {
-                    fontSize: 16,
-                    fontStyle: "bold",
-                    suggestedMin: 0,
-                    beginAtZero: true // minimum value will be 0.
-                }
+                    id: 'y-axis-1',
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+                    ticks: {
+                        fontSize: 16,
+                        fontStyle: "bold",
+                        suggestedMin: 0,
+                        beginAtZero: true // minimum value will be 0.
+                    }
             }
           ]
         }

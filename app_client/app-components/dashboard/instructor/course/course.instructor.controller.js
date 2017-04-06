@@ -78,8 +78,10 @@ app.controller('Instructor.Course.Controller', function($scope, $state, $localSt
     });
 
     $rootScope.$on('coursesUpdated', function() {
-        $scope.tableParams.settings().dataset = $localStorage.courses[$stateParams.selectedCourse].lectures;
-        $scope.tableParams.reload();
+        if ($stateParams.selectedCourse) {
+            $scope.tableParams.settings().dataset = $localStorage.courses[$stateParams.selectedCourse].lectures;
+            $scope.tableParams.reload();
+        }
     });
 
     $scope.getPages = function(list, itemsPer) {
