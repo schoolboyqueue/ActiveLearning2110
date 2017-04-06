@@ -1,4 +1,3 @@
-
 /* jshint node: true */
 
 //************************************************************
@@ -56,6 +55,6 @@ app_support(app);
 
 app.set('port', process.env.PORT || 8081);
 
-server.listen(app.get('port'), function(){
-  console.log('listening on port 8081');
+server.listen(app.get('port'), function() {
+    console.log('listening on port 8081');
 });
