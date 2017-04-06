@@ -87,6 +87,8 @@ a:hover {
 .table-hover tbody tr:hover {
     background-color: rgba(45, 118, 232, 0.05);
     border-left: 0.1875rem solid #2D76E8;
+    color: #2D76E8;
+    transition: color .3s ease-in-out;
 }
 
 .table-hover .table-active:hover {
@@ -259,6 +261,7 @@ a:hover {
 
 .sidebar-nav li>.classList {
     background: rgba(45, 118, 232, 0.07);
+    border-bottom: 0.125rem solid rgba(45, 118, 232, 0.1);
     text-decoration: none;
 }
 
@@ -437,6 +440,7 @@ button.close {
 }
 
 .progress-wrapper {
+    display: inline-block;
     position: relative;
 }
 
