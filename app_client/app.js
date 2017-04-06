@@ -18,7 +18,6 @@ var app = angular
     .module('app', [
         'ui.router',
         'ngStorage',
-        'ngAnimate',
         'angularModalService',
         'angular-jwt',
         'oc.lazyLoad',
