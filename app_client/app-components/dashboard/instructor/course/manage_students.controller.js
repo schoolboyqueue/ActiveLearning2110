@@ -69,7 +69,7 @@ app.controller('Manage.Students.Controller', function($scope, $localStorage, $ti
     };
 
     $scope.deleteStudent = function(student) {
-        // $scope.loading = true;
+        $scope.loading = true;
         RESTService.DeleteStudent({
             course_id: $localStorage.courses[cidx]._id,
             student_id: student.student_id,
