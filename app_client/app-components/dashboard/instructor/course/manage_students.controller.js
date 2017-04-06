@@ -123,7 +123,7 @@ app.controller('Manage.Students.Controller', function($scope, $localStorage, $ti
             ngNotify.set('Failed to remove student', 'error');
             return;
         }
-        // updateStudentTable();
+        updateStudentTable();
     }
 
     function updateUploadTable(data) {
@@ -146,6 +146,7 @@ app.controller('Manage.Students.Controller', function($scope, $localStorage, $ti
         var course_id = $localStorage.courses[cidx]._id;
         var section_id = section._id;
         var students = UserStorage.GetSectionStudents(course_id, section_id);
+        console.log(students);
         if (students.length > 5) {
             student_cnts = [5, 10, 15];
         } else {
