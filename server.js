@@ -49,9 +49,6 @@ io.sockets
     });
   */
 
-io.on('test', function(socket) {
-    
-});
 app.use(express.static(path.join(__dirname, '/app_client')));
 
 app.use(bodyparser.urlencoded({

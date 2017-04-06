@@ -30,3 +30,5 @@ https://rawgit.com/720kb/angular-tooltips/master/dist/angular-tooltips.min.js
 https://rawgit.com/chieffancypants/angular-loading-bar/master/build/loading-bar.min.js
 https://cdn.jsdelivr.net/intro.js/2.4.0/intro.min.js
 https://rawgit.com/mendhak/angular-intro.js/master/build/angular-intro.min.js
+https://cdnjs.cloudflare.com/ajax/libs/humanize-duration/3.10.0/humanize-duration.min.js
+https://rawgit.com/siddii/angular-timer/master/dist/angular-timer.min.js

@@ -34,7 +34,8 @@ var app = angular
         'ngSanitize',
         'ui.sortable',
         '720kb.tooltips',
-        'angular-loading-bar'
+        'angular-loading-bar',
+        'timer'
     ]);
 
 app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLoadProvider, tooltipsConfProvider, cfpLoadingBarProvider) {
@@ -111,6 +112,9 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
         }, {
             name: 'instructor.edit_lecture',
             files: ['app-components/dashboard/instructor/lecture/edit_lecture.controller.js']
+        }, {
+            name: 'instructor.live_lecture',
+            files: ['app-components/dashboard/instructor/lecture/live_lecture.controller.js']
         }, {
             name: 'student.course',
             files: ['app-components/dashboard/student/course/course.student.controller.js']
@@ -271,6 +275,20 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load('instructor.edit_lecture');
+                }]
+            }
+        })
+
+        .state('main.instructor_live_lecture', {
+            url: '/instructor/live_lecture',
+            templateUrl: 'app-components/dashboard/instructor/lecture/live_lecture.view.html',
+            params: {
+                selectedCourse: null,
+                selectedLecture: null
+            },
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load('instructor.live_lecture');
                 }]
             }
         })

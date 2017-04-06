@@ -13,15 +13,16 @@
 //************************************************************
 var app = angular.module('app');
 
-app.factory('SocketService', function() {
+app.factory('SocketService', function(UserStorage) {
 
     var service = {};
     var socket = null;
+    var lectureList_Socket = null;
 
     service.connect = function(token, callback) {
-        console.log(token);
         socket = io();
         socket.on('connect', function() {
+                console.log('main socket connected');
                 socket.emit('authenticate', {
                     token: token
                 });
@@ -32,6 +33,27 @@ app.factory('SocketService', function() {
             .on('unauthorized', function() {
                 callback(false);
             });
+        socket.on('disconnect', function() {
+            console.log('main socket disconnect');
+        });
+    };
+
+    service.connectLectures = function() {
+        lectureList_Socket = io.connect('/lectures_list');
+        lectureList_Socket.on('connect', function() {
+            console.log('lecture socket connected');
+        });
+        lectureList_Socket.on('lectures_update', function(lecture_ids) {
+            console.log(lecture_ids);
+            UserStorage.LectureLiveUpdate(lecture_ids);
+        });
+        lectureList_Socket.on('disconnect', function() {
+            console.log('lecture socket disconnected');
+        });
+    };
+
+    service.startLecture = function(id) {
+        lectureList_Socket.emit('start_lecture', id);
     };
 
     service.on = function(eventName, callback) {
