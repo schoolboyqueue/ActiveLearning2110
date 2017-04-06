@@ -28,8 +28,8 @@ app.controller('Instructor.Live.Lecture.Controller', function($scope, $localStor
         return $state.current.url;
     }, function(newVal, oldVal) {
         if (newVal !== undefined) {
-            console.log($state.current.url);
             if ($state.current.url !== '/instructor/live_lecture') {
+                console.log('killing live lecture');
                 SocketService.StopLecture($scope.lecture.lecture_id);
             }
         }

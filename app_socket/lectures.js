@@ -26,6 +26,7 @@ exports = module.exports = function (io, lectures_list) {
         socket.emit('lectures_update', JSON.stringify(lectures_list));
 
         socket.on('start_lecture', function(lecture_id){
+            console.log('start_lecture ' + lecture_id);
             if (lectures_list.indexOf(lecture_id) === -1) {
                 Lecture.update({_id: lecture_id}, {$set: { live: true }})
                 .then(function(result){
@@ -39,6 +40,7 @@ exports = module.exports = function (io, lectures_list) {
         });
 
         socket.on('end_lecture', function(lecture_id){
+            console.log('end_lecture ' + lecture_id);
             if (lectures_list.indexOf(lecture_id) > -1) {
                 Lecture.update({_id: lecture_id}, {$set: { live: false }})
                 .then(function(result){
