@@ -109,7 +109,7 @@ app.controller('Instructor.Course.Controller', function($scope, $state, $localSt
     };
 
     $scope.startLecture = function(lecture, index) {
-        SocketService.startLecture(lecture.lecture_id);
+        SocketService.StartLecture(lecture.lecture_id);
         $state.go('main.instructor_live_lecture', {
             selectedCourse: $scope.course_index,
             selectedLecture: index

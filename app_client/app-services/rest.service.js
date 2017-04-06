@@ -468,6 +468,7 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
         Restangular.setDefaultHeaders({
             token: ""
         });
+        $state.go('main');
     };
 
     function genRetInfo(response) {

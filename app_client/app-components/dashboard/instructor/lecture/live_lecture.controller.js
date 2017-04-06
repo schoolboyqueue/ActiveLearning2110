@@ -15,7 +15,7 @@
 
 var app = angular.module('app');
 
-app.controller('Instructor.Live.Lecture.Controller', function($scope, $localStorage, $state, $stateParams, $rootScope, RESTService, ngNotify) {
+app.controller('Instructor.Live.Lecture.Controller', function($scope, $localStorage, $state, $stateParams, $rootScope, RESTService, SocketService, ngNotify) {
 
     $scope.selectedQuestion = "";
     $scope.time = 60;
@@ -23,6 +23,17 @@ app.controller('Instructor.Live.Lecture.Controller', function($scope, $localStor
     $rootScope.$stateParams = $stateParams;
     $scope.course = $localStorage.courses[$stateParams.selectedCourse];
     updateLectureInfo();
+
+    $scope.$watch(function() {
+        return $state.current.url;
+    }, function(newVal, oldVal) {
+        if (newVal !== undefined) {
+            console.log($state.current.url);
+            if ($state.current.url !== '/instructor/live_lecture') {
+                SocketService.StopLecture($scope.lecture.lecture_id);
+            }
+        }
+    });
 
     RESTService.GetLectureInfo({
         lecture_id: $scope.lecture.lecture_id,

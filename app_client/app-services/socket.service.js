@@ -29,8 +29,12 @@ app.factory('SocketService', function(UserStorage) {
         console.log('lecture socket disconnected ' + reason);
     });
 
-    service.startLecture = function(id) {
+    service.StartLecture = function(id) {
         socket.emit('start_lecture', id);
+    };
+
+    service.StopLecture = function(id) {
+        socket.emit('end_lecture', id);
     };
 
     return service;
