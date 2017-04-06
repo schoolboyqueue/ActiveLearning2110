@@ -22,34 +22,42 @@ var socketioJwt = require('socketio-jwt'),
 
 exports = module.exports = function (io, lectures_list) {
     var lectures = io.of('/lectures_list').on('connection', function(socket){
-        console.log('/lectures_list');
+        console.log('Connection made to /lectures_list');
         socket.emit('lectures_update', JSON.stringify(lectures_list));
 
         socket.on('start_lecture', function(lecture_id){
-            Lecture.update(lecture_id, {$set: { live: true }})
-            .then(function(r){
-                lectures_list.push(lecture_id);
-                lectures.emit('lectures_update', JSON.stringify(lectures_list));
-                socket.emit('lectures_update', JSON.stringify(lectures_list));
-            });
+            if (lectures_list.indexOf(lecture_id) === -1) {
+                Lecture.update({_id: lecture_id}, {$set: { live: true }})
+                .then(function(result){
+                    if (result.nModified !== 0) {
+                        lectures_list.push(lecture_id);
+                    }
+                    lectures.emit('lectures_update', JSON.stringify(lectures_list));
+                    socket.emit('lectures_update', JSON.stringify(lectures_list));
+                });
+            }
         });
 
         socket.on('end_lecture', function(lecture_id){
-            Lecture.update(lecture_id, {$set: { live: false }})
-            .then(function(r){
-                for (var i = 0; i < lectures_list.length; i++) {
-                    if (lectures_list[i] === lecture_id) {
-                        lectures_list.splice(i, 1);
+            if (lectures_list.indexOf(lecture_id) > -1) {
+                Lecture.update({_id: lecture_id}, {$set: { live: false }})
+                .then(function(result){
+                    if (result.nModified !== 0) {
+                        for (var i = 0; i < lectures_list.length; i++) {
+                            if (lectures_list[i] === lecture_id) {
+                                lectures_list.splice(i, 1);
+                            }
+                        }
                     }
-                }
-                lectures.emit('lectures_update', JSON.stringify(lectures_list));
-                socket.emit('lectures_update', JSON.stringify(lectures_list));
-            });
+                    lectures.emit('lectures_update', JSON.stringify(lectures_list));
+                    socket.emit('lectures_update', JSON.stringify(lectures_list));
+                });
+            }
         });
     });
 
     var live_lecture = io.of('/live_lecture').on('connection', function(socket){
-        console.log('/live_lecture');
+        console.log('Connection made to /live_lecture');
 
         socket.on('join_lecture', function(data){
             socket.username = data.username;
