@@ -125,7 +125,8 @@ var instructorAddStudent = function(req, res, next) {
   .catch(function(err){
       return res.status(500).json({
           success: false,
-          message: err.message
+          message: err.message,
+          student_username: req.body.username
       });
   });
 };
