@@ -82,6 +82,7 @@ app.factory('UserStorage', function($localStorage, $rootScope) {
                 $localStorage.courses[course_key].lectures[key] = lecture;
             }
         }
+        $rootScope.$emit('coursesUpdated');
     };
 
     service.LectureLiveUpdate = function(lecture_list) {
@@ -102,6 +103,23 @@ app.factory('UserStorage', function($localStorage, $rootScope) {
         for (var key in $localStorage.courses) {
             if ($localStorage.courses[key]._id === course_id) {
                 $localStorage.courses[key].lectures = lectures;
+            }
+        }
+        $rootScope.$emit('coursesUpdated');
+    };
+
+    service.GetSectionStudents = function(course_id, section_key) {
+        var course_key = null;
+        for (var key in $localStorage.courses) {
+            if ($localStorage.courses[key]._id === course_id) {
+                course_key = key;
+                break;
+            }
+        }
+        for (key in $localStorage.courses[course_key].sections) {
+            var curr = $localStorage.courses[course_key].sections[key];
+            if (curr._id === section_key) {
+                return $localStorage.courses[course_key].sections[key].students;
             }
         }
     };

@@ -19,7 +19,6 @@ app.controller('Course.Student.Controller', function($scope, $localStorage, $roo
 
     $rootScope.$stateParams = $stateParams;
     $scope.course = $localStorage.courses[$stateParams.selectedCourse];
-    SocketService.connectLectures();
 
     $rootScope.$on('coursesUpdated', function() {
         $scope.course = $localStorage.courses[$stateParams.selectedCourse];

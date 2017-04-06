@@ -15,7 +15,7 @@
 //************************************************************
 var app = angular.module('app');
 
-app.factory('UserService', function($state, $localStorage, $ocLazyLoad, ModalService) {
+app.factory('UserService', function($state, $localStorage, $ocLazyLoad, ModalService, SocketService) {
 
     var service = {};
 

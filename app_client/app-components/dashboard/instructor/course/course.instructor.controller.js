@@ -15,12 +15,11 @@
 
 var app = angular.module('app');
 
-app.controller('Instructor.Course.Controller', function($scope, $localStorage, $stateParams, $rootScope, $window, UserService, NgTableParams, ngNotify, SocketService) {
+app.controller('Instructor.Course.Controller', function($scope, $state, $localStorage, $stateParams, $rootScope, $window, UserService, NgTableParams, ngNotify, SocketService) {
 
     $rootScope.$stateParams = $stateParams;
     $scope.course = $localStorage.courses[$stateParams.selectedCourse];
     $scope.course_index = $stateParams.selectedCourse;
-    SocketService.connectLectures();
 
     $scope.chart_options = {
         labels: ["Verified", "Pending"],
@@ -78,13 +77,9 @@ app.controller('Instructor.Course.Controller', function($scope, $localStorage, $
         }
     });
 
-    $scope.$watch(function() {
-        return $localStorage.courses[$stateParams.selectedCourse].lectures;
-    }, function(newVal, oldVal) {
-        if (newVal !== null && newVal !== undefined) {
-            $scope.tableParams.settings().dataset = $localStorage.courses[$stateParams.selectedCourse].lectures;
-            $scope.tableParams.reload();
-        }
+    $rootScope.$on('coursesUpdated', function() {
+        $scope.tableParams.settings().dataset = $localStorage.courses[$stateParams.selectedCourse].lectures;
+        $scope.tableParams.reload();
     });
 
     $scope.getPages = function(list, itemsPer) {
@@ -113,8 +108,12 @@ app.controller('Instructor.Course.Controller', function($scope, $localStorage, $
         return date === moment().format("MM/DD/YY") ? true : false;
     };
 
-    $scope.startLecture = function(lecture) {
+    $scope.startLecture = function(lecture, index) {
         SocketService.startLecture(lecture.lecture_id);
+        $state.go('main.instructor_live_lecture', {
+            selectedCourse: $scope.course_index,
+            selectedLecture: index
+        });
     };
 
     var w = angular.element($window);
