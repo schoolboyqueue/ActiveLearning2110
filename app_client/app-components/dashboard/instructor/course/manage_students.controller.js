@@ -123,6 +123,8 @@ app.controller('Manage.Students.Controller', function($scope, $localStorage, $ti
             ngNotify.set('Failed to remove student', 'error');
             return;
         }
+        $scope.student_tableParams.settings().dataset = [];
+        $scope.student_tableParams.reload();
         updateStudentTable();
     }
 
