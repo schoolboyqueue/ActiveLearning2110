@@ -82,6 +82,7 @@ app.factory('UserStorage', function($localStorage, $rootScope) {
                 $localStorage.courses[course_key].lectures[key] = lecture;
             }
         }
+        $rootScope.$emit('coursesUpdated');
     };
 
     service.LectureLiveUpdate = function(lecture_list) {
@@ -104,6 +105,7 @@ app.factory('UserStorage', function($localStorage, $rootScope) {
                 $localStorage.courses[key].lectures = lectures;
             }
         }
+        $rootScope.$emit('coursesUpdated');
     };
 
     service.FindSectionStudents = function(course, id) {

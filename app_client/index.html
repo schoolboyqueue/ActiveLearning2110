@@ -32,12 +32,12 @@
 
 <body>
     <!-- Views -->
-    <div class="super-container" ng-controller="Main.Controller">
+    <div class="height-100" ng-controller="Main.Controller">
         <div class="container-fluid login-back p-0" ng-hide="$storage.LoggedIn" ui-view="splash"></div>
         <div ui-view="navbar"></div>
-        <div id="wrapper" ng-class="{'toggled' : $storage.hideSidebar }" ng-show="$storage.LoggedIn">
+        <div class="height-100" id="wrapper" ng-class="{'toggled' : $storage.hideSidebar }" ng-show="$storage.LoggedIn">
             <div ui-view="sidebar"></div>
-            <div ui-view="dashboard" style="height: 100%;"></div>
+            <div ui-view="dashboard" class="height-100"></div>
         </div>
     </div>
 
