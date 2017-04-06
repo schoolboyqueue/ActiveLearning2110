@@ -3,7 +3,6 @@ https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js
 https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js
 https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js
 https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.3/angular.min.js
-https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.3/angular-animate.min.js
 https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.6/ngStorage.min.js
 https://unpkg.com/angular-ui-router/release/angular-ui-router.min.js
 https://rawgit.com/dwmkerr/angular-modal-service/master/dst/angular-modal-service.js
