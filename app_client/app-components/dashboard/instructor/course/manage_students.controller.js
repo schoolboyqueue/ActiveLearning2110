@@ -123,7 +123,7 @@ app.controller('Manage.Students.Controller', function($scope, $localStorage, $ti
             ngNotify.set('Failed to remove student', 'error');
             return;
         }
-        // updateStudentTable();
+        updateStudentTable();
     }
 
     function updateUploadTable(data) {

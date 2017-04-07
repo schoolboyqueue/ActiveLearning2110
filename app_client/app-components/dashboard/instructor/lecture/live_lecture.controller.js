@@ -15,7 +15,7 @@
 
 var app = angular.module('app');
 
-app.controller('Instructor.Live.Lecture.Controller', function($scope, $localStorage, $state, $stateParams, $rootScope, RESTService, ngNotify) {
+app.controller('Instructor.Live.Lecture.Controller', function($scope, $localStorage, $state, $stateParams, $rootScope, RESTService, SocketService, ngNotify) {
 
     $scope.selectedQuestion = "";
     $scope.time = 60;
@@ -23,6 +23,11 @@ app.controller('Instructor.Live.Lecture.Controller', function($scope, $localStor
     $rootScope.$stateParams = $stateParams;
     $scope.course = $localStorage.courses[$stateParams.selectedCourse];
     updateLectureInfo();
+
+    $scope.$on("$destroy", function() {
+        console.log('killing live lecture');
+        SocketService.StopLecture($scope.lecture.lecture_id);
+    });
 
     RESTService.GetLectureInfo({
         lecture_id: $scope.lecture.lecture_id,
@@ -88,16 +93,16 @@ app.controller('Instructor.Live.Lecture.Controller', function($scope, $localStor
                 }
             }],
             yAxes: [{
-                id: 'y-axis-1',
-                type: 'linear',
-                display: true,
-                position: 'left',
-                ticks: {
-                    fontSize: 16,
-                    fontStyle: "bold",
-                    suggestedMin: 0,
-                    beginAtZero: true // minimum value will be 0.
-                }
+                    id: 'y-axis-1',
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+                    ticks: {
+                        fontSize: 16,
+                        fontStyle: "bold",
+                        suggestedMin: 0,
+                        beginAtZero: true // minimum value will be 0.
+                    }
             }
           ]
         }
