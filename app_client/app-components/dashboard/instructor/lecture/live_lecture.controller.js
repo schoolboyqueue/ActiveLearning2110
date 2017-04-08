@@ -19,6 +19,7 @@ app.controller('Instructor.Live.Lecture.Controller', function($scope, $localStor
 
     $scope.selectedQuestion = "";
     $scope.time = 60;
+    $scope.timeMax = 60;
     $scope.timerEnabled = false;
     $rootScope.$stateParams = $stateParams;
     $scope.course = $localStorage.courses[$stateParams.selectedCourse];
@@ -109,6 +110,9 @@ app.controller('Instructor.Live.Lecture.Controller', function($scope, $localStor
     };
 
     $scope.add10Seconds = function() {
+        if ($scope.time + 10 > $scope.timeMax) {
+            $scope.timeMax = $scope.time + 10;
+        }
         $scope.$broadcast('timer-add-cd-seconds', 10);
     };
     $scope.remove10Seconds = function() {
@@ -128,7 +132,6 @@ app.controller('Instructor.Live.Lecture.Controller', function($scope, $localStor
             $scope.data = [];
             var newData = [];
             $scope.choices = info.choices;
-            console.log(info);
             for (var i in info.choices) {
                 var correct = info.choices[i].answer ? " ✓" : " ✘";
                 $scope.labels.push((parseInt(i) + 1).toString() + correct);
@@ -136,9 +139,18 @@ app.controller('Instructor.Live.Lecture.Controller', function($scope, $localStor
             }
             $scope.data.push(newData);
             $scope.time = 60;
+            $scope.timeMax = 60;
             $scope.timerEnabled = true;
             $scope.$broadcast('timer-set-countdown-seconds', $scope.time);
             $scope.$broadcast('timer-start');
+            var t = new Date();
+            t.setSeconds(t.getSeconds() + $scope.time);
+            SocketService.StartQuestion({
+                lecture_id: $scope.lecture.lecture_id,
+                question_id: $scope.selectedQuestion,
+                max_time: $scope.timeMax,
+                end_time: t
+            });
         });
     };
 
@@ -149,6 +161,5 @@ app.controller('Instructor.Live.Lecture.Controller', function($scope, $localStor
         } else {
             $scope.timerEnabled = true;
         }
-        $scope.randomize();
     });
 });

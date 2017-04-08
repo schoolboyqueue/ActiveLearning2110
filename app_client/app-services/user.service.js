@@ -224,6 +224,26 @@ app.directive('ngEditor', function() {
         scope.editor = new ContentTools.EditorApp.get();
         scope.editor.init('*[data-editable], *[data-fixture]', 'data-editable', null, false);
 
+        scope.editor.toolbox().tools([[
+            'bold',
+            'italic',
+            'link',
+            'align-left',
+            'align-center',
+            'align-right',
+            'unordered-list',
+            'ordered-list',
+            'table',
+            'indent',
+            'unindent',
+            'line-break',
+            'image',
+            'preformatted',
+            'undo',
+            'redo',
+            'remove'
+        ]]);
+
         scope.editor.addEventListener('saved', function(ev) {
             var payload = {};
             var regions = scope.editor.regions();

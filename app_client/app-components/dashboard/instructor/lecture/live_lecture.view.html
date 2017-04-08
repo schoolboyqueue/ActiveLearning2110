@@ -1,7 +1,7 @@
 <div class="animated fadeIn container-fluid p-3 animated fadeIn height-100" ng-controller="Instructor.Live.Lecture.Controller">
     <div class="d-flex justify-content-between align-items-center p-2">
         <div class="input-group">
-            <timer interval="1000" countdown="50" hidden="true" autostart="false"></timer>
+            <timer interval="1000" countdown="60" hidden="true" autostart="false"></timer>
             <select
                 class="custom-select select-inline text-capitalize"
                 ng-model="selectedQuestion"
@@ -22,12 +22,12 @@
         </div>
         <div class="d-flex align-items-center">
             <div class="btn-group-vertical pr-2">
-                <button class="btn btn-info btn-sm" ng-click="add10Seconds()" type="button"><i class="fa fa-plus fa-fw" aria-hidden="true"></i></button>
-                <button class="btn btn-info btn-sm" ng-click="remove10Seconds()" type="button"><i class="fa fa-minus fa-fw" aria-hidden="true"></i></button>
+                <button class="btn btn-info btn-sm" ng-click="add10Seconds()" ng-disabled="!timerEnabled" type="button"><i class="fa fa-plus fa-fw" aria-hidden="true"></i></button>
+                <button class="btn btn-info btn-sm" ng-click="remove10Seconds()" ng-disabled="!timerEnabled" type="button"><i class="fa fa-minus fa-fw" aria-hidden="true"></i></button>
             </div>
             <div class="progress-wrapper">
                 <round-progress
-                    max="60"
+                    max="timeMax"
                     current="time"
                     color="#2F81FF"
                     bgcolor="#eaeaea"

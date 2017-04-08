@@ -1,0 +1,43 @@
+<div class="container-fluid p-2 animated fadeIn height-100" ng-controller="Student.Live.Lecture.Controller">
+    <div class="d-flex justify-content-center align-items-center no-courses height-100" ng-show="!timerEnabled">
+        <timer interval="1000" countdown="60" hidden="true" autostart="false"></timer>
+        <div class="text-center">
+            <i class="fa fa-cog faa-spin faa-slow animated" aria-hidden="true"></i>
+            <p>Waiting On Professor</p>
+        </div>
+    </div>
+    <div class="d-flex justify-content-end align-items-center p-2" ng-show="timerEnabled">
+        <div class="progress-wrapper">
+            <round-progress
+                max="timeMax"
+                current="time"
+                color="#2F81FF"
+                bgcolor="#eaeaea"
+                radius="55"
+                stroke="10"
+                semi="true"
+                rounded="false"
+                clockwise="false"
+                responsive="false"
+                duration="800"
+                animation="easeInOutQuart"
+                animation-delay="0">
+            </round-progress>
+            <div class="text pt-3">{{time}}</div>
+        </div>
+    </div>
+    <hr class="m-0 pb-4" style="border-top: dashed 1px; color: #D5D6D8" />
+    <div class="container-fluid animated fadeIn">
+        <div ng-bind-html="title"></div>
+        <div ng-bind-html="body"></div>
+        <div class="pt-4 pb-2">
+            <div ng-repeat="choice in choices">
+                <div class="pretty circle success">
+                    <input type="radio" name="answers" ng-model="answer" ng-value="$index">
+                    <label class="pt-2"><i class="fa fa-check"></i> {{choice.text}}</label>
+                </div>
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary">Submit</button>
+    </div>
+</div>

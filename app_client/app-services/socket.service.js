@@ -16,56 +16,49 @@ var app = angular.module('app');
 app.factory('SocketService', function($rootScope, UserStorage) {
 
     var service = {};
-    var lectureList_socket = io('http://localhost:8081/lectures_list');
-    var liveLecture_socket = null;
+    var liveSocket = io('http://localhost:8081/lectures');
 
-    lectureList_socket.on('connect', function() {
-        console.log('lecture lectureList_socket connected');
+    liveSocket.on('connect', function() {
+        console.log('lectures connected');
     });
-    lectureList_socket.on('lectures_update', function(lecture_ids) {
+    liveSocket.on('lectures_update', function(lecture_ids) {
         console.log(lecture_ids);
         UserStorage.LectureLiveUpdate(lecture_ids);
     });
-    lectureList_socket.on('disconnect', function(reason) {
-        console.log('lecture lectureList_socket disconnected ' + reason);
+    liveSocket.on('disconnect', function(reason) {
+        console.log('lecture disconnected ' + reason);
+    });
+
+    liveSocket.on('questionFeed', function(data) {
+        console.log('new questions recieved');
+        $rootScope.$emit('newQuestion', data);
+    });
+
+    liveSocket.on('updatedUserTotal', function(total) {
+        $rootScope.$emit('newUserTotal', total);
     });
 
     service.JoinLiveLecture = function(info) {
-        liveLecture_socket = io('http://localhost:8081/live_lecture');
-        liveLecture_socket.on('connect', function() {
-            console.log('live lecture connected');
-            buildLiveLectureEvents();
-            liveLecture_socket.emit('join_lecture', {
-                username: info.username,
-                user_id: info.user_id,
-                user_role: info.user_role,
-                lecture_id: info.lecture_id
-            });
+        liveSocket.emit('join_lecture', {
+            username: info.username,
+            user_id: info.user_id,
+            user_role: info.user_role,
+            lecture_id: info.lecture_id
         });
     };
 
     service.StartQuestion = function(question_id) {
-        liveLecture_socket.emit('newQuestion', question_id);
+        liveSocket.emit('newQuestion', question_id);
     };
 
     service.StartLecture = function(info) {
-        lectureList_socket.emit('start_lecture', info.lecture_id);
+        liveSocket.emit('start_lecture', info.lecture_id);
         service.JoinLiveLecture(info);
     };
 
     service.StopLecture = function(id) {
-        lectureList_socket.emit('end_lecture', id);
+        liveSocket.emit('end_lecture', id);
     };
-
-    function buildLiveLectureEvents() {
-        console.log('building socket events');
-        liveLecture_socket.on('questionFeed', function(data) {
-            $rootScope.$emit('newQuestion', data);
-        });
-        liveLecture_socket.on('updatedUserTotal', function(data) {
-            console.log('user list: ' + data);
-        });
-    }
 
     return service;
 

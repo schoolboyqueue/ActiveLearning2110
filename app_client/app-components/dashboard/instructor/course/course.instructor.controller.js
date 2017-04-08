@@ -78,7 +78,7 @@ app.controller('Instructor.Course.Controller', function($scope, $state, $localSt
     });
 
     $rootScope.$on('coursesUpdated', function() {
-        if ($stateParams.selectedCourse !== null) {
+        if ($stateParams.selectedCourse !== null && $state.current.name === 'main.instructor_course') {
             $scope.tableParams.settings().dataset = $localStorage.courses[$stateParams.selectedCourse].lectures;
             $scope.tableParams.reload();
         }
@@ -117,6 +117,7 @@ app.controller('Instructor.Course.Controller', function($scope, $state, $localSt
             user_role: $localStorage.role,
             lecture_id: lecture.lecture_id
         });
+        $localStorage.hideSidebar = false;
         $state.go('main.instructor_live_lecture', {
             selectedCourse: $scope.course_index,
             selectedLecture: index

@@ -17,68 +17,116 @@
 
 var socketioJwt = require('socketio-jwt'),
     config = require('./../config'),
-    Lecture = require('./../app_api_v2/models/lectureModel');
+    Lecture = require('./../app_api_v2/models/lectureModel'),
+    Question = require('./../app_api_v2/models/questionModel');
 
-
-exports = module.exports = function (io, lectures_list) {
-    var lectures = io.of('/lectures_list').on('connection', function(socket){
-        console.log('Connection made to /lectures_list');
+exports = module.exports = function(io, lectures_list) {
+    var lectures = io.of('/lectures').on('connection', function(socket) {
+        console.log('Connection made');
         socket.emit('lectures_update', JSON.stringify(lectures_list));
 
-        socket.on('start_lecture', function(lecture_id){
+        socket.on('start_lecture', function(lecture_id) {
             console.log('start_lecture ' + lecture_id);
             if (lectures_list.indexOf(lecture_id) === -1) {
-                Lecture.update({_id: lecture_id}, {$set: { live: true }})
-                .then(function(result){
-                    if (result.nModified !== 0) {
-                        lectures_list.push(lecture_id);
-                    }
-                    lectures.emit('lectures_update', JSON.stringify(lectures_list));
-                    socket.emit('lectures_update', JSON.stringify(lectures_list));
-                });
+                Lecture.update({
+                        _id: lecture_id
+                    }, {
+                        $set: {
+                            live: true
+                        }
+                    })
+                    .then(function(result) {
+                        if (result.nModified !== 0) {
+                            lectures_list.push(lecture_id);
+                        }
+                        lectures.emit('lectures_update', JSON.stringify(lectures_list));
+                    });
             }
         });
 
-        socket.on('end_lecture', function(lecture_id){
+        socket.on('end_lecture', function(lecture_id) {
             console.log('end_lecture ' + lecture_id);
             if (lectures_list.indexOf(lecture_id) > -1) {
-                Lecture.update({_id: lecture_id}, {$set: { live: false }})
-                .then(function(result){
-                    if (result.nModified !== 0) {
-                        for (var i = 0; i < lectures_list.length; i++) {
-                            if (lectures_list[i] === lecture_id) {
-                                lectures_list.splice(i, 1);
+                Lecture.update({
+                        _id: lecture_id
+                    }, {
+                        $set: {
+                            live: false
+                        }
+                    })
+                    .then(function(result) {
+                        if (result.nModified !== 0) {
+                            for (var i = 0; i < lectures_list.length; i++) {
+                                if (lectures_list[i] === lecture_id) {
+                                    lectures_list.splice(i, 1);
+                                }
                             }
                         }
-                    }
-                    lectures.emit('lectures_update', JSON.stringify(lectures_list));
-                    socket.emit('lectures_update', JSON.stringify(lectures_list));
-                });
+                        // clearRoom(lecture_id);
+                        lectures.emit('lectures_update', JSON.stringify(lectures_list));
+                    });
             }
         });
-    });
 
-    var live_lecture = io.of('/live_lecture').on('connection', function(socket) {
-        console.log('Connection made to /live_lecture');
-
-        socket.on('join_lecture', function(data){
-            console.log('join_lecture: ' +  JSON.stringify(data));
+        socket.on('join_lecture', function(data) {
             socket.username = data.username;
             socket.user_id = data.user_id;
             socket.role = data.user_role;
             socket.lecture_id = data.lecture_id;
             socket.join(data.lecture_id);
+            console.log('joining: ' + data.lecture_id);
             emitUserNumer(data.lecture_id);
         });
 
-        socket.on('newQuestion', function(data){
-            socket.broadcast.to(data.lecture_id).emit('questionFeed', JSON.stringify(data));
+        // reference: http://stackoverflow.com/questions/39880435/make-specific-socket-leave-the-room-is-in
+        socket.on('leave_lecture', function(data) {
+            socket.leave(data.lecture_id);
+            emitUserNumer(data.lecture_id);
         });
 
-        function emitUserNumer(lecture_id){
-            var total = io.nsps['/live_lecture'].adapter.rooms[lecture_id].sockets;
-            socket.to(lecture_id).emit('updatedUserTotal', JSON.stringify(total));
+        socket.on('newQuestion', function(data) {
+            console.log('question:' + JSON.stringify(data));
+            Question.findById(data.question_id, {
+                    "__v": 0,
+                    "answer_choices.answer": 0
+                })
+                .exec()
+                .then(function(question) {
+                    data.question = question;
+                    socket.broadcast.to(data.lecture_id).emit('questionFeed', data);
+                })
+                .catch(function(err) {
+                    socket.emit('questionFeed', 'error');
+                });
+        });
+
+        socket.on('disconnect', function() {
+            console.log("user disconnected: " + socket.username);
+            if (socket.username) {
+                if (socket.role === 'instructor') {
+                    clearRoom(socket.lecture_id);
+                } else {
+                    emitUserNumer(socket.lecture_id);
+                }
+            }
+        });
+
+        //reference: http://stackoverflow.com/questions/9352549/getting-how-many-people-are-in-a-chat-room-in-socket-io#24425207
+        function emitUserNumer(lecture) {
+            var users = io.nsps['/lectures'].adapter.rooms[lecture];
+            // var users = lectures.sockets.adapter.rooms[lecture];
+            console.log(users.length);
+            socket.to(lecture).emit('updatedUserTotal', users.length);
         }
 
+        //reference: http://stackoverflow.com/questions/39880435/make-specific-socket-leave-the-room-is-in
+        function clearRoom(lecture) {
+            let roomObj = io.nsps['/lectures'].adapter.rooms[lecture];
+            if (roomObj) {
+                Object.keys(roomObj.sockets).forEach(function(id) {
+                    io.sockets.connected[id].leave(lecture);
+                });
+            }
+        }
     });
 };

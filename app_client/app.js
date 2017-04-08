@@ -47,7 +47,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
         new ContentTools.Style('Rounded', 'rounded', ['img']),
         new ContentTools.Style('Left', 'float-left', ['img', 'iframe']),
         new ContentTools.Style('Right', 'float-right', ['img', 'iframe']),
-        new ContentTools.Style('Center', 'mx-auto d-block', ['img', 'iframe']),
+        new ContentTools.Style('Center', 'mx-auto d-block', ['img']),
         new ContentTools.Style('Small', 'table-sm', ['table']),
         new ContentTools.Style('Striped', 'table-striped', ['table']),
         new ContentTools.Style('Wide', 'table', ['table']),
@@ -138,6 +138,9 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
             name: 'student.join_course',
             files: ['app-components/modals/join_course/join_course.controller.js']
         }, {
+            name: 'student.live_lecture',
+            files: ['app-components/dashboard/student/lecture/live_lecture.controller.js']
+        }, {
             name: 'instructor.create_lecture',
             files: ['app-components/modals/create_lecture/create_lecture.controller.js']
         }, {
@@ -214,6 +217,20 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load('student.course'); // Resolve promise and load before view
+                }]
+            }
+        })
+
+        .state('main.student_live_lecture', {
+            url: '/student/live_lecture',
+            templateUrl: 'app-components/dashboard/student/lecture/live_lecture.view.html',
+            params: {
+                selectedCourse: null,
+                selectedLecture: null
+            },
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load('student.live_lecture'); // Resolve promise and load before view
                 }]
             }
         })

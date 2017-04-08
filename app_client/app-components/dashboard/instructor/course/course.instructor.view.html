@@ -124,12 +124,12 @@
                             <i class="fa fa-pencil fa-fw" aria-hidden="true"></i>
                         </button>
                     <button
-                        ng-disabled="!joinAvail('{{lecture.schedule.date | date:'MM/dd/yy'}}')"
                         type="button"
                         ng-click="startLecture(lecture, $index)"
                         class="btn btn-success btn-sm">
                             <i class="fa fa-play" aria-hidden="true"></i>
                         </button>
+                                                <!-- ng-disabled="!joinAvail('{{lecture.schedule.date | date:'MM/dd/yy'}}')" -->
                 </div>
                 <!-- <button
                     ng-show="!joinAvail('{{lecture.schedule.date | date:'MM/dd/yy'}}')"
