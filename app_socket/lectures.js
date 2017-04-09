@@ -100,6 +100,38 @@ exports = module.exports = function(io, lectures_list) {
                 });
         });
 
+        socket.on('answer_question', function(data) {
+            Question.find({
+                    _id: data.question_id
+                }, {
+                    answer_choices: {
+                        $elemMatch: {
+                            text: data.answer
+                        }
+                    },
+                    title: 0,
+                    html_title: 0,
+                    html_body: 0,
+                    copied: 0,
+                    tags: 0,
+                    __v: 0
+                })
+                .exec()
+                .then(function(question) {
+                    if (question[0].answer_choices[0].answer === true) {
+                        //answer is correct, emit to student they scored correctly
+                        socket.emit('question_result', true);
+                    } else {
+                        //answer is wrong, emit to student they scored incorrectly
+                        socket.emit('question_result', false);
+                    }
+                    //emit to instructor the updated stats
+                })
+                .catch(function(err) {
+                    socket.emit('question_result', 'error');
+                });
+        });
+
         socket.on('disconnect', function() {
             console.log("user disconnected: " + socket.username);
             if (socket.username) {

@@ -34,6 +34,10 @@ app.factory('SocketService', function($rootScope, UserStorage) {
         $rootScope.$emit('newQuestion', data);
     });
 
+    liveSocket.on('question_result', function(data) {
+        $rootScope.$emit('questionAnswerResult', data);
+    });
+
     liveSocket.on('updatedUserTotal', function(total) {
         $rootScope.$emit('newUserTotal', total);
     });
@@ -58,6 +62,10 @@ app.factory('SocketService', function($rootScope, UserStorage) {
 
     service.StopLecture = function(id) {
         liveSocket.emit('end_lecture', id);
+    };
+
+    service.AnswerQuestion = function(info) {
+        liveSocket.emit('answer_question', info);
     };
 
     return service;

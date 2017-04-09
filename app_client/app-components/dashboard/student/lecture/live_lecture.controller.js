@@ -20,8 +20,26 @@ app.controller('Student.Live.Lecture.Controller', function($scope, $localStorage
     $scope.timeMax = 20;
     $scope.timerEnabled = false;
     $rootScope.$stateParams = $stateParams;
+    $scope.answer = "";
+    $scope.submitted = false;
+    $scope.correct = null;
+    $scope.loading = false;
     var course = $localStorage.courses[$stateParams.selectedCourse];
     var lidx = $stateParams.selectedLecture;
+
+    $scope.submitAnswer = function() {
+        SocketService.AnswerQuestion({
+            question_id: $scope.question_id,
+            answer: $scope.answer
+        });
+        $scope.submitted = true;
+        $scope.loading = true;
+    };
+
+    $rootScope.$on('questionAnswerResult', function(evt, correct) {
+        $scope.loading = false;
+        $scope.correct = correct;
+    });
 
     $rootScope.$on('coursesUpdated', function() {
         if ($stateParams.selectedCourse !== null && $state.current.name === 'main.student_live_lecture') {
@@ -35,6 +53,7 @@ app.controller('Student.Live.Lecture.Controller', function($scope, $localStorage
 
     $rootScope.$on('newQuestion', function(evt, info) {
         $scope.$apply(function() {
+            $scope.question_id = info.question_id;
             $scope.title = info.question.html_title;
             $scope.body = info.question.html_body;
             $scope.choices = info.question.answer_choices;
@@ -52,6 +71,9 @@ app.controller('Student.Live.Lecture.Controller', function($scope, $localStorage
         $scope.time = data.millis / 1000;
         if ($scope.time === 0) {
             $scope.timerEnabled = false;
+            $scope.answer = "";
+            $scope.submitted = false;
+            $scope.correct = null;
         } else {
             $scope.timerEnabled = true;
         }
