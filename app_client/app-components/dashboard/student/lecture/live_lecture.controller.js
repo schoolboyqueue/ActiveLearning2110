@@ -19,6 +19,7 @@ app.controller('Student.Live.Lecture.Controller', function($scope, $localStorage
     $scope.time = 10;
     $scope.timeMax = 20;
     $scope.timerEnabled = false;
+    $scope.end_time = 0;
     $rootScope.$stateParams = $stateParams;
     $scope.answer = "";
     $scope.submitted = false;
@@ -35,6 +36,11 @@ app.controller('Student.Live.Lecture.Controller', function($scope, $localStorage
         $scope.submitted = true;
         $scope.loading = true;
     };
+
+    $rootScope.$on('new_end', function(evt, data) {
+        $scope.end_time = new Date(data.time);
+        $scope.timeMax = data.timeMax;
+    });
 
     $rootScope.$on('questionAnswerResult', function(evt, correct) {
         $scope.loading = false;
@@ -60,7 +66,8 @@ app.controller('Student.Live.Lecture.Controller', function($scope, $localStorage
             $scope.timerEnabled = true;
             var myTime = new Date();
             var endTime = new Date(info.end_time);
-            $scope.time = Math.round(Math.abs((myTime - endTime) / 1000));
+            $scope.end_time = endTime;
+            $scope.time = Math.round(($scope.end_time.getTime() - myTime.getTime()) / 1000);
             $scope.timeMax = info.max_time;
             $scope.$broadcast('timer-set-countdown-seconds', $scope.time);
             $scope.$broadcast('timer-start');
@@ -68,12 +75,15 @@ app.controller('Student.Live.Lecture.Controller', function($scope, $localStorage
     });
 
     $scope.$on('timer-tick', function(event, data) {
-        $scope.time = data.millis / 1000;
-        if ($scope.time === 0) {
+        var myTime = new Date();
+        $scope.time = Math.round(($scope.end_time.getTime() - myTime.getTime()) / 1000);
+        if ($scope.time <= 0) {
+            $scope.$broadcast('timer-stop');
             $scope.timerEnabled = false;
             $scope.answer = "";
             $scope.submitted = false;
             $scope.correct = null;
+            $scope.end_time = 0;
         } else {
             $scope.timerEnabled = true;
         }

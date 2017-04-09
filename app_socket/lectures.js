@@ -100,6 +100,11 @@ exports = module.exports = function(io, lectures_list) {
                 });
         });
 
+        socket.on('new_time', function(data) {
+            console.log('time changed');
+            socket.broadcast.to(data.lecture_id).emit('new_end', data);
+        });
+
         socket.on('answer_question', function(data) {
             Question.find({
                     _id: data.question_id

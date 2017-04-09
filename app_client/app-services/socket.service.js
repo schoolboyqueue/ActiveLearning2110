@@ -42,6 +42,10 @@ app.factory('SocketService', function($rootScope, UserStorage) {
         $rootScope.$emit('newUserTotal', total);
     });
 
+    liveSocket.on('new_end', function(data) {
+        $rootScope.$emit('new_end', data);
+    });
+
     service.JoinLiveLecture = function(info) {
         liveSocket.emit('join_lecture', {
             username: info.username,
@@ -49,6 +53,10 @@ app.factory('SocketService', function($rootScope, UserStorage) {
             user_role: info.user_role,
             lecture_id: info.lecture_id
         });
+    };
+
+    service.ChangeTime = function(data) {
+        liveSocket.emit('new_time', data);
     };
 
     service.StartQuestion = function(question_id) {

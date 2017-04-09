@@ -98,9 +98,9 @@ app.controller('Instructor.Course.Controller', function($scope, $state, $localSt
         var pending = 0;
         for (var key in section.students) {
             if (section.students[key].status === "complete") {
-                verified += 1;
+                verified++;
             } else {
-                pending += 1;
+                pending++;
             }
         }
         $scope.status_data[section.name] = [verified, pending];
