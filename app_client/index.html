@@ -15,7 +15,7 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="app-css/ng-tags-input.min.css" />
     <link rel="stylesheet" href="app-css/ng-tags-input.bootstrap.min.css" />
-    <link rel="stylesheet" href="app-scripts/content-tools/content-tools.min.css" />
+    <!-- <link rel="stylesheet" href="app-scripts/content-tools/content-tools.min.css" /> -->
     <link rel="stylesheet" href="app-css/default.css" />
     <link rel="stylesheet" href="app-css/style.css" />
     <link rel="stylesheet" href="app-css/stars.css" />
@@ -33,7 +33,7 @@
 <body>
     <!-- Views -->
     <div class="height-100" ng-controller="Main.Controller">
-        <div class="container-fluid login-back p-0" ng-hide="$storage.LoggedIn" ui-view="splash"></div>
+        <div class="login-back" ng-hide="$storage.LoggedIn" ui-view="splash"></div>
         <div ui-view="navbar"></div>
         <div class="height-100" id="wrapper" ng-class="{'toggled' : $storage.hideSidebar }" ng-show="$storage.LoggedIn">
             <div ui-view="sidebar"></div>
@@ -43,7 +43,7 @@
 
     <!-- Necessary JS -->
     <script src="app-scripts/default.js"></script>
-    <script src="app-scripts/content-tools/content-tools.min.js"></script>
+    <!-- <script src="app-scripts/content-tools/content-tools.min.js"></script> -->
     <!-- application scripts -->
     <script src="app.js"></script>
 </body>

@@ -19,7 +19,9 @@ app.controller('Instructor.Live.Lecture.Controller', function($scope, $localStor
 
     $scope.selectedQuestion = "";
     $scope.time = 60;
+    $scope.timeMax = 60;
     $scope.timerEnabled = false;
+    $scope.end_time = 0;
     $rootScope.$stateParams = $stateParams;
     $scope.course = $localStorage.courses[$stateParams.selectedCourse];
     updateLectureInfo();
@@ -109,14 +111,25 @@ app.controller('Instructor.Live.Lecture.Controller', function($scope, $localStor
     };
 
     $scope.add10Seconds = function() {
-        $scope.$broadcast('timer-add-cd-seconds', 10);
+        if ($scope.time + 10 > $scope.timeMax) {
+            $scope.timeMax = $scope.time + 10;
+        }
+        $scope.end_time.setSeconds($scope.end_time.getSeconds() + 10);
+        SocketService.ChangeTime({
+            lecture_id: $scope.lecture.lecture_id,
+            time: $scope.end_time,
+            timeMax: $scope.timeMax
+        });
     };
     $scope.remove10Seconds = function() {
-        $scope.time -= 10;
         if ($scope.time < 0) {
             $scope.time = 0;
         }
-        $scope.$broadcast('timer-set-countdown-seconds', $scope.time);
+        $scope.end_time.setSeconds($scope.end_time.getSeconds() - 10);
+        SocketService.ChangeTime({
+            lecture_id: $scope.lecture.lecture_id,
+            time: $scope.end_time
+        });
     };
     $scope.startQuestion = function() {
         RESTService.GetQuestionDetails($scope.selectedQuestion, function(info) {
@@ -128,27 +141,39 @@ app.controller('Instructor.Live.Lecture.Controller', function($scope, $localStor
             $scope.data = [];
             var newData = [];
             $scope.choices = info.choices;
-            console.log(info);
             for (var i in info.choices) {
                 var correct = info.choices[i].answer ? " ✓" : " ✘";
                 $scope.labels.push((parseInt(i) + 1).toString() + correct);
                 newData.push(0);
             }
             $scope.data.push(newData);
-            $scope.time = 60;
             $scope.timerEnabled = true;
             $scope.$broadcast('timer-set-countdown-seconds', $scope.time);
+            var t = new Date();
+            t.setSeconds(t.getSeconds() + $scope.time);
+            $scope.end_time = t;
+            SocketService.StartQuestion({
+                lecture_id: $scope.lecture.lecture_id,
+                question_id: $scope.selectedQuestion,
+                max_time: $scope.timeMax,
+                end_time: t
+            });
             $scope.$broadcast('timer-start');
         });
     };
 
     $scope.$on('timer-tick', function(event, data) {
-        $scope.time = data.millis / 1000;
-        if ($scope.time === 0) {
+        var myTime = new Date();
+        $scope.time = Math.round(($scope.end_time.getTime() - myTime.getTime()) / 1000);
+        if ($scope.time <= 0) {
+            $scope.$broadcast('timer-stop');
+            $scope.selectedQuestion = "";
+            $scope.time = 60;
+            $scope.timeMax = 60;
             $scope.timerEnabled = false;
+            $scope.end_time = 0;
         } else {
             $scope.timerEnabled = true;
         }
-        $scope.randomize();
     });
 });
