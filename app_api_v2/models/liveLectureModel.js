@@ -27,6 +27,9 @@ var LiveLectureSchema = new Schema({
         type: String,
         required: true,
         unique: true
+    },
+    current_question: {
+        type: Object
     }
 });
 
