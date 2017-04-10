@@ -23,6 +23,7 @@ html, body, input, button, select, ul, li, auto-complete, label {
     -webkit-font-smoothing: antialiased !important;
     font-family: 'Roboto Condensed', sans-serif !important;
     text-rendering: optimizeLegibility !important;
+    overflow-x: hidden;
 }
 
 html, body {
@@ -31,7 +32,6 @@ html, body {
     font-weight: 400;
     height: 100%;
     line-height: 1.6;
-    overflow-x: hidden;
 }
 
 h1, h2, h3, h4, h5 {
@@ -41,14 +41,17 @@ h1, h2, h3, h4, h5 {
 .height-100 {
     height: 100%;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .footer {
     bottom: 0;
+    left: 0;
     color: #2A2C3A;
     font-size: 1rem;
     height: 3.4375rem;
-    position: absolute;
+    position: fixed;
+    overflow: hidden;
     width: 100%;
     z-index: 1000;
 }
@@ -334,17 +337,17 @@ a:hover {
         float: none;
         margin: 0rem auto;
     }
+    .splash-header>h1 {
+        font-size: 52px !important;
+    }
+
+    .splash-body {
+        font-size: 18px !important;
+    }
 }
 
 .no-courses {
     font-size: 3rem;
-}
-
-.splash {
-    color: #2A2C3A;
-    height: 100%;
-    position: absolute;
-    width: 100%;
 }
 
 .splash-header {
@@ -368,6 +371,8 @@ a:hover {
     background: linear-gradient(to left, #56CCF2, #2F80ED);
     /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     height: 100%;
+    overflow: hidden;
+    color: #2A2C3A;
 }
 
 .img-login {
