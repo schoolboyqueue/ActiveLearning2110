@@ -45,27 +45,7 @@ exports = module.exports = function(io, lectures_list) {
         });
 
         socket.on('end_lecture', function(lecture_id) {
-            console.log('end_lecture ' + lecture_id);
-            if (lectures_list.indexOf(lecture_id) > -1) {
-                Lecture.update({
-                        _id: lecture_id
-                    }, {
-                        $set: {
-                            live: false
-                        }
-                    })
-                    .then(function(result) {
-                        if (result.nModified !== 0) {
-                            for (var i = 0; i < lectures_list.length; i++) {
-                                if (lectures_list[i] === lecture_id) {
-                                    lectures_list.splice(i, 1);
-                                }
-                            }
-                        }
-                        // clearRoom(lecture_id);
-                        lectures.emit('lectures_update', JSON.stringify(lectures_list));
-                    });
-            }
+            endLecture(lecture_id);
         });
 
         socket.on('join_lecture', function(data) {
@@ -152,17 +132,45 @@ exports = module.exports = function(io, lectures_list) {
         function emitUserNumer(lecture) {
             var users = io.nsps['/lectures'].adapter.rooms[lecture];
             // var users = lectures.sockets.adapter.rooms[lecture];
-            console.log(users.length);
-            socket.to(lecture).emit('updatedUserTotal', users.length);
+            if (users) {
+                console.log(users.length);
+                socket.to(lecture).emit('updatedUserTotal', users.length);
+            }
         }
 
         //reference: http://stackoverflow.com/questions/39880435/make-specific-socket-leave-the-room-is-in
         function clearRoom(lecture) {
-            let roomObj = io.nsps['/lectures'].adapter.rooms[lecture];
+            var roomObj = io.nsps['/lectures'].adapter.rooms[lecture];
             if (roomObj) {
+                console.log('clearing room');
                 Object.keys(roomObj.sockets).forEach(function(id) {
-                    io.sockets.connected[id].leave(lecture);
+                    lectures.sockets[id].leave(lecture);
                 });
+                endLecture(lecture);
+            }
+        }
+
+        function endLecture(lecture_id) {
+            console.log('end_lecture ' + lecture_id);
+            if (lectures_list.indexOf(lecture_id) > -1) {
+                Lecture.update({
+                        _id: lecture_id
+                    }, {
+                        $set: {
+                            live: false
+                        }
+                    })
+                    .then(function(result) {
+                        if (result.nModified !== 0) {
+                            for (var i = 0; i < lectures_list.length; i++) {
+                                if (lectures_list[i] === lecture_id) {
+                                    lectures_list.splice(i, 1);
+                                }
+                            }
+                        }
+                        // clearRoom(lecture_id);
+                        lectures.emit('lectures_update', JSON.stringify(lectures_list));
+                    });
             }
         }
     });
