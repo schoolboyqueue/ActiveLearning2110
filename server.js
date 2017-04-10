@@ -28,10 +28,9 @@ var app_api_v2 = require('./app_api_v2'),
     config = require('./config'),
     app = express(),
     server = require('http').createServer(app),
-    io = require('socket.io')(server),
-    live_lectures = [];
+    io = require('socket.io')(server);
 
-require('./app_socket/lectures')(io, live_lectures);
+require('./app_socket/lectures')(io);
 
 /**
 Must have MongoDB installed and run mongod

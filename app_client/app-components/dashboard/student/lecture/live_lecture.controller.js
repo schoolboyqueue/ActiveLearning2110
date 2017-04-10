@@ -74,6 +74,17 @@ app.controller('Student.Live.Lecture.Controller', function($scope, $localStorage
         });
     });
 
+    $rootScope.$on('end_question', function() {
+        $scope.$apply(function() {
+            $scope.$broadcast('timer-stop');
+            $scope.timerEnabled = false;
+            $scope.answer = "";
+            $scope.submitted = false;
+            $scope.correct = null;
+            $scope.end_time = 0;
+        });
+    });
+
     $scope.$on('timer-tick', function(event, data) {
         var myTime = new Date();
         $scope.time = Math.round(($scope.end_time.getTime() - myTime.getTime()) / 1000);

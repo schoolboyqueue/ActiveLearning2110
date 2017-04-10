@@ -31,9 +31,19 @@ app.controller('Instructor.Live.Lecture.Controller', function($scope, $localStor
         SocketService.StopLecture($scope.lecture.lecture_id);
     });
 
-    $rootScope.$on('student_answer', function(evnt, answer) {
-        var indx = $scope.choices.indexOf(answer);
-        $scope.data[0][idx]++;
+    $rootScope.$on('updated_user_total', function(evt, total) {
+        console.log('new total: ' + total);
+        $scope.$apply(function() {
+            $scope.options.scales.yAxes[0].ticks.max = total + 5;
+        });
+    });
+
+    $rootScope.$on('new_answer', function(evnt, answer) {
+        var choices = $scope.choices.map(function(choice) {
+            return choice.text;
+        });
+        var indx = choices.indexOf(answer);
+        $scope.data[0][indx]++;
     });
 
     RESTService.GetLectureInfo({
@@ -54,15 +64,6 @@ app.controller('Instructor.Live.Lecture.Controller', function($scope, $localStor
 
     $scope.labels = [];
     $scope.data = [];
-
-    $scope.randomize = function() {
-        $scope.data = $scope.data.map(function(data) {
-            return data.map(function(y) {
-                y = y + Math.random() * 10 - 5;
-                return parseInt(y < 0 ? 0 : y > 100 ? 100 : y);
-            });
-        });
-    };
 
     $scope.datasetOverride = [
         {
@@ -105,9 +106,11 @@ app.controller('Instructor.Live.Lecture.Controller', function($scope, $localStor
                     display: true,
                     position: 'left',
                     ticks: {
+                        max: 10,
                         fontSize: 16,
                         fontStyle: "bold",
                         suggestedMin: 0,
+                        scaleSteps : 1,
                         beginAtZero: true // minimum value will be 0.
                     }
             }
@@ -177,6 +180,7 @@ app.controller('Instructor.Live.Lecture.Controller', function($scope, $localStor
             $scope.timeMax = 60;
             $scope.timerEnabled = false;
             $scope.end_time = 0;
+            SocketService.EndQuestion();
         } else {
             $scope.timerEnabled = true;
         }

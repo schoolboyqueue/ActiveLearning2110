@@ -20,6 +20,7 @@ app.factory('SocketService', function($rootScope, UserStorage) {
 
     liveSocket.on('connect', function() {
         console.log('lectures connected');
+        liveSocket.emit('lookup_lectures');
     });
     liveSocket.on('lectures_update', function(lecture_ids) {
         console.log(lecture_ids);
@@ -34,12 +35,13 @@ app.factory('SocketService', function($rootScope, UserStorage) {
         $rootScope.$emit('new_question', data);
     });
 
-    liveSocket.on('question_result', function(data) {
+    liveSocket.on('answer_result', function(data) {
         $rootScope.$emit('answer_result', data);
     });
 
     liveSocket.on('updated_user_total', function(total) {
-        $rootScope.$emit('newUserTotal', total);
+        console.log('new user total: ' + total);
+        $rootScope.$emit('updated_user_total', total);
     });
 
     liveSocket.on('new_end', function(data) {
@@ -47,7 +49,12 @@ app.factory('SocketService', function($rootScope, UserStorage) {
     });
 
     liveSocket.on('new_answer', function(answer) {
+        console.log('new answer recieved');
         $rootScope.$emit('new_answer', answer);
+    });
+
+    liveSocket.on('end_question', function() {
+        $rootScope.$emit('end_question');
     });
 
     service.JoinLiveLecture = function(info) {
@@ -65,6 +72,10 @@ app.factory('SocketService', function($rootScope, UserStorage) {
 
     service.StartQuestion = function(question_id) {
         liveSocket.emit('new_question', question_id);
+    };
+
+    service.EndQuestion = function() {
+        liveSocket.emit('end_question');
     };
 
     service.StartLecture = function(info) {
