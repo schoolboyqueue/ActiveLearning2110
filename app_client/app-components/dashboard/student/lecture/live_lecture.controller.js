@@ -38,10 +38,13 @@ app.controller('Student.Live.Lecture.Controller', function($scope, $localStorage
     };
 
     $rootScope.$on('new_end', function(evt, data) {
+        var old = $scope.end_time;
         $scope.end_time = new Date(data.time);
         $scope.timeMax = data.timeMax;
-        var time = Math.round(($scope.end_time.getTime() - myTime.getTime()) / 1000);
-        $scope.$broadcast('timer-set-countdown-seconds', time);
+        var time = Math.round(($scope.end_time.getTime() - old.getTime()) / 1000);
+        if (time > 0) {
+            $scope.$broadcast('timer-add-cd-seconds', time);
+        }
     });
 
     $rootScope.$on('answer_result', function(evt, correct) {
