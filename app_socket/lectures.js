@@ -119,7 +119,13 @@ exports = module.exports = function(io) {
                 .exec()
                 .then(function(question) {
                     data.question = question;
-                    return LiveLecture.update({lecture_id: socket.lecture_id}, {$set: {current_question: data}});
+                    return LiveLecture.update({
+                        lecture_id: socket.lecture_id
+                    }, {
+                        $set: {
+                            current_question: data
+                        }
+                    });
                 })
                 .then(function(results) {
                     socket.broadcast.to(socket.lecture_id).emit('question_feed', data);
@@ -130,36 +136,52 @@ exports = module.exports = function(io) {
         });
 
         socket.on('end_question', function() {
-            LiveLecture.update({lecture_id: socket.lecture_id}, {$set: {current_question: undefined}})
-            .exec()
-            .then(function(results) {
-                socket.broadcast.to(socket.lecture_id).emit('end_question');
-            });
+            LiveLecture.update({
+                    lecture_id: socket.lecture_id
+                }, {
+                    $set: {
+                        current_question: undefined
+                    }
+                })
+                .exec()
+                .then(function(results) {
+                    socket.broadcast.to(socket.lecture_id).emit('end_question');
+                });
         });
 
         socket.on('new_time', function(data) {
             console.log('time changed');
-            LiveLecture.findOne({lecture_id: socket.lecture_id}, {current_question: 1})
-            .exec()
-            .then(function(liveLecture) {
-                /*
-                var question = {
+            LiveLecture.findOne({
+                    lecture_id: socket.lecture_id
+                }, {
+                    current_question: 1
+                })
+                .exec()
+                .then(function(liveLecture) {
+                    /*
+                    var question = {
 
-                }
-                liveLecture.current_question.question.end_time = data.time;
-                return liveLecture.save();
-                */
-               var updatedQuestion = liveLecture.current_question;
-               updatedQuestion.end_time = data.time;
-               updatedQuestion.max_time = data.timeMax;
-               return LiveLecture.update({lecture_id: socket.lecture_id}, {$set: {current_question: updatedQuestion}});
-            })
-            .then(function(results) {
-                socket.broadcast.to(data.lecture_id).emit('new_end', data);
-            })
-            .catch(function(err) {
+                    }
+                    liveLecture.current_question.question.end_time = data.time;
+                    return liveLecture.save();
+                    */
+                    var updatedQuestion = liveLecture.current_question;
+                    updatedQuestion.end_time = data.time;
+                    updatedQuestion.max_time = data.timeMax;
+                    return LiveLecture.update({
+                        lecture_id: socket.lecture_id
+                    }, {
+                        $set: {
+                            current_question: updatedQuestion
+                        }
+                    });
+                })
+                .then(function(results) {
+                    socket.broadcast.to(data.lecture_id).emit('new_end', data);
+                })
+                .catch(function(err) {
 
-            });
+                });
         });
 
         socket.on('answer_question', function(data) {
