@@ -68,29 +68,6 @@ app.controller('Instructor.Live.Lecture.Controller', function($scope, $localStor
     $scope.labels = [];
     $scope.data = [];
 
-    $scope.datasetOverride = [
-        {
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255,99,132,1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 2
-        }
-      ];
     $scope.options = {
         scales: {
             xAxes: [{
@@ -113,7 +90,7 @@ app.controller('Instructor.Live.Lecture.Controller', function($scope, $localStor
                         fontSize: 16,
                         fontStyle: "bold",
                         suggestedMin: 0,
-                        scaleSteps : 1,
+                        scaleSteps: 1,
                         beginAtZero: true // minimum value will be 0.
                     }
             }
@@ -150,15 +127,9 @@ app.controller('Instructor.Live.Lecture.Controller', function($scope, $localStor
                 return;
             }
             $scope.labels = [];
-            $scope.data = [];
-            var newData = [];
             $scope.choices = info.choices;
-            for (var i in info.choices) {
-                var correct = info.choices[i].answer ? " ✓" : " ✘";
-                $scope.labels.push((parseInt(i) + 1).toString() + correct);
-                newData.push(0);
-            }
-            $scope.data.push(newData);
+            setChoices(info);
+            setColors(info.choices.length);
             $scope.timerEnabled = true;
             $scope.$broadcast('timer-set-countdown-seconds', $scope.time);
             var t = new Date();
@@ -189,4 +160,34 @@ app.controller('Instructor.Live.Lecture.Controller', function($scope, $localStor
             $scope.timerEnabled = true;
         }
     });
+
+    function setChoices(info) {
+        $scope.data = [];
+        var newData = [];
+        for (var i in info.choices) {
+            var correct = info.choices[i].answer ? " ✓" : " ✘";
+            $scope.labels.push((parseInt(i) + 1).toString() + correct);
+            newData.push(0);
+        }
+        $scope.data.push(newData);
+    }
+
+    function setColors(num) {
+        var colors = Please.make_color({
+            colors_returned: num,
+            format: 'rgb'
+        });
+        var back = [];
+        var border = [];
+        colors.forEach(function(color) {
+            back.push('rgba(' + color.r + ','+ color.g + ','+ color.b +', 0.2)');
+            border.push('rgba(' + color.r + ','+ color.g + ','+ color.b +', 1)');
+        });
+        $scope.datasetOverride = [{
+            backgroundColor: back,
+            borderColor: border,
+            borderWidth: 2
+        }];
+        console.log($scope.datasetOverride);
+    }
 });
