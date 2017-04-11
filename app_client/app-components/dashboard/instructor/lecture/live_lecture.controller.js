@@ -131,6 +131,7 @@ app.controller('Instructor.Live.Lecture.Controller', function($scope, $localStor
             time: $scope.end_time,
             timeMax: $scope.timeMax
         });
+        $scope.$broadcast('timer-add-cd-seconds', 10);
     };
     $scope.remove10Seconds = function() {
         if ($scope.time < 0) {
