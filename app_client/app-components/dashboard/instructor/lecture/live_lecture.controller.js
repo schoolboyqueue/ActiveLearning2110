@@ -31,6 +31,24 @@ app.controller('Instructor.Live.Lecture.Controller', function($scope, $localStor
         SocketService.StopLecture($scope.lecture.lecture_id);
     });
 
+    $rootScope.$on('updated_user_total', function(evt, total) {
+        console.log('new total: ' + total);
+        var cur = $scope.options.scales.yAxes[0].ticks.max;
+        if (total > cur - 5) {
+            $scope.$apply(function() {
+                $scope.options.scales.yAxes[0].ticks.max = total + 5;
+            });
+        }
+    });
+
+    $rootScope.$on('new_answer', function(evnt, answer) {
+        var choices = $scope.choices.map(function(choice) {
+            return choice.text;
+        });
+        var indx = choices.indexOf(answer);
+        $scope.data[0][indx]++;
+    });
+
     RESTService.GetLectureInfo({
         lecture_id: $scope.lecture.lecture_id,
         course_id: $scope.course._id
@@ -50,38 +68,6 @@ app.controller('Instructor.Live.Lecture.Controller', function($scope, $localStor
     $scope.labels = [];
     $scope.data = [];
 
-    $scope.randomize = function() {
-        $scope.data = $scope.data.map(function(data) {
-            return data.map(function(y) {
-                y = y + Math.random() * 10 - 5;
-                return parseInt(y < 0 ? 0 : y > 100 ? 100 : y);
-            });
-        });
-    };
-
-    $scope.datasetOverride = [
-        {
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255,99,132,1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 2
-        }
-      ];
     $scope.options = {
         scales: {
             xAxes: [{
@@ -100,9 +86,11 @@ app.controller('Instructor.Live.Lecture.Controller', function($scope, $localStor
                     display: true,
                     position: 'left',
                     ticks: {
+                        max: 10,
                         fontSize: 16,
                         fontStyle: "bold",
                         suggestedMin: 0,
+                        scaleSteps: 1,
                         beginAtZero: true // minimum value will be 0.
                     }
             }
@@ -120,6 +108,7 @@ app.controller('Instructor.Live.Lecture.Controller', function($scope, $localStor
             time: $scope.end_time,
             timeMax: $scope.timeMax
         });
+        $scope.$broadcast('timer-add-cd-seconds', 10);
     };
     $scope.remove10Seconds = function() {
         if ($scope.time < 0) {
@@ -138,15 +127,9 @@ app.controller('Instructor.Live.Lecture.Controller', function($scope, $localStor
                 return;
             }
             $scope.labels = [];
-            $scope.data = [];
-            var newData = [];
             $scope.choices = info.choices;
-            for (var i in info.choices) {
-                var correct = info.choices[i].answer ? " ✓" : " ✘";
-                $scope.labels.push((parseInt(i) + 1).toString() + correct);
-                newData.push(0);
-            }
-            $scope.data.push(newData);
+            setChoices(info);
+            setColors(info.choices.length);
             $scope.timerEnabled = true;
             $scope.$broadcast('timer-set-countdown-seconds', $scope.time);
             var t = new Date();
@@ -172,8 +155,39 @@ app.controller('Instructor.Live.Lecture.Controller', function($scope, $localStor
             $scope.timeMax = 60;
             $scope.timerEnabled = false;
             $scope.end_time = 0;
+            SocketService.EndQuestion();
         } else {
             $scope.timerEnabled = true;
         }
     });
+
+    function setChoices(info) {
+        $scope.data = [];
+        var newData = [];
+        for (var i in info.choices) {
+            var correct = info.choices[i].answer ? " ✓" : " ✘";
+            $scope.labels.push((parseInt(i) + 1).toString() + correct);
+            newData.push(0);
+        }
+        $scope.data.push(newData);
+    }
+
+    function setColors(num) {
+        var colors = Please.make_color({
+            colors_returned: num,
+            format: 'rgb'
+        });
+        var back = [];
+        var border = [];
+        colors.forEach(function(color) {
+            back.push('rgba(' + color.r + ','+ color.g + ','+ color.b +', 0.2)');
+            border.push('rgba(' + color.r + ','+ color.g + ','+ color.b +', 1)');
+        });
+        $scope.datasetOverride = [{
+            backgroundColor: back,
+            borderColor: border,
+            borderWidth: 2
+        }];
+        console.log($scope.datasetOverride);
+    }
 });
