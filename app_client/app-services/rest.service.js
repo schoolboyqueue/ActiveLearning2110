@@ -34,6 +34,7 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
             Restangular.setDefaultHeaders({
                 token: $localStorage.jwt_token
             });
+            SocketService.connectToServer();
             return true;
         } else {
             $localStorage.LoggedIn = false;
@@ -73,6 +74,7 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
                 var retInfo = genRetInfo(response);
                 UserStorage.UpdateUserInfo(data);
                 callback(retInfo);
+                SocketService.connectToServer();
             },
             function(response) {
                 callback(genRetInfo(response));
@@ -469,6 +471,7 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
             token: ""
         });
         $state.go('main');
+        SocketService.disconnect();
     };
 
     function genRetInfo(response) {
