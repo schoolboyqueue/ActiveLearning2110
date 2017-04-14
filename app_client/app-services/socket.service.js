@@ -23,6 +23,8 @@ app.factory('SocketService', function($rootScope, UserStorage) {
             liveSocket = io('http://localhost:8081/lectures');
             liveSocket.on('connect', function() {
                 buildSocket();
+                console.log('lectures connected');
+                liveSocket.emit('lookup_lectures');
             });
         }
     };
@@ -31,6 +33,12 @@ app.factory('SocketService', function($rootScope, UserStorage) {
         if (liveSocket !== null) {
             liveSocket.disconnect();
             liveSocket = null;
+        }
+    };
+
+    service.getLecturesList = function() {
+        if (liveSocket !== null) {
+            liveSocket.emit('lookup_lectures');
         }
     };
 
@@ -69,10 +77,6 @@ app.factory('SocketService', function($rootScope, UserStorage) {
     };
 
     function buildSocket() {
-        liveSocket.on('connect', function() {
-            console.log('lectures connected');
-            liveSocket.emit('lookup_lectures');
-        });
         liveSocket.on('lectures_update', function(lecture_ids) {
             console.log(lecture_ids);
             UserStorage.LectureLiveUpdate(lecture_ids);
