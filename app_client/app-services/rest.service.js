@@ -42,6 +42,7 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
         }
     };
 
+
     service.Register = function(info, callback) {
         var signup = null;
         if (info.professor) {
