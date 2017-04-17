@@ -16,9 +16,9 @@ This is the Active Learning 2110 app API documentation. Our application uses a M
 - {user_role} ---> Query String: pass either "admin" or "instructor" for those registration paths
 - A user's role can be admin, student, or instructor.
 - Quotes around text implies that it is a String.
-<Triangle brackets denote within them whether information is Required or Optional.>
 - Square brackets are lists.
 - Parentheses denote additional information.
+<Triangle brackets denote within them whether information is Required or Optional.>
 
 ## Authentication
 
