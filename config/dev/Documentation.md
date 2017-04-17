@@ -6,6 +6,8 @@ This is the Active Learning 2110 app API documentation. Our application uses a M
 
 **All URIs relative to .../api_v2**
 
+**See method calls in code for more description on methods through docs**
+
 ### Notes:
 - {user_id} --> Path Parameters: user_id String
 - {instructor_id} --> Path Parameters: instructor_id String
@@ -40,7 +42,7 @@ Token-based authentication.
 | ------- | --------------- | -------------- | ------ |
 | get | **GET** /user | Get all users. | Authentication: user token, Authorization: admin (All Required) |
 | get | **GET** /user/{user_id}/ | Get user. | Authentication: user token, Authorization: admin or self <All Required> |
-| post | **POST** /user/{user_id}/ | Update user information. | json --> "new_photo", "new_firstname", "new_lastname", and "new_role"(admin auth Only)  <All Optional> |
+| post | **POST** /user/{user_id}/ | Update user information. | json --> "new_photo", "new_firstname", "new_lastname", and "new_role"(admin auth only)  <All Optional> |
 | get | **GET** /user/{user_id}/course | Get user courses. | Authentication: user token, Authorization: student or instructor <All Required> |
 | post | **POST** /user/{user_id}/role | Update user role. | Authentication: user token, Authorization: admin, json --> "new_role" <All Required> |
 | post | **POST** /user/{user_id}/password | Update user password. | Authentication: user token, Authorization: self, json --> "cur_password" and "new_password" |
@@ -51,13 +53,23 @@ Token-based authentication.
 ## Courses
 
 ### Notes:
+- {course_id} --> Path Parameters: course_id String
+- {section_id} --> Path Parameters: section_id String
 - "sections" is a string comprised of a list of strings [name].
 - ["name"] is a list of Strings that are section names
 - ["days"] is a list of Strings that are one of these enum values: ["mon", "tue", "wed", "thu", "fri"]
+- "date" of format "YYYY-MM-DD"
 
 |  Method | HTTP request | Description | Details |
 | ------- | --------------- | -------------- | ---- |
 | post | **POST** /course | Create a course. | Authentication: user token, Authorization: instructor, json --> "title", "sections" --> ["name"], "course_schedule" --> "semester", ["days"], and "time"  <All Required> |
+| post | **POST** /course/students | Student joins course. | Authentication: user token, Authorization: student, json --> "section_key" <All Required> |
+| post | **POST** /course/{course_id}/sections/{section_id}/students/ | Add student to course. | Authentication: user token, Authorization: instructor, json --> "username", "firstname", and "lastname" <All Required> |
+| delete | **DELETE** /course/{course_id}/sections/{section_id}/students/{user_id}/ | Remove student from course. | Authentication: user token, Authorization: admin, instructor or self (student) <All Required> |
+| get | **GET** /course/{course_id}/ | Get course info. | Authentication: user token, Authorization: instructor <All Required> |
+| post | **POST** /course/{course_id}/lectures | Add course lectures. | Authentication: user token, Authorization: instructor, json --> "lecture_title", "lecture_schedule" --> ["day"], "date" <All Required> |
+| post | **POST** /course/{course_id}/lectures | Get course lectures. | Authentication: user token, Authorization: instructor <All Required> |
+| delete | **DELETE** /course/{course_id}/lectures/{lecture_id}/ | Delete course lecture. | Authentication: user token, Authorization: instructor <All required> |
 
 ## Lectures
 
