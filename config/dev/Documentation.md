@@ -85,7 +85,7 @@ Token-based authentication.
 | delete | **DELETE** /lecture/{lecture_id}/questions{question_id}/ | Remove question. | Authentication: user token, Authorization: instructor <All Required> |
 | post | **POST** /lecture/{lecture_id}/questionset | Save question set. | Authentication: user token, Authorization: instructor, json --> "title" <All Required> |
 | post | **POST** /lecture/{lecture_id}/questionset/{questionSet_id}/ | Add question set to lecture. | Authentication: user token, Authorization: instructor <All Required> |
-| post | **POST** /lecture/{lecture_id}/ | Edit lecture title or schedule. | Authentication: user token, Authorization: instructor, json --> "title" <Optional>, "schedule" <Optional> --> ["day"], "date" <All Required> |
+| post | **POST** /lecture/{lecture_id}/ | Edit lecture title or schedule. | Authentication: user token, Authorization: instructor, json --> "title" -Optional-, "schedule" -Optional- --> ["day"], "date" -All Required- |
 
 ## Questions
 
