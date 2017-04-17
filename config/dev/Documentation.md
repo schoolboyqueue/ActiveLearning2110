@@ -16,7 +16,7 @@ This is the Active Learning 2110 app API documentation. Our application uses a M
 - {user_role} ---> Query String: pass either "admin" or "instructor" for those registration paths
 - A user's role can be admin, student, or instructor.
 - Quotes around text implies that it is a String.
-<- Triangle brackets denote within them whether information is Required or Optional.>
+<Triangle brackets denote within them whether information is Required or Optional.>
 - Square brackets are lists.
 - Parentheses denote additional information.
 
@@ -42,7 +42,7 @@ Token-based authentication.
 
 |  Method | HTTP request | Description | Details |
 | ------- | --------------- | -------------- | ------ |
-| get | **GET** /user | Get all users. | Authentication: user token, Authorization: admin (All Required) |
+| get | **GET** /user | Get all users. | Authentication: user token, Authorization: admin <All Required> |
 | get | **GET** /user/{user_id}/ | Get user. | Authentication: user token, Authorization: admin or self <All Required> |
 | post | **POST** /user/{user_id}/ | Update user information. | json --> "new_photo", "new_firstname", "new_lastname", and "new_role"(admin auth only)  (All Optional) |
 | get | **GET** /user/{user_id}/course | Get user courses. | Authentication: user token, Authorization: student or instructor <All Required> |
