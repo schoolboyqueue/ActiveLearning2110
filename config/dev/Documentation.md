@@ -10,17 +10,18 @@ This is the Active Learning 2110 app API documentation. Our application uses a M
 
 Token-based authentication.
 
-|  Method | HTTP request | Description |
-| ------- | --------------- | -------------- |
-| post | **POST** /authenticate | Authenticate user. |
-| delete | **DELETE** /authenticate | Log out user. |
+|  Method | HTTP request | Description | Details |
+| ------- | --------------- | -------------- | ---- |
+| post | **POST** /authenticate | Authenticate user. | '''json
+"username" : String and "password" : String''' |
+| delete | **DELETE** /authenticate | Log out user. | |
 
 ## User Services
 
-|  Method | HTTP request | Description |
-| ------- | --------------- | -------------- |
-| get | **GET** /user | Get all users. |
-| get | **GET** /user/{user_id}/ | Get user. |
+|  Method | HTTP request | Description | Details |
+| ------- | --------------- | -------------- | ------ |
+| get | **GET** /user | Get all users. | |
+| get | **GET** /user/{user_id}/ | Get user. | |
 | post | **POST** /user/{user_id}/ | Update user information. |
 
 
