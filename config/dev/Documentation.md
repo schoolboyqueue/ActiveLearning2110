@@ -9,14 +9,22 @@ Our path always follows
 
 ## Authentication
 
+Token-based authentication.
 **URIs relative to .../api_v2**
 
-|  ### Method | ### HTTP request | ### Description |
+|  Method | HTTP request | Description |
 | ------- | --------------- | -------------- |
 | post | **POST** /authenticate | Authenticate user. |
-
+| delete | **DELETE** /authenticate | Log out user. |
 
 ## User Services
+
+|  Method | HTTP request | Description |
+| ------- | --------------- | -------------- |
+| get | **GET** /user | Get all users. |
+| get | **GET** /user/{user_id}/ | Get user. |
+| post | **POST** /user/{user_id}/ | Update user information. |
+
 
 ## Courses
 
