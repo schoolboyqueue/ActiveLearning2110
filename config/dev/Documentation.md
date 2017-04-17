@@ -56,6 +56,7 @@ Token-based authentication.
 - {course_id} --> Path Parameters: course_id String
 - {section_id} --> Path Parameters: section_id String
 - "sections" is a string comprised of a list of strings [name].
+- {lecture_id} --> Path Parameters: lecture_id String
 - ["name"] is a list of Strings that are section names
 - ["days"] is a list of Strings that are one of these enum values: ["mon", "tue", "wed", "thu", "fri"]
 - "date" of format "YYYY-MM-DD"
@@ -73,8 +74,18 @@ Token-based authentication.
 
 ## Lectures
 
+### Notes:
+- {question_id} --> Path Parameters: question_id String
+
 |  Method | HTTP request | Description | Details |
 | ------- | --------------- | -------------- | ---- |
+| get | **GET** /lecture/{lecture_id}/ | Get lecture details. | Authentication: user token, Authorization: instructor <All Required> |
+| post | **POST** /lecture/{lecture_id}/questions/{question_id}/ | Add question. | Authentication: user token, Authorization: instructor <All Required> |
+| post | **POST** /lecture/{lecture_id}/questions{question_id}/reorder | Reorder lecture question. | Authentication: user token, Authorization: instructor, json --> "index" : Number <All Required> |
+| delete | **DELETE** /lecture/{lecture_id}/questions{question_id}/ | Remove question. | Authentication: user token, Authorization: instructor <All Required> |
+| post | **POST** /lecture/{lecture_id}/questionset | Save question set. | Authentication: user token, Authorization: instructor, json --> "title" <All Required> |
+| post | **POST** /lecture/{lecture_id}/questionset/{questionSet_id}/ | Add question set to lecture. | Authentication: user token, Authorization: instructor <All Required> |
+| post | **POST** /lecture/{lecture_id}/ | Edit lecture title or schedule. | Authentication: user token, Authorization: instructor, json --> "title" <Optional>, "schedule" <Optional> --> ["day"], "date" <All Required> |
 
 ## Questions
 
