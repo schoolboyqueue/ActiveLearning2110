@@ -82,7 +82,7 @@ Token-based authentication.
 |  Method | HTTP request | Description | Details |
 | ------- | --------------- | -------------- | ---- |
 | get | **GET** /lecture/{lecture_id}/ | Get lecture details. | Authentication: user token, Authorization: instructor <All Required> |
-| post | **POST** /lecture/{lecture_id}/questions/{question_id}/ | Add question. | Authentication: user token, Authorization: instructor <All Required> |
+| post | **POST** /lecture/{lecture_id}/questions/{question_id}/ | Add question to lecture. | Authentication: user token, Authorization: instructor <All Required> |
 | post | **POST** /lecture/{lecture_id}/questions{question_id}/reorder | Reorder lecture question. | Authentication: user token, Authorization: instructor, json --> "index" : Number <All Required> |
 | delete | **DELETE** /lecture/{lecture_id}/questions{question_id}/ | Remove question. | Authentication: user token, Authorization: instructor <All Required> |
 | post | **POST** /lecture/{lecture_id}/questionset | Save question set. | Authentication: user token, Authorization: instructor, json --> "title" <All Required> |
@@ -91,5 +91,14 @@ Token-based authentication.
 
 ## Questions
 
+### Notes:
+- ["tags"] is a String list of tags.
+
 |  Method | HTTP request | Description | Details |
 | ------- | --------------- | -------------- | ---- |
+| post | **POST** /question | Create question. | Authentication: user token, Authorization: instructor, json --> "title", ["tags"], "html_title", "html_body", ["answer_choices"] <All Required> |
+| get | **GET** /question?tag={query_string}/ | Get all question snapshots. | Authentication: user token, Query String: query_string String (Optional) |
+| get | **GET** /question/{question_id}/ |  Get question, full details. | Authentication: user token, Authorization: instructor <All Required> |
+| put | **PUT** /question/{question_id}/copy | Copy question from existing question. Backend only. | Authentication: user token, Authorization: instructor <All Required> |
+| delete | **DELETE** /question/{question_id}/ | Delete question. | Authentication: user token, Authorization: instructor <All Required> |
+| edit | **EDIT** /questions/{question_id}/ | Edit question. | Authentication: user token, Authorization: instructor, json --> "title", ["tags"], "html_title", "html_body", and ["answer_choices"] <All Required> |
