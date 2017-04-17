@@ -9,13 +9,11 @@ Our path always follows
 
 ## Authentication
 
-URIs relative to .../api_v2
------------------------------------
-
-
-Method | HTTP request | Description
-------------------------------------
-post | POST /authenticate | Authenticate user.
+| URIs relative to .../api_v2 |
+| ----------------------------------- |
+| Method | HTTP request | Description |
+| ------- | --------------- | -------------- |
+| post | POST /authenticate | Authenticate user. |
 
 
 ## User Services
