@@ -22,6 +22,7 @@ app.controller('Instructor.Live.Lecture.Controller', function($scope, $localStor
     $scope.timeMax = 60;
     $scope.timerEnabled = false;
     $scope.end_time = 0;
+    $scope.numOfStudents = 0;
     $rootScope.$stateParams = $stateParams;
     $scope.course = $localStorage.courses[$stateParams.selectedCourse];
     updateLectureInfo();
@@ -33,6 +34,9 @@ app.controller('Instructor.Live.Lecture.Controller', function($scope, $localStor
 
     $rootScope.$on('updated_user_total', function(evt, total) {
         console.log('new total: ' + total);
+        $scope.$apply(function() {
+            $scope.numOfStudents = total - 1;
+        });
         var cur = $scope.options.scales.yAxes[0].ticks.max;
         if (total > cur - 5) {
             $scope.$apply(function() {

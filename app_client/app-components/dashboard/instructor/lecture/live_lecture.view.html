@@ -1,24 +1,29 @@
 <div class="animated fadeIn container-fluid p-3 animated fadeIn height-100" ng-controller="Instructor.Live.Lecture.Controller">
     <div class="d-flex justify-content-between align-items-center p-2">
-        <div class="input-group">
-            <timer interval="1000" countdown="60" hidden="true" autostart="false"></timer>
-            <select
-                class="custom-select select-inline text-capitalize"
-                ng-model="selectedQuestion"
-                ng-click="questionSelected()"
-                ng-options="question.question_id as question.title for question in lecture.questions">
-                <option value="" disabled selected>
-                    Select question to start
-                </option>
-            </select>
-            <span class="input-group-btn">
-                <button class="btn btn-outline-success btn-sm" type="button" ng-click="startQuestion()" ng-disabled="selectedQuestion === '' || timerEnabled">
-                    <span ng-show="addLoading">
-                        <i class="fa fa-circle-o-notch fa-spin"></i>
-                    </span>
-                    Start Question
-                </button>
-            </span>
+        <div class="form-group m-0">
+            <div class="input-group">
+                <timer interval="1000" countdown="60" hidden="true" autostart="false"></timer>
+                <select
+                    class="custom-select select-inline text-capitalize"
+                    ng-model="selectedQuestion"
+                    ng-click="questionSelected()"
+                    ng-options="question.question_id as question.title for question in lecture.questions">
+                    <option value="" disabled selected>
+                        Select question to start
+                    </option>
+                </select>
+                <span class="input-group-btn">
+                    <button class="btn btn-outline-success btn-sm" type="button" ng-click="startQuestion()" ng-disabled="selectedQuestion === '' || timerEnabled">
+                        <span ng-show="addLoading">
+                            <i class="fa fa-circle-o-notch fa-spin"></i>
+                        </span>
+                        Start Question
+                    </button>
+                </span>
+            </div>
+        </div>
+        <div style="font-size: 32px;">
+            {{numOfStudents}} Students
         </div>
         <div class="d-flex align-items-center">
             <div class="btn-group-vertical pr-2">

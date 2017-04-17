@@ -17,6 +17,8 @@ var app = angular.module('app');
 
 app.controller('Student.Dashboard.Controller', function($scope, $localStorage, UserService) {
 
+    $scope.courseAverage = 100;
+
     $scope.joinCourse = function() {
         UserService.ShowJoinCourse();
     };
