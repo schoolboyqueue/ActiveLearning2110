@@ -8,13 +8,15 @@ This is the Active Learning 2110 app API documentation. Our application uses a M
 
 **See method calls in code for more description on methods through docs**
 
+**If it says "(Optional)," then that information is optional; otherwise assume it is required**
+
 ### Notes:
 - {user_id} --> Path Parameters: user_id String
 - {instructor_id} --> Path Parameters: instructor_id String
 - {user_role} ---> Query String: pass either "admin" or "instructor" for those registration paths
 - A user's role can be admin, student, or instructor.
 - Quotes around text implies that it is a String.
-- Triangle brackets denote within them whether information is Required or Optional.
+<- Triangle brackets denote within them whether information is Required or Optional.>
 - Square brackets are lists.
 - Parentheses denote additional information.
 
@@ -42,7 +44,7 @@ Token-based authentication.
 | ------- | --------------- | -------------- | ------ |
 | get | **GET** /user | Get all users. | Authentication: user token, Authorization: admin (All Required) |
 | get | **GET** /user/{user_id}/ | Get user. | Authentication: user token, Authorization: admin or self <All Required> |
-| post | **POST** /user/{user_id}/ | Update user information. | json --> "new_photo", "new_firstname", "new_lastname", and "new_role"(admin auth only)  <All Optional> |
+| post | **POST** /user/{user_id}/ | Update user information. | json --> "new_photo", "new_firstname", "new_lastname", and "new_role"(admin auth only)  (All Optional) |
 | get | **GET** /user/{user_id}/course | Get user courses. | Authentication: user token, Authorization: student or instructor <All Required> |
 | post | **POST** /user/{user_id}/role | Update user role. | Authentication: user token, Authorization: admin, json --> "new_role" <All Required> |
 | post | **POST** /user/{user_id}/password | Update user password. | Authentication: user token, Authorization: self, json --> "cur_password" and "new_password" |
@@ -85,7 +87,7 @@ Token-based authentication.
 | delete | **DELETE** /lecture/{lecture_id}/questions{question_id}/ | Remove question. | Authentication: user token, Authorization: instructor <All Required> |
 | post | **POST** /lecture/{lecture_id}/questionset | Save question set. | Authentication: user token, Authorization: instructor, json --> "title" <All Required> |
 | post | **POST** /lecture/{lecture_id}/questionset/{questionSet_id}/ | Add question set to lecture. | Authentication: user token, Authorization: instructor <All Required> |
-| post | **POST** /lecture/{lecture_id}/ | Edit lecture title or schedule. | Authentication: user token, Authorization: instructor, json --> "title" -Optional-, "schedule" -Optional- --> ["day"], "date" -All Required- |
+| post | **POST** /lecture/{lecture_id}/ | Edit lecture title or schedule. | Authentication: user token, Authorization: instructor, json --> "title" (Optional), "schedule" (Optional) --> ["day"], "date" |
 
 ## Questions
 
