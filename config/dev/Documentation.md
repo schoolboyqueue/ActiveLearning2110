@@ -17,11 +17,16 @@ Token-based authentication.
 
 ## User Services
 
+### Notes:
+- {user_id} --> Path Parameters: user_id String
+- user can be admin, student, or instructor
+
 |  Method | HTTP request | Description | Details |
 | ------- | --------------- | -------------- | ------ |
-| get | **GET** /user | Get all users. | Authentication: user token and Authorization: admin (Required) |
-| get | **GET** /user/{user_id}/ | Get user. | Authentication: user token and Authorization: admin or self (Required) |
-| post | **POST** /user/{user_id}/ | Update user information. | json --> ["new_photo", "new_firstname", "new_lastname"] (Optional), "new_role" (admin Only) |
+| get | **GET** /user | Get all users. | Authentication: user token, Authorization: admin (Required) |
+| get | **GET** /user/{user_id}/ | Get user. | Authentication: user token, Authorization: admin or self (Required) |
+| post | **POST** /user/{user_id}/ | Update user information. | json --> ["new_photo", "new_firstname", "new_lastname"] (Optional), "new_role" (admin Only and Optional) |
+| get | **GET** /user/{user_id}/course | Get user courses. | Authentication: user token, Authorization: student or instructor, (All required) |
 
 
 ## Courses
