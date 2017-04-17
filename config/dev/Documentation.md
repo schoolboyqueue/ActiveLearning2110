@@ -12,17 +12,16 @@ Token-based authentication.
 
 |  Method | HTTP request | Description | Details |
 | ------- | --------------- | -------------- | ---- |
-| post | **POST** /authenticate | Authenticate user. | '''json
-"username" : String and "password" : String''' |
-| delete | **DELETE** /authenticate | Log out user. | |
+| post | **POST** /authenticate | Authenticate user. | json --> "username" and "password" (Required) |
+| delete | **DELETE** /authenticate | Log out user. | Authentication: user token (Required) |
 
 ## User Services
 
 |  Method | HTTP request | Description | Details |
 | ------- | --------------- | -------------- | ------ |
-| get | **GET** /user | Get all users. | |
-| get | **GET** /user/{user_id}/ | Get user. | |
-| post | **POST** /user/{user_id}/ | Update user information. |
+| get | **GET** /user | Get all users. | Authentication: user token and Authorization: admin (Required) |
+| get | **GET** /user/{user_id}/ | Get user. | Authentication: user token and Authorization: admin or self (Required) |
+| post | **POST** /user/{user_id}/ | Update user information. | json --> ["new_photo", "new_firstname", "new_lastname"] (Optional), "new_role" (admin Only) |
 
 
 ## Courses
