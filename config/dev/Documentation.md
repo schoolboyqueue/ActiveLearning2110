@@ -11,6 +11,8 @@ Our path always follows
 
 URIs relative to .../api_v2
 -----------------------------------
+
+
 Method | HTTP request | Description
 ------------------------------------
 post | POST /authenticate | Authenticate user.
