@@ -117,7 +117,7 @@ app.controller('Student.Live.Lecture.Controller', function($scope, $localStorage
 
     function calculatePercent() {
         if ($scope.total !== 0) {
-            $scope.percent = ($scope.totalCorrect / $scope.total) * 100;
+            $scope.percent = Math.round(($scope.totalCorrect / $scope.total) * 100);
         }
     }
 });

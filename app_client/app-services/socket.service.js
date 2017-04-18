@@ -16,46 +16,31 @@ var app = angular.module('app');
 app.factory('SocketService', function($rootScope, UserStorage) {
 
     var service = {};
-    var liveSocket = io('http://localhost:8081/lectures');
+    var liveSocket = null;
 
-    liveSocket.on('connect', function() {
-        console.log('lectures connected');
-        liveSocket.emit('lookup_lectures');
-    });
-    liveSocket.on('lectures_update', function(lecture_ids) {
-        console.log(lecture_ids);
-        UserStorage.LectureLiveUpdate(lecture_ids);
-    });
-    liveSocket.on('disconnect', function(reason) {
-        console.log('lecture disconnected ' + reason);
-    });
+    service.connectToServer = function() {
+        if (liveSocket === null) {
+            liveSocket = io('http://localhost:8081/lectures');
+            liveSocket.on('connect', function() {
+                buildSocket();
+                console.log('lectures connected');
+                liveSocket.emit('lookup_lectures');
+            });
+        }
+    };
 
-    liveSocket.on('question_feed', function(data) {
-        console.log('new questions recieved');
-        $rootScope.$emit('new_question', data);
-    });
+    service.disconnect = function() {
+        if (liveSocket !== null) {
+            liveSocket.disconnect();
+            liveSocket = null;
+        }
+    };
 
-    liveSocket.on('answer_result', function(data) {
-        $rootScope.$emit('answer_result', data);
-    });
-
-    liveSocket.on('updated_user_total', function(total) {
-        console.log('new user total: ' + total);
-        $rootScope.$emit('updated_user_total', total);
-    });
-
-    liveSocket.on('new_end', function(data) {
-        $rootScope.$emit('new_end', data);
-    });
-
-    liveSocket.on('new_answer', function(answer) {
-        console.log('new answer recieved');
-        $rootScope.$emit('new_answer', answer);
-    });
-
-    liveSocket.on('end_question', function() {
-        $rootScope.$emit('end_question');
-    });
+    service.getLecturesList = function() {
+        if (liveSocket !== null) {
+            liveSocket.emit('lookup_lectures');
+        }
+    };
 
     service.JoinLiveLecture = function(info) {
         liveSocket.emit('join_lecture', {
@@ -90,6 +75,43 @@ app.factory('SocketService', function($rootScope, UserStorage) {
     service.AnswerQuestion = function(info) {
         liveSocket.emit('answer_question', info);
     };
+
+    function buildSocket() {
+        liveSocket.on('lectures_update', function(lecture_ids) {
+            console.log(lecture_ids);
+            UserStorage.LectureLiveUpdate(lecture_ids);
+        });
+        liveSocket.on('disconnect', function(reason) {
+            console.log('lecture disconnected ' + reason);
+        });
+
+        liveSocket.on('question_feed', function(data) {
+            console.log('new questions recieved');
+            $rootScope.$emit('new_question', data);
+        });
+
+        liveSocket.on('answer_result', function(data) {
+            $rootScope.$emit('answer_result', data);
+        });
+
+        liveSocket.on('updated_user_total', function(total) {
+            console.log('new user total: ' + total);
+            $rootScope.$emit('updated_user_total', total);
+        });
+
+        liveSocket.on('new_end', function(data) {
+            $rootScope.$emit('new_end', data);
+        });
+
+        liveSocket.on('new_answer', function(answer) {
+            console.log('new answer recieved');
+            $rootScope.$emit('new_answer', answer);
+        });
+
+        liveSocket.on('end_question', function() {
+            $rootScope.$emit('end_question');
+        });
+    }
 
     return service;
 

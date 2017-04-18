@@ -20,6 +20,7 @@ app.controller('Course.Student.Controller', function($scope, $localStorage, $roo
     $rootScope.$stateParams = $stateParams;
     $scope.course = $localStorage.courses[$stateParams.selectedCourse];
     $scope.course_index = $stateParams.selectedCourse;
+    SocketService.getLecturesList();
 
     $rootScope.$on('coursesUpdated', function() {
         if ($stateParams.selectedCourse !== null && $state.current.name === 'main.student_course') {
