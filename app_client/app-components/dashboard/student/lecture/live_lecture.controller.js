@@ -40,6 +40,10 @@ app.controller('Student.Live.Lecture.Controller', function($scope, $localStorage
         $scope.loading = true;
     };
 
+    $scope.$on("$destroy", function() {
+        SocketService.LeaveLecture(course.lectures[lidx].lecture_id);
+    });
+
     $rootScope.$on('new_end', function(evt, data) {
         var old = $scope.end_time;
         $scope.end_time = new Date(data.time);

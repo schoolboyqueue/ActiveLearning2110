@@ -82,9 +82,9 @@ exports = module.exports = function(io) {
         });
 
         // reference: http://stackoverflow.com/questions/39880435/make-specific-socket-leave-the-room-is-in
-        socket.on('leave_lecture', function(data) {
-            socket.leave(data.lecture_id);
-            emitUserNumer(data.lecture_id);
+        socket.on('leave_lecture', function() {
+            socket.leave(socket.lecture_id);
+            emitUserNumer(socket.lecture_id);
         });
 
         socket.on('new_question', function(data) {
