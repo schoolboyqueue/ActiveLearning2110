@@ -26,17 +26,26 @@ var app_api_v2 = require('./app_api_v2'),
     path = require('path'),
     sessions = require('client-sessions'),
     config = require('./config'),
+    winston = require('winston'),
     app = express(),
     server = require('http').createServer(app),
     io = require('socket.io')(server);
 
-require('./app_socket/lectures')(io);
+require('./app_socket/lectures')(io, winston);
 
 /**
 Must have MongoDB installed and run mongod
 */
 mongoose.Promise = global.Promise;
 mongoose.connect(config.database);
+
+winston.configure({
+    transports: [
+      new(winston.transports.File)({
+            filename: config.log_file
+        })
+    ]
+});
 
 app.use(express.static(path.join(__dirname, '/app_client')));
 
