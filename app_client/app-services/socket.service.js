@@ -23,7 +23,6 @@ app.factory('SocketService', function($rootScope, UserStorage) {
             liveSocket = io('http://localhost:8081/lectures');
             liveSocket.on('connect', function() {
                 buildSocket();
-                console.log('lectures connected');
                 liveSocket.emit('lookup_lectures');
             });
         }
@@ -78,15 +77,10 @@ app.factory('SocketService', function($rootScope, UserStorage) {
 
     function buildSocket() {
         liveSocket.on('lectures_update', function(lecture_ids) {
-            console.log(lecture_ids);
             UserStorage.LectureLiveUpdate(lecture_ids);
-        });
-        liveSocket.on('disconnect', function(reason) {
-            console.log('lecture disconnected ' + reason);
         });
 
         liveSocket.on('question_feed', function(data) {
-            console.log('new questions recieved');
             $rootScope.$emit('new_question', data);
         });
 
@@ -95,7 +89,6 @@ app.factory('SocketService', function($rootScope, UserStorage) {
         });
 
         liveSocket.on('updated_user_total', function(total) {
-            console.log('new user total: ' + total);
             $rootScope.$emit('updated_user_total', total);
         });
 
@@ -104,7 +97,6 @@ app.factory('SocketService', function($rootScope, UserStorage) {
         });
 
         liveSocket.on('new_answer', function(answer) {
-            console.log('new answer recieved');
             $rootScope.$emit('new_answer', answer);
         });
 
