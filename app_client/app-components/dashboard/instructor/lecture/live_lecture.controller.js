@@ -16,8 +16,11 @@
 var app = angular.module('app');
 
 app.controller('Instructor.Live.Lecture.Controller', function($scope, $localStorage, $state, $stateParams, $rootScope, RESTService, SocketService, ngNotify) {
-
-    $scope.selectedQuestion = "";
+    $scope.choices = [];
+    $scope.title = '';
+    $scope.body = '';
+    $scope.tags = [];
+    $scope.selectedQuestion = '';
     $scope.time = 60;
     $scope.timeMax = 60;
     $scope.timerEnabled = false;
@@ -125,28 +128,21 @@ app.controller('Instructor.Live.Lecture.Controller', function($scope, $localStor
         });
     };
     $scope.startQuestion = function() {
-        RESTService.GetQuestionDetails($scope.selectedQuestion, function(info) {
-            if (!info.success) {
-                ngNotify.set("Failed to fetch question details", 'error');
-                return;
-            }
-            $scope.labels = [];
-            $scope.choices = info.choices;
-            setChoices(info);
-            setColors(info.choices.length);
-            $scope.timerEnabled = true;
-            $scope.$broadcast('timer-set-countdown-seconds', $scope.time);
-            var t = new Date();
-            t.setSeconds(t.getSeconds() + $scope.time);
-            $scope.end_time = t;
-            SocketService.StartQuestion({
-                lecture_id: $scope.lecture.lecture_id,
-                question_id: $scope.selectedQuestion,
-                max_time: $scope.timeMax,
-                end_time: t
-            });
-            $scope.$broadcast('timer-start');
+        $scope.labels = [];
+        setChoices();
+        setColors($scope.choices.length);
+        $scope.timerEnabled = true;
+        $scope.$broadcast('timer-set-countdown-seconds', $scope.time);
+        var t = new Date();
+        t.setSeconds(t.getSeconds() + $scope.time);
+        $scope.end_time = t;
+        SocketService.StartQuestion({
+            lecture_id: $scope.lecture.lecture_id,
+            question_id: $scope.selectedQuestion,
+            max_time: $scope.timeMax,
+            end_time: t
         });
+        $scope.$broadcast('timer-start');
     };
 
     $scope.$on('timer-tick', function(event, data) {
@@ -165,11 +161,29 @@ app.controller('Instructor.Live.Lecture.Controller', function($scope, $localStor
         }
     });
 
-    function setChoices(info) {
+    $scope.questionSelected = function() {
+        $scope.choices = [];
+        $scope.title = '';
+        $scope.body = '';
+        $scope.tags = [];
+        $scope.data = [];
+        RESTService.GetQuestionDetails($scope.selectedQuestion, function(info) {
+            if (!info.success) {
+                ngNotify.set("Failed to fetch question details", 'error');
+                return;
+            }
+            $scope.choices = info.choices;
+            $scope.title = info.title;
+            $scope.body = info.body;
+            $scope.tags = info.tags;
+        });
+    };
+
+    function setChoices() {
         $scope.data = [];
         var newData = [];
-        for (var i in info.choices) {
-            var correct = info.choices[i].answer ? " ✓" : " ✘";
+        for (var i in $scope.choices) {
+            var correct = $scope.choices[i].answer ? " ✓" : " ✘";
             $scope.labels.push((parseInt(i) + 1).toString() + correct);
             newData.push(0);
         }
