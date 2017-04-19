@@ -31,7 +31,6 @@ app.controller('Instructor.Live.Lecture.Controller', function($scope, $localStor
     updateLectureInfo();
 
     $scope.$on("$destroy", function() {
-        console.log('killing live lecture');
         SocketService.StopLecture($scope.lecture.lecture_id);
     });
 
@@ -206,6 +205,5 @@ app.controller('Instructor.Live.Lecture.Controller', function($scope, $localStor
             borderColor: border,
             borderWidth: 2
         }];
-        console.log($scope.datasetOverride);
     }
 });
