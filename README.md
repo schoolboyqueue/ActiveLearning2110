@@ -8,7 +8,7 @@
 Features
 ------------
 * **Content Creation** — Active Learning 2110 offers a wide range of content creation.
-	* Create Course- Instructors can easily create courses with titles, sections, schedules. Additionally Instructors can easily add students to their course.
+	* Create Course- Instructors can create courses with titles, sections, schedules. Additionally, Instructors can easily add students to their course.
 	* Create Lecture- Instructors can add lectures to courses. Lectures can be created with titles, schedule and questions.
 	* Create Questions- Instructors can create questions using our custom Question Creation Tool.
 
@@ -17,7 +17,7 @@ Features
 	* Live Timer - Each question will have a timer that all students must answer the question by.
 	* Live Results - System displays student average responses and scores after time out has expired.
 
-* **Student Data** — Instructors can easily view and export student lecture data. Students can look up their results on a lecture by lecture basis.
+* **Student Data** — Instructors can view and export student lecture data. Students can look up their results on a lecture by lecture basis.
 
 
 Getting Started with Active Learning 2110
@@ -55,6 +55,10 @@ View in browser at
 http://localhost:8081
 ```
 
+
+REST API Documentation
+---------------------
+[API DOCS](config/dev/Documentation.md)
 
 Need Help? Found a bug?
 --------------------
