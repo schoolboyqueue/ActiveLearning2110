@@ -71,8 +71,8 @@ app.factory('SocketService', function($rootScope, UserStorage) {
         liveSocket.emit('end_lecture', id);
     };
 
-    service.LeaveLecture = function(id) {
-        liveSocket.emit('leave_lecture', id);
+    service.LeaveLecture = function() {
+        liveSocket.emit('leave_lecture');
     };
 
     service.AnswerQuestion = function(info) {

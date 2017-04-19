@@ -41,7 +41,7 @@ app.controller('Student.Live.Lecture.Controller', function($scope, $localStorage
     };
 
     $scope.$on("$destroy", function() {
-        SocketService.LeaveLecture(course.lectures[lidx].lecture_id);
+        SocketService.LeaveLecture();
     });
 
     $rootScope.$on('new_end', function(evt, data) {
