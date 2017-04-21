@@ -23,7 +23,7 @@ var config = require('./../config'),
 
 exports = module.exports = function(io, winston) {
     var lectures = io.of('/lectures').on('connection', function(socket) {
-        winston.info('Socket.io Connection from: %s', socket.handshake.address);
+        winston.info('Socket.io: Connection from: %s', socket.handshake.address);
 
         socket.on('lookup_lectures', function() {
             LiveLecture.find({}, {
@@ -37,7 +37,7 @@ exports = module.exports = function(io, winston) {
         });
 
         socket.on('start_lecture', function(lecture_id) {
-            winston.info('Socket.io Starting Live Lecture: %s', lecture_id);
+            winston.info('Socket.io: Starting Live Lecture: %s', lecture_id);
 
             var newLiveLecture = new LiveLecture({
                 lecture_id: lecture_id,
@@ -62,7 +62,7 @@ exports = module.exports = function(io, winston) {
                 })
                 .then(getCurrentLiveLectures)
                 .catch(function(err) {
-                    winston.error('Socket.io Live Lecture Error: %s, %s', lecture_id, err);
+                    winston.error('Socket.io: Live Lecture Error: %s, %s', lecture_id, err);
                     return lectures.emit('lectures_update', 'could not add lecture');
                 });
         });
@@ -86,12 +86,14 @@ exports = module.exports = function(io, winston) {
                     socket.role = data.user_role;
                     socket.lecture_id = data.lecture_id;
                     socket.join(data.lecture_id);
-                    winston.info('Socket.io Joining Live Lecture: %s, %s', socket.username, socket.lecture_id);
+                    winston.info('Socket.io: Joining Live Lecture: %s, %s', socket.username, socket.lecture_id);
                     if (live_lecture.current_question) {
-                        winston.info('Socket.io Emitting Question that started to: %s', socket.username);
+                        winston.info('Socket.io: Emitting Question that started to: %s', socket.username);
                         socket.emit('question_feed', live_lecture.current_question);
                     }
                     return emitUserNumer(data.lecture_id);
+                }).catch(function(err) {
+                    winston.error('Socket.io: join lecture error %s', err);
                 });
         });
 
@@ -102,7 +104,7 @@ exports = module.exports = function(io, winston) {
         });
 
         socket.on('new_question', function(data) {
-            winston.info('Socket.io new question recieved: %j', data);
+            winston.info('Socket.io: new question recieved: %j', data);
             Question.findById(data.question_id, {
                     "__v": 0,
                     "answer_choices.answer": 0
@@ -119,11 +121,11 @@ exports = module.exports = function(io, winston) {
                     });
                 })
                 .then(function(results) {
-                    winston.info('Socket.io emitting question %j to %s', data, socket.lecture_id);
+                    winston.info('Socket.io: emitting question %j to %s', data, socket.lecture_id);
                     return socket.broadcast.to(socket.lecture_id).emit('question_feed', data);
                 })
                 .catch(function(err) {
-                    winston.error('Socket.io Question Feed Error: %s', err);
+                    winston.error('Socket.io: Question Feed Error: %s', err);
                     return socket.emit('question_feed', 'error');
                 });
         });
@@ -138,13 +140,13 @@ exports = module.exports = function(io, winston) {
                 })
                 .exec()
                 .then(function(results) {
-                    winston.info('Socket.io ending current question for %s', socket.lecture_id);
+                    winston.info('Socket.io: ending current question for %s', socket.lecture_id);
                     return socket.broadcast.to(socket.lecture_id).emit('end_question');
                 });
         });
 
         socket.on('new_time', function(data) {
-            winston.info('Socket.io new time recieved from professor %j', data);
+            winston.info('Socket.io: new time recieved from professor %j', data);
             LiveLecture.findOne({
                     lecture_id: socket.lecture_id
                 }, {
@@ -164,17 +166,17 @@ exports = module.exports = function(io, winston) {
                     });
                 })
                 .then(function(results) {
-                    winston.info('Socket.io new end time emiited to %s', socket.lecture_id);
+                    winston.info('Socket.io: new end time emiited to %s', socket.lecture_id);
                     return socket.broadcast.to(data.lecture_id).emit('new_end', data);
                 })
                 .catch(function(err) {
-                    winston.info('Socket.io new end time error %s', err);
+                    winston.info('Socket.io: new end time error %s', err);
                     return socket.broadcast.to(data.lecture_id).emit('new_end', 'error');
                 });
         });
 
         socket.on('answer_question', function(data) {
-            winston.info('Socket.io answer recieved from %s: %j', socket.username, data.answer);
+            winston.info('Socket.io: answer recieved from %s: %j', socket.username, data.answer);
             var correct = Boolean(false);
             Question.findOne({
                     _id: data.question_id
@@ -207,21 +209,21 @@ exports = module.exports = function(io, winston) {
                     return newResult.save();
                 })
                 .then(function(result) {
-                    winston.info('Socket.io answer result for %s: %s', socket.username, result.correct);
+                    winston.info('Socket.io: answer result for %s: %s', socket.username, result.correct);
                     socket.emit('answer_result', result.correct);
                     return socket.broadcast.to(socket.instructor_socket).emit('new_answer', result.answer);
                 })
                 .catch(function(err) {
-                    winston.error('Socket.io answer result error: %s', err);
+                    winston.error('Socket.io: answer result error: %s', err);
                     return socket.emit('answer_result', 'error');
                 });
         });
 
         socket.on('disconnect', function() {
-            winston.info('Socket.io user disconnected: %s', socket.username);
+            winston.info('Socket.io: user disconnected: %s', socket.username);
             if (socket.username) {
                 if (socket.role === 'instructor') {
-                    winston.info('Socket.io clearing live lecture %s', socket.lecture_id);
+                    winston.info('Socket.io: clearing live lecture %s', socket.lecture_id);
                     clearRoom(socket.lecture_id);
                 } else {
                     emitUserNumer(socket.lecture_id);
@@ -234,7 +236,7 @@ exports = module.exports = function(io, winston) {
             var users = io.nsps['/lectures'].adapter.rooms[lecture];
             if (users) {
                 //console.log(users.length);
-                winston.info('Socket.io emitting live lecture: %s, updated user total: %d', lecture, users.length);
+                winston.info('Socket.io: emitting live lecture: %s, updated user total: %d', lecture, users.length);
                 socket.broadcast.to(socket.instructor_socket).emit('updated_user_total', users.length);
             }
         }
@@ -251,7 +253,7 @@ exports = module.exports = function(io, winston) {
         }
 
         function endLecture(lecture_id) {
-            winston.info('Socket.io ending live lecture: %s', lecture_id);
+            winston.info('Socket.io: ending live lecture: %s', lecture_id);
 
             LiveLecture.remove({
                     lecture_id: lecture_id
@@ -272,7 +274,7 @@ exports = module.exports = function(io, winston) {
                 })
                 .then(getCurrentLiveLectures)
                 .catch(function(err) {
-                    winston.error('Socket.io ending live lecture error: %s', err);
+                    winston.error('Socket.io: ending live lecture error: %s', err);
                     return lectures.emit('lectures_update', 'could not add lecture');
                 });
         }
