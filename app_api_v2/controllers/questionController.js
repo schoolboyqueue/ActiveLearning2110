@@ -144,7 +144,7 @@ var deleteQuestion = function(req, res) {
 };
 
 var getAllQuestions = function(req, res) {
-    console.log('questionController getAllQuestions');
+    winston.info('questionController: get all questions');
 
     if (req.query.tag !== undefined) {
         Question.find({
@@ -201,7 +201,7 @@ var getAllQuestions = function(req, res) {
 };
 
 var getAllInstructorQuestions = function(req, res) {
-    console.log('questionController getAllInstructorQuestions');
+    winston.info('questionController: get instructor questions');
 
     if (req.decodedToken.sub !== req.params.USERID) {
         return res.status(404).json({
@@ -287,7 +287,7 @@ var getAllInstructorQuestions = function(req, res) {
 };
 
 var getQuestion = function(req, res) {
-    console.log('questionController getQuestion');
+    winston.info('questionController: get question');
 
     Question.findById(req.params.QUESTIONID, {
             "__v": 0
@@ -311,7 +311,7 @@ var getQuestion = function(req, res) {
 };
 
 var savedQuestionToDB = function(req, res) {
-    console.log('questionController savedQuestionToDB');
+    winston.info('questionController: save question to database');
 
     var answer_choices = [];
     for (var i = 0; i < req.body.answer_choices.length; i++) {
@@ -346,7 +346,7 @@ var savedQuestionToDB = function(req, res) {
 };
 
 var addTag = function(req, res) {
-    console.log('questionController addTag');
+    winston.info('questionController: question add tag');
 
     Question.findById(req.params.QUESTIONID, function(err, question) {
         if (err || !question) {
@@ -361,9 +361,7 @@ var addTag = function(req, res) {
                     message: 'User not Authorized to delete question'
                 });
             } else {
-                console.log(req.body.new_tag);
                 if (req.body.new_tag) {
-                    console.log("ready to push to array");
                     question.tags.push(req.body.new_tag);
                     question.save(function(err, updated_question) {
                         if (err) {
@@ -386,7 +384,7 @@ var addTag = function(req, res) {
 };
 
 var deleteTag = function(req, res) {
-    console.log('questionController deleteTag');
+    winston.info('questionController: delete tag');
 
     Question.findById(req.params.QUESTIONID, function(err, question) {
         if (err || !question) {
@@ -430,7 +428,7 @@ var deleteTag = function(req, res) {
 };
 
 var editProblemStatement = function(req, res) {
-    console.log('questionController editProblemStatement');
+    winston.info('questionController: edit problem statement');
 
     Question.findById(req.params.USERID)
         .exec()
@@ -489,7 +487,7 @@ var editProblemStatement = function(req, res) {
 };
 
 var addAnswerChoice = function(req, res) {
-    console.log('questionController addAnswerChoice');
+    winston.info('questionController: add answer choice');
 
     Question.findById(req.params.QUESTIONID, function(err, question) {
         if (err || !question) {
@@ -527,7 +525,7 @@ var addAnswerChoice = function(req, res) {
 };
 
 var deleteAnswerChoice = function(req, res) {
-    console.log('questionController deleteAnswerChoice');
+    winston.info('questionController: delete answer choice');
 
     Question.findById(req.params.QUESTIONID, function(err, question) {
         if (err || !question) {
@@ -571,7 +569,7 @@ var deleteAnswerChoice = function(req, res) {
 };
 
 var editAnswerChoice = function(req, res) {
-    console.log('questionController editAnswerChoice');
+    winston.info('questionController: edit answer choice');
 
     Question.findById(req.params.QUESTIONID, function(err, question) {
         if (err || !question) {
@@ -617,7 +615,7 @@ var editAnswerChoice = function(req, res) {
 };
 
 var editAnswer = function(req, res) {
-    console.log('questionController editAnswer');
+    winston.info('questionController: edit answer');
 
     Question.findById(req.params.QUESTIONID, function(err, question) {
         if (err || !question) {
