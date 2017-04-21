@@ -24,7 +24,6 @@ var app_api_v2 = require('./app_api_v2'),
     express = require('express'),
     mongoose = require('mongoose'),
     path = require('path'),
-    sessions = require('client-sessions'),
     config = require('./config'),
     winston = require('winston'),
     app = express(),
@@ -55,7 +54,9 @@ app.use(bodyparser.urlencoded({
 
 app.use(cookieParser());
 
-app.use(bodyparser.json());
+app.use(bodyparser.json({
+    limit: '50mb'
+}));
 
 app_client(app);
 app_api_v2(app);
