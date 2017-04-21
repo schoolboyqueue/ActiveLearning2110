@@ -120,7 +120,6 @@ var deleteQuestion = function(req, res) {
         .exec()
         .then(function(data) {
             return new Promise((resolve, reject) => {
-                console.log(data.result);
                 if (data.result.n === 0) {
                     var error_message = new Error('Cannot Delete Question');
                     reject(error_message);
@@ -586,12 +585,8 @@ var editAnswerChoice = function(req, res) {
             } else {
                 if (req.body.edit_answer_choice) {
                     if (req.body.new_answer_choice) {
-                        console.log(question);
-                        console.log(question.answer_choices.indexOf("a"));
                         var answerChoiceIndex = question.answer_choices.indexOf("a");
-                        console.log(answerChoiceIndex);
                         question.answer_choices[answerChoiceIndex] = req.body.new_answer_choice;
-
 
                         question.save(function(err, updated_question) {
                             if (err) {
