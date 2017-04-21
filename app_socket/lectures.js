@@ -121,7 +121,7 @@ exports = module.exports = function(io, winston) {
                     });
                 })
                 .then(function(results) {
-                    winston.info('Socket.io: emitting question %j to %s', data, socket.lecture_id);
+                    winston.info('Socket.io: emitting question to %s', socket.lecture_id);
                     return socket.broadcast.to(socket.lecture_id).emit('question_feed', data);
                 })
                 .catch(function(err) {
