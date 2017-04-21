@@ -195,7 +195,6 @@ exports = module.exports = function(io, winston) {
                 })
                 .exec()
                 .then(function(question) {
-                    console.log(question);
                     if (question.answer_choices[0].answer === true) {
                         correct = Boolean(true);
                     }
