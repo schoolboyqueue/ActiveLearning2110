@@ -13,7 +13,8 @@
     "mongoose": "^4.7.7",
     "random-key": "^0.3.2",
     "socket.io": "^1.7.3",
-    "socketio-jwt": "^4.5.0"
+    "socketio-jwt": "^4.5.0",
+    "winston": "^2.3.1"
   },
   "description": "Active Learning Application for 2110",
   "homepage": "https://github.com/omizrahi3/ActiveLearning2110#readme",

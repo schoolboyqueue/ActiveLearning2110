@@ -21,9 +21,9 @@ var config      = require('./../config'),
     Question    = require('./../app_api_v2/models/questionModel'),
     Result      = require('./../app_api_v2/models/resultModel');
 
-exports = module.exports = function(io) {
+exports = module.exports = function(io, winston) {
     var lectures = io.of('/lectures').on('connection', function(socket) {
-        console.log('Connection made');
+        winston.info('Socket.io Connection from: %s', socket.handshake.address);
 
         socket.on('lookup_lectures', function() {
             LiveLecture.find({}, {lecture_id: 1})
@@ -35,7 +35,7 @@ exports = module.exports = function(io) {
         });
 
         socket.on('start_lecture', function(lecture_id) {
-            console.log('start_lecture ' + lecture_id);
+            winston.info('Socket.io Starting Live Lecture: %s', lecture_id);
 
             var newLiveLecture = new LiveLecture({
                 lecture_id: lecture_id,
@@ -51,6 +51,7 @@ exports = module.exports = function(io) {
             })
             .then(getCurrentLiveLectures)
             .catch(function(err) {
+                winston.error('Socket.io Live Lecture Error: %s, %s', lecture_id, err);
                 return lectures.emit('lectures_update', 'could not add lecture');
             });
         });
@@ -72,9 +73,9 @@ exports = module.exports = function(io) {
                 socket.role = data.user_role;
                 socket.lecture_id = data.lecture_id;
                 socket.join(data.lecture_id);
-                console.log('joining: ' + data.lecture_id);
+                winston.info('Socket.io Joining Live Lecture: %s, %s', socket.username, socket.lecture_id);
                 if (live_lecture.current_question) {
-                    console.log('emitting question that has already started');
+                    winston.info('Socket.io Emitting Question that started to: %s', socket.username);
                     socket.emit('question_feed', live_lecture.current_question);
                 }
                 return emitUserNumer(data.lecture_id);
@@ -82,13 +83,13 @@ exports = module.exports = function(io) {
         });
 
         // reference: http://stackoverflow.com/questions/39880435/make-specific-socket-leave-the-room-is-in
-        socket.on('leave_lecture', function(data) {
-            socket.leave(data.lecture_id);
-            emitUserNumer(data.lecture_id);
+        socket.on('leave_lecture', function() {
+            socket.leave(socket.lecture_id);
+            emitUserNumer(socket.lecture_id);
         });
 
         socket.on('new_question', function(data) {
-            console.log('question:' + JSON.stringify(data));
+            winston.info('Socket.io new question recieved: %j', data);
             Question.findById(data.question_id, {"__v": 0, "answer_choices.answer": 0})
             .exec()
             .then(function(question) {
@@ -98,9 +99,11 @@ exports = module.exports = function(io) {
                 );
             })
             .then(function(results) {
+                winston.info('Socket.io emitting question %j to %s', data, socket.lecture_id);
                 return socket.broadcast.to(socket.lecture_id).emit('question_feed', data);
             })
             .catch(function(err) {
+                winston.error('Socket.io Question Feed Error: %s', err);
                 return socket.emit('question_feed', 'error');
             });
         });
@@ -111,12 +114,13 @@ exports = module.exports = function(io) {
             )
             .exec()
             .then(function(results) {
+                winston.info('Socket.io ending current question for %s', socket.lecture_id);
                 return socket.broadcast.to(socket.lecture_id).emit('end_question');
             });
         });
 
         socket.on('new_time', function(data) {
-            console.log('time changed');
+            winston.info('Socket.io new time recieved from professor %j', data);
             LiveLecture.findOne({lecture_id: socket.lecture_id},
                 {current_question: 1}
             )
@@ -130,9 +134,11 @@ exports = module.exports = function(io) {
                 );
             })
             .then(function(results) {
+                winston.info('Socket.io new end time emiited to %s', socket.lecture_id);
                 return socket.broadcast.to(data.lecture_id).emit('new_end', data);
             })
             .catch(function(err) {
+                winston.info('Socket.io new end time error %s', err);
                 return socket.broadcast.to(data.lecture_id).emit('new_end', 'error');
             });
         });

@@ -79,7 +79,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
     });
 
     $ocLazyLoadProvider.config({
-        'debug': true,
+        'debug': false,
         'events': true,
         'modules': [{
             name: 'navbar',

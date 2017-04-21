@@ -42,7 +42,6 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
         }
     };
 
-
     service.Register = function(info, callback) {
         var signup = null;
         if (info.professor) {
@@ -283,7 +282,6 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
         }
         $q.all(calls).then(
             function(values) {
-                console.log(values);
                 for (var key in values) {
                     retInfo.students[values[key].student_username] = {
                         success: values[key].success,

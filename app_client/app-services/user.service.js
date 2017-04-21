@@ -225,6 +225,9 @@ app.directive('ngEditor', function() {
         scope.editor.init('*[data-editable], *[data-fixture]', 'data-editable', null, false);
 
         scope.editor.toolbox().tools([[
+            'heading',
+            'subheading',
+            'paragraph',
             'bold',
             'italic',
             'link',
