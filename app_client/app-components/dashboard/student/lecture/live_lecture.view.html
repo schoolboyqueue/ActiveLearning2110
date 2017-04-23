@@ -37,7 +37,7 @@
             <div class="pt-2 pb-2">
                 <div ng-repeat="choice in choices">
                     <div class="form-check"
-                        ng-class="{ 'has-success': correct && choice.text === answer, 'has-danger': !correct && correct !== null && choice.text === answer }">
+                        ng-class="{ 'alert alert-success': correct && choice.text === answer, 'alert alert-danger': !correct && correct !== null && choice.text === answer }">
                         <label class="form-check-label">
                             <input class="form-check-input" type="radio" name="answers" ng-model="$parent.answer" value="{{choice.text}}" ng-disabled="submitted">
                             {{choice.text}}
