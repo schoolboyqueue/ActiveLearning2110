@@ -41,7 +41,8 @@ mongoose.connect(config.database);
 winston.configure({
     transports: [
       new(winston.transports.File)({
-            filename: config.log_file
+            filename: config.log_file,
+            maxsize: 1000000
         })
     ]
 });
