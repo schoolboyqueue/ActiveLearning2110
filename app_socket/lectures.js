@@ -16,6 +16,7 @@
 "use strict";
 
 var config = require('./../config'),
+    mongoose = require('mongoose'),
     Lecture = require('./../app_api_v2/models/lectureModel'),
     LiveLecture = require('./../app_api_v2/models/liveLectureModel'),
     Question = require('./../app_api_v2/models/questionModel'),
@@ -200,7 +201,9 @@ exports = module.exports = function(io, winston) {
                     var newResult = new Result({
                         student_id: socket.user_id,
                         lecture_id: socket.lecture_id,
+                        lecture_oid: mongoose.Types.ObjectId(socket.lecture_id),
                         question_id: data.question_id,
+                        question_oid: question._id,
                         answer: data.answer,
                         correct: correct
                     });
