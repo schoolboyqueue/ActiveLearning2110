@@ -26,10 +26,12 @@ var ResultSchema = new Schema({
         type: String,
         required: true
     },
+    question_oid: { type: Schema.Types.ObjectId, ref: 'Result' },
     lecture_id: {
         type: String,
         required: true
     },
+    lecture_oid: { type: Schema.Types.ObjectId, ref: 'Lecture' },
     answer: {
         type: String,
         required: true

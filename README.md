@@ -65,6 +65,14 @@ http://localhost:8081
 
 [API DOCS](config/dev/Documentation.md)
 
+# Release Notes
+
+**Supported Browsers:** Safari, Chrome, Firefox, Edge. IE is not supported and never will be (get a real browser).<br><br>
+**Current Bugs:**
+- Bug on firefox for live lectures. The join button doesn't always show
+- Edit previously created questions do not get updated in lectures that refer to them.
+- Bug 3
+
 # Need Help? Found a bug?
 
 [Submit an issue](https://github.com/omizrahi3/activelearning2110/issues) to the Active Learning 2110 Github if you need any help.
