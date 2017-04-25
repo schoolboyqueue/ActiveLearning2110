@@ -19,8 +19,18 @@ var Course = require('./../models/courseModel'),
     Lecture = require('./../models/lectureModel'),
     Question = require('./../models/questionModel'),
     QuestionSet = require('./../models/questionSetModel'),
+    Result = require('./../models/resultModel'),
     winston = require('winston');
 
+Array.prototype.getLectureAvg = function() {
+   var counter = 0;
+   for(var i = 0; i < this.length; i++) {
+     if(this[i]) {
+       counter++;
+     }
+   }
+   return Math.round((counter / this.length) * 100);
+ };
 
 var checkForNull = function(data) {
     var promise = new Promise(function(resolve, reject) {
@@ -272,6 +282,100 @@ var getAllQuestionSets = function(req, res) {
         });
 };
 
+var getStudentResults = function(req, res) {
+    winston.info('lectureController: get student results');
+
+    /*
+    Result.find({student_id: req.params.STUDENTID, lecture_id: req.params.LECTUREID})
+    .exec()
+    .then(function(results) {
+        return res.status(200).json({
+            success: true,
+            jwt_token: req.token,
+            results: results,
+            message: "Success on getStudentResults"
+        });
+    });
+    */
+    Result.aggregate([
+        {$match: {"student_id": req.params.STUDENTID, "lecture_id": req.params.LECTUREID}},
+        {$lookup: {from: "questions",localField: "question_oid",foreignField: "_id",as: "question_details"}}
+    ])
+    .exec()
+    .then(function(results) {
+        return res.status(200).json({
+            success: true,
+            jwt_token: req.token,
+            results: results,
+            message: "Success on getStudentResults"
+        });
+    })
+    .catch(function(err) {
+        return res.status(500).json({
+            success: false,
+            message: 'Internal Error'
+        });
+    });
+    /*
+    Result.aggregate([
+        {$match: {student_id: req.params.STUDENTID, lecture_id: req.params.LECTUREID}},
+        {$lookup: {from: "questions", localField: "question_id", foreignField: "_id", as: "questions"}}
+        ])
+    */
+
+
+    /*
+    QuestionSet.find({
+            "instructor_id": req.params.USERID
+        })
+        .exec()
+        .then(function(questionsets) {
+            return res.status(200).json({
+                success: true,
+                jwt_token: req.token,
+                questionsets: questionsets,
+                message: "Success on getAllQuestionSets"
+            });
+        })
+        .catch(function(err) {
+            return res.status(500).json({
+                success: false,
+                message: 'Internal Error'
+            });
+        });
+        */
+};
+
+var getInstructorResults = function(req, res) {
+    winston.info('lectureController: get instructor results');
+    console.log(req.params.LECTUREID);
+
+    Result.aggregate( [
+      {$match: {"lecture_id" : req.params.LECTUREID}},
+     { $group : { "_id" : "$question_id", student_results: { $push: "$correct" }, student_answers: { $push: "$answer" } } }
+     ] )
+    .exec()
+    .then(function(results) {
+      results.forEach(function(result) {
+          console.log(result.student_results.getLectureAvg());
+          result.class_average = result.student_results.getLectureAvg();
+      });
+        return res.status(200).json({
+            success: true,
+            jwt_token: req.token,
+            results: results,
+            message: "Success on getInstructorResults"
+        });
+    })
+    .catch(function(err) {
+        console.log(err);
+        return res.status(500).json({
+            success: false,
+            message: 'Internal Error'
+        });
+    });
+};
+
 
 var removeQuestion = function(req, res) {
     winston.info('lectureController: remove question');
@@ -442,6 +546,8 @@ module.exports = {
     getLecture: getLecture,
     getCourseLectures: getCourseLectures,
     getAllQuestionSets: getAllQuestionSets,
+    getInstructorResults: getInstructorResults,
+    getStudentResults: getStudentResults,
     removeQuestion: removeQuestion,
     reorderQuestion: reorderQuestion,
     savedLectureToDB: savedLectureToDB,

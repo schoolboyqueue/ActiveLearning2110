@@ -160,5 +160,19 @@ lectureRouter.route('/:LECTUREID')
         tokenController.refreshToken,
         lectureController.editLecture);
 
+// /**
+// Get Student Results
+//
+// GET	/api_v2/lecture/{lecture_id}/student/{student_id}/
+//
+// Authentication:   user token
+// Authorization:    instructor
+//
+// Path Parameters:  lecture_id, questionSet_id String	required
+// Query String:     none
+// Request Body: 	  none
+// **/
+// lectureRouter.route('/:LECTUREID/student/:STUDENTID')
+//     .get(lectureController.getStudentResults);
 
 module.exports = lectureRouter;
