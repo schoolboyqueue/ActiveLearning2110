@@ -97,7 +97,6 @@ exports = module.exports = function(io, winston) {
                 });
         });
 
-        // reference: http://stackoverflow.com/questions/39880435/make-specific-socket-leave-the-room-is-in
         socket.on('leave_lecture', function() {
             socket.leave(socket.lecture_id);
             emitUserNumer(socket.lecture_id);
@@ -219,8 +218,8 @@ exports = module.exports = function(io, winston) {
         });
 
         socket.on('disconnect', function() {
-            winston.info('Socket.io: user disconnected: %s', socket.username);
             if (socket.username) {
+                winston.info('Socket.io: user disconnected: %s', socket.username);
                 if (socket.role === 'instructor') {
                     winston.info('Socket.io: clearing live lecture %s', socket.lecture_id);
                     clearRoom(socket.lecture_id);
@@ -230,17 +229,14 @@ exports = module.exports = function(io, winston) {
             }
         });
 
-        //reference: http://stackoverflow.com/questions/9352549/getting-how-many-people-are-in-a-chat-room-in-socket-io#24425207
         function emitUserNumer(lecture) {
             var users = io.nsps['/lectures'].adapter.rooms[lecture];
             if (users) {
-                //console.log(users.length);
                 winston.info('Socket.io: emitting live lecture: %s, updated user total: %d', lecture, users.length);
                 socket.broadcast.to(socket.instructor_socket).emit('updated_user_total', users.length);
             }
         }
 
-        //reference: http://stackoverflow.com/questions/39880435/make-specific-socket-leave-the-room-is-in
         function clearRoom(lecture) {
             var roomObj = io.nsps['/lectures'].adapter.rooms[lecture];
             if (roomObj) {
@@ -279,7 +275,6 @@ exports = module.exports = function(io, winston) {
         }
 
         function getCurrentLiveLectures(live_lectures) {
-            //var updated_lectureList = Object.values(live_lectures);
             var current_lectures = live_lectures.map(function(lecture) {
                 return lecture.lecture_id;
             });

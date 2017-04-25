@@ -52,7 +52,7 @@ app.controller('Instructor.Edit.Lecture.Controller', function($scope, $localStor
         if (query !== '') {
             var tags = getTags(query);
             return $http.get('/api_v2/question?tag=' + tags.join('&tag='), {
-                cache: true
+                cache: false
             }).then(
                 function(response) {
                     var questions = response.data.questions;
@@ -73,7 +73,7 @@ app.controller('Instructor.Edit.Lecture.Controller', function($scope, $localStor
     $scope.loadQuestionSets = function(query) {
         if (query !== '') {
             return $http.get('/api_v2/user/' + $localStorage._id + '/questionsets', {
-                cache: true
+                cache: false
             }).then(
                 function(response) {
                     var sets = response.data.questionsets;

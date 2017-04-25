@@ -46,9 +46,9 @@ app.controller('Student.Live.Lecture.Controller', function($scope, $localStorage
 
     $rootScope.$on('new_end', function(evt, data) {
         var old = $scope.end_time;
-        $scope.end_time = new Date(data.time);
+        $scope.end_time = moment(data.time);
         $scope.timeMax = data.timeMax;
-        var time = Math.round(($scope.end_time.getTime() - old.getTime()) / 1000);
+        var time = moment($scope.end_time).diff(moment(old), 'seconds');
         if (time > 0) {
             $scope.$broadcast('timer-add-cd-seconds', time);
         }
@@ -81,10 +81,8 @@ app.controller('Student.Live.Lecture.Controller', function($scope, $localStorage
             $scope.body = info.question.html_body;
             $scope.choices = info.question.answer_choices;
             $scope.timerEnabled = true;
-            var myTime = new Date();
-            var endTime = new Date(info.end_time);
-            $scope.end_time = endTime;
-            $scope.time = Math.round(($scope.end_time.getTime() - myTime.getTime()) / 1000);
+            $scope.end_time = moment(info.end_time);
+            $scope.time = moment($scope.end_time).diff(moment(), 'seconds');
             $scope.timeMax = info.max_time;
             $scope.$broadcast('timer-set-countdown-seconds', $scope.time);
             $scope.$broadcast('timer-start');
@@ -105,8 +103,7 @@ app.controller('Student.Live.Lecture.Controller', function($scope, $localStorage
     });
 
     $scope.$on('timer-tick', function(event, data) {
-        var myTime = new Date();
-        $scope.time = Math.round(($scope.end_time.getTime() - myTime.getTime()) / 1000);
+        $scope.time = moment($scope.end_time).diff(moment(), 'seconds');
         if ($scope.time <= 0) {
             $scope.$broadcast('timer-stop');
             $scope.timerEnabled = false;

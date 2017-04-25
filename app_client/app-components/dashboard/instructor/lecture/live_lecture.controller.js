@@ -35,7 +35,6 @@ app.controller('Instructor.Live.Lecture.Controller', function($scope, $localStor
     });
 
     $rootScope.$on('updated_user_total', function(evt, total) {
-        console.log('new total: ' + total);
         $scope.$apply(function() {
             $scope.numOfStudents = total - 1;
         });
@@ -108,7 +107,7 @@ app.controller('Instructor.Live.Lecture.Controller', function($scope, $localStor
         if ($scope.time + 10 > $scope.timeMax) {
             $scope.timeMax = $scope.time + 10;
         }
-        $scope.end_time.setSeconds($scope.end_time.getSeconds() + 10);
+        $scope.end_time = moment($scope.end_time).add(10, 'seconds').format();
         SocketService.ChangeTime({
             lecture_id: $scope.lecture.lecture_id,
             time: $scope.end_time,
@@ -120,7 +119,7 @@ app.controller('Instructor.Live.Lecture.Controller', function($scope, $localStor
         if ($scope.time < 0) {
             $scope.time = 0;
         }
-        $scope.end_time.setSeconds($scope.end_time.getSeconds() - 10);
+        $scope.end_time = moment($scope.end_time).subtract(10, 'seconds').format();
         SocketService.ChangeTime({
             lecture_id: $scope.lecture.lecture_id,
             time: $scope.end_time
@@ -132,21 +131,18 @@ app.controller('Instructor.Live.Lecture.Controller', function($scope, $localStor
         setColors($scope.choices.length);
         $scope.timerEnabled = true;
         $scope.$broadcast('timer-set-countdown-seconds', $scope.time);
-        var t = new Date();
-        t.setSeconds(t.getSeconds() + $scope.time);
-        $scope.end_time = t;
+        $scope.end_time = moment().add($scope.time, 'seconds').format();
         SocketService.StartQuestion({
             lecture_id: $scope.lecture.lecture_id,
             question_id: $scope.selectedQuestion,
             max_time: $scope.timeMax,
-            end_time: t
+            end_time: $scope.end_time
         });
         $scope.$broadcast('timer-start');
     };
 
     $scope.$on('timer-tick', function(event, data) {
-        var myTime = new Date();
-        $scope.time = Math.round(($scope.end_time.getTime() - myTime.getTime()) / 1000);
+        $scope.time = moment($scope.end_time).diff(moment(), 'seconds');
         if ($scope.time <= 0) {
             $scope.$broadcast('timer-stop');
             $scope.selectedQuestion = "";
