@@ -22,6 +22,15 @@ var Course = require('./../models/courseModel'),
     Result = require('./../models/resultModel'),
     winston = require('winston');
 
+Array.prototype.getLectureAvg = function() {
+   var counter = 0;
+   for(var i = 0; i < this.length; i++) {
+     if(this[i]) {
+       counter++;
+     }
+   }
+   return Math.round((counter / this.length) * 100);
+ };
 
 var checkForNull = function(data) {
     var promise = new Promise(function(resolve, reject) {
@@ -347,6 +356,10 @@ var getInstructorResults = function(req, res) {
      ] )
     .exec()
     .then(function(results) {
+      results.forEach(function(result) {
+          console.log(result.student_results.getLectureAvg());
+          result.class_average = result.student_results.getLectureAvg();
+      });
         return res.status(200).json({
             success: true,
             jwt_token: req.token,
