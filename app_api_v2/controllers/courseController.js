@@ -397,14 +397,8 @@ var getUserCourses = function(req, res) {
                         "instructor.instructor_id": req.decodedToken.sub
                     }
                 },
-                {
-                    $lookup: {
-                        from: "sections",
-                        localField: "_id",
-                        foreignField: "course_id",
-                        as: "sections"
-                    }
-                }
+                {$lookup: {from: "sections",localField: "_id",foreignField: "course_id",as: "sections"}},
+                {$lookup: {from: "lectures",localField: "_id",foreignField: "course_oid",as: "lectures"}}
         ])
             .then(function(courses) {
                 return res.status(201).json({

@@ -16,6 +16,7 @@
 "use strict";
 
 var Course = require('./../models/courseModel'),
+    mongoose = require('mongoose'),
     Lecture = require('./../models/lectureModel'),
     Question = require('./../models/questionModel'),
     QuestionSet = require('./../models/questionSetModel'),
@@ -467,19 +468,18 @@ var savedLectureToDB = function(req, res) {
             var newLecture = new Lecture({
                 title: req.body.lecture_title,
                 instructor_id: req.decodedToken.sub,
+                course_oid: mongoose.Types.ObjectId(req.params.COURSEID),
                 course_id: req.params.COURSEID,
                 schedule: req.body.lecture_schedule
             });
             return newLecture.save();
         })
         .then(function(lecture) {
-            var new_lecture_snapshot = {
-                lecture_id: lecture._id.toString(),
-                title: lecture.title,
-                schedule: lecture.schedule
-            };
-            req.course.lectures.push(new_lecture_snapshot);
-            return req.course.save();
+            return Course.aggregate([
+                    {$match: {"_id": mongoose.Types.ObjectId(req.params.COURSEID)}},
+                    {$lookup: {from: "sections",localField: "_id",foreignField: "course_id",as: "sections"}},
+                    {$lookup: {from: "lectures",localField: "_id",foreignField: "course_oid",as: "lectures"}}
+            ]);
         })
         .then(function(course) {
             return res.status(201).json({
