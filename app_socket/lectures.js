@@ -50,7 +50,7 @@ exports = module.exports = function(io, winston) {
                         _id: lecture_id
                     }, {
                         $set: {
-                            live: true
+                            live: "live"
                         }
                     });
                 })
@@ -258,7 +258,7 @@ exports = module.exports = function(io, winston) {
                         _id: lecture_id
                     }, {
                         $set: {
-                            live: false
+                            live: "post"
                         }
                     });
                 })

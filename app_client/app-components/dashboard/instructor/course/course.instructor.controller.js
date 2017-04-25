@@ -79,8 +79,10 @@ app.controller('Instructor.Course.Controller', function($scope, $state, $localSt
 
     $rootScope.$on('coursesUpdated', function() {
         if ($stateParams.selectedCourse !== null && $state.current.name === 'main.instructor_course') {
-            $scope.tableParams.settings().dataset = $localStorage.courses[$stateParams.selectedCourse].lectures;
-            $scope.tableParams.reload();
+            $scope.$apply(function() {
+                $scope.tableParams.settings().dataset = $localStorage.courses[$stateParams.selectedCourse].lectures;
+                $scope.tableParams.reload();
+            });
         }
     });
 
