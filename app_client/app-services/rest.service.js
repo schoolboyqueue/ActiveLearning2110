@@ -96,6 +96,7 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
     service.GetCourseList = function(callback) {
         baseREST.one("user", $localStorage._id).one("courses").get().then(
             function(response) {
+                console.log(response);
                 UserStorage.UpdateUserInfo({
                     courses: response.courses
                 });
@@ -241,6 +242,7 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
     service.CreateLecture = function(info, callback) {
         baseREST.one("course", info.course_id).one("lectures").post("", info.data).then(
             function(response) {
+                console.log(response);
                 UserStorage.UpdateCourseLectures(info.course_id, response.lectures);
                 callback(genRetInfo(response));
             },
