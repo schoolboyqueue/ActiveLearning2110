@@ -49,8 +49,12 @@ var LectureSchema = new Schema({
         required: true
     },
     live: {
-        type: String,
-        default: 'pre'
+        type: Boolean,
+        default: false
+    },
+    post_lecture: {
+        type: Boolean,
+        default: false
     },
     course_id: {
         type: String,
