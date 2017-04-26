@@ -227,7 +227,7 @@ var getLecture = function(req, res) {
                 success: true,
                 jwt_token: req.token,
                 message: 'Request Success',
-                lecture: updatedLecture
+                lecture: lecture
             });
         })
         .catch(function(err) {
@@ -482,11 +482,12 @@ var savedLectureToDB = function(req, res) {
             ]);
         })
         .then(function(course) {
+            console.log(course[0]);
             return res.status(201).json({
                 success: true,
                 jwt_token: req.token,
                 message: 'Lecture Creation Successsful',
-                lectures: course.lectures
+                lectures: course[0].lectures
             });
         })
         .catch(function(err) {
