@@ -17,6 +17,7 @@ app.factory('SocketService', function($rootScope, UserStorage) {
 
     var service = {};
     var liveSocket = null;
+    var attempts = 0;
 
     service.connectToServer = function() {
         if (liveSocket === null) {
@@ -67,8 +68,12 @@ app.factory('SocketService', function($rootScope, UserStorage) {
         service.JoinLiveLecture(info);
     };
 
-    service.StopLecture = function(id) {
-        liveSocket.emit('end_lecture', id);
+    service.StopLecture = function() {
+        liveSocket.emit('stop_lecture');
+    };
+
+    service.RetireLecture = function() {
+        liveSocket.emit('retire_lecture');
     };
 
     service.LeaveLecture = function() {
@@ -80,6 +85,10 @@ app.factory('SocketService', function($rootScope, UserStorage) {
     };
 
     function buildSocket() {
+        liveSocket.on('reconnect', function() {
+            attempts = 0;
+        });
+
         liveSocket.on('lectures_update', function(lecture_ids) {
             UserStorage.LectureLiveUpdate(lecture_ids);
         });
@@ -106,6 +115,17 @@ app.factory('SocketService', function($rootScope, UserStorage) {
 
         liveSocket.on('end_question', function() {
             $rootScope.$emit('end_question');
+        });
+
+        liveSocket.on('lecture_retired', function() {
+            $rootScope.$emit('lecture_retired');
+        });
+
+        liveSocket.on('connect_error', function() {
+            attempts++;
+            if (attempts >= 7) {
+                $rootScope.$emit('socketio_failed');
+            }
         });
     }
 

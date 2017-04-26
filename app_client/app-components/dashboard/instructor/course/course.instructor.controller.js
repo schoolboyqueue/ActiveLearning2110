@@ -20,7 +20,6 @@ app.controller('Instructor.Course.Controller', function($scope, $state, $localSt
     $rootScope.$stateParams = $stateParams;
     $scope.course = $localStorage.courses[$stateParams.selectedCourse];
     $scope.course_index = $stateParams.selectedCourse;
-    console.log($scope.course);
 
     $scope.chart_options = {
         labels: ["Verified", "Pending"],
@@ -80,10 +79,8 @@ app.controller('Instructor.Course.Controller', function($scope, $state, $localSt
 
     $rootScope.$on('coursesUpdated', function() {
         if ($stateParams.selectedCourse !== null && $state.current.name === 'main.instructor_course') {
-            $scope.$apply(function() {
-                $scope.tableParams.settings().dataset = $localStorage.courses[$stateParams.selectedCourse].lectures;
-                $scope.tableParams.reload();
-            });
+            $scope.tableParams.settings().dataset = $localStorage.courses[$stateParams.selectedCourse].lectures;
+            $scope.tableParams.reload();
         }
     });
 

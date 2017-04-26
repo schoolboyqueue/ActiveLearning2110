@@ -113,8 +113,7 @@
                 {{lecture.schedule.day}}
             </td>
             <td class="align-middle" title="'Manage'">
-                {{lecture.live}}
-                <div class="btn-group" role="group" ng-show="lecture.live === 'pre'">
+                <div class="btn-group" role="group" ng-show="!lecture.post_lecture">
                     <button
                         type="button"
                         class="btn btn-secondary btn-sm"
@@ -132,7 +131,7 @@
                     </button>
                     <!-- ng-disabled="!joinAvail('{{lecture.schedule.date | date:'MM/dd/yy'}}')" -->
                 </div>
-                <div ng-show="lecture.live === 'post'">
+                <div ng-show="lecture.post_lecture">
                     <button
                         type="button"
                         class="btn btn-info btn-sm"

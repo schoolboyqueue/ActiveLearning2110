@@ -382,7 +382,7 @@ app.run(function($rootScope, ngNotify) {
     });
 });
 
-app.controller('Main.Controller', function($scope, $state, $localStorage, $injector, $ocLazyLoad, $timeout) {
+app.controller('Main.Controller', function($scope, $state, $localStorage, $rootScope, $injector, $ocLazyLoad, $timeout) {
 
     $scope.$storage = $localStorage;
 
@@ -402,5 +402,15 @@ app.controller('Main.Controller', function($scope, $state, $localStorage, $injec
         } else {
             $state.go('main.' + $localStorage.role);
         }
+
+        $rootScope.$on('$stateChangeError', function() {
+            RESTService.Logout();
+            $state.go('main');
+        });
+
+        $rootScope.$on('socketio_failed', function() {
+            RESTService.Logout();
+            $state.go('main');
+        });
     });
 });

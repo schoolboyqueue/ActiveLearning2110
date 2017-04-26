@@ -24,11 +24,9 @@ app.controller('Course.Student.Controller', function($scope, $localStorage, $roo
 
     $rootScope.$on('coursesUpdated', function() {
         if ($stateParams.selectedCourse !== null && $state.current.name === 'main.student_course') {
-            $scope.$apply(function() {
-                $scope.course = $localStorage.courses[$stateParams.selectedCourse];
-                $scope.tableParams.settings().dataset = $scope.course.lectures;
-                $scope.tableParams.reload();
-            });
+            $scope.course = $localStorage.courses[$stateParams.selectedCourse];
+            $scope.tableParams.settings().dataset = $scope.course.lectures;
+            $scope.tableParams.reload();
         }
     });
 

@@ -18,5 +18,4 @@ var app = angular.module('app');
 app.controller('Instructor.Review.Lecture.Controller', function($scope, $localStorage, $state, $stateParams, $rootScope, RESTService) {
     $rootScope.$stateParams = $stateParams;
     $scope.lecture_id = $stateParams.selectedLectureId;
-
 });

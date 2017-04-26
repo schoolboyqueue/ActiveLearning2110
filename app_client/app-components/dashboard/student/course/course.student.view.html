@@ -34,7 +34,7 @@
                 {{lecture.schedule.day}}
             </td>
             <td class="align-middle" title="'Live'">
-                <button type="button" class="btn btn-outline-success btn-sm" ng-show="lecture.live === 'live'" ng-click="joinLiveLecture(lecture, $index)">Join</button>
+                <button type="button" class="btn btn-outline-success btn-sm" ng-show="lecture.live" ng-click="joinLiveLecture(lecture, $index)">Join</button>
             </td>
         </tr>
     </table>
