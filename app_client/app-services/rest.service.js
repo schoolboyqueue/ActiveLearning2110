@@ -13,20 +13,20 @@
 //************************************************************
 var app = angular.module('app');
 
-app.factory('RESTService', function($http, $localStorage, $state, $q, Restangular, UserStorage, UserService, SocketService, jwtHelper) {
+app.factory('RESTService', function($http, $localStorage, $state, $q, Restangular, UserStorage, UserService, SocketService, jwtHelper, ngNotify) {
 
     var service = {};
 
     var baseREST = Restangular.all("api_v2");
 
-    // Restangular.setErrorInterceptor(function(response, deferred, responseHandler) {
-    //     console.log(response);
-    //     if (response.status === 401) {
-    //         service.Logout();
-    //         return false; // error handled
-    //     }
-    //     return true; // error not handled
-    // });
+    Restangular.setErrorInterceptor(function(response, deferred, responseHandler) {
+        if (response.status === -1) {
+            service.Logout();
+            ngNotify.set("Failed to connect to server. Server may be down.", 'error');
+            return false; // error handled
+        }
+        return true; // error not handled
+    });
 
     service.LoggedIn = function() {
         if ($localStorage.jwt_token && !jwtHelper.isTokenExpired($localStorage.jwt_token) && $localStorage.LoggedIn) {
@@ -241,6 +241,7 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
     service.CreateLecture = function(info, callback) {
         baseREST.one("course", info.course_id).one("lectures").post("", info.data).then(
             function(response) {
+                console.log(response);
                 UserStorage.UpdateCourseLectures(info.course_id, response.lectures);
                 callback(genRetInfo(response));
             },

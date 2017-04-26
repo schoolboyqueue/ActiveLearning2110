@@ -68,8 +68,13 @@ exports = module.exports = function(io, winston) {
                 });
         });
 
-        socket.on('end_lecture', function(lecture_id) {
-            clearRoom(lecture_id);
+        socket.on('stop_lecture', function() {
+            clearRoom(socket.lecture_id);
+        });
+
+        socket.on('retire_lecture', function() {
+            clearRoom(socket.lecture_id);
+            retireLecture(socket.lecture_id);
         });
 
         socket.on('join_lecture', function(data) {
@@ -167,11 +172,11 @@ exports = module.exports = function(io, winston) {
                 })
                 .then(function(results) {
                     winston.info('Socket.io: new end time emiited to %s', socket.lecture_id);
-                    return socket.broadcast.to(data.lecture_id).emit('new_end', data);
+                    return socket.broadcast.to(socket.lecture_id).emit('new_end', data);
                 })
                 .catch(function(err) {
                     winston.info('Socket.io: new end time error %s', err);
-                    return socket.broadcast.to(data.lecture_id).emit('new_end', 'error');
+                    return socket.broadcast.to(socket.lecture_id).emit('new_end', 'error');
                 });
         });
 
@@ -247,10 +252,10 @@ exports = module.exports = function(io, winston) {
                     lectures.sockets[id].leave(lecture);
                 });
             }
-            endLecture(lecture);
+            stopLecture(lecture);
         }
 
-        function endLecture(lecture_id) {
+        function stopLecture(lecture_id) {
             winston.info('Socket.io: ending live lecture: %s', lecture_id);
 
             LiveLecture.remove({
@@ -273,6 +278,26 @@ exports = module.exports = function(io, winston) {
                 .then(getCurrentLiveLectures)
                 .catch(function(err) {
                     winston.error('Socket.io: ending live lecture error: %s', err);
+                    return lectures.emit('lectures_update', 'could not add lecture');
+                });
+        }
+
+        function retireLecture(lecture_id) {
+            winston.info('Socket.io: retiring live lecture: %s', lecture_id);
+
+            Lecture.update({
+                    _id: lecture_id
+                }, {
+                    $set: {
+                        live: false,
+                        post_lecture: true
+                    }
+                })
+                .then(function(lecture) {
+                    socket.emit('lecture_retired');
+                })
+                .catch(function(err) {
+                    winston.error('Socket.io: retiring live lecture error: %s', err);
                     return lectures.emit('lectures_update', 'could not add lecture');
                 });
         }

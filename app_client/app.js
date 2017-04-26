@@ -134,6 +134,9 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
             name: 'instructor.create_course',
             files: ['app-components/modals/create_course/create_course.controller.js']
         }, {
+            name: 'instructor.review_lecture',
+            files: ['app-components/dashboard/instructor/lecture/review_lecture.controller.js']
+        }, {
             name: 'student.join_course',
             files: ['app-components/modals/join_course/join_course.controller.js']
         }, {
@@ -308,6 +311,19 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
             }
         })
 
+        .state('main.instructor_review_lecture', {
+            url: '/instructor/review_lecture',
+            templateUrl: 'app-components/dashboard/instructor/lecture/review_lecture.view.html',
+            params: {
+                selectedLectureId: null
+            },
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load('instructor.review_lecture');
+                }]
+            }
+        })
+
         .state('main.instructor_manage_students', {
             url: '/instructor/manage_students',
             templateUrl: 'app-components/dashboard/instructor/course/manage_students.view.html',
@@ -366,7 +382,7 @@ app.run(function($rootScope, ngNotify) {
     });
 });
 
-app.controller('Main.Controller', function($scope, $state, $localStorage, $injector, $ocLazyLoad, $timeout) {
+app.controller('Main.Controller', function($scope, $state, $localStorage, $rootScope, $injector, $ocLazyLoad, $timeout) {
 
     $scope.$storage = $localStorage;
 
@@ -386,5 +402,15 @@ app.controller('Main.Controller', function($scope, $state, $localStorage, $injec
         } else {
             $state.go('main.' + $localStorage.role);
         }
+
+        $rootScope.$on('$stateChangeError', function() {
+            RESTService.Logout();
+            $state.go('main');
+        });
+
+        $rootScope.$on('socketio_failed', function() {
+            RESTService.Logout();
+            $state.go('main');
+        });
     });
 });

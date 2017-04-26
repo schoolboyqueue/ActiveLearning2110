@@ -78,7 +78,7 @@ app.factory('UserStorage', function($localStorage, $rootScope) {
         }
         for (key in $localStorage.courses[course_key].lectures) {
             var curr = $localStorage.courses[course_key].lectures[key];
-            if (curr.lecture_id === lecture.lecture_id) {
+            if (curr._id === lecture._id) {
                 $localStorage.courses[course_key].lectures[key] = lecture;
             }
         }
@@ -88,7 +88,7 @@ app.factory('UserStorage', function($localStorage, $rootScope) {
     service.LectureLiveUpdate = function(lecture_list) {
         for (var i in $localStorage.courses) {
             for (var j in $localStorage.courses[i].lectures) {
-                var curr_id = $localStorage.courses[i].lectures[j].lecture_id;
+                var curr_id = $localStorage.courses[i].lectures[j]._id;
                 if (lecture_list.indexOf(curr_id) > -1) {
                     $localStorage.courses[i].lectures[j].live = true;
                 } else {

@@ -64,8 +64,6 @@ var addQuestionSet = function(req, res) {
         })
         .then(function(lecture) {
             var updatedLecture = lecture.toObject();
-            delete updatedLecture._id;
-            updatedLecture.lecture_id = lecture._id.toString();
             return res.status(200).json({
                 success: true,
                 jwt_token: req.token,
@@ -74,7 +72,6 @@ var addQuestionSet = function(req, res) {
             });
         })
         .catch(function(err) {
-            console.log("test");
             return res.status(404).json({
                 success: false,
                 message: err.message
@@ -118,8 +115,6 @@ var addQuestionToLecture = function(req, res) {
         })
         .then(function(lecture) {
             var updatedLecture = lecture.toObject();
-            delete updatedLecture._id;
-            updatedLecture.lecture_id = lecture._id.toString();
             return res.status(200).json({
                 success: true,
                 jwt_token: req.token,
@@ -221,8 +216,6 @@ var getLecture = function(req, res) {
         .then(checkForNull)
         .then(function(lecture) {
             var updatedLecture = lecture.toObject();
-            delete updatedLecture._id;
-            updatedLecture.lecture_id = lecture._id.toString();
             return res.status(200).json({
                 success: true,
                 jwt_token: req.token,
@@ -349,7 +342,6 @@ var getStudentResults = function(req, res) {
 
 var getInstructorResults = function(req, res) {
     winston.info('lectureController: get instructor results');
-    console.log(req.params.LECTUREID);
 
     Result.aggregate( [
       {$match: {"lecture_id" : req.params.LECTUREID}},
@@ -358,7 +350,6 @@ var getInstructorResults = function(req, res) {
     .exec()
     .then(function(results) {
       results.forEach(function(result) {
-          console.log(result.student_results.getLectureAvg());
           result.class_average = result.student_results.getLectureAvg();
       });
         return res.status(200).json({
@@ -369,7 +360,6 @@ var getInstructorResults = function(req, res) {
         });
     })
     .catch(function(err) {
-        console.log(err);
         return res.status(500).json({
             success: false,
             message: 'Internal Error'
@@ -393,8 +383,6 @@ var removeQuestion = function(req, res) {
         .exec()
         .then(function(lecture) {
             var updatedLecture = lecture.toObject();
-            delete updatedLecture._id;
-            updatedLecture.lecture_id = lecture._id.toString();
             return res.status(200).json({
                 success: true,
                 jwt_token: req.token,
@@ -440,8 +428,6 @@ var reorderQuestion = function(req, res) {
         })
         .then(function(lecture) {
             var updatedLecture = lecture.toObject();
-            delete updatedLecture._id;
-            updatedLecture.lecture_id = lecture._id.toString();
             return res.status(200).json({
                 success: true,
                 jwt_token: req.token,
@@ -482,7 +468,6 @@ var savedLectureToDB = function(req, res) {
             ]);
         })
         .then(function(course) {
-            console.log(course[0]);
             return res.status(201).json({
                 success: true,
                 jwt_token: req.token,

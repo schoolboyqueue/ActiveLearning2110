@@ -35,7 +35,7 @@ app.controller('Course.Student.Controller', function($scope, $localStorage, $roo
             username: $localStorage.username,
             user_id: $localStorage._id,
             user_role: $localStorage.role,
-            lecture_id: lecture.lecture_id
+            lecture_id: lecture._id
         });
         $state.go('main.student_live_lecture', {
             selectedCourse: $scope.course_index,

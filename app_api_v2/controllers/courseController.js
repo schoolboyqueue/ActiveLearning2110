@@ -347,33 +347,29 @@ var getUserCourses = function(req, res) {
     if (req.decodedToken.role === roles.STUDENT) {
         var finalCourses = [];
 
-        Section.aggregate([
-                {
-                    $match: {
-                        "students.student_id": req.decodedToken.sub
-                    }
-                },
-                {
-                    $lookup: {
-                        from: "courses",
-                        localField: "course_id",
-                        foreignField: "_id",
-                        as: "course_info"
-                    }
-                }
-        ])
-            .then(function(sections) {
-                for (var i = 0; i < sections.length; i++) {
-                    var tempCourse = sections[i].course_info[0];
+        User.findById(req.decodedToken.sub).exec().then(function(user){
+            Course.aggregate([
+                {$match: {"students": user.username}},
+                {$lookup: {from: "lectures", localField: "_id", foreignField: "course_oid", as: "lectures"}},
+                {$lookup: {from: "sections", localField: "_id", foreignField: "course_id", as: "sections"}},
+
+                {$unwind: "$sections"},
+                {$unwind: "$sections.students"},
+                {$match: {"sections.students.student_id": req.decodedToken.sub}}
+
+            ])
+            .then(function(courses) {
+                for (var i = 0; i < courses.length; i++) {
+                    var tempCourse = courses[i];
                     var temp = {
                         _id: tempCourse._id.toString(),
                         title: tempCourse.title,
                         lectures: tempCourse.lectures,
                         schedule: tempCourse.schedule,
                         instructor: tempCourse.instructor,
-                        average: 0,
+                        average: 100,
                         numOfStudents: tempCourse.students.length,
-                        section: sections[i].name
+                        section: courses[i].sections.name
                     };
                     finalCourses.push(temp);
                 }
@@ -390,6 +386,7 @@ var getUserCourses = function(req, res) {
                     message: err.message
                 });
             });
+        });
     } else {
         Course.aggregate([
                 {
