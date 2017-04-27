@@ -23,6 +23,10 @@ var LiveLectureSchema = new Schema({
         required: true,
         unique: true
     },
+    course_oid: {
+        type: Schema.Types.ObjectId,
+        ref: 'Course'
+    },
     instructor_socket: {
         type: String,
         required: true,

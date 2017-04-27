@@ -28,6 +28,26 @@ var roles = {
     STUDENT: 'student',
 };
 
+Array.prototype.studentCourseAvg = function(student_id) {
+   var counter = 0;
+   for(var i = 0; i < this.length; i++) {
+     if(this[i].correct && this[i].student_id === student_id) {
+       counter++;
+     }
+   }
+   return Math.round((counter / this.length) * 100);
+ };
+
+ Array.prototype.courseAvg = function() {
+    var counter = 0;
+    for(var i = 0; i < this.length; i++) {
+      if(this[i].correct) {
+        counter++;
+      }
+    }
+    return Math.round((counter / this.length) * 100);
+  };
+
 var checkForNull = function(data) {
     var promise = new Promise(function(resolve, reject) {
         if (!data) {
@@ -319,37 +339,32 @@ var getUserCourses = function(req, res) {
     winston.info('courseController: get user courses');
 
     if (req.decodedToken.role === roles.STUDENT) {
-        var finalCourses = [];
 
         User.findById(req.decodedToken.sub).exec().then(function(user){
             Course.aggregate([
                 {$match: {"students": user.username}},
+                {$lookup: {from: "results", localField: "_id", foreignField: "course_oid", as: "results"}},
                 {$lookup: {from: "lectures", localField: "_id", foreignField: "course_oid", as: "lectures"}},
                 {$lookup: {from: "sections", localField: "_id", foreignField: "course_oid", as: "sections"}},
                 {$unwind: "$sections"},
                 {$unwind: "$sections.students"},
-                {$match: {"sections.students.student_id": req.decodedToken.sub}}
+                {$match: {"sections.students.student_id": req.decodedToken.sub}},
+                { $project:
+                  { "title": 1, "schedule": 1, "instructor": 1,
+                    "lectures._id": 1, "lectures.title": 1, "lectures.course_id": 1, "lectures.schedule": 1, "lectures.post_lecture": 1, "lectures.live": 1,
+                    "results.correct": 1, "results.student_id": 1, "section": "$sections.name", "numOfStudents": { "$size": "$students" }
+                  }
+                }
             ])
             .then(function(courses) {
-                for (var i = 0; i < courses.length; i++) {
-                    var tempCourse = courses[i];
-                    var temp = {
-                        _id: tempCourse._id.toString(),
-                        title: tempCourse.title,
-                        lectures: tempCourse.lectures,
-                        schedule: tempCourse.schedule,
-                        instructor: tempCourse.instructor,
-                        average: 50,
-                        numOfStudents: tempCourse.students.length,
-                        section: courses[i].sections.name
-                    };
-                    finalCourses.push(temp);
-                }
+                courses.forEach(function(course) {
+                    course.average = course.results.studentCourseAvg(req.decodedToken.sub);
+                });
                 return res.status(201).json({
                     success: true,
                     jwt_token: req.token,
                     message: 'Request Success',
-                    courses: finalCourses
+                    courses: courses
                 });
             })
             .catch(function(err) {
@@ -361,30 +376,28 @@ var getUserCourses = function(req, res) {
         });
     } else {
         Course.aggregate([
-                {$match:
-                    {"instructor.instructor_id": req.decodedToken.sub}
-                },
-                {$lookup:
-                    {from: "sections", localField: "_id", foreignField: "course_oid", as: "sections"}
-                },
-                {$lookup:
-                    {from: "lectures", localField: "_id", foreignField: "course_oid", as: "lectures"}
-                }
+                {$match: {"instructor.instructor_id": req.decodedToken.sub}},
+                {$lookup: {from: "sections", localField: "_id", foreignField: "course_oid", as: "sections"}},
+                {$lookup: {from: "lectures", localField: "_id", foreignField: "course_oid", as: "lectures"}},
+                {$lookup: {from: "results", localField: "_id", foreignField: "course_oid", as: "results"}}
         ])
-            .then(function(courses) {
-                return res.status(201).json({
-                    success: true,
-                    jwt_token: req.token,
-                    message: 'Request Success',
-                    courses: courses
-                });
-            })
-            .catch(function(err) {
-                return res.status(404).json({
-                    success: false,
-                    message: 'No Courses Found'
-                });
+        .then(function(courses) {
+            courses.forEach(function(course) {
+                course.class_average = course.results.courseAvg();
             });
+            return res.status(201).json({
+                success: true,
+                jwt_token: req.token,
+                message: 'Request Success',
+                courses: courses
+            });
+        })
+        .catch(function(err) {
+            return res.status(404).json({
+                success: false,
+                message: 'No Courses Found'
+            });
+        });
     }
 };
 
@@ -429,8 +442,6 @@ var savedCourseToDB = function(req, res) {
         ]);
         })
         .then(function(courses) {
-            console.log(JSON.stringify(courses));
-            console.log(courses);
             return res.status(201).json({
                 success: true,
                 jwt_token: req.token,
