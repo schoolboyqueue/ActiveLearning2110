@@ -29,23 +29,33 @@ var roles = {
 };
 
 Array.prototype.studentCourseAvg = function(student_id) {
-   var counter = 0;
-   for(var i = 0; i < this.length; i++) {
-     if(this[i].correct && this[i].student_id === student_id) {
-       counter++;
-     }
-   }
-   return Math.round((counter / this.length) * 100);
+    if (this.length === 0) {
+        return 100;
+    }
+    else {
+        var counter = 0;
+        for(var i = 0; i < this.length; i++) {
+          if(this[i].correct && this[i].student_id === student_id) {
+            counter++;
+          }
+        }
+        return Math.round((counter / this.length) * 100);
+      }
  };
 
  Array.prototype.courseAvg = function() {
-    var counter = 0;
-    for(var i = 0; i < this.length; i++) {
-      if(this[i].correct) {
-        counter++;
-      }
+    if (this.length === 0) {
+        return 100;
     }
-    return Math.round((counter / this.length) * 100);
+    else {
+        var counter = 0;
+        for(var i = 0; i < this.length; i++) {
+          if(this[i].correct) {
+            counter++;
+          }
+        }
+        return Math.round((counter / this.length) * 100);
+      }
   };
 
 var checkForNull = function(data) {
@@ -379,7 +389,12 @@ var getUserCourses = function(req, res) {
                 {$match: {"instructor.instructor_id": req.decodedToken.sub}},
                 {$lookup: {from: "sections", localField: "_id", foreignField: "course_oid", as: "sections"}},
                 {$lookup: {from: "lectures", localField: "_id", foreignField: "course_oid", as: "lectures"}},
-                {$lookup: {from: "results", localField: "_id", foreignField: "course_oid", as: "results"}}
+                {$lookup: {from: "results", localField: "_id", foreignField: "course_oid", as: "results"}},
+                { $project:
+                  {
+                    "_id": 1, "title": 1, "course_key": 1, "createdAt": 1, "schedule": 1, "students": 1, "instructor": 1, "sections": 1, "lectures": 1, "results.correct": 1
+                  }
+                }
         ])
         .then(function(courses) {
             courses.forEach(function(course) {
