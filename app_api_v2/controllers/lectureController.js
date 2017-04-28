@@ -130,127 +130,58 @@ var addQuestionToLecture = function(req, res) {
         });
 };
 
-var deleteLecture = function(req, res) {
-    winston.info('lectureController: delete lecture');
-
-    Course.findByIdAndUpdate(req.params.COURSEID, {
-            $pull: {
-                "lectures": {
-                    "lecture_id": req.params.LECTUREID
-                }
-            }
-        }, {
-            new: true
-        })
-        .exec()
-        .then(function(course) {
-            req.course = course;
-            return Lecture.remove({
-                _id: req.params.LECTUREID
-            });
-        })
-        .then(function(data) {
-            return res.status(200).json({
-                success: true,
-                jwt_token: req.token,
-                message: 'Lecture Deleted',
-                lectures: req.course.lectures
-            });
-        })
-        .catch(function(err) {
-            return res.status(404).json({
-                success: false,
-                message: err.message
-            });
-        });
-};
-
-var editLecture = function(req, res) {
-    winston.info('lectureController: edit lecture');
-
-    Lecture.findByIdAndUpdate(req.params.LECTUREID, {
-            $set: {
-                title: req.body.title,
-                schedule: req.body.schedule
-            }
-        }, {
-            new: true
-        })
-        .exec()
-        .then(function(lecture) {
-            return Course.findOneAndUpdate({
-                "_id": lecture.course_id,
-                "lectures.lecture_id": req.params.LECTUREID
-            }, {
-                $set: {
-                    "lectures.$.title": req.body.title,
-                    "lectures.$.schedule": req.body.schedule
-                }
-            }, {
-                new: true
-            });
-        })
-        .then(function(course) {
-            return res.status(200).json({
-                success: true,
-                jwt_token: req.token,
-                message: 'Lecture Edited',
-                lectures: course.lectures
-            });
-        })
-        .catch(function(err) {
-            return res.status(404).json({
-                success: false,
-                message: err.message
-            });
-        });
-};
-
 var getLecture = function(req, res) {
     winston.info('lectureController: get lecture');
 
-    Lecture.findById(req.params.LECTUREID, {
-            "__v": 0
-        })
-        .exec()
-        .then(checkForNull)
-        .then(function(lecture) {
-            var updatedLecture = lecture.toObject();
-            return res.status(200).json({
-                success: true,
-                jwt_token: req.token,
-                message: 'Request Success',
-                lecture: lecture
-            });
-        })
-        .catch(function(err) {
-            return res.status(404).json({
-                success: false,
-                message: err.message
-            });
+    Lecture.findById(req.params.LECTUREID, {"__v": 0})
+    .exec()
+    .then(checkForNull)
+    .then(function(lecture) {
+        return res.status(200).json({
+            success: true,
+            jwt_token: req.token,
+            message: 'Request Success',
+            lecture: lecture
         });
+    })
+    .catch(function(err) {
+        return res.status(404).json({
+            success: false,
+            message: err.message
+        });
+    });
 };
 
 var getCourseLectures = function(req, res) {
     winston.info('lectureController: get course lectures');
 
-    Course.findById(req.params.COURSEID)
-        .exec()
-        .then(checkForNull)
-        .then(function(course) {
-            return res.status(201).json({
-                success: true,
-                jwt_token: req.token,
-                message: 'Request Success',
-                lectures: course.lectures
-            });
-        })
-        .catch(function(err) {
-            return res.status(404).json({
-                success: false,
-                message: err.message
-            });
+    Course.aggregate([
+            {$match: {"_id": req.params.COURSEID}},
+            {$lookup: {from: "lectures", localField: "_id", foreignField: "course_oid", as: "lectures"}},
+            { $project:
+              { "lectures.title": 1,
+                "lectures.instructor_id": 1,
+                "lectures.course_id": 1,
+                "lectures.schedule": 1,
+                "lectures.post_lecture": 1,
+                "lectures.live": 1,
+              }
+            }
+    ])
+    .then(function(courses) {
+        return res.status(201).json({
+            success: true,
+            jwt_token: req.token,
+            message: 'Request Success',
+            lectures: courses[0].lectures
         });
+    })
+    .catch(function(err) {
+        return res.status(404).json({
+            success: false,
+            message: err.message
+        });
+    });
 };
 
 var getAllQuestionSets = function(req, res) {
@@ -279,21 +210,9 @@ var getAllQuestionSets = function(req, res) {
 var getStudentResults = function(req, res) {
     winston.info('lectureController: get student results');
 
-    /*
-    Result.find({student_id: req.params.STUDENTID, lecture_id: req.params.LECTUREID})
-    .exec()
-    .then(function(results) {
-        return res.status(200).json({
-            success: true,
-            jwt_token: req.token,
-            results: results,
-            message: "Success on getStudentResults"
-        });
-    });
-    */
     Result.aggregate([
         {$match: {"student_id": req.params.STUDENTID, "lecture_id": req.params.LECTUREID}},
-        {$lookup: {from: "questions",localField: "question_oid",foreignField: "_id",as: "question_details"}}
+        {$lookup: {from: "questions", localField: "question_oid", foreignField: "_id", as: "question_details"}}
     ])
     .exec()
     .then(function(results) {
@@ -310,34 +229,6 @@ var getStudentResults = function(req, res) {
             message: 'Internal Error'
         });
     });
-    /*
-    Result.aggregate([
-        {$match: {student_id: req.params.STUDENTID, lecture_id: req.params.LECTUREID}},
-        {$lookup: {from: "questions", localField: "question_id", foreignField: "_id", as: "questions"}}
-        ])
-    */
-
-
-    /*
-    QuestionSet.find({
-            "instructor_id": req.params.USERID
-        })
-        .exec()
-        .then(function(questionsets) {
-            return res.status(200).json({
-                success: true,
-                jwt_token: req.token,
-                questionsets: questionsets,
-                message: "Success on getAllQuestionSets"
-            });
-        })
-        .catch(function(err) {
-            return res.status(500).json({
-                success: false,
-                message: 'Internal Error'
-            });
-        });
-        */
 };
 
 var getInstructorResults = function(req, res) {
@@ -345,8 +236,8 @@ var getInstructorResults = function(req, res) {
 
     Result.aggregate( [
       {$match: {"lecture_id" : req.params.LECTUREID}},
-     { $group : { "_id" : "$question_id", student_results: { $push: "$correct" }, student_answers: { $push: "$answer" } } }
-     ] )
+      {$group : { "_id" : "$question_id", student_results: { $push: "$correct" }, student_answers: { $push: "$answer" } } }
+     ])
     .exec()
     .then(function(results) {
       results.forEach(function(result) {
@@ -446,41 +337,47 @@ var reorderQuestion = function(req, res) {
 var savedLectureToDB = function(req, res) {
     winston.info('lectureController: save question to database');
 
-    Course.findById(req.params.COURSEID)
-        .exec()
-        .then(checkForNull)
-        .then(function(course) {
-            req.course = course;
-            var newLecture = new Lecture({
-                title: req.body.lecture_title,
-                instructor_id: req.decodedToken.sub,
-                course_oid: mongoose.Types.ObjectId(req.params.COURSEID),
-                course_id: req.params.COURSEID,
-                schedule: req.body.lecture_schedule
-            });
-            return newLecture.save();
-        })
-        .then(function(lecture) {
-            return Course.aggregate([
-                    {$match: {"_id": mongoose.Types.ObjectId(req.params.COURSEID)}},
-                    {$lookup: {from: "sections",localField: "_id",foreignField: "course_id",as: "sections"}},
-                    {$lookup: {from: "lectures",localField: "_id",foreignField: "course_oid",as: "lectures"}}
-            ]);
-        })
-        .then(function(course) {
-            return res.status(201).json({
-                success: true,
-                jwt_token: req.token,
-                message: 'Lecture Creation Successsful',
-                lectures: course[0].lectures
-            });
-        })
-        .catch(function(err) {
-            return res.status(404).json({
-                success: false,
-                message: err.message
-            });
+    var course_oid = mongoose.Types.ObjectId(req.params.COURSEID);
+
+    var newLecture = new Lecture({
+        title: req.body.lecture_title,
+        instructor_id: req.decodedToken.sub,
+        course_oid: course_oid,
+        course_id: req.params.COURSEID,
+        schedule: req.body.lecture_schedule
+    });
+
+    newLecture.save()
+    .then(function(lecture) {
+        return Course.aggregate([
+                {$match: {"_id": course_oid}},
+                {$lookup: {from: "lectures", localField: "_id", foreignField: "course_oid", as: "lectures"}},
+                { $project:
+                  { "lectures._id": 1,
+                    "lectures.title": 1,
+                    "lectures.instructor_id": 1,
+                    "lectures.course_id": 1,
+                    "lectures.schedule": 1,
+                    "lectures.post_lecture": 1,
+                    "lectures.live": 1,
+                  }
+                }
+        ]);
+    })
+    .then(function(courses) {
+        return res.status(201).json({
+            success: true,
+            jwt_token: req.token,
+            message: 'Lecture Creation Successsful',
+            lectures: courses[0].lectures
         });
+    })
+    .catch(function(err) {
+        return res.status(404).json({
+            success: false,
+            message: err.message
+        });
+    });
 };
 
 var saveQuestionSet = function(req, res) {
@@ -527,8 +424,6 @@ var saveQuestionSet = function(req, res) {
 module.exports = {
     addQuestionSet: addQuestionSet,
     addQuestionToLecture: addQuestionToLecture,
-    deleteLecture: deleteLecture,
-    editLecture: editLecture,
     getLecture: getLecture,
     getCourseLectures: getCourseLectures,
     getAllQuestionSets: getAllQuestionSets,
