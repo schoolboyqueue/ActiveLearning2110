@@ -66,7 +66,9 @@ app.controller('Instructor.Live.Lecture.Controller', function($scope, $localStor
                 ngNotify.set('Could not end lecture', 'error');
                 return;
             }
-            $state.go('main.' + $localStorage.role);
+            RESTService.GetCourseInfo($scope.course._id, function(info) {
+                $state.go('main.' + $localStorage.role);
+            });
         });
     });
 
@@ -148,7 +150,6 @@ app.controller('Instructor.Live.Lecture.Controller', function($scope, $localStor
         if ($scope.selectedQuestion === 'endLiveLecture') {
             if (window.confirm('Are you sure you want to end the live lecture?')) {
                 SocketService.RetireLecture();
-                $state.go('main.' + $localStorage.role);
             }
             return;
         }
