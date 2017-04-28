@@ -40,8 +40,6 @@ exports = module.exports = function(io, winston) {
         socket.on('start_lecture', function(data) {
             winston.info('Socket.io: Starting Live Lecture: %s', data.lecture_id);
 
-            console.log(data);
-
             // var newLiveLecture = new LiveLecture({
             //     lecture_id: lecture_id,
             //     instructor_socket: socket.id,
