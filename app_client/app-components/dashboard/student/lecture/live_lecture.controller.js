@@ -15,7 +15,7 @@
 
 var app = angular.module('app');
 
-app.controller('Student.Live.Lecture.Controller', function($scope, $localStorage, $rootScope, $stateParams, $state, UserService, SocketService, ngNotify) {
+app.controller('Student.Live.Lecture.Controller', function($scope, $localStorage, $rootScope, $stateParams, $state, UserService, SocketService, RESTService, ngNotify) {
     $scope.time = 60;
     $scope.timeMax = 60;
     $scope.timerEnabled = false;
@@ -66,10 +66,12 @@ app.controller('Student.Live.Lecture.Controller', function($scope, $localStorage
     $rootScope.$on('coursesUpdated', function() {
         if ($stateParams.selectedCourse !== null && $state.current.name === 'main.student_live_lecture') {
             course = $localStorage.courses[$stateParams.selectedCourse];
-            if (!course.lectures[lidx].live) {
-                ngNotify.set('Live lecture has ended', 'info');
-                $state.go('main.student');
-            }
+            RESTService.GetCourseInfo(course._id, function(info) {
+                if (!course.lectures[lidx].live) {
+                    ngNotify.set('Live lecture has ended', 'info');
+                    $state.go('main.student');
+                }
+            });
         }
     });
 
