@@ -512,16 +512,22 @@ var savedCourseToDB = function(req, res) {
         })
         .then(function(sections) {
             return Course.aggregate([
-                {$match: {"instructor.instructor_id": req.decodedToken.sub}},
-                {$lookup:
-                  {from: "sections", localField: "_id", foreignField: "course_oid", as: "sections"}
-                },
-                {$lookup:
-                  {from: "lectures", localField: "_id", foreignField: "course_oid", as: "lectures"}
-                }
-        ]);
+                    {$match: {"instructor.instructor_id": req.decodedToken.sub}},
+                    {$lookup: {from: "sections", localField: "_id", foreignField: "course_oid", as: "sections"}},
+                    {$lookup: {from: "lectures", localField: "_id", foreignField: "course_oid", as: "lectures"}},
+                    {$lookup: {from: "results", localField: "_id", foreignField: "course_oid", as: "results"}},
+                    { $project:
+                      {
+                        "_id": 1, "title": 1, "course_key": 1, "createdAt": 1, "schedule": 1, "students": 1, "instructor": 1, "sections": 1, "lectures": 1, "results.correct": 1
+                      }
+                    }
+            ]);
         })
         .then(function(courses) {
+            courses.forEach(function(course) {
+                course.class_average = course.results.courseAvg();
+            });
+            console.log(courses);
             return res.status(201).json({
                 success: true,
                 jwt_token: req.token,
