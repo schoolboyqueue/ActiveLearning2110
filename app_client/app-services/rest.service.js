@@ -301,7 +301,7 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
     service.GetCourseInfo = function(id, callback) {
         baseREST.one("course", id).get().then(
             function(response) {
-                UserStorage.UpdateSingleCourse(response.course);
+                UserStorage.UpdateSingleCourse(response.courses[0]);
                 callback(genRetInfo(response));
             },
             function(response) {
