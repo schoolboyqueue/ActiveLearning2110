@@ -16,6 +16,7 @@
 "use strict";
 
 var User = require('./../models/userModel'),
+    mongoose = require('mongoose'),
     Course = require('./../models/courseModel'),
     Section = require('./../models/sectionModel'),
     rand = require('random-key'),
@@ -314,35 +315,99 @@ var deleteStudentFromCourse = function(req, res) {
 var getCourse = function(req, res) {
     winston.info('courseController: get course info');
 
-    Course.findById(req.params.COURSEID)
-        .exec()
-        .then(function(course) {
-            return Course.aggregate([
-                {$match: {_id: course._id}},
-                {$lookup: {from: "sections", localField: "_id", foreignField: "course_oid", as: "sections"}},
+    // Course.findById(req.params.COURSEID)
+    //     .exec()
+    //     .then(function(course) {
+    //         return Course.aggregate([
+    //             {$match: {_id: course._id}},
+    //             {$lookup: {from: "sections", localField: "_id", foreignField: "course_oid", as: "sections"}},
+    //             {$lookup: {from: "lectures", localField: "_id", foreignField: "course_oid", as: "lectures"}},
+    //             { $project:
+    //               { "title": 1, "course_key": 1, "createdAt": 1, "schedule": 1, "students": 1, "instructor": 1,
+    //                 "lectures.title": 1, "lectures.course_id": 1, "lectures.schedule": 1, "lectures.post_lecture": 1, "lectures.live": 1,
+    //                 "sections": 1
+    //               }
+    //             }
+    //     ]);
+    //     })
+    //     .then(function(courses) {
+    //         return res.status(200).json({
+    //             success: true,
+    //             jwt_token: req.token,
+    //             message: 'Request Success',
+    //             course: courses[0]
+    //         });
+    //     })
+    //     .catch(function(err) {
+    //         return res.status(404).json({
+    //             success: false,
+    //             message: 'Course Not Found'
+    //         });
+    //     });
+    if (req.decodedToken.role === roles.STUDENT) {
+
+        User.findById(req.decodedToken.sub).exec().then(function(user){
+            Course.aggregate([
+                {$match: {"_id": mongoose.Types.ObjectId(req.params.COURSEID), "students": user.username}},
+                {$lookup: {from: "results", localField: "_id", foreignField: "course_oid", as: "results"}},
                 {$lookup: {from: "lectures", localField: "_id", foreignField: "course_oid", as: "lectures"}},
+                {$lookup: {from: "sections", localField: "_id", foreignField: "course_oid", as: "sections"}},
+                {$unwind: "$sections"},
+                {$unwind: "$sections.students"},
+                {$match: {"sections.students.student_id": req.decodedToken.sub}},
                 { $project:
-                  { "title": 1, "course_key": 1, "createdAt": 1, "schedule": 1, "students": 1, "instructor": 1,
-                    "lectures.title": 1, "lectures.course_id": 1, "lectures.schedule": 1, "lectures.post_lecture": 1, "lectures.live": 1,
-                    "sections": 1
+                  { "title": 1, "schedule": 1, "instructor": 1,
+                    "lectures._id": 1, "lectures.title": 1, "lectures.course_id": 1, "lectures.schedule": 1, "lectures.post_lecture": 1, "lectures.live": 1,
+                    "results.correct": 1, "results.student_id": 1, "section": "$sections.name", "numOfStudents": { "$size": "$students" }
                   }
                 }
-        ]);
-        })
+            ])
+            .then(function(courses) {
+                courses[0].average = courses[0].results.studentCourseAvg(req.decodedToken.sub);
+                return res.status(201).json({
+                    success: true,
+                    jwt_token: req.token,
+                    message: 'Request Success',
+                    courses: courses
+                });
+            })
+            .catch(function(err) {
+                return res.status(404).json({
+                    success: false,
+                    message: err.message
+                });
+            });
+        });
+    } else {
+        Course.aggregate([
+                {$match: {"_id": mongoose.Types.ObjectId(req.params.COURSEID), "instructor.instructor_id": req.decodedToken.sub}},
+                {$lookup: {from: "sections", localField: "_id", foreignField: "course_oid", as: "sections"}},
+                {$lookup: {from: "lectures", localField: "_id", foreignField: "course_oid", as: "lectures"}},
+                {$lookup: {from: "results", localField: "_id", foreignField: "course_oid", as: "results"}},
+                { $project:
+                  {
+                    "_id": 1, "title": 1, "course_key": 1, "createdAt": 1, "schedule": 1, "students": 1, "instructor": 1, "sections": 1, "lectures": 1, "results.correct": 1
+                  }
+                }
+        ])
         .then(function(courses) {
-            return res.status(200).json({
+            courses.forEach(function(course) {
+                course.class_average = course.results.courseAvg();
+            });
+            return res.status(201).json({
                 success: true,
                 jwt_token: req.token,
                 message: 'Request Success',
-                course: courses[0]
+                courses: courses
             });
         })
         .catch(function(err) {
             return res.status(404).json({
                 success: false,
-                message: 'Course Not Found'
+                message: 'No Courses Found'
             });
         });
+    }
 };
 
 var getUserCourses = function(req, res) {
