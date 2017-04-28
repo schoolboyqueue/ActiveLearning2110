@@ -15,11 +15,11 @@
 
 var app = angular.module('app');
 
-app.controller('Instructor.Dashboard.Controller', function($scope, $localStorage, $window, UserService) {
-
-    $scope.default = 100;
+app.controller('Instructor.Dashboard.Controller', function($scope, $localStorage, UserService) {
 
     $scope.createCourse = function() {
         UserService.ShowCreateCourse();
     };
+
+    console.log($localStorage.courses);
 });

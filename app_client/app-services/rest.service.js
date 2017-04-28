@@ -453,8 +453,20 @@ app.factory('RESTService', function($http, $localStorage, $state, $q, Restangula
     service.DeleteQuestion = function(question_id, callback) {
         baseREST.one("question", question_id).remove().then(
             function(response) {
-                console.log(response);
                 callback(genRetInfo(response));
+            },
+            function(response) {
+                callback(genRetInfo(response));
+            }
+        );
+    };
+
+    service.GetLectureResults = function(info, callback) {
+        baseREST.one("result", info.lecture_id).get().then(
+            function(response) {
+                var retInfo = genRetInfo(response);
+                retInfo.results = response.results;
+                callback(retInfo);
             },
             function(response) {
                 callback(genRetInfo(response));
