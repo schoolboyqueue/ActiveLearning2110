@@ -315,6 +315,8 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ocLazyLo
             url: '/instructor/review_lecture',
             templateUrl: 'app-components/dashboard/instructor/lecture/review_lecture.view.html',
             params: {
+                selectedCourse: null,
+                selectedLecture: null,
                 selectedLectureId: null
             },
             resolve: {

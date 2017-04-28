@@ -136,6 +136,8 @@
                         type="button"
                         class="btn btn-info btn-sm"
                         ui-sref="main.instructor_review_lecture({
+                            selectedCourse: course_index,
+                            selectedLecture: $index,
                             selectedLectureId: lecture._id
                         })">
                             <i class="fa fa-line-chart" aria-hidden="true"></i>
