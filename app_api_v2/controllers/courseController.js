@@ -28,6 +28,26 @@ var roles = {
     STUDENT: 'student',
 };
 
+Array.prototype.studentCourseAvg = function(student_id) {
+   var counter = 0;
+   for(var i = 0; i < this.length; i++) {
+     if(this[i].correct && this[i].student_id === student_id) {
+       counter++;
+     }
+   }
+   return Math.round((counter / this.length) * 100);
+ };
+
+ Array.prototype.courseAvg = function() {
+    var counter = 0;
+    for(var i = 0; i < this.length; i++) {
+      if(this[i].correct) {
+        counter++;
+      }
+    }
+    return Math.round((counter / this.length) * 100);
+  };
+
 var checkForNull = function(data) {
     var promise = new Promise(function(resolve, reject) {
         if (!data) {
@@ -89,14 +109,8 @@ var instructorAddStudent = function(req, res, next) {
                 lastname: user.lastname,
                 status: student_status
             };
-            //return NewSection.findById(req.params.SECTIONID);
-            //return Course.findById(req.params.COURSEID);
-            return Course.update({
-                _id: req.params.COURSEID
-            }, {
-                $addToSet: {
-                    students: newStudent.username
-                }
+            return Course.update({_id: req.params.COURSEID},
+                                {$addToSet: {students: newStudent.username}
             });
         })
         //check if student is already in course
@@ -113,12 +127,8 @@ var instructorAddStudent = function(req, res, next) {
         })
         //add student to section
         .then(function(result) {
-            return Section.update({
-                _id: req.params.SECTIONID
-            }, {
-                $addToSet: {
-                    students: newStudent
-                }
+            return Section.update({_id: req.params.SECTIONID},
+                                  {$addToSet: {students: newStudent}
             });
         })
         .then(function(result) {
@@ -151,28 +161,22 @@ var updateStudentStatus = function(req, res, next) {
         req.user.register_status = "complete";
 
         req.user.save()
-            .then(function(user) {
-                return Section.findOneAndUpdate({
-                    _id: section_id,
-                    "students.student_id": req.user._id.toString()
-                }, {
-                    $set: {
-                        "students.$.status": "complete"
-                    }
-                }, {
-                    new: true
-                });
-            })
-            .then(function(section) {
-                next();
-            })
-            .catch(function(err) {
-                return res.status(401).json({
-                    success: false,
-                    message: 'Pre Registration Not Complete'
-                });
+        .then(function(user) {
+            return Section.findOneAndUpdate({_id: section_id,"students.student_id": req.user._id.toString()},
+                                            {$set: {"students.$.status": "complete"}},
+                                            {new: true});
+        })
+        .then(function(section) {
+            next();
+        })
+        .catch(function(err) {
+            return res.status(401).json({
+                success: false,
+                message: 'Pre Registration Not Complete'
             });
-    } else {
+        });
+    }
+    else {
         next();
     }
 };
@@ -272,18 +276,12 @@ var deleteStudentFromCourse = function(req, res) {
         })
         .then(function(course) {
             return Course.aggregate([
-                {
-                    $match: {
-                        "_id": course._id
-                    }
+                {$match: {"_id": course._id}},
+                {$lookup:
+                  {from: "sections", localField: "_id", foreignField: "course_oid", as: "sections"}
                 },
-                {
-                    $lookup: {
-                        from: "sections",
-                        localField: "_id",
-                        foreignField: "course_id",
-                        as: "sections"
-                    }
+                {$lookup:
+                  {from: "lectures", localField: "_id", foreignField: "course_oid", as: "lectures"}
                 }
         ]);
         })
@@ -310,18 +308,14 @@ var getCourse = function(req, res) {
         .exec()
         .then(function(course) {
             return Course.aggregate([
-                {
-                    $match: {
-                        _id: course._id
-                    }
-                },
-                {
-                    $lookup: {
-                        from: "sections",
-                        localField: "_id",
-                        foreignField: "course_id",
-                        as: "sections"
-                    }
+                {$match: {_id: course._id}},
+                {$lookup: {from: "sections", localField: "_id", foreignField: "course_oid", as: "sections"}},
+                {$lookup: {from: "lectures", localField: "_id", foreignField: "course_oid", as: "lectures"}},
+                { $project:
+                  { "title": 1, "course_key": 1, "createdAt": 1, "schedule": 1, "students": 1, "instructor": 1,
+                    "lectures.title": 1, "lectures.course_id": 1, "lectures.schedule": 1, "lectures.post_lecture": 1, "lectures.live": 1,
+                    "sections": 1
+                  }
                 }
         ]);
         })
@@ -345,39 +339,32 @@ var getUserCourses = function(req, res) {
     winston.info('courseController: get user courses');
 
     if (req.decodedToken.role === roles.STUDENT) {
-        var finalCourses = [];
 
         User.findById(req.decodedToken.sub).exec().then(function(user){
             Course.aggregate([
                 {$match: {"students": user.username}},
+                {$lookup: {from: "results", localField: "_id", foreignField: "course_oid", as: "results"}},
                 {$lookup: {from: "lectures", localField: "_id", foreignField: "course_oid", as: "lectures"}},
-                {$lookup: {from: "sections", localField: "_id", foreignField: "course_id", as: "sections"}},
-
+                {$lookup: {from: "sections", localField: "_id", foreignField: "course_oid", as: "sections"}},
                 {$unwind: "$sections"},
                 {$unwind: "$sections.students"},
-                {$match: {"sections.students.student_id": req.decodedToken.sub}}
-
+                {$match: {"sections.students.student_id": req.decodedToken.sub}},
+                { $project:
+                  { "title": 1, "schedule": 1, "instructor": 1,
+                    "lectures._id": 1, "lectures.title": 1, "lectures.course_id": 1, "lectures.schedule": 1, "lectures.post_lecture": 1, "lectures.live": 1,
+                    "results.correct": 1, "results.student_id": 1, "section": "$sections.name", "numOfStudents": { "$size": "$students" }
+                  }
+                }
             ])
             .then(function(courses) {
-                for (var i = 0; i < courses.length; i++) {
-                    var tempCourse = courses[i];
-                    var temp = {
-                        _id: tempCourse._id.toString(),
-                        title: tempCourse.title,
-                        lectures: tempCourse.lectures,
-                        schedule: tempCourse.schedule,
-                        instructor: tempCourse.instructor,
-                        average: 100,
-                        numOfStudents: tempCourse.students.length,
-                        section: courses[i].sections.name
-                    };
-                    finalCourses.push(temp);
-                }
+                courses.forEach(function(course) {
+                    course.average = course.results.studentCourseAvg(req.decodedToken.sub);
+                });
                 return res.status(201).json({
                     success: true,
                     jwt_token: req.token,
                     message: 'Request Success',
-                    courses: finalCourses
+                    courses: courses
                 });
             })
             .catch(function(err) {
@@ -389,35 +376,33 @@ var getUserCourses = function(req, res) {
         });
     } else {
         Course.aggregate([
-                {
-                    $match: {
-                        "instructor.instructor_id": req.decodedToken.sub
-                    }
-                },
-                {$lookup: {from: "sections",localField: "_id",foreignField: "course_id",as: "sections"}},
-                {$lookup: {from: "lectures",localField: "_id",foreignField: "course_oid",as: "lectures"}}
+                {$match: {"instructor.instructor_id": req.decodedToken.sub}},
+                {$lookup: {from: "sections", localField: "_id", foreignField: "course_oid", as: "sections"}},
+                {$lookup: {from: "lectures", localField: "_id", foreignField: "course_oid", as: "lectures"}},
+                {$lookup: {from: "results", localField: "_id", foreignField: "course_oid", as: "results"}}
         ])
-            .then(function(courses) {
-                return res.status(201).json({
-                    success: true,
-                    jwt_token: req.token,
-                    message: 'Request Success',
-                    courses: courses
-                });
-            })
-            .catch(function(err) {
-                return res.status(404).json({
-                    success: false,
-                    message: 'No Courses Found'
-                });
+        .then(function(courses) {
+            courses.forEach(function(course) {
+                course.class_average = course.results.courseAvg();
             });
+            return res.status(201).json({
+                success: true,
+                jwt_token: req.token,
+                message: 'Request Success',
+                courses: courses
+            });
+        })
+        .catch(function(err) {
+            return res.status(404).json({
+                success: false,
+                message: 'No Courses Found'
+            });
+        });
     }
 };
 
 var savedCourseToDB = function(req, res) {
     winston.info('courseController: save course to database');
-
-    var course_id;
 
     User.findById(req.decodedToken.sub)
         .exec()
@@ -440,24 +425,19 @@ var savedCourseToDB = function(req, res) {
         .then(function(course) {
             for (var i = 0; i < req.body.sections.length; i++) {
                 req.body.sections[i].section_key = course.course_key + '-' + rand.generate();
-                req.body.sections[i].course_id = course._id;
+                req.body.sections[i].course_id = course._id.toString();
+                req.body.sections[i].course_oid = course._id;
             }
             return Section.insertMany(req.body.sections);
         })
         .then(function(sections) {
             return Course.aggregate([
-                {
-                    $match: {
-                        "instructor.instructor_id": req.decodedToken.sub
-                    }
+                {$match: {"instructor.instructor_id": req.decodedToken.sub}},
+                {$lookup:
+                  {from: "sections", localField: "_id", foreignField: "course_oid", as: "sections"}
                 },
-                {
-                    $lookup: {
-                        from: "sections",
-                        localField: "_id",
-                        foreignField: "course_id",
-                        as: "sections"
-                    }
+                {$lookup:
+                  {from: "lectures", localField: "_id", foreignField: "course_oid", as: "lectures"}
                 }
         ]);
         })

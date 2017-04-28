@@ -51,8 +51,12 @@ var SectionSchema = new Schema({
         type: String,
         required: true,
     },
-    course_id: {
+    course_oid: { 
         type: Schema.Types.ObjectId,
+        ref: 'Course'
+    },
+    course_id: {
+        type: String,
         required: true
     },
     section_key: {

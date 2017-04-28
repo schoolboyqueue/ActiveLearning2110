@@ -60,7 +60,10 @@ var LectureSchema = new Schema({
         type: String,
         required: true
     },
-    course_oid: { type: Schema.Types.ObjectId, ref: 'Course' },
+    course_oid: {
+        type: Schema.Types.ObjectId,
+        ref: 'Course'
+    },
     instructor_id: {
         type: String,
         required: true
