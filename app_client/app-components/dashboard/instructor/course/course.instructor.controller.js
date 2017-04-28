@@ -115,7 +115,8 @@ app.controller('Instructor.Course.Controller', function($scope, $state, $localSt
             username: $localStorage.username,
             user_id: $localStorage._id,
             user_role: $localStorage.role,
-            lecture_id: lecture._id
+            lecture_id: lecture._id,
+            course_id: $scope.course._id
         });
         $localStorage.hideSidebar = false;
         $state.go('main.instructor_live_lecture', {

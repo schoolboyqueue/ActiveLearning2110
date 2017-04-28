@@ -64,7 +64,10 @@ app.factory('SocketService', function($rootScope, UserStorage) {
     };
 
     service.StartLecture = function(info) {
-        liveSocket.emit('start_lecture', info.lecture_id);
+        liveSocket.emit('start_lecture', {
+            lecture_id: info.lecture_id,
+            course_id: info.course_id
+        });
         service.JoinLiveLecture(info);
     };
 
