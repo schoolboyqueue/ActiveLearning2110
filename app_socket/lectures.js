@@ -37,60 +37,61 @@ exports = module.exports = function(io, winston) {
                 });
         });
 
-        socket.on('start_lecture', function(lecture_id) {
-            winston.info('Socket.io: Starting Live Lecture: %s', lecture_id);
+        socket.on('start_lecture', function(data) {
+            winston.info('Socket.io: Starting Live Lecture: %s', data.lecture_id);
+
+            // var newLiveLecture = new LiveLecture({
+            //     lecture_id: lecture_id,
+            //     instructor_socket: socket.id,
+            // });
+
+            // Lecture.findById(lecture_id, {"course_oid": 1})
+            // .exec()
+            // .then(function(lecture) {
+            //     var newLiveLecture = new LiveLecture({
+            //         lecture_id: lecture_id,
+            //         instructor_socket: socket.id,
+            //         course_oid: lecture.course_oid
+            //     });
+            //     return newLiveLecture.save();
+            // })
+            // .then(function(){
+            //     return Lecture.update({_id: lecture_id}, {$set: {live: true}});
+            // })
+            // .then(function() {
+            //     return LiveLecture.find({}, {
+            //         lecture_id: 1,
+            //         _id: 0
+            //     });
+            // })
+            // .then(getCurrentLiveLectures)
+            // .catch(function(err) {
+            //     winston.error('Socket.io: Live Lecture Error: %s, %s', lecture_id, err);
+            //     return lectures.emit('lectures_update', 'could not add lecture');
+            // });
 
             var newLiveLecture = new LiveLecture({
-                lecture_id: lecture_id,
-                instructor_socket: socket.id,
-            });
-
-            Lecture.findById(lecture_id, {"course_oid": 1})
-            .exec()
-            .then(function(lecture) {
-                var newLiveLecture = new LiveLecture({
-                    lecture_id: lecture_id,
+                    lecture_id: data.lecture_id,
                     instructor_socket: socket.id,
-                    course_oid: lecture.course_oid
-                });
-                return newLiveLecture.save();
-            })
-            .then(function(){
-                return Lecture.update({_id: lecture_id}, {$set: {live: true}});
-            })
-            .then(function() {
-                return LiveLecture.find({}, {
-                    lecture_id: 1,
-                    _id: 0
-                });
-            })
-            .then(getCurrentLiveLectures)
-            .catch(function(err) {
-                winston.error('Socket.io: Live Lecture Error: %s, %s', lecture_id, err);
-                return lectures.emit('lectures_update', 'could not add lecture');
-            });
+                    course_oid: mongoose.Types.ObjectId(data.course_id),
+              });
 
-            // newLiveLecture.save()
-            //     .then(function() {
-            //         return Lecture.update({
-            //             _id: lecture_id
-            //         }, {
-            //             $set: {
-            //                 live: true
-            //             }
-            //         });
-            //     })
-            //     .then(function() {
-            //         return LiveLecture.find({}, {
-            //             lecture_id: 1,
-            //             _id: 0
-            //         });
-            //     })
-            //     .then(getCurrentLiveLectures)
-            //     .catch(function(err) {
-            //         winston.error('Socket.io: Live Lecture Error: %s, %s', lecture_id, err);
-            //         return lectures.emit('lectures_update', 'could not add lecture');
-            //     });
+            newLiveLecture.save()
+                .then(function() {
+                    return Lecture.update(
+                      {_id: data.lecture_id},
+                      {$set: {live: true}});
+                })
+                .then(function() {
+                    return LiveLecture.find({},
+                      {lecture_id: 1,_id: 0}
+                    );
+                })
+                .then(getCurrentLiveLectures)
+                .catch(function(err) {
+                    winston.error('Socket.io: Live Lecture Error: %s, %s', data.lecture_id, err);
+                    return lectures.emit('lectures_update', 'could not add lecture');
+                });
         });
 
         socket.on('stop_lecture', function() {
