@@ -1,35 +1,84 @@
 
 
-Active Learning 2110 is a Junior Design Project at Gatech. The application is a learning companion allowing students and instructors to interact during course lectures.
+Active Learning is a Junior Design Project at Gatech. The application offers instructors a tool to engage their students in activities that promote analysis and evaluation of class-content.
 
 # Features
 
-- **Content Creation** -- Active Learning 2110 offers a wide range of content creation.
+- **Create Questions** -- Dynamic question creation tool for engaging content. Custom build your questions with numerous features. Each step made simpler through Active Learning.
 
-  - Create Course- Instructors can create courses with titles, sections, schedules. Additionally, Instructors can easily add students to their course.
-  - Create Lecture- Instructors can add lectures to courses. Lectures can be created with titles, schedule and questions.
-  - Create Questions- Instructors can create questions using our custom Question Creation Tool.
+  - Easy to use Question Creation Editor
+  - Multiple Question Types
+  - Embed Photos/Videos
+  - Searchable Tags
+  - Public/Private feature
 
-- **Live Interactive Lectures** -- Each lecture offers an interactive session between the instructor and students to take place during the in class lecture.
+<p align="center"><img src="" width=450></p>
 
-  - Questions - Instructors can post questions that will be answered by students.
-  - Live Timer - Each question will have a timer that all students must answer the question by.
-  - Live Results - System displays student average responses and scores after time out has expired.
 
-- **Student Data** -- Instructors can view and export student lecture data. Students can look up their results on a lecture by lecture basis.
+- **Course and Lecture Management** -- Easily create and manage all aspects of course and lectures.
 
-# Getting Started with Active Learning 2110
+  - Create courses with with specific sections and schedules.
+  - Create course key for students to easily join course or add students directly through csv file import. Check the status of student registration and remove students from course at any time.
+  - Create lectures with specific dates and add, remove, reorder questions.
+  - Import and export question sets easily from one lecture to another, across courses.
 
-Getting started with Active Learning 2110 is super easy! Be sure to have all necessary prerequisites installed and simply clone the projects master branch.
+<p align="center"><img src="" width=450></p>
 
-## Prerequisites
+- **Live Lectures** -- Intuitive lecture tool allowing real time interaction. Connect with students, post questions and watch the results come all in real time.
+
+  - Instructor Preview Questions.
+  - Dynamic timer - increase or decrease time.
+  - Student live results.
+  - Instructor live total class results.
+
+<p align="center"><img src="" width=450></p>
+
+- **Analyze Results** -- Determine class impact and get reports on relevant data. Discover what class concepts are working - and which need more solidifying - with a view of class and student results.
+
+  - Course Averages.
+  - Instructor total student lecture results.
+  - Student individual lecture results.
+
+<p align="center"><img src="" width=450></p>
+
+# Release Notes
+
+- **New Software Features** -- Active Learning was built from scratch. The main features implemented are the features listed above.
+
+- **Known Bugs and defects** -- The following list contains all known bugs and defects. Keep in mind Active Learning currently supports only Safari, Chrome, Firefox and Edge browsers. All functionality promised to customer was implemented.
+
+  - Student live lecture join button does not currently always show up on Firefox broswer.
+  - When a student updates their profile information (name) the data does not always show correctly on the instructor manage students page.
+  - Edit previously created questions do not get updated in lectures that refer to them.
+
+
+
+# Install Guide
+
+Active Learning is a MEAN stack application (Node, Express, Angular, MongoDB) which makes installation a very simple process. Just follow these instructions.
+
+## Pre-requisites
 
 You're going to need the following installed:
 
 - **Node.js**
 - **MongoDB**
 
-## Getting Set Up / Install Guide
+## Dependent libraries
+
+Since Active Learning is a Node application all dependencies will be installed automatically. Here is a list of the third party libraries/modules used, which are all open sourced.
+
+- **express**
+- **mongoose**
+- **socket.io**
+- **socketio-jwt**
+- **winston**
+- **jsonwebtoken**
+- **bcryptjs**
+- **body-parser**
+- **cookie-parser**
+
+## Download Instructions
 
 Clone the repository:
 
@@ -37,11 +86,15 @@ Clone the repository:
 git clone https://github.com/omizrahi3/ActiveLearning2110.git
 ```
 
+## Installation
+
 Install the application:
 
 ```bash
 From project root directory: npm install
 ```
+
+## Run Instructions
 
 Start MongoDB:
 
@@ -52,7 +105,7 @@ mongod
 Start the server:
 
 ```bash
-From project root directory: node server.js
+From project root directory: node server
 ```
 
 View in browser at
@@ -64,14 +117,6 @@ http://localhost:8081
 # REST API Documentation
 
 [API DOCS](config/dev/Documentation.md)
-
-# Release Notes
-
-**Supported Browsers:** Safari, Chrome, Firefox, Edge. IE is not supported and never will be (get a real browser).<br><br>
-**Current Bugs:**
-- Bug on firefox for live lectures. The join button doesn't always show
-- Edit previously created questions do not get updated in lectures that refer to them.
-- Bug 3
 
 # Need Help? Found a bug?
 
