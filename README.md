@@ -12,7 +12,7 @@ Active Learning is a Junior Design Project at Gatech. The application offers ins
   - Searchable Tags
   - Public/Private feature
 
-<p align="center"><img src="https://cloud.githubusercontent.com/assets/12486675/25635034/c5550cee-2f4a-11e7-9044-dec85b7956e1.png" width=450></p>
+<p align="center"><img src="https://image.ibb.co/gLCjAk/Content1_Desktop.png" width=450></p>
 
 
 - **Course and Lecture Management** -- Easily create and manage all aspects of course and lectures.
@@ -22,6 +22,7 @@ Active Learning is a Junior Design Project at Gatech. The application offers ins
   - Create lectures with specific dates and add, remove, reorder questions.
   - Import and export question sets easily from one lecture to another, across courses.
 
+<p align="center"><img src="https://image.ibb.co/cOKmO5/manage.png" width=450></p>
 
 - **Live Lectures** -- Intuitive lecture tool allowing real time interaction. Connect with students, post questions and watch the results come all in real time.
 
@@ -30,6 +31,7 @@ Active Learning is a Junior Design Project at Gatech. The application offers ins
   - Student live results.
   - Instructor live total class results.
 
+<p align="center"><img src="https://image.ibb.co/b5Orqk/livelecture2.png" width=450></p>
 
 - **Analyze Results** -- Determine class impact and get reports on relevant data. Discover what class concepts are working - and which need more solidifying - with a view of class and student results.
 
@@ -37,6 +39,7 @@ Active Learning is a Junior Design Project at Gatech. The application offers ins
   - Instructor total student lecture results.
   - Student individual lecture results.
 
+<p align="center"><img src="https://image.ibb.co/nENjAk/livelecture.png" width=450></p>
 
 # Release Notes
 
